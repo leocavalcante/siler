@@ -7,34 +7,34 @@ if (!defined('ENV_PATH')) {
 $dotenv = new \Dotenv\Dotenv(ENV_PATH);
 $dotenv->load();
 
-function env(string $key = '', $default = null) {
-    if (empty($key)) {
-        return $_SERVER;
-    }
-
-    return array_key_exists($key, $_SERVER) ? $_SERVER[$key] : $default;
-}
-
 function dump($data) {
     echo '<pre>';
     var_dump($data);
     echo '</pre>';
 }
 
-function get(string $key, $default = null) {
-    return array_key_exists($key, $_GET) ? $_GET[$key] : $default;
-}
-
-function post(string $key, $default = null) {
-    return array_key_exists($key, $_POST) ? $_POST[$key] : $default;
-}
-
-function input(string $key = null, $default = null) {
-    if (is_null($key)) {
-        return $_REQUEST;
+function __retriver(string $key, $default, array $array) {
+    if (empty($key)) {
+        return $array;
     }
 
-    return array_key_exists($key, $_REQUEST) ? $_REQUEST[$key] : $default;
+    return array_key_exists($key, $array) ? $array[$key] : $default;
+}
+
+function env(string $key = '', $default = null) {
+    return __retriver($key, $default, $_SERVER);
+}
+
+function get(string $key = '', $default = null) {
+    return __retriver($key, $default, $_GET);
+}
+
+function post(string $key = '', $default = null) {
+    return __retriver($key, $default, $_POST);
+}
+
+function input(string $key = '', $default = null) {
+    return __retriver($key, $default, $_REQUEST);
 }
 
 function redirect(string $url) {
