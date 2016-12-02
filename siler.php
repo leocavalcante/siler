@@ -4,7 +4,7 @@ if (!defined('ENV_PATH')) {
     die('ENV_PATH not defined');
 }
 
-$dotenv = new \Dotenv\Dotenv($__bootConfig['env_path']);
+$dotenv = new \Dotenv\Dotenv(ENV_PATH);
 $dotenv->load();
 
 function env(string $key = '', $default = null) {
