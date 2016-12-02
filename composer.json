@@ -1,0 +1,16 @@
+{
+    "name": "leocavalcante/siler",
+    "description": "Keep it simple, stupid",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "leocavalcante",
+            "email": "lc@leocavalcante.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "vlucas/phpdotenv": "^2.4"
+    }
+}
