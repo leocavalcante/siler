@@ -1,15 +1,15 @@
 <?php
 
 if (!defined('TWIG_TEMPLATES')) {
-    die('TWIG_TEMPLATES not defined');
+    throw new Exception('TWIG_TEMPLATES not defined');
 }
 
 if (!defined('TWIG_TEMPLATES_CACHE')) {
-    die('TWIG_TEMPLATES_CACHE not define');
+    throw new Exception('TWIG_TEMPLATES_CACHE not define');
 }
 
 $twig = new \Twig_Environment(new \Twig_Loader_Filesystem(TWIG_TEMPLATES), [
-    'debug' => env('APP_DEBUG'),
+    'debug' => defined('TWIG_DEBUG') ? TWIG_DEBUG : false,
     'cache' => TWIG_TEMPLATES_CACHE,
 ]);
 
