@@ -1,0 +1,16 @@
+checks:
+  php: true
+
+build:
+  environment:
+    php: '7.0'
+  dependencies:
+    before:
+      - 'composer install'
+  tests:
+    override:
+      -
+        command: 'phpunit --coverage-clover=some-file'
+        coverage:
+          file: 'coverage-output'
+          format: 'clover'
