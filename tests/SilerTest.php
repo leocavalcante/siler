@@ -92,10 +92,4 @@ class SilerTest extends \PHPUnit\Framework\TestCase
             throw new Exception('Path /foo/'.$params[1]);
         });
     }
-
-    public function testDump()
-    {
-        $this->expectOutputString("<pre>string(3) \"foo\"\n</pre>");
-        dump('foo');
-    }
 }
