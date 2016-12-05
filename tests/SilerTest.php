@@ -3,7 +3,7 @@
 define('ENV_PATH', __DIR__);
 require __DIR__.'/../siler.php';
 
-class SilerTest extends \PHPUnit_Framework_TestCase
+class SilerTest extends \PHPUnit\Framework\TestCase
 {
     public function testEnv()
     {
@@ -63,5 +63,39 @@ class SilerTest extends \PHPUnit_Framework_TestCase
         $_SERVER['REQUEST_URI'] = '/foo';
 
         $this->assertEquals('http://test:8000/foo', uri());
+    }
+
+    /**
+     * @expectedException        Exception
+     * @expectedExceptionMessage Path /foo
+     */
+    public function testStaticPath()
+    {
+        $_SERVER['SCRIPT_NAME'] = '';
+        $_SERVER['REQUEST_URI'] = '/foo';
+
+        static_path('/foo', function () {
+            throw new Exception('Path /foo');
+        });
+    }
+
+    /**
+     * @expectedException        Exception
+     * @expectedExceptionMessage Path /foo/bar
+     */
+    public function testRegexpPath()
+    {
+        $_SERVER['SCRIPT_NAME'] = '';
+        $_SERVER['REQUEST_URI'] = '/foo/bar';
+
+        regexp_path('/^\/foo\/([a-z]+)$/', function ($params) {
+            throw new Exception('Path /foo/'.$params[1]);
+        });
+    }
+
+    public function testDump()
+    {
+        $this->expectOutputString("<pre>string(3) \"foo\"\n</pre>");
+        dump('foo');
     }
 }
