@@ -1,7 +1,7 @@
 <?php
 
 if (!defined('ENV_PATH')) {
-    die('ENV_PATH not defined');
+    throw new Exception('ENV_PATH not defined');
 }
 
 $dotenv = new \Dotenv\Dotenv(ENV_PATH);
