@@ -6,14 +6,6 @@ function dump($data) {
     echo '</pre>';
 }
 
-function __siler_retriver($key, $default, $array) {
-    if (is_null($key)) {
-        return $array;
-    }
-
-    return array_key_exists($key, $array) ? $array[$key] : $default;
-}
-
 function get($key = null, $default = null) {
     return __siler_retriver($key, $default, $_GET);
 }
@@ -96,4 +88,12 @@ function is_delete() {
 function request_method_is($method) {
     $requestMethod = __siler_retriver('REQUEST_METHOD', 'GET', $_SERVER);
     return strtolower($method) == strtolower($requestMethod);
+}
+
+function __siler_retriver($key, $default, $array) {
+    if (is_null($key)) {
+        return $array;
+    }
+
+    return array_key_exists($key, $array) ? $array[$key] : $default;
 }
