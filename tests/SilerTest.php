@@ -104,6 +104,7 @@ class SilerTest extends TestCase
 
     public function testRequireFn()
     {
-        $this->assertEquals('baz', require_fn(__DIR__.'/foo.php')(['bar' => 'baz']));
+        $cb = require_fn(__DIR__.'/foo.php');
+        $this->assertEquals('baz', $cb(['bar' => 'baz']));
     }
 }
