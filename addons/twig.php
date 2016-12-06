@@ -2,7 +2,7 @@
 
 $twigEnv = null;
 
-function create_twig_env($templatesPath, $templatesCachePath, $debug = null) {
+function create_twig_env($templatesPath, $templatesCachePath = null, $debug = null) {
     global $twigEnv;
 
     if (is_null($debug)) {
@@ -21,7 +21,7 @@ function create_twig_env($templatesPath, $templatesCachePath, $debug = null) {
     return $twigEnv;
 }
 
-function render(string $name, array $data = []) {
+function render($name, $data = []) {
     global $twigEnv;
     return $twigEnv->render($name, $data);
 }

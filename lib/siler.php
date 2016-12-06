@@ -6,31 +6,35 @@ function dump($data) {
     echo '</pre>';
 }
 
-function __siler_retriver(string $key, $default, array $array) {
-    if (empty($key)) {
+function __siler_retriver($key, $default, $array) {
+    if (is_null($key)) {
         return $array;
     }
 
     return array_key_exists($key, $array) ? $array[$key] : $default;
 }
 
-function get(string $key = '', $default = null) {
+function get($key = null, $default = null) {
     return __siler_retriver($key, $default, $_GET);
 }
 
-function post(string $key = '', $default = null) {
+function post($key = null, $default = null) {
     return __siler_retriver($key, $default, $_POST);
 }
 
-function input(string $key = '', $default = null) {
+function input($key = null, $default = null) {
     return __siler_retriver($key, $default, $_REQUEST);
 }
 
-function redirect(string $url) {
+function redirect($url) {
     header('Location: '.$url);
 }
 
-function url(string $path = '/') {
+function url($path = null) {
+    if (is_null($path)) {
+        $path = '/';
+    }
+
     $scriptName = __siler_retriver('SCRIPT_NAME', '', $_SERVER);
     return rtrim(str_replace('\\', '/', dirname($scriptName)), '/').'/'.ltrim($path, '/');
 }
@@ -42,10 +46,10 @@ function path() {
     return '/'.ltrim(str_replace(dirname($scriptName), '', $requestUri), '/');
 }
 
-function uri(string $protocol = '') {
+function uri($protocol = null) {
     $https = __siler_retriver('HTTPS', '', $_SERVER);
 
-    if (empty($protocol)) {
+    if (is_null($protocol)) {
         $protocol = empty($https) ? 'http' : 'https';
     }
 
@@ -55,20 +59,20 @@ function uri(string $protocol = '') {
     return $protocol.'://'.$httpHost.$requestUri;
 }
 
-function static_path(string $path, callable $callback, array $params = []) {
+function static_path($path, $callback, $params = []) {
     if ($path == path()) {
         $callback($params);
     }
 }
 
-function regexp_path(string $path, callable $callback) {
+function regexp_path($path, $callback) {
     if (preg_match($path, path(), $params)) {
         $callback($params);
     }
 }
 
-function require_fn(string $filename) {
-    return function (array $params = []) use ($filename) {
+function require_fn($filename) {
+    return function ($params = []) use ($filename) {
         return require($filename);
     };
 }
@@ -93,7 +97,7 @@ function is_delete() {
     return 'delete' == strtolower($requestMethod);
 }
 
-function request_method_is(string $method) {
+function request_method_is($method) {
     $requestMethod = __siler_retriver('REQUEST_METHOD', 'GET', $_SERVER);
     return strtolower($method) == strtolower($requestMethod);
 }
