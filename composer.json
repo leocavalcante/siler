@@ -10,12 +10,17 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {
-        "vlucas/phpdotenv": "^2.4"
-    },
     "require-dev": {
+        "vlucas/phpdotenv": "^2.4",
         "phpunit/phpunit": "^5.7",
         "phpunit/php-code-coverage": "^4.0",
         "twig/twig": "^1.28"
+    },
+    "autoload": {
+        "files": [
+            "lib/siler.php",
+            "addons/twig.php",
+            "addons/dotenv.php"
+        ]
     }
 }

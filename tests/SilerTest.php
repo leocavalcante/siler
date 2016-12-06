@@ -1,18 +1,9 @@
 <?php
 
-define('ENV_PATH', __DIR__);
-require __DIR__.'/../siler.php';
+use PHPUnit\Framework\TestCase;
 
-class SilerTest extends \PHPUnit\Framework\TestCase
+class SilerTest extends TestCase
 {
-    public function testEnv()
-    {
-        $this->assertEquals($_SERVER, env());
-        $this->assertEquals('bar', env('FOO'));
-        $this->assertEquals('baz', env('BAR', 'baz'));
-        $this->assertNull(env('BAR'));
-    }
-
     public function testGet()
     {
         $_GET = ['foo' => 'bar'];
@@ -91,5 +82,23 @@ class SilerTest extends \PHPUnit\Framework\TestCase
         regexp_path('/^\/foo\/([a-z]+)$/', function ($params) {
             throw new Exception('Path /foo/'.$params[1]);
         });
+    }
+
+    public function testRequestMethodIs()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $this->assertTrue(is_post());
+
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $this->assertTrue(is_get());
+
+        $_SERVER['REQUEST_METHOD'] = 'PUT';
+        $this->assertTrue(is_put());
+
+        $_SERVER['REQUEST_METHOD'] = 'DELETE';
+        $this->assertTrue(is_delete());
+
+        $_SERVER['REQUEST_METHOD'] = 'CUSTOM';
+        $this->assertTrue(request_method_is('custom'));
     }
 }

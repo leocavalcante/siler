@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit colors="true" bootstrap="vendor/autoload.php">
-  <php>
-    <const name="TWIG_TEMPLATES" value="./"/>
-    <const name="TWIG_TEMPLATES_CACHE" value="./"/>
-  </php>
-
-  <testsuite name="unit">
-    <directory>tests</directory>
+  <testsuite name="Siler">
+    <file>tests/SilerTest.php</file>
+    <file>tests/addons/TwigTest.php</file>
+    <file>tests/addons/DotenvTest.php</file>
   </testsuite>
 
   <filter>
