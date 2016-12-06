@@ -1,9 +1,17 @@
 <?php
 
-function dump($data) {
+function dump($data, $andDie = null) {
+    if (is_null($andDie)) {
+        $andDie = false;
+    }
+
     echo '<pre>';
     var_dump($data);
     echo '</pre>';
+
+    if ($andDie) {
+        die();
+    }
 }
 
 function get($key = null, $default = null) {
