@@ -78,23 +78,19 @@ function require_fn($filename) {
 }
 
 function is_post() {
-    $requestMethod = __siler_retriver('REQUEST_METHOD', 'GET', $_SERVER);
-    return 'post' == strtolower($requestMethod);
+    return request_method_is('post');
 }
 
 function is_get() {
-    $requestMethod = __siler_retriver('REQUEST_METHOD', 'GET', $_SERVER);
-    return 'get' == strtolower($requestMethod);
+    return request_method_is('get');
 }
 
 function is_put() {
-    $requestMethod = __siler_retriver('REQUEST_METHOD', 'GET', $_SERVER);
-    return 'put' == strtolower($requestMethod);
+    return request_method_is('put');
 }
 
 function is_delete() {
-    $requestMethod = __siler_retriver('REQUEST_METHOD', 'GET', $_SERVER);
-    return 'delete' == strtolower($requestMethod);
+    return request_method_is('delete');
 }
 
 function request_method_is($method) {
