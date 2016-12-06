@@ -72,7 +72,7 @@ function regexp_path($path, $callback) {
 }
 
 function require_fn($filename) {
-    return function ($params = []) use ($filename) {
+    return function ($params = null) use ($filename) {
         return require($filename);
     };
 }

@@ -101,4 +101,9 @@ class SilerTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'CUSTOM';
         $this->assertTrue(request_method_is('custom'));
     }
+
+    public function testRequireFn()
+    {
+        $this->assertEquals('baz', require_fn(__DIR__.'/foo.php')(['bar' => 'baz']));
+    }
 }
