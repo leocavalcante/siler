@@ -13,3 +13,6 @@
 </p>
 
 Keep it simple, *stupid*!
+
+Doesn't get it?
+[Check out this example](https://github.com/leocavalcante/siler-example)
