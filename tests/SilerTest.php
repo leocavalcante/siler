@@ -4,107 +4,82 @@ use PHPUnit\Framework\TestCase;
 
 class SilerTest extends TestCase
 {
+    protected function setUp()
+    {
+        $_GET = $_POST = $_REQUEST = ['foo' => 'bar'];
+
+        $_SERVER['HTTP_HOST'] = 'test:8000';
+        $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
+        $_SERVER['REQUEST_URI'] = '/bar/baz';
+    }
+
     public function testGet()
     {
-        $_GET = ['foo' => 'bar'];
-
-        $this->assertEquals($_GET, get());
-        $this->assertEquals('bar', get('foo'));
-        $this->assertEquals('qux', get('baz', 'qux'));
-        $this->assertNull(get('baz'));
+        $this->assertEquals($_GET, Siler\get());
+        $this->assertEquals('bar', Siler\get('foo'));
+        $this->assertEquals('qux', Siler\get('baz', 'qux'));
+        $this->assertNull(Siler\get('baz'));
     }
 
     public function testPost()
     {
-        $_POST = ['foo' => 'bar'];
-
-        $this->assertEquals($_POST, post());
-        $this->assertEquals('bar', post('foo'));
-        $this->assertEquals('qux', post('baz', 'qux'));
-        $this->assertNull(post('baz'));
+        $this->assertEquals($_POST, Siler\post());
+        $this->assertEquals('bar', Siler\post('foo'));
+        $this->assertEquals('qux', Siler\post('baz', 'qux'));
+        $this->assertNull(Siler\post('baz'));
     }
 
     public function testInput()
     {
-        $_REQUEST = ['foo' => 'bar'];
-
-        $this->assertEquals($_REQUEST, input());
-        $this->assertEquals('bar', input('foo'));
-        $this->assertEquals('qux', input('baz', 'qux'));
-        $this->assertNull(input('baz'));
+        $this->assertEquals($_REQUEST, Siler\input());
+        $this->assertEquals('bar', Siler\input('foo'));
+        $this->assertEquals('qux', Siler\input('baz', 'qux'));
+        $this->assertNull(Siler\input('baz'));
     }
 
     public function testUrl()
     {
-        $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
-        $this->assertEquals('/foo/bar', url('/bar'));
+        $this->assertEquals('/foo/qux', Siler\url('/qux'));
     }
 
     public function testPath()
-    {
-        $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
-        $_SERVER['REQUEST_URI'] = '/bar';
-
-        $this->assertEquals('/bar', path());
+    { 
+        $this->assertEquals('/bar/baz', Siler\path());
     }
 
     public function testUri()
     {
-        $_SERVER['HTTP_HOST'] = 'test:8000';
-        $_SERVER['REQUEST_URI'] = '/foo';
-
-        $this->assertEquals('http://test:8000/foo', uri());
+        $this->assertEquals('http://test:8000/bar/baz', Siler\uri());
     }
 
-    /**
-     * @expectedException        Exception
-     * @expectedExceptionMessage Path /foo
-     */
-    public function testStaticPath()
+    public function testRoute()
     {
-        $_SERVER['SCRIPT_NAME'] = '';
-        $_SERVER['REQUEST_URI'] = '/foo';
-
-        static_path('/foo', function () {
-            throw new Exception('Path /foo');
-        });
-    }
-
-    /**
-     * @expectedException        Exception
-     * @expectedExceptionMessage Path /foo/bar
-     */
-    public function testRegexpPath()
-    {
-        $_SERVER['SCRIPT_NAME'] = '';
-        $_SERVER['REQUEST_URI'] = '/foo/bar';
-
-        regexp_path('/^\/foo\/([a-z]+)$/', function ($params) {
-            throw new Exception('Path /foo/'.$params[1]);
+        Siler\route('/^\/bar\/([a-z]+)$/', function ($params) {
+            $this->assertEquals('baz', $params[1]);
         });
     }
 
     public function testRequestMethodIs()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $this->assertTrue(is_post());
+        $this->assertTrue(Siler\is_post());
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $this->assertTrue(is_get());
+        $this->assertTrue(Siler\is_get());
 
         $_SERVER['REQUEST_METHOD'] = 'PUT';
-        $this->assertTrue(is_put());
+        $this->assertTrue(Siler\is_put());
 
         $_SERVER['REQUEST_METHOD'] = 'DELETE';
-        $this->assertTrue(is_delete());
+        $this->assertTrue(Siler\is_delete());
 
         $_SERVER['REQUEST_METHOD'] = 'CUSTOM';
-        $this->assertTrue(request_method_is('custom'));
+        $this->assertTrue(Siler\request_method_is('custom'));
     }
 
     public function testRequireFn()
     {
-        $cb = require_fn(__DIR__.'/foo.php');
+        $cb = Siler\require_fn(__DIR__.'/fixtures/foo.php');
         $this->assertEquals('baz', $cb(['bar' => 'baz']));
     }
 }

@@ -1,10 +1,12 @@
 <?php
 
-function load_dotenv($path) {
+namespace Siler\Dotenv;
+
+function init($path) {
     $dotenv = new \Dotenv\Dotenv($path);
     return $dotenv->load();
 }
 
 function env($key = null, $default = null) {
-    return __siler_retriver($key, $default, $_SERVER);
+    return \Siler\__retriver($key, $default, $_SERVER);
 }

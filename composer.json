@@ -18,9 +18,9 @@
     },
     "autoload": {
         "files": [
-            "lib/siler.php",
-            "addons/twig.php",
-            "addons/dotenv.php"
+            "src/Siler.php",
+            "src/Dotenv/Dotenv.php",
+            "src/Twig/Twig.php"
         ]
     }
 }

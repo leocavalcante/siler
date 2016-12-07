@@ -1,5 +1,7 @@
 <?php
 
+namespace Siler;
+
 function dump($data, $andDie = null) {
     if (is_null($andDie)) {
         $andDie = false;
@@ -15,15 +17,15 @@ function dump($data, $andDie = null) {
 }
 
 function get($key = null, $default = null) {
-    return __siler_retriver($key, $default, $_GET);
+    return __retriver($key, $default, $_GET);
 }
 
 function post($key = null, $default = null) {
-    return __siler_retriver($key, $default, $_POST);
+    return __retriver($key, $default, $_POST);
 }
 
 function input($key = null, $default = null) {
-    return __siler_retriver($key, $default, $_REQUEST);
+    return __retriver($key, $default, $_REQUEST);
 }
 
 function redirect($url) {
@@ -35,37 +37,31 @@ function url($path = null) {
         $path = '/';
     }
 
-    $scriptName = __siler_retriver('SCRIPT_NAME', '', $_SERVER);
+    $scriptName = __retriver('SCRIPT_NAME', '', $_SERVER);
     return rtrim(str_replace('\\', '/', dirname($scriptName)), '/').'/'.ltrim($path, '/');
 }
 
 function path() {
-    $scriptName = __siler_retriver('SCRIPT_NAME', '', $_SERVER);
-    $requestUri = __siler_retriver('REQUEST_URI', '', $_SERVER);
+    $scriptName = __retriver('SCRIPT_NAME', '', $_SERVER);
+    $requestUri = __retriver('REQUEST_URI', '', $_SERVER);
 
     return '/'.ltrim(str_replace(dirname($scriptName), '', $requestUri), '/');
 }
 
 function uri($protocol = null) {
-    $https = __siler_retriver('HTTPS', '', $_SERVER);
+    $https = __retriver('HTTPS', '', $_SERVER);
 
     if (is_null($protocol)) {
         $protocol = empty($https) ? 'http' : 'https';
     }
 
-    $httpHost = __siler_retriver('HTTP_HOST', '', $_SERVER);
-    $requestUri = __siler_retriver('REQUEST_URI', '', $_SERVER);
+    $httpHost = __retriver('HTTP_HOST', '', $_SERVER);
+    $requestUri = __retriver('REQUEST_URI', '', $_SERVER);
 
     return $protocol.'://'.$httpHost.$requestUri;
 }
 
-function static_path($path, $callback, $params = []) {
-    if ($path == path()) {
-        $callback($params);
-    }
-}
-
-function regexp_path($path, $callback) {
+function route($path, $callback) {
     if (preg_match($path, path(), $params)) {
         $callback($params);
     }
@@ -94,11 +90,11 @@ function is_delete() {
 }
 
 function request_method_is($method) {
-    $requestMethod = __siler_retriver('REQUEST_METHOD', 'GET', $_SERVER);
+    $requestMethod = __retriver('REQUEST_METHOD', 'GET', $_SERVER);
     return strtolower($method) == strtolower($requestMethod);
 }
 
-function __siler_retriver($key, $default, $array) {
+function __retriver($key, $default, $array) {
     if (is_null($key)) {
         return $array;
     }

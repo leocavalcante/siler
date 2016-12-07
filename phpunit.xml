@@ -2,15 +2,15 @@
 <phpunit colors="true" bootstrap="vendor/autoload.php">
   <testsuite name="Siler">
     <file>tests/SilerTest.php</file>
-    <file>tests/addons/TwigTest.php</file>
-    <file>tests/addons/DotenvTest.php</file>
+    <file>tests/Dotenv/DotenvTest.php</file>
+    <file>tests/Twig/TwigTest.php</file>
   </testsuite>
 
   <filter>
     <whitelist processUncoveredFilesFromWhitelist="true">
-      <file>lib/siler.php</file>
-      <file>addons/twig.php</file>
-      <file>addons/dotenv.php</file>
+      <file>src/Siler.php</file>
+      <file>src/Dotenv/Dotenv.php</file>
+      <file>src/Twig/Twig.php</file>
     </whitelist>
   </filter>
 

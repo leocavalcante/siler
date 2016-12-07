@@ -6,13 +6,13 @@ class TwigTest extends TestCase
 {
     public function testCreateTwigEnv()
     {
-        $twigEnv = create_twig_env(__DIR__);
+        $twigEnv = Siler\Twig\init(__DIR__.'/../fixtures');
         $this->assertInstanceOf(\Twig_Environment::class, $twigEnv);
     }
 
     public function testRender()
     {
-        create_twig_env(__DIR__);
-        $this->assertEquals("<p>bar</p>\n", render('test.twig', ['foo' => 'bar']));
+        Siler\Twig\init(__DIR__.'/../fixtures');
+        $this->assertEquals("<p>bar</p>\n", Siler\Twig\render('template.twig', ['foo' => 'bar']));
     }
 }
