@@ -40,6 +40,7 @@ class SilerTest extends TestCase
     public function testUrl()
     {
         $this->assertEquals('/foo/qux', Siler\url('/qux'));
+        $this->assertEquals('/foo/', Siler\url());
     }
 
     public function testPath()
