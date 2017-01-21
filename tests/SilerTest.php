@@ -86,19 +86,4 @@ class SilerTest extends TestCase
         $cb = Siler\require_fn(__DIR__.'/fixtures/foo.php');
         $this->assertEquals('baz', $cb(['bar' => 'baz']));
     }
-
-    public function testDump()
-    {
-        $expected = "<pre>string(4) \"test\"\n</pre>";
-
-        ob_start();
-
-        Siler\dump('test');
-
-        $actual = ob_get_contents();
-
-        ob_end_clean();
-
-        $this->assertEquals($expected, $actual);
-    }
 }
