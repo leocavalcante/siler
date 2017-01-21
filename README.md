@@ -14,7 +14,7 @@
 
 Keep it simple, *stupid*!
 
-index.php
+###### index.php
 ```php
 <?php
 
@@ -26,7 +26,7 @@ require __DIR__.'/../vendor/autoload.php';
 route('/^\/$/', rfn('pages/home.php'));
 ```
 
-pages/home.php
+###### pages/home.php
 ```php
 <?php
 
