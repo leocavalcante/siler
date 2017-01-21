@@ -8,5 +8,5 @@ function init($path) {
 }
 
 function env($key = null, $default = null) {
-    return \Siler\__retriver($key, $default, $_SERVER);
+    return \Siler\_retriver($key, $default, $_SERVER);
 }

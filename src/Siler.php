@@ -17,15 +17,15 @@ function dump($data, $andDie = null) {
 }
 
 function get($key = null, $default = null) {
-    return __retriver($key, $default, $_GET);
+    return _retriver($key, $default, $_GET);
 }
 
 function post($key = null, $default = null) {
-    return __retriver($key, $default, $_POST);
+    return _retriver($key, $default, $_POST);
 }
 
 function input($key = null, $default = null) {
-    return __retriver($key, $default, $_REQUEST);
+    return _retriver($key, $default, $_REQUEST);
 }
 
 function redirect($url) {
@@ -37,26 +37,26 @@ function url($path = null) {
         $path = '/';
     }
 
-    $scriptName = __retriver('SCRIPT_NAME', '', $_SERVER);
+    $scriptName = _retriver('SCRIPT_NAME', '', $_SERVER);
     return rtrim(str_replace('\\', '/', dirname($scriptName)), '/').'/'.ltrim($path, '/');
 }
 
 function path() {
-    $scriptName = __retriver('SCRIPT_NAME', '', $_SERVER);
-    $requestUri = __retriver('REQUEST_URI', '', $_SERVER);
+    $scriptName = _retriver('SCRIPT_NAME', '', $_SERVER);
+    $requestUri = _retriver('REQUEST_URI', '', $_SERVER);
 
     return '/'.ltrim(str_replace(dirname($scriptName), '', $requestUri), '/');
 }
 
 function uri($protocol = null) {
-    $https = __retriver('HTTPS', '', $_SERVER);
+    $https = _retriver('HTTPS', '', $_SERVER);
 
     if (is_null($protocol)) {
         $protocol = empty($https) ? 'http' : 'https';
     }
 
-    $httpHost = __retriver('HTTP_HOST', '', $_SERVER);
-    $requestUri = __retriver('REQUEST_URI', '', $_SERVER);
+    $httpHost = _retriver('HTTP_HOST', '', $_SERVER);
+    $requestUri = _retriver('REQUEST_URI', '', $_SERVER);
 
     return $protocol.'://'.$httpHost.$requestUri;
 }
@@ -90,11 +90,11 @@ function is_delete() {
 }
 
 function request_method_is($method) {
-    $requestMethod = __retriver('REQUEST_METHOD', 'GET', $_SERVER);
+    $requestMethod = _retriver('REQUEST_METHOD', 'GET', $_SERVER);
     return strtolower($method) == strtolower($requestMethod);
 }
 
-function __retriver($key, $default, $array) {
+function _retriver($key, $default, $array) {
     if (is_null($key)) {
         return $array;
     }
