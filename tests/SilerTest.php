@@ -74,6 +74,9 @@ class SilerTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'DELETE';
         $this->assertTrue(Siler\is_delete());
 
+        $_SERVER['REQUEST_METHOD'] = 'OPTIONS';
+        $this->assertTrue(Siler\is_options());
+
         $_SERVER['REQUEST_METHOD'] = 'CUSTOM';
         $this->assertTrue(Siler\request_method_is('custom'));
     }

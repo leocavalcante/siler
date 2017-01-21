@@ -81,6 +81,10 @@ function is_delete() {
     return request_method_is('delete');
 }
 
+function is_options() {
+    return request_method_is('options');
+}
+
 function request_method_is($method) {
     $requestMethod = _retriver('REQUEST_METHOD', 'GET', $_SERVER);
     return strtolower($method) == strtolower($requestMethod);
