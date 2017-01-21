@@ -2,18 +2,10 @@
 
 namespace Siler;
 
-function dump($data, $andDie = null) {
-    if (is_null($andDie)) {
-        $andDie = false;
-    }
-
+function dump($data) {
     echo '<pre>';
     var_dump($data);
     echo '</pre>';
-
-    if ($andDie) {
-        die();
-    }
 }
 
 function get($key = null, $default = null) {
