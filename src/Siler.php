@@ -2,12 +2,6 @@
 
 namespace Siler;
 
-function dump($data) {
-    echo '<pre>';
-    var_dump($data);
-    echo '</pre>';
-}
-
 function array_get($array, $key = null, $default = null) {
     if (is_null($key)) {
         return $array;
