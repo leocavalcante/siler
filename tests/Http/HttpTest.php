@@ -83,5 +83,9 @@ class HttpTest extends TestCase
     public function testRedirect()
     {
         Http\redirect('test://siler');
+
+        $headers = xdebug_get_headers();
+
+        $this->assertContains('Location: test://siler', $headers);
     }
 }
