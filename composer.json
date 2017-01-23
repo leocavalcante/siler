@@ -18,7 +18,8 @@
         "vlucas/phpdotenv": "^2.4",
         "phpunit/phpunit": "^5.7",
         "phpunit/php-code-coverage": "^4.0",
-        "twig/twig": "^1.28"
+        "twig/twig": "^1.28",
+        "squizlabs/php_codesniffer": "^2.7"
     },
     "autoload": {
         "files": [
