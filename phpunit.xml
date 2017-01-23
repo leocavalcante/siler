@@ -2,6 +2,7 @@
 <phpunit colors="true" bootstrap="vendor/autoload.php">
   <testsuite name="Siler">
     <file>tests/SilerTest.php</file>
+    <file>tests/Http/HttpTest.php</file>
     <file>tests/Dotenv/DotenvTest.php</file>
     <file>tests/Twig/TwigTest.php</file>
   </testsuite>
@@ -9,6 +10,7 @@
   <filter>
     <whitelist processUncoveredFilesFromWhitelist="true">
       <file>src/Siler.php</file>
+      <file>src/Http/Http.php</file>
       <file>src/Dotenv/Dotenv.php</file>
       <file>src/Twig/Twig.php</file>
     </whitelist>
