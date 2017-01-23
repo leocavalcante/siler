@@ -1,7 +1,7 @@
 <?php
 
-use function Siler\route as route;
 use function Siler\require_fn as rfn;
+use function Siler\Http\route;
 
 require __DIR__.'/../vendor/autoload.php';
 
