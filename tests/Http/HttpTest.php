@@ -81,4 +81,12 @@ class HttpTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'CUSTOM';
         $this->assertTrue(Http\method_is('custom'));
     }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testRedirect()
+    {
+        Http\redirect('test://siler');
+    }
 }
