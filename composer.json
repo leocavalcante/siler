@@ -1,7 +1,8 @@
 {
     "name": "leocavalcante/siler",
-    "description": "Keep it simple, stupid",
     "type": "library",
+    "description": "Keep it simple, stupid",
+    "keywords": ["framework","micro","api","router"],
     "license": "MIT",
     "authors": [
         {
@@ -9,6 +10,9 @@
             "email": "lc@leocavalcante.com"
         }
     ],
+    "require": {
+        "php": ">=5.5.0"
+    },
     "minimum-stability": "stable",
     "require-dev": {
         "vlucas/phpdotenv": "^2.4",
