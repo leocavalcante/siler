@@ -8,5 +8,5 @@ function init($path) {
 }
 
 function env($key = null, $default = null) {
-    return \Siler\array_get($key, $default, $_SERVER);
+    return \Siler\array_get($_SERVER, $key, $default);
 }

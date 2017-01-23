@@ -9,15 +9,15 @@ function dump($data) {
 }
 
 function get($key = null, $default = null) {
-    return array_get($key, $default, $_GET);
+    return array_get($_GET, $key, $default);
 }
 
 function post($key = null, $default = null) {
-    return array_get($key, $default, $_POST);
+    return array_get($_POST, $key, $default);
 }
 
 function input($key = null, $default = null) {
-    return array_get($key, $default, $_REQUEST);
+    return array_get($_REQUEST, $key, $default);
 }
 
 function redirect($url) {
@@ -29,26 +29,26 @@ function url($path = null) {
         $path = '/';
     }
 
-    $scriptName = array_get('SCRIPT_NAME', '', $_SERVER);
+    $scriptName = array_get($_SERVER, 'SCRIPT_NAME', '');
     return rtrim(str_replace('\\', '/', dirname($scriptName)), '/').'/'.ltrim($path, '/');
 }
 
 function path() {
-    $scriptName = array_get('SCRIPT_NAME', '', $_SERVER);
-    $requestUri = array_get('REQUEST_URI', '', $_SERVER);
+    $scriptName = array_get($_SERVER, 'SCRIPT_NAME', '');
+    $requestUri = array_get($_SERVER, 'REQUEST_URI', '');
 
     return '/'.ltrim(str_replace(dirname($scriptName), '', $requestUri), '/');
 }
 
 function uri($protocol = null) {
-    $https = array_get('HTTPS', '', $_SERVER);
+    $https = array_get($_SERVER, 'HTTPS', '');
 
     if (is_null($protocol)) {
         $protocol = empty($https) ? 'http' : 'https';
     }
 
-    $httpHost = array_get('HTTP_HOST', '', $_SERVER);
-    $requestUri = array_get('REQUEST_URI', '', $_SERVER);
+    $httpHost = array_get($_SERVER, 'HTTP_HOST', '');
+    $requestUri = array_get($_SERVER, 'REQUEST_URI', '');
 
     return $protocol.'://'.$httpHost.$requestUri;
 }
@@ -86,11 +86,11 @@ function is_options() {
 }
 
 function request_method_is($method) {
-    $requestMethod = array_get('REQUEST_METHOD', 'GET', $_SERVER);
+    $requestMethod = array_get($_SERVER, 'REQUEST_METHOD', 'GET');
     return strtolower($method) == strtolower($requestMethod);
 }
 
-function array_get($key, $default, $array) {
+function array_get($array, $key = null, $default = null) {
     if (is_null($key)) {
         return $array;
     }
