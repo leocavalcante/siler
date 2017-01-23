@@ -3,6 +3,7 @@
 namespace Siler\Http;
 
 use function Siler\array_get;
+use function Siler\require_fn;
 
 function get($key = null, $default = null)
 {
@@ -54,13 +55,6 @@ function uri($protocol = null)
     $requestUri = array_get($_SERVER, 'REQUEST_URI', '');
 
     return $protocol.'://'.$httpHost.$requestUri;
-}
-
-function route($path, $callback)
-{
-    if (preg_match($path, path(), $params)) {
-        $callback($params);
-    }
 }
 
 function is_post()

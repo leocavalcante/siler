@@ -25,6 +25,7 @@
         "files": [
             "src/Siler.php",
             "src/Http/Http.php",
+            "src/Route/Route.php",
             "src/Dotenv/Dotenv.php",
             "src/Twig/Twig.php"
         ]

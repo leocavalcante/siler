@@ -54,13 +54,6 @@ class HttpTest extends TestCase
         $this->assertEquals('http://test:8000/bar/baz', Http\uri());
     }
 
-    public function testRoute()
-    {
-        Http\route('/^\/bar\/([a-z]+)$/', function ($params) {
-            $this->assertEquals('baz', $params[1]);
-        });
-    }
-
     public function testRequestMethodIs()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
