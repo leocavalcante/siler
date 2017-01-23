@@ -13,10 +13,6 @@ function init($templatesPath, $templatesCachePath = null, $debug = null)
         'cache' => $templatesCachePath,
     ]);
 
-    if (function_exists('url')) {
-        $twig->addFunction(new \Twig_SimpleFunction('url', 'url'));
-    }
-
     $GLOBALS['twig'] = $twig;
 
     return $twig;
