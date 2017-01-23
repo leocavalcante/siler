@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<ruleset name="Slim coding standard">
+    <description>Slim coding standard</description>
+
+    <!-- inherit rules from: -->
+    <rule ref="PSR2"/>
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
+    <!-- Paths to check -->
+    <file>src</file>
+    <file>tests</file>
+</ruleset>
