@@ -29,5 +29,14 @@
             "src/Dotenv/Dotenv.php",
             "src/Twig/Twig.php"
         ]
+    },
+    "scripts": {
+        "unit": "phpunit",
+        "lint": "phpcs",
+        "fix": "phpcbf",
+        "test": [
+            "@composer lint",
+            "@composer unit"
+        ]
     }
 }
