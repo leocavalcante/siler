@@ -2,7 +2,8 @@
 
 namespace Siler;
 
-function array_get($array, $key = null, $default = null) {
+function array_get($array, $key = null, $default = null)
+{
     if (is_null($key)) {
         return $array;
     }
@@ -10,7 +11,8 @@ function array_get($array, $key = null, $default = null) {
     return array_key_exists($key, $array) ? $array[$key] : $default;
 }
 
-function require_fn($filename) {
+function require_fn($filename)
+{
     return function ($params = null) use ($filename) {
         return require($filename);
     };

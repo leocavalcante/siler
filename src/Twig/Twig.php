@@ -4,7 +4,8 @@ namespace Siler\Twig;
 
 $_twigEnv = null;
 
-function init($templatesPath, $templatesCachePath = null, $debug = null) {
+function init($templatesPath, $templatesCachePath = null, $debug = null)
+{
     global $_twigEnv;
 
     if (is_null($debug)) {
@@ -23,7 +24,8 @@ function init($templatesPath, $templatesCachePath = null, $debug = null) {
     return $_twigEnv;
 }
 
-function render($name, $data = []) {
+function render($name, $data = [])
+{
     global $_twigEnv;
     return $_twigEnv->render($name, $data);
 }
