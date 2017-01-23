@@ -1,5 +1,7 @@
 <?php
 
+namespace Siler\Test;
+
 use PHPUnit\Framework\TestCase;
 use Siler\Http;
 

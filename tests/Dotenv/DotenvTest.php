@@ -1,14 +1,15 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+namespace Siler\Test;
 
+use PHPUnit\Framework\TestCase;
 use function Siler\Dotenv\env as env;
 
 class DotenvTest extends TestCase
 {
     public function testEnv()
     {
-        $lines = Siler\Dotenv\init(__DIR__.'/../fixtures');
+        $lines = \Siler\Dotenv\init(__DIR__.'/../fixtures');
 
         $this->assertEquals(1, count($lines));
         $this->assertEquals('FOO=bar', $lines[0]);

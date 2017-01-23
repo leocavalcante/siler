@@ -1,5 +1,7 @@
 <?php
 
+namespace Siler\Test;
+
 use PHPUnit\Framework\TestCase;
 use function Siler\Route\route;
 
@@ -15,48 +17,48 @@ class RouteTest extends TestCase
     }
 
     /**
-     * @expectedException        Exception
+     * @expectedException        \Exception
      * @expectedExceptionMessage Route /bar/baz should match
      */
     public function testRouteMatching()
     {
         route('/foo', function ($params) {
-            throw new Exception('Route /foo should not match');
+            throw new \Exception('Route /foo should not match');
         });
 
         route('/bar', function ($params) {
-            throw new Exception('Route /bar should not match');
+            throw new \Exception('Route /bar should not match');
         });
 
         route('/bar/baz', function ($params) {
-            throw new Exception('Route /bar/baz should match');
+            throw new \Exception('Route /bar/baz should match');
         });
     }
 
     /**
-     * @expectedException        Exception
+     * @expectedException        \Exception
      * @expectedExceptionMessage baz
      */
     public function testRouteRegexp()
     {
         route('/bar/([a-z]+)', function ($params) {
-            throw new Exception($params[1]);
+            throw new \Exception($params[1]);
         });
     }
 
     /**
-     * @expectedException        Exception
+     * @expectedException        \Exception
      * @expectedExceptionMessage baz
      */
     public function testRouteNamedGroup()
     {
         route('/bar/{baz}', function ($params) {
-            throw new Exception($params['baz']);
+            throw new \Exception($params['baz']);
         });
     }
 
     /**
-     * @expectedException        Exception
+     * @expectedException        \Exception
      * @expectedExceptionMessage Throw was required
      */
     public function testRouteWithString()
