@@ -1,8 +1,7 @@
 <?php
 
-use function Siler\require_fn as rfn;
-use function Siler\Http\route;
+use function Siler\Route\route;
 
-require __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
-route('/^\/$/', rfn('pages/home.php'));
+route('/', 'pages/home.php');

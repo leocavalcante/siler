@@ -18,12 +18,16 @@ Keep it simple, *stupid*!
 ```php
 <?php
 
-use function Siler\require_fn as rfn;
-use function Siler\Http\route;
+use function Siler\Route\route;
 
-require __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
-route('/^\/$/', rfn('pages/home.php'));
+route('/', 'pages/home.php');
+
+// route paths (first argument) will be wrapped inside: #^{$path}/?$#
+// you can use regexp to catch url params, like: /foo/([a-z]+)
+// or you can use Siler's placeholder (aka named regexp groups): /foo/{bar}
+// @see the tests!
 ```
 
 ###### pages/home.php
