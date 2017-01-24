@@ -14,6 +14,8 @@
 
 Keep it simple, *stupid*!
 
+[API documentation](https://leocavalcante.github.io/siler/namespaces/Siler.html)
+
 ###### index.php
 ```php
 <?php
