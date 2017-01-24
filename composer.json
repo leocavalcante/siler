@@ -35,7 +35,7 @@
         "unit": "phpunit",
         "lint": "phpcs",
         "fix": "phpcbf",
-        "doc": "phpdoc run -d src -t docs/api",
+        "doc": "phpdoc run -d src -t docs",
         "test": [
             "@composer lint",
             "@composer unit"
