@@ -19,7 +19,8 @@
         "phpunit/phpunit": "^5.7",
         "phpunit/php-code-coverage": "^4.0",
         "twig/twig": "^1.28",
-        "squizlabs/php_codesniffer": "^2.7"
+        "squizlabs/php_codesniffer": "^2.7",
+        "phpdocumentor/phpdocumentor": "^2.9"
     },
     "autoload": {
         "files": [
@@ -34,6 +35,7 @@
         "unit": "phpunit",
         "lint": "phpcs",
         "fix": "phpcbf",
+        "doc": "phpdoc run -d src -t docs/api",
         "test": [
             "@composer lint",
             "@composer unit"

@@ -1,3 +1,4 @@
-*.phar
+/*.phar
 /vendor/
 /*-coverage.xml
+/docs
