@@ -48,6 +48,32 @@ function input($key = null, $default = null)
 }
 
 /**
+ * Get a value from the $_COOKIE global
+ *
+ * @param string $key The key to be searched
+ * @param mixed $default The default value to be returned when the key don't exists
+ *
+ * @return mixed
+ */
+function cookie($key = null, $default = null)
+{
+    return array_get($_COOKIE, $key, $default);
+}
+
+/**
+ * Get a value from the $_SESSION global
+ *
+ * @param string $key The key to be searched
+ * @param mixed $default The default value to be returned when the key don't exists
+ *
+ * @return mixed
+ */
+function session($key = null, $default = null)
+{
+    return array_get($_SESSION, $key, $default);
+}
+
+/**
  * Redirects using the HTTP Location header
  *
  * @param string $url The url to be redirected to

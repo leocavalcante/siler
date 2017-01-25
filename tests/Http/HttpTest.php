@@ -9,7 +9,7 @@ class HttpTest extends TestCase
 {
     protected function setUp()
     {
-        $_GET = $_POST = $_REQUEST = ['foo' => 'bar'];
+        $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = ['foo' => 'bar'];
 
         $_SERVER['HTTP_HOST'] = 'test:8000';
         $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
@@ -38,6 +38,22 @@ class HttpTest extends TestCase
         $this->assertEquals('bar', Http\input('foo'));
         $this->assertEquals('qux', Http\input('baz', 'qux'));
         $this->assertNull(Http\input('baz'));
+    }
+
+    public function testCookie()
+    {
+        $this->assertEquals($_COOKIE, Http\cookie());
+        $this->assertEquals('bar', Http\cookie('foo'));
+        $this->assertEquals('qux', Http\cookie('baz', 'qux'));
+        $this->assertNull(Http\cookie('baz'));
+    }
+
+    public function testSession()
+    {
+        $this->assertEquals($_SESSION, Http\session());
+        $this->assertEquals('bar', Http\session('foo'));
+        $this->assertEquals('qux', Http\session('baz', 'qux'));
+        $this->assertNull(Http\session('baz'));
     }
 
     public function testUrl()
