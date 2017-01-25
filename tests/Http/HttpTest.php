@@ -56,6 +56,14 @@ class HttpTest extends TestCase
         $this->assertNull(Http\session('baz'));
     }
 
+    public function testSetsession()
+    {
+        Http\setsession('baz', 'qux');
+
+        $this->assertArrayHasKey('baz', $_SESSION);
+        $this->assertArraySubset(['baz' => 'qux'], $_SESSION);
+    }
+
     public function testUrl()
     {
         $this->assertEquals('/foo/qux', Http\url('/qux'));

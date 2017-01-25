@@ -74,6 +74,17 @@ function session($key = null, $default = null)
 }
 
 /**
+ * Set a value in the $_SESSION global
+ *
+ * @param string $key The key to be used
+ * @param string $value The value to be stored
+ */
+function setsession($key, $value)
+{
+    $_SESSION[$key] = $value;
+}
+
+/**
  * Redirects using the HTTP Location header
  *
  * @param string $url The url to be redirected to
