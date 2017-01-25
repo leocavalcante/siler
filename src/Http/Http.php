@@ -6,7 +6,6 @@
 namespace Siler\Http;
 
 use function Siler\array_get;
-use function Siler\require_fn;
 
 /**
  * Get a value from the $_GET global
