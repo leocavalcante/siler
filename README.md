@@ -22,10 +22,9 @@ Keep it simple, *stupid*!
 ###### index.php
 ```php
 <?php
-
 /*K*/ require_once __DIR__.'/../vendor/autoload.php';
 /*I*/ use function Siler\Route\route;
-/*I*/ route('/', 'pages/home.php');
+/*S*/ route('/', 'pages/home.php');
 ```
 ###### pages/home.php
 ```php
@@ -33,5 +32,5 @@ Keep it simple, *stupid*!
 /*S*/ echo 'Hello World';
 ```
 
-Doesn't get it?
+Get it?
 [Check out this example](https://github.com/leocavalcante/siler-example)
