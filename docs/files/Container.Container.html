@@ -144,28 +144,28 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-387146479"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1497466105"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-387146479" class="accordion-body collapse in">
+            <div id="namespace-1497466105" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1145457464"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1573640914"></a>
                                 <a href="../namespaces/Siler.html" style="margin-left: 30px; padding-left: 0">Siler</a>
             </div>
-            <div id="namespace-1145457464" class="accordion-body collapse ">
+            <div id="namespace-1573640914" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1674181799"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-196439187"></a>
                                 <a href="../namespaces/Siler.Container.html" style="margin-left: 30px; padding-left: 0">Container</a>
             </div>
-            <div id="namespace-1674181799" class="accordion-body collapse ">
+            <div id="namespace-196439187" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -182,7 +182,7 @@
             <div class="accordion-heading">
                                 <a href="../namespaces/Siler.Dotenv.html" style="margin-left: 30px; padding-left: 0">Dotenv</a>
             </div>
-            <div id="namespace-775775557" class="accordion-body collapse ">
+            <div id="namespace-1270412413" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -198,7 +198,7 @@
             <div class="accordion-heading">
                                 <a href="../namespaces/Siler.Http.html" style="margin-left: 30px; padding-left: 0">Http</a>
             </div>
-            <div id="namespace-1438132311" class="accordion-body collapse ">
+            <div id="namespace-1084504905" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -214,7 +214,7 @@
             <div class="accordion-heading">
                                 <a href="../namespaces/Siler.Route.html" style="margin-left: 30px; padding-left: 0">Route</a>
             </div>
-            <div id="namespace-1949920705" class="accordion-body collapse ">
+            <div id="namespace-1850235031" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -230,7 +230,7 @@
             <div class="accordion-heading">
                                 <a href="../namespaces/Siler.Twig.html" style="margin-left: 30px; padding-left: 0">Twig</a>
             </div>
-            <div id="namespace-544292936" class="accordion-body collapse ">
+            <div id="namespace-1432335144" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -267,12 +267,19 @@
                                                                     </nav>
 
                     <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
-                    <h1><small></small>Route.php</h1>
-                    <p><em>Siler routing facilities</em></p>
+                    <h1><small></small>Container.php</h1>
+                    <p><em>IoC container</em></p>
                     
 
                     
                     
+                                        <h2>Classes</h2>
+                    <table class="table table-hover">
+                                            <tr>
+                            <td><a href="../classes/Siler.Container.Container.html">Container</a></td>
+                            <td><em></em></td>
+                        </tr>
+                                        </table>
                                     </div>
 
                 <aside class="span4 detailsbar">
@@ -300,25 +307,75 @@
 
                                         <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_route" name="method_route" class="anchor"></a>
+            <a id="method_get" name="method_get" class="anchor"></a>
             <article class="method">
-                <h3 class=" ">route()</h3>
+                <h3 class=" ">get()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">route(string  <span class="argument">$path</span>, string|callable  <span class="argument">$callback</span>) </pre>
-                <p><em>Define a new route</em></p>
+                <pre class="signature" style="margin-right: 54px;">get(string  <span class="argument">$key</span>, mixed  <span class="argument">$default = null</span>) : mixed</pre>
+                <p><em>Get a value from the container</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
                                 <td>string</td>
-                                <td>$path </td>
-                                <td><p>The HTTP URI to listen on</p></td>
+                                <td>$key </td>
+                                <td><p>The key to be searched on the container</p></td>
                             </tr>
                                                     <tr>
-                                <td>string|callable</td>
-                                <td>$callback </td>
-                                <td><p>The callable to be executed or a string to be used with Siler\require_fn</p></td>
+                                <td>mixed</td>
+                                <td>$default </td>
+                                <td><p>Default value when the key does not exists on the container</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                    <dt>File</dt>
+                    <dd><a href=""><div class="path-wrapper">Container\Container.php</div></a></dd>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            package
+                        </th>
+                        <td>
+                                                                                            <p>Default</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                        <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_set" name="method_set" class="anchor"></a>
+            <article class="method">
+                <h3 class=" ">set()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">set(string  <span class="argument">$key</span>, mixed  <span class="argument">$value</span>) </pre>
+                <p><em>Set a value in the container</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$key </td>
+                                <td><p>Identified by the given key</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$value </td>
+                                <td><p>The value to be stored</p></td>
                             </tr>
                                             </table>
                 
@@ -330,7 +387,7 @@
             <h1><i class="icon-arrow-down"></i></h1>
                                                             <dl>
                                     <dt>File</dt>
-                    <dd><a href=""><div class="path-wrapper">Route\Route.php</div></a></dd>
+                    <dd><a href=""><div class="path-wrapper">Container\Container.php</div></a></dd>
                                                                             </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
@@ -356,7 +413,7 @@
             <h3 id="source-view-label"></h3>
         </div>
         <div class="modal-body">
-            <pre data-src="../files/Route\Route.php.txt" class="language-php line-numbers"></pre>
+            <pre data-src="../files/Container\Container.php.txt" class="language-php line-numbers"></pre>
         </div>
     </div>
 

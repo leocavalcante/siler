@@ -2,6 +2,7 @@
 <phpunit colors="true" bootstrap="vendor/autoload.php">
   <testsuite name="Siler">
     <file>tests/SilerTest.php</file>
+    <file>tests/Container/ContainerTest.php</file>
     <file>tests/Http/HttpTest.php</file>
     <file>tests/Route/RouteTest.php</file>
     <file>tests/Dotenv/DotenvTest.php</file>
@@ -11,6 +12,7 @@
   <filter>
     <whitelist processUncoveredFilesFromWhitelist="true">
       <file>src/Siler.php</file>
+      <file>src/Container/Container.php</file>
       <file>src/Http/Http.php</file>
       <file>src/Route/Route.php</file>
       <file>src/Dotenv/Dotenv.php</file>

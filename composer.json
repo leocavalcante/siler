@@ -25,6 +25,7 @@
     "autoload": {
         "files": [
             "src/Siler.php",
+            "src/Container/Container.php",
             "src/Http/Http.php",
             "src/Route/Route.php",
             "src/Dotenv/Dotenv.php",
@@ -39,6 +40,10 @@
         "test": [
             "@composer lint",
             "@composer unit"
+        ],
+        "test-doc": [
+            "@composer test",
+            "@composer doc"
         ]
     }
 }

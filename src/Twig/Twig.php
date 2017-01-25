@@ -5,6 +5,8 @@
 
 namespace Siler\Twig;
 
+use Siler\Container;
+
 /**
  * Initialze the Twig environment
  *
@@ -25,7 +27,7 @@ function init($templatesPath, $templatesCachePath = null, $debug = null)
         'cache' => $templatesCachePath,
     ]);
 
-    $GLOBALS['twig'] = $twig;
+    Container\set('twig', $twig);
 
     return $twig;
 }
@@ -36,10 +38,17 @@ function init($templatesPath, $templatesCachePath = null, $debug = null)
  * @param string $name The template name in the templates path
  * @param array $data The array of data to used within the template
  *
+ * @throws RuntimeException if Twig isn't initialized
+ *
  * @return string
  */
 function render($name, $data = [])
 {
-    $twig = $GLOBALS['twig'];
+    $twig = Container\get('twig');
+
+    if (is_null($twig)) {
+        throw new \RuntimeException('Twig should be initialized first');
+    }
+
     return $twig->render($name, $data);
 }
