@@ -85,6 +85,21 @@ function setsession($key, $value)
 }
 
 /**
+ * Get a value from the $_SESSION global and remove it
+ *
+ * @param string $key The key to be searched
+ * @param mixed $default The default value to be returned when the key don't exists
+ *
+ * @return mixed
+ */
+function flash($key = null, $default = null)
+{
+    $value = session($key, $default);
+    unset($_SESSION[$key]);
+    return $value;
+}
+
+/**
  * Redirects using the HTTP Location header
  *
  * @param string $url The url to be redirected to

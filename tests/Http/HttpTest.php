@@ -64,6 +64,14 @@ class HttpTest extends TestCase
         $this->assertArraySubset(['baz' => 'qux'], $_SESSION);
     }
 
+    public function testFlash()
+    {
+        $actual = Http\flash('foo');
+
+        $this->assertEquals('bar', $actual);
+        $this->assertNull(Http\session('foo'));
+    }
+
     public function testUrl()
     {
         $this->assertEquals('/foo/qux', Http\url('/qux'));
