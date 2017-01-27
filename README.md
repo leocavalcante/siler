@@ -12,7 +12,7 @@
     </a>
     <a href="https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0" target="_blank">
         <img src="https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0/mini.png">
-    </a>   
+    </a>
 </p>
 
 Keep it simple, *stupid*!
@@ -22,14 +22,13 @@ Keep it simple, *stupid*!
 ###### index.php
 ```php
 <?php
-/*K*/ require_once __DIR__.'/../vendor/autoload.php';
-/*I*/ use function Siler\Route\route;
-/*S*/ route('/', 'pages/home.php');
+use function Siler\Route\route;
+require_once __DIR__.'/../vendor/autoload.php';
+route('get', '/', 'pages/home.php');
 ```
 ###### pages/home.php
 ```php
-<?php
-/*S*/ echo 'Hello World';
+<?php echo 'Hello World';
 ```
 
 Get it?

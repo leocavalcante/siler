@@ -14,6 +14,7 @@ class RouteTest extends TestCase
         $_SERVER['HTTP_HOST'] = 'test:8000';
         $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
         $_SERVER['REQUEST_URI'] = '/bar/baz';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
     }
 
     /**
@@ -22,15 +23,15 @@ class RouteTest extends TestCase
      */
     public function testRouteMatching()
     {
-        route('/foo', function ($params) {
+        route('get', '/foo', function ($params) {
             throw new \Exception('Route /foo should not match');
         });
 
-        route('/bar', function ($params) {
+        route('get', '/bar', function ($params) {
             throw new \Exception('Route /bar should not match');
         });
 
-        route('/bar/baz', function ($params) {
+        route('get', '/bar/baz', function ($params) {
             throw new \Exception('Route /bar/baz should match');
         });
     }
@@ -41,7 +42,7 @@ class RouteTest extends TestCase
      */
     public function testRouteRegexp()
     {
-        route('/bar/([a-z]+)', function ($params) {
+        route('get', '/bar/([a-z]+)', function ($params) {
             throw new \Exception($params[1]);
         });
     }
@@ -52,7 +53,7 @@ class RouteTest extends TestCase
      */
     public function testRouteNamedGroup()
     {
-        route('/bar/{baz}', function ($params) {
+        route('get', '/bar/{baz}', function ($params) {
             throw new \Exception($params['baz']);
         });
     }
@@ -63,6 +64,23 @@ class RouteTest extends TestCase
      */
     public function testRouteWithString()
     {
-        route('/bar/{bar}', __DIR__.'/../fixtures/throw.php');
+        route('get', '/bar/{bar}', __DIR__.'/../fixtures/throw.php');
+    }
+
+    /**
+     * @expectedException        \Exception
+     * @expectedExceptionMessage Route POST /bar/baz should match
+     */
+    public function testRouteMethod()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+
+        route('get', '/bar/baz', function ($params) {
+            throw new \Exception('Route GET /bar/baz should not match');
+        });
+
+        route('post', '/bar/baz', function ($params) {
+            throw new \Exception('Route POST /bar/baz should match');
+        });
     }
 }
