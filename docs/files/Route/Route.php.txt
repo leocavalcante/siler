@@ -5,16 +5,17 @@
 
 namespace Siler\Route;
 
-use function Siler\Http\path;
+use Siler\Http;
 use function Siler\require_fn;
 
 /**
  * Define a new route
  *
+ * @param string $method The HTTP request method to listen on
  * @param string $path The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
  */
-function route($path, $callback)
+function route($method, $path, $callback)
 {
     $path = preg_replace('/\{([A-z]+)\}/', '(?<$1>.*)', $path);
     $path = "#^{$path}/?$#";
@@ -23,7 +24,7 @@ function route($path, $callback)
         $callback = require_fn($callback);
     }
 
-    if (preg_match($path, path(), $params)) {
+    if (Http\method_is($method) && preg_match($path, Http\path(), $params)) {
         $callback($params);
     }
 }
