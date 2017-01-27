@@ -17,8 +17,7 @@ use function Siler\require_fn;
  */
 function route($method, $path, $callback)
 {
-    $path = preg_replace('/\{([A-z]+)\}/', '(?<$1>.*)', $path);
-    $path = "#^{$path}/?$#";
+    $path = regexify($path);
 
     if (is_string($callback)) {
         $callback = require_fn($callback);
@@ -27,5 +26,20 @@ function route($method, $path, $callback)
     if (Http\method_is($method) && preg_match($path, Http\path(), $params)) {
         $callback($params);
     }
+}
+
+/**
+ * Turns a URLroute path into a Regexp
+ *
+ * @param string $path The HTTP path
+ *
+ * @return string
+ */
+function regexify($path)
+{
+    $path = preg_replace('/\{([A-z-]+)\}/', '(?<$1>[A-z0-9_-]+)', $path);
+    $path = "#^{$path}/?$#";
+
+    return $path;
 }
 

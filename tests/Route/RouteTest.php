@@ -4,6 +4,7 @@ namespace Siler\Test;
 
 use PHPUnit\Framework\TestCase;
 use function Siler\Route\route;
+use function Siler\Route\regexify;
 
 class RouteTest extends TestCase
 {
@@ -60,6 +61,62 @@ class RouteTest extends TestCase
 
     /**
      * @expectedException        \Exception
+     * @expectedExceptionMessage baz
+     */
+    public function testRouteWrappedNamedGroup()
+    {
+        $_SERVER['REQUEST_URI'] = '/bar/baz/qux';
+
+        route('get', '/bar/{baz}', function ($params) {
+            throw new \Exception('I should not be called');
+        });
+
+        route('get', '/bar/{baz}/qux', function ($params) {
+            throw new \Exception($params['baz']);
+        });
+    }
+
+    /**
+     * @expectedException        \Exception
+     * @expectedExceptionMessage baz-qux
+     */
+    public function testRouteNamedGroupWithDash()
+    {
+        $_SERVER['REQUEST_URI'] = '/bar/baz-qux';
+
+        route('get', '/bar/{baz}', function ($params) {
+            throw new \Exception($params['baz']);
+        });
+    }
+
+    /**
+     * @expectedException        \Exception
+     * @expectedExceptionMessage baz-2017
+     */
+    public function testRouteNamedGroupWithNumber()
+    {
+        $_SERVER['REQUEST_URI'] = '/bar/baz-2017';
+
+        route('get', '/bar/{baz}', function ($params) {
+            throw new \Exception($params['baz']);
+        });
+    }
+
+    /**
+     * @expectedException        \Exception
+     * @expectedExceptionMessage baz_qux
+     */
+    public function testRouteNamedGroupWithUnderscore()
+    {
+        $_SERVER['REQUEST_URI'] = '/bar/baz_qux';
+
+        route('get', '/bar/{baz}', function ($params) {
+            throw new \Exception($params['baz']);
+        });
+    }
+
+    /**
+     * @expectedException        \Exception
      * @expectedExceptionMessage Throw was required
      */
     public function testRouteWithString()
@@ -82,5 +139,16 @@ class RouteTest extends TestCase
         route('post', '/bar/baz', function ($params) {
             throw new \Exception('Route POST /bar/baz should match');
         });
+    }
+
+    public function testRegexify()
+    {
+        $this->assertEquals('#^//?$#', regexify('/'));
+        $this->assertEquals('#^/foo/?$#', regexify('/foo'));
+        $this->assertEquals('#^/foo/bar/?$#', regexify('/foo/bar'));
+        $this->assertEquals('#^/foo/(?<baz>[A-z0-9_-]+)/?$#', regexify('/foo/{baz}'));
+        $this->assertEquals('#^/foo/(?<BaZ>[A-z0-9_-]+)/?$#', regexify('/foo/{BaZ}'));
+        $this->assertEquals('#^/foo/(?<bar_baz>[A-z0-9_-]+)/?$#', regexify('/foo/{bar_baz}'));
+        $this->assertEquals('#^/foo/(?<baz>[A-z0-9_-]+)/qux/?$#', regexify('/foo/{baz}/qux'));
     }
 }
