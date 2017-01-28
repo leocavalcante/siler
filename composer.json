@@ -20,8 +20,7 @@
         "phpunit/php-code-coverage": "^4.0",
         "twig/twig": "^1.28",
         "squizlabs/php_codesniffer": "^2.7",
-        "phpdocumentor/phpdocumentor": "^2.9",
-        "lcobucci/jwt": "^3.2"
+        "phpdocumentor/phpdocumentor": "^2.9"
     },
     "autoload": {
         "files": [
@@ -30,8 +29,7 @@
             "src/Http/Http.php",
             "src/Route/Route.php",
             "src/Dotenv/Dotenv.php",
-            "src/Twig/Twig.php",
-            "src/Jwt/Jwt.php"
+            "src/Twig/Twig.php"
         ]
     },
     "scripts": {

@@ -7,7 +7,6 @@
     <file>tests/Route/RouteTest.php</file>
     <file>tests/Dotenv/DotenvTest.php</file>
     <file>tests/Twig/TwigTest.php</file>
-    <file>tests/Jwt/JwtTest.php</file>
   </testsuite>
 
   <filter>
@@ -18,7 +17,6 @@
       <file>src/Route/Route.php</file>
       <file>src/Dotenv/Dotenv.php</file>
       <file>src/Twig/Twig.php</file>
-      <file>src/Jwt/Jwt.php</file>
     </whitelist>
   </filter>
 
