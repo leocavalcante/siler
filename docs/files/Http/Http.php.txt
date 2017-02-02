@@ -138,7 +138,7 @@ function path()
 
     $requestUri = str_replace('?'.$queryString, '', $requestUri);
 
-    return '/'.ltrim(str_replace(dirname($scriptName), '', $requestUri), '/');
+    return '/'.ltrim(str_replace($scriptName, '', $requestUri), '/');
 }
 
 /**
