@@ -22,14 +22,14 @@ Keep it simple, *stupid*!
 ###### index.php
 ```php
 <?php
-use function Siler\Route\route;
 require_once __DIR__.'/../vendor/autoload.php';
-route('get', '/', 'pages/home.php');
+use Siler\Route;
+Route\get('/', 'pages/home.php');
 ```
 ###### pages/home.php
 ```php
 <?php echo 'Hello World';
 ```
 
-Get it?
+Get it?<br>
 [Check out this example](https://github.com/leocavalcante/siler-example)
