@@ -5,6 +5,7 @@
     <file>tests/Container/ContainerTest.php</file>
     <file>tests/Http/HttpTest.php</file>
     <file>tests/Route/RouteTest.php</file>
+    <file>tests/Route/RouteFacadesTest.php</file>
     <file>tests/Dotenv/DotenvTest.php</file>
     <file>tests/Twig/TwigTest.php</file>
   </testsuite>
