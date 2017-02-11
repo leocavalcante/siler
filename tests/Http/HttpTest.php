@@ -13,8 +13,7 @@ class HttpTest extends TestCase
 
         $_SERVER['HTTP_HOST'] = 'test:8000';
         $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
-        $_SERVER['REQUEST_URI'] = '/bar/baz?query=string';
-        $_SERVER['QUERY_STRING'] = 'query=string';
+        $_SERVER['PATH_INFO'] = '/bar/baz';
     }
 
     public function testGet()

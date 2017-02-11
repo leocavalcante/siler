@@ -126,19 +126,13 @@ function url($path = null)
 }
 
 /**
- * Get the current HTTP URI avoding the script name
+ * Get the current HTTP path info
  *
  * @return string
  */
 function path()
 {
-    $scriptName = array_get($_SERVER, 'SCRIPT_NAME', '');
-    $queryString = array_get($_SERVER, 'QUERY_STRING', '');
-    $requestUri = array_get($_SERVER, 'REQUEST_URI', '');
-
-    $requestUri = str_replace('?'.$queryString, '', $requestUri);
-
-    return '/'.ltrim(str_replace($scriptName, '', $requestUri), '/');
+    return array_get($_SERVER, 'PATH_INFO', '/');
 }
 
 /**
@@ -157,12 +151,8 @@ function uri($protocol = null)
     }
 
     $httpHost = array_get($_SERVER, 'HTTP_HOST', '');
-    $queryString = array_get($_SERVER, 'QUERY_STRING', '');
-    $requestUri = array_get($_SERVER, 'REQUEST_URI', '');
 
-    $requestUri = str_replace('?'.$queryString, '', $requestUri);
-
-    return $protocol.'://'.$httpHost.$requestUri;
+    return $protocol.'://'.$httpHost.path();
 }
 
 /**
