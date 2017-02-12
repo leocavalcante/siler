@@ -33,5 +33,8 @@ Route\get('/', 'pages/home.php');
 <?php echo 'Hello World';
 ```
 
+Since it's plain old PHP files and functions, no surprises it's **blazing fast!**
+![Benchmark](benchmark.png)
+
 [API documentation](https://leocavalcante.github.io/siler/namespaces/Siler.html)<br>
 [Project example](https://github.com/leocavalcante/siler-example)
