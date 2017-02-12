@@ -17,7 +17,9 @@
 
 Keep it simple, *stupid*!
 
-[API documentation](https://leocavalcante.github.io/siler/namespaces/Siler.html)
+Siler core principles includes:
+* PHP files and functions as first-class citizens
+* Zero dependecy. Everything should be built on top of PHP's built-in functions and helpers around vendors are totally optional
 
 ###### index.php
 ```php
@@ -31,5 +33,5 @@ Route\get('/', 'pages/home.php');
 <?php echo 'Hello World';
 ```
 
-Get it?<br>
-[Check out this example](https://github.com/leocavalcante/siler-example)
+[API documentation](https://leocavalcante.github.io/siler/namespaces/Siler.html)<br>
+[Project example](https://github.com/leocavalcante/siler-example)
