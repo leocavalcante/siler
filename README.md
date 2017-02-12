@@ -35,6 +35,7 @@ Route\get('/', 'pages/home.php');
 
 Since it's plain old PHP files and functions, no surprises it's **blazing fast!**
 ![Benchmark](benchmark.png)
+Benchmark powered by: [github.com/kenjis/php-framework-benchmark](https://github.com/kenjis/php-framework-benchmark)
 
 [API documentation](https://leocavalcante.github.io/siler/namespaces/Siler.html)<br>
 [Project example](https://github.com/leocavalcante/siler-example)
