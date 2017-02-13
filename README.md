@@ -1,4 +1,5 @@
-# Siler ![Verified](https://img.shields.io/badge/verified-%E2%9C%93-brightgreen.svg)
+# Siler
+PHP files and functions as first-class citizens.
 
 [![Build Status](https://travis-ci.org/leocavalcante/siler.svg?branch=master)](https://travis-ci.org/leocavalcante/siler)
 [![codecov](https://codecov.io/gh/leocavalcante/siler/branch/master/graph/badge.svg)](https://codecov.io/gh/leocavalcante/siler)
@@ -7,11 +8,7 @@
 [![License](https://poser.pugx.org/leocavalcante/siler/license)](https://packagist.org/packages/leocavalcante/siler)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0/mini.png)](https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0)
 
-Keep it simple, *stupid*!
-
-Siler core principles includes:
-* PHP files and functions as first-class citizens
-* Zero dependecy. Everything should be built on top of PHP's built-in functions and helpers around vendors are totally optional
+Zero dependecy. Everything should be built on top of PHP's built-in functions and helpers around vendors are totally optional.
 
 ###### index.php
 ```php
