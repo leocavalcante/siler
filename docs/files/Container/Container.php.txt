@@ -34,10 +34,15 @@ function set($key, $value)
 }
 
 /**
+ * Internal DIC
+ *
  * @ignore Not part of the API
  */
 final class Container
 {
+    /**
+     * Singleton -> instance
+     */
     public static function getInstance()
     {
         static $instance = null;
@@ -49,8 +54,14 @@ final class Container
         return $instance;
     }
 
+    /**
+     *  The actual holder
+     */
     public $values = [];
 
+    /**
+     * Constructor
+     */
     private function __construct()
     {
     }

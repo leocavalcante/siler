@@ -4,6 +4,7 @@
     <file>tests/SilerTest.php</file>
     <file>tests/Container/ContainerTest.php</file>
     <file>tests/Http/HttpTest.php</file>
+    <file>tests/Http/ResponseTest.php</file>
     <file>tests/Route/RouteTest.php</file>
     <file>tests/Route/RouteFacadesTest.php</file>
     <file>tests/Dotenv/DotenvTest.php</file>
@@ -15,6 +16,7 @@
       <file>src/Siler.php</file>
       <file>src/Container/Container.php</file>
       <file>src/Http/Http.php</file>
+      <file>src/Http/Response.php</file>
       <file>src/Route/Route.php</file>
       <file>src/Dotenv/Dotenv.php</file>
       <file>src/Twig/Twig.php</file>

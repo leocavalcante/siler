@@ -105,7 +105,7 @@ function flash($key = null, $default = null)
  */
 function redirect($url)
 {
-    header('Location: '.$url);
+    header('Location', $url);
 }
 
 /**
@@ -216,4 +216,20 @@ function method_is($method)
 {
     $requestMethod = array_get($_SERVER, 'REQUEST_METHOD', 'GET');
     return strtolower($method) == strtolower($requestMethod);
+}
+
+/**
+ * Helper method to setup a header item as key-value parts
+ *
+ * @param string $key The response header name
+ * @param string $val The response header value
+ * @param bool $replace Should replace a previous similar header, or add a second header of the same type.
+ */
+function header($key, $val, $replace = null)
+{
+    if (is_null($replace)) {
+        $replace = true;
+    }
+
+    \header($key.': '.$val, $replace);
 }

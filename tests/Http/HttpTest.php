@@ -120,4 +120,20 @@ class HttpTest extends TestCase
 
         $this->assertContains('Location: test://siler', $headers);
     }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testHeader()
+    {
+        Http\header('X-Foo', 'foo');
+        Http\header('X-Bar', 'bar');
+        Http\header('X-Bar', 'baz', false);
+
+        $headers = xdebug_get_headers();
+
+        $this->assertContains('X-Foo: foo', $headers);
+        $this->assertContains('X-Bar: bar', $headers);
+        $this->assertContains('X-Bar: baz', $headers);
+    }
 }
