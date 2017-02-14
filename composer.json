@@ -20,7 +20,7 @@
         "phpunit/php-code-coverage": "^4.0",
         "twig/twig": "^1.28",
         "squizlabs/php_codesniffer": "^2.7",
-        "phpdocumentor/phpdocumentor": "^2.9"
+        "phpstan/phpstan": "^0.6"
     },
     "autoload": {
         "files": [
@@ -34,11 +34,25 @@
             "src/Twig/Twig.php"
         ]
     },
+    "autoload-dev": {
+        "files": [
+            "tests/SilerTest.php",
+            "tests/Container/ContainerTest.php",
+            "tests/Http/HttpTest.php",
+            "tests/Http/RequestTest.php",
+            "tests/Http/ResponseTest.php",
+            "tests/Route/RouteTest.php",
+            "tests/Route/RouteFacadesTest.php",
+            "tests/Dotenv/DotenvTest.php",
+            "tests/Twig/TwigTest.php"
+        ]
+    },
     "scripts": {
         "unit": "phpunit",
         "lint": "phpcs",
         "fix": "phpcbf",
         "doc": "phpdoc run -d src -t docs",
+        "stan": "phpstan analyse -l 4 -c phpstan.neon src tests",
         "test": [
             "@composer lint",
             "@composer unit"

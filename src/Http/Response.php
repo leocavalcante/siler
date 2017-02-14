@@ -13,7 +13,7 @@ namespace Siler\Http\Response;
  * @param string $mimeType A value for HTTP Header Content-Type
  * @param string $charset The HTTP response charset
  *
- * @return Returns 1, always
+ * @return int Returns 1, always
  */
 function output($content = '', $code = 204, $mimeType = 'text/plain', $charset = 'utf-8')
 {
@@ -29,7 +29,7 @@ function output($content = '', $code = 204, $mimeType = 'text/plain', $charset =
  * @param int $code The HTTP response status code
  * @param string $charset The HTTP response charset
  *
- * @return Returns 1, always
+ * @return int Returns 1, always
  */
 function text($content, $code = 200, $charset = 'utf-8')
 {
@@ -43,7 +43,7 @@ function text($content, $code = 200, $charset = 'utf-8')
  * @param int $code The HTTP response status code
  * @param string $charset The HTTP response charset
  *
- * @return Returns 1, always
+ * @return int Returns 1, always
  */
 function html($content, $code = 200, $charset = 'utf-8')
 {
@@ -57,7 +57,7 @@ function html($content, $code = 200, $charset = 'utf-8')
  * @param int $code The HTTP response status code
  * @param string $charset The HTTP response charset
  *
- * @return Returns 1, always
+ * @return int Returns 1, always
  */
 function jsonstr($content, $code = 200, $charset = 'utf-8')
 {
@@ -71,7 +71,7 @@ function jsonstr($content, $code = 200, $charset = 'utf-8')
  * @param int $code The HTTP response status code
  * @param string $charset The HTTP response charset
  *
- * @return Returns 1, always
+ * @return int Returns 1, always
  */
 function json($content, $code = 200, $charset = 'utf-8')
 {
