@@ -42,3 +42,4 @@ function json($input = 'php://input')
 {
     return json_decode(raw($input), true);
 }
+
