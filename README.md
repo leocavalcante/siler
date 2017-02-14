@@ -1,25 +1,14 @@
 # Siler
+PHP files and functions as first-class citizens.
 
-<p>
-    <a href="https://travis-ci.org/leocavalcante/siler" target="_blank">
-        <img src="https://img.shields.io/travis/leocavalcante/siler/master.svg?style=flat-square">
-    </a>
-    <a href="https://codecov.io/github/leocavalcante/siler" target="_blank">
-        <img src="https://img.shields.io/codecov/c/github/leocavalcante/siler.svg?style=flat-square">
-    </a>
-    <a href="https://scrutinizer-ci.com/g/leocavalcante/siler/" target="_blank">
-        <img src="https://img.shields.io/scrutinizer/g/leocavalcante/siler.svg?style=flat-square">
-    </a>
-    <a href="https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0" target="_blank">
-        <img src="https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0/mini.png">
-    </a>
-</p>
+[![Build Status](https://travis-ci.org/leocavalcante/siler.svg?branch=master)](https://travis-ci.org/leocavalcante/siler)
+[![codecov](https://codecov.io/gh/leocavalcante/siler/branch/master/graph/badge.svg)](https://codecov.io/gh/leocavalcante/siler)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/leocavalcante/siler/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/leocavalcante/siler/?branch=master)
+[![Latest Unstable Version](https://poser.pugx.org/leocavalcante/siler/v/unstable)](//packagist.org/packages/leocavalcante/siler)
+[![License](https://poser.pugx.org/leocavalcante/siler/license)](https://packagist.org/packages/leocavalcante/siler)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0/mini.png)](https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0)
 
-Keep it simple, *stupid*!
-
-Siler core principles includes:
-* PHP files and functions as first-class citizens
-* Zero dependecy. Everything should be built on top of PHP's built-in functions and helpers around vendors are totally optional
+Zero dependecy. Everything should be built on top of PHP's built-in functions and helpers around vendors are totally optional.
 
 ###### index.php
 ```php
