@@ -10,6 +10,7 @@ class ContainerTest extends TestCase
     public function testSet()
     {
         Container\set('test', 'test');
+        $this->assertContains('test', Container\Container::getInstance()->values);
     }
 
     public function testGet()

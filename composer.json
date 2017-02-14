@@ -15,12 +15,11 @@
     },
     "minimum-stability": "stable",
     "require-dev": {
-        "vlucas/phpdotenv": "^2.4",
-        "phpunit/phpunit": "^5.7",
-        "phpunit/php-code-coverage": "^4.0",
-        "twig/twig": "^1.28",
-        "squizlabs/php_codesniffer": "^2.7",
-        "phpstan/phpstan": "^0.6"
+        "phpstan/phpstan": "*",
+        "squizlabs/php_codesniffer": "*",
+        "vlucas/phpdotenv": "*",
+        "twig/twig": "*",
+        "phpunit/phpunit": "*"
     },
     "autoload": {
         "files": [
@@ -35,31 +34,17 @@
         ]
     },
     "autoload-dev": {
-        "files": [
-            "tests/SilerTest.php",
-            "tests/Container/ContainerTest.php",
-            "tests/Http/HttpTest.php",
-            "tests/Http/RequestTest.php",
-            "tests/Http/ResponseTest.php",
-            "tests/Route/RouteTest.php",
-            "tests/Route/RouteFacadesTest.php",
-            "tests/Dotenv/DotenvTest.php",
-            "tests/Twig/TwigTest.php"
-        ]
+        "psr-4": { "Siler\\Test\\": "tests/" }
     },
     "scripts": {
-        "unit": "phpunit",
-        "lint": "phpcs",
         "fix": "phpcbf",
-        "doc": "phpdoc run -d src -t docs",
-        "stan": "phpstan analyse -l 4 -c phpstan.neon src tests",
+        "lint": "phpcs",
+        "unit": "phpunit",
+        "stan": "phpstan analyse -l 4 -c phpstan.neon src",
         "test": [
             "@composer lint",
-            "@composer unit"
-        ],
-        "test-doc": [
-            "@composer test",
-            "@composer doc"
+            "@composer unit",
+            "@composer stan"
         ]
     }
 }

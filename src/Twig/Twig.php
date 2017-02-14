@@ -18,6 +18,10 @@ use Siler\Container;
  */
 function init($templatesPath, $templatesCachePath = null, $debug = null)
 {
+    if (is_null($templatesCachePath)) {
+        $templatesCachePath = false;
+    }
+
     if (is_null($debug)) {
         $debug = false;
     }
