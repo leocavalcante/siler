@@ -3,8 +3,7 @@
 namespace Siler\Test;
 
 use PHPUnit\Framework\TestCase;
-use function Siler\Route\route;
-use function Siler\Route\regexify;
+use Siler\Route;
 
 class RouteTest extends TestCase
 {
@@ -24,15 +23,15 @@ class RouteTest extends TestCase
      */
     public function testRouteMatching()
     {
-        route('get', '/foo', function ($params) {
+        Route\route('get', '/foo', function ($params) {
             throw new \Exception('Route /foo should not match');
         });
 
-        route('get', '/bar', function ($params) {
+        Route\route('get', '/bar', function ($params) {
             throw new \Exception('Route /bar should not match');
         });
 
-        route('get', '/bar/baz', function ($params) {
+        Route\route('get', '/bar/baz', function ($params) {
             throw new \Exception('Route /bar/baz should match');
         });
     }
@@ -43,7 +42,7 @@ class RouteTest extends TestCase
      */
     public function testRouteRegexp()
     {
-        route('get', '/bar/([a-z]+)', function ($params) {
+        Route\route('get', '/bar/([a-z]+)', function ($params) {
             throw new \Exception($params[1]);
         });
     }
@@ -54,7 +53,7 @@ class RouteTest extends TestCase
      */
     public function testRouteNamedGroup()
     {
-        route('get', '/bar/{baz}', function ($params) {
+        Route\route('get', '/bar/{baz}', function ($params) {
             throw new \Exception($params['baz']);
         });
     }
@@ -67,11 +66,11 @@ class RouteTest extends TestCase
     {
         $_SERVER['PATH_INFO'] = '/bar/baz/qux';
 
-        route('get', '/bar/{baz}', function ($params) {
+        Route\route('get', '/bar/{baz}', function ($params) {
             throw new \Exception('I should not be called');
         });
 
-        route('get', '/bar/{baz}/qux', function ($params) {
+        Route\route('get', '/bar/{baz}/qux', function ($params) {
             throw new \Exception($params['baz']);
         });
     }
@@ -84,7 +83,7 @@ class RouteTest extends TestCase
     {
         $_SERVER['PATH_INFO'] = '/bar/baz-qux';
 
-        route('get', '/bar/{baz}', function ($params) {
+        Route\route('get', '/bar/{baz}', function ($params) {
             throw new \Exception($params['baz']);
         });
     }
@@ -97,7 +96,7 @@ class RouteTest extends TestCase
     {
         $_SERVER['PATH_INFO'] = '/bar/baz-2017';
 
-        route('get', '/bar/{baz}', function ($params) {
+        Route\route('get', '/bar/{baz}', function ($params) {
             throw new \Exception($params['baz']);
         });
     }
@@ -110,7 +109,7 @@ class RouteTest extends TestCase
     {
         $_SERVER['PATH_INFO'] = '/bar/baz_qux';
 
-        route('get', '/bar/{baz}', function ($params) {
+        Route\route('get', '/bar/{baz}', function ($params) {
             throw new \Exception($params['baz']);
         });
     }
@@ -123,7 +122,7 @@ class RouteTest extends TestCase
     {
         unset($_SERVER['PATH_INFO']);
 
-        route('get', '/', function ($params) {
+        Route\route('get', '/', function ($params) {
             throw new \Exception('OK');
         });
     }
@@ -134,7 +133,7 @@ class RouteTest extends TestCase
      */
     public function testRouteWithString()
     {
-        route('get', '/bar/{bar}', __DIR__.'/../fixtures/throw.php');
+        Route\route('get', '/bar/{bar}', __DIR__.'/../fixtures/throw.php');
     }
 
     /**
@@ -145,23 +144,23 @@ class RouteTest extends TestCase
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
 
-        route('get', '/bar/baz', function ($params) {
+        Route\route('get', '/bar/baz', function ($params) {
             throw new \Exception('Route GET /bar/baz should not match');
         });
 
-        route('post', '/bar/baz', function ($params) {
+        Route\route('post', '/bar/baz', function ($params) {
             throw new \Exception('Route POST /bar/baz should match');
         });
     }
 
     public function testRegexify()
     {
-        $this->assertEquals('#^//?$#', regexify('/'));
-        $this->assertEquals('#^/foo/?$#', regexify('/foo'));
-        $this->assertEquals('#^/foo/bar/?$#', regexify('/foo/bar'));
-        $this->assertEquals('#^/foo/(?<baz>[A-z0-9_-]+)/?$#', regexify('/foo/{baz}'));
-        $this->assertEquals('#^/foo/(?<BaZ>[A-z0-9_-]+)/?$#', regexify('/foo/{BaZ}'));
-        $this->assertEquals('#^/foo/(?<bar_baz>[A-z0-9_-]+)/?$#', regexify('/foo/{bar_baz}'));
-        $this->assertEquals('#^/foo/(?<baz>[A-z0-9_-]+)/qux/?$#', regexify('/foo/{baz}/qux'));
+        $this->assertEquals('#^//?$#', Route\regexify('/'));
+        $this->assertEquals('#^/foo/?$#', Route\regexify('/foo'));
+        $this->assertEquals('#^/foo/bar/?$#', Route\regexify('/foo/bar'));
+        $this->assertEquals('#^/foo/(?<baz>[A-z0-9_-]+)/?$#', Route\regexify('/foo/{baz}'));
+        $this->assertEquals('#^/foo/(?<BaZ>[A-z0-9_-]+)/?$#', Route\regexify('/foo/{BaZ}'));
+        $this->assertEquals('#^/foo/(?<bar_baz>[A-z0-9_-]+)/?$#', Route\regexify('/foo/{bar_baz}'));
+        $this->assertEquals('#^/foo/(?<baz>[A-z0-9_-]+)/qux/?$#', Route\regexify('/foo/{baz}/qux'));
     }
 }

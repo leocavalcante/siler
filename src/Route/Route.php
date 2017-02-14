@@ -97,3 +97,27 @@ function regexify($path)
 
     return $path;
 }
+
+/**
+ * Creates a resource route path mapping
+ *
+ * @param string $basePath The base for the resource
+ * @param string $resourcesPath The base path name for the corresponding PHP files
+ */
+function resource($basePath, $resourcesPath, $identityParam = null)
+{
+    $basePath = '/'.trim($basePath, '/');
+    $resourcesPath = rtrim($resourcesPath, '/');
+
+    if (is_null($identityParam)) {
+        $identityParam = 'id';
+    }
+
+    get($basePath, $resourcesPath.'/index.php');
+    get($basePath.'/create', $resourcesPath.'/create.php');
+    post($basePath, $resourcesPath.'/store.php');
+    get($basePath.'/{'.$identityParam.'}', $resourcesPath.'/show.php');
+    get($basePath.'/{'.$identityParam.'}/edit', $resourcesPath.'/edit.php');
+    put($basePath.'/{'.$identityParam.'}', $resourcesPath.'/update.php');
+    delete($basePath.'/{'.$identityParam.'}', $resourcesPath.'/destroy.php');
+}
