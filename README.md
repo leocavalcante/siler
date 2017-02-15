@@ -38,12 +38,14 @@ As said before, Siler aims to use PHP files and functions as first-class citizie
 
 <sub>index.php</sub>
 ```php
+<?php
 require 'vendor/autoload.php';
 Siler\Route\get('/', 'pages/home.php');
 ```
 
 <sub>pages/home.php</sub>
 ```php
+<?php
 echo 'Hello World';
 ```
 
@@ -53,7 +55,7 @@ Siler doesn't try to be a fully-featured framework - don't even aim to be a fram
 
 ### Twig
 
-Is one of the libraries that has helpers functions to work with making templating easy.
+Is one of the libraries that has helpers functions making work with templates quite simple.
 
 ```bash
 composer require twig/twig
@@ -61,6 +63,8 @@ composer require twig/twig
 
 <sub>index.php</sub>
 ```php
+<?php
+
 require 'vendor/autoload.php'
 
 use Siler\Route;
@@ -73,11 +77,15 @@ Route\get('/', 'pages/home.php');
 
 <sub>pages/home.php</sub>
 ```php
+<?php
+
 use Siler\Twig;
 use Siler\Http\Response;
 
 Response\html(Twig\render('pages/home.twig'));
 ```
+
+WIP
 
 ---
 MIT
