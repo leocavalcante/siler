@@ -85,7 +85,36 @@ use Siler\Http\Response;
 Response\html(Twig\render('pages/home.twig'));
 ```
 
-WIP
+### Dotenv
+
+Siler also brings helper functions for [vlucas/phpdotenv](https://github.com/vlucas/phpdotenv), so you can easily acomplish [twelve-factor](https://12factor.net/) apps. 
+
+```bash
+composer require vlucas/phpdotenv
+```
+
+<sub>.env</sub>
+```dotenv
+TWIG_DEBUG=true
+```
+
+<sub>index.php</sub>
+```php
+<?php
+
+require 'vendor/autoload.php'
+
+use Siler\Dotenv;
+use Siler\Route;
+use Siler\Twig;
+
+Dotenv\init('/path/to/.env');
+Twig\init('/path/to/templates', '/path/to/templates/cache', Dotenv\env('TWIG_DEBUG'));
+
+Route\get('/', 'pages/home.php');
+```
+
+🚧 WIP
 
 ---
 MIT
