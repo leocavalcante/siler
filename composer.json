@@ -19,7 +19,8 @@
         "squizlabs/php_codesniffer": "*",
         "vlucas/phpdotenv": "*",
         "twig/twig": "*",
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "cboden/ratchet": "^0.3.6"
     },
     "autoload": {
         "files": [
@@ -30,7 +31,8 @@
             "src/Http/Response.php",
             "src/Route/Route.php",
             "src/Dotenv/Dotenv.php",
-            "src/Twig/Twig.php"
+            "src/Twig/Twig.php",
+            "src/WS/WS.php"
         ]
     },
     "autoload-dev": {
