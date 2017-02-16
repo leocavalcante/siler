@@ -60,15 +60,43 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($message, $onMessageMessage);
     }
 
-    /*public function testOnClose(ConnectionInterface $conn)
+    public function testOnClose()
     {
-        Container\get('ws_clients')->detach($conn);
-        $this->callback('close', [$conn]);
+        $this->storage->expects($this->once())
+                ->method('detach')
+                ->with($this->equalTo($this->conn));
+
+        $onCloseCalled = false;
+
+        $onClose = function () use (&$onCloseCalled) {
+            $onCloseCalled = true;
+        };
+
+        Container\set('ws_on_close', $onClose);
+
+        $messageComponent = new MessageComponent();
+        $messageComponent->onClose($this->conn);
+
+        $this->assertTrue($onCloseCalled);
     }
 
-    public function testOnError(ConnectionInterface $conn, \Exception $e)
+    public function testOnError()
     {
-        $this->callback('error', [$conn, $e]);
-        $conn->close();
-    }*/
+        $expectedException = new \Exception();
+        $actualException = null;
+
+        $this->conn->expects($this->once())
+                   ->method('close');
+
+        $onError = function ($conn, $e) use (&$actualException) {
+            $actualException = $e;
+        };
+
+        Container\set('ws_on_error', $onError);
+
+        $messageComponent = new MessageComponent();
+        $messageComponent->onError($this->conn, $expectedException);
+
+        $this->assertSame($expectedException, $actualException);
+    }
 }
