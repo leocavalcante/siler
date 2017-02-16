@@ -1,4 +1,4 @@
 /*.phar
 /vendor/
-/*-coverage.xml
+/coverage-*
 /examples/

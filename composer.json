@@ -32,7 +32,8 @@
             "src/Route/Route.php",
             "src/Dotenv/Dotenv.php",
             "src/Twig/Twig.php",
-            "src/Ws/Ws.php"
+            "src/Ws/Ws.php",
+            "src/Ws/MessageComponent.php"
         ]
     },
     "autoload-dev": {
