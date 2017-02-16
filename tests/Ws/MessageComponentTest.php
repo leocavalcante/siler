@@ -19,6 +19,33 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
         Container\set('ws_clients', $this->storage);
     }
 
+    public function testCallbackIsNull()
+    {
+        $onOpenCalled = false;
+
+        $onOpen = function () use (&$onOpenCalled) {
+            $onOpenCalled = true;
+        };
+
+        $messageComponent = new MessageComponent();
+        $messageComponent->onOpen($this->conn);
+
+        $this->assertFalse($onOpenCalled);
+    }
+
+    public function testCallbackIsntCallable()
+    {
+        $onOpenCalled = false;
+        $onOpen = 'not callable';
+
+        Container\set('ws_on_open', $onOpen);
+
+        $messageComponent = new MessageComponent();
+        $messageComponent->onOpen($this->conn);
+
+        $this->assertFalse($onOpenCalled);
+    }
+
     public function testOnOpen()
     {
         $this->storage->expects($this->once())
