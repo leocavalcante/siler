@@ -25,9 +25,9 @@ class MessageComponent implements MessageComponentInterface
         $this->callback('close', [$conn]);
     }
 
-    public function onError(ConnectionInterface $conn, \Exception $e)
+    public function onError(ConnectionInterface $conn, \Exception $exception)
     {
-        $this->callback('error', [$conn, $e]);
+        $this->callback('error', [$conn, $exception]);
         $conn->close();
     }
 

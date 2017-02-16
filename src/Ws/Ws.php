@@ -3,7 +3,6 @@
 namespace Siler\Ws;
 
 use Siler\Container;
-use function Siler\array_get;
 
 use Ratchet\WebSocket\WsServer;
 use Ratchet\Http\HttpServer;

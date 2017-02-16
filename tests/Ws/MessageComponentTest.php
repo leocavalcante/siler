@@ -23,10 +23,6 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
     {
         $onOpenCalled = false;
 
-        $onOpen = function () use (&$onOpenCalled) {
-            $onOpenCalled = true;
-        };
-
         $messageComponent = new MessageComponent();
         $messageComponent->onOpen($this->conn);
 
