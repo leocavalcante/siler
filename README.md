@@ -67,11 +67,9 @@ composer require twig/twig
 
 require 'vendor/autoload.php'
 
-use Siler\Route;
-use Siler\Twig;
+use Siler\{Twig, Route};
 
 Twig\init('/path/to/templates');
-
 Route\get('/', 'pages/home.php');
 ```
 
@@ -104,13 +102,10 @@ TWIG_DEBUG=true
 
 require 'vendor/autoload.php'
 
-use Siler\Dotenv;
-use Siler\Route;
-use Siler\Twig;
+use Siler\{Dotenv, Twig, Route};
 
 Dotenv\init('/path/to/.env');
 Twig\init('/path/to/templates', '/path/to/templates/cache', Dotenv\env('TWIG_DEBUG'));
-
 Route\get('/', 'pages/home.php');
 ```
 
