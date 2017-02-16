@@ -1,4 +1,4 @@
 /*.phar
 /vendor/
 /*-coverage.xml
-/docs/phpdoc-cache-*
+/examples/
