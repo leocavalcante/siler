@@ -3,63 +3,52 @@
 namespace Siler\Test;
 
 use Siler\Container;
-use Siler\Ws;
-
+use Siler\Ratchet;
+use Siler\Ratchet\MessageComponent;
 use Ratchet\ConnectionInterface;
 
-class WsTest extends \PHPUnit\Framework\TestCase
+class RatchetTest extends \PHPUnit\Framework\TestCase
 {
-    public function testOn()
+    public function testConnected()
     {
         $expected = function () {
         };
 
-        Ws\on('test', $expected);
-        $actual = Container\get('ws_on_test');
+        Ratchet\connected($expected);
+        $actual = Container\get(MessageComponent::RATCHET_EVENT_OPEN);
 
         $this->assertSame($expected, $actual);
     }
 
-    public function testOnOpen()
+    public function testInbox()
     {
         $expected = function () {
         };
 
-        Ws\onopen($expected);
-        $actual = Container\get('ws_on_open');
+        Ratchet\inbox($expected);
+        $actual = Container\get(MessageComponent::RATCHET_EVENT_MESSAGE);
 
         $this->assertSame($expected, $actual);
     }
 
-    public function testOnMessage()
+    public function testClosed()
     {
         $expected = function () {
         };
 
-        Ws\onmessage($expected);
-        $actual = Container\get('ws_on_message');
+        Ratchet\closed($expected);
+        $actual = Container\get(MessageComponent::RATCHET_EVENT_CLOSE);
 
         $this->assertSame($expected, $actual);
     }
 
-    public function testOnClose()
+    public function testError()
     {
         $expected = function () {
         };
 
-        Ws\onclose($expected);
-        $actual = Container\get('ws_on_close');
-
-        $this->assertSame($expected, $actual);
-    }
-
-    public function testOnError()
-    {
-        $expected = function () {
-        };
-
-        Ws\onerror($expected);
-        $actual = Container\get('ws_on_error');
+        Ratchet\error($expected);
+        $actual = Container\get(MessageComponent::RATCHET_EVENT_ERROR);
 
         $this->assertSame($expected, $actual);
     }
@@ -76,9 +65,9 @@ class WsTest extends \PHPUnit\Framework\TestCase
              ->method('send')
              ->with($this->equalTo($message));
 
-        Container\set('ws_clients', [$mock]);
+        Container\set(MessageComponent::RATCHET_CONNECTIONS, [$mock]);
 
-        Ws\broadcast($message);
+        Ratchet\broadcast($message);
     }
 
     public function testBroadcastIgnoreSender()
@@ -93,8 +82,8 @@ class WsTest extends \PHPUnit\Framework\TestCase
              ->method('send')
              ->with($this->equalTo($message));
 
-        Container\set('ws_clients', [$mock]);
+        Container\set(MessageComponent::RATCHET_CONNECTIONS, [$mock]);
 
-        Ws\broadcast($message, $mock);
+        Ratchet\broadcast($message, $mock);
     }
 }

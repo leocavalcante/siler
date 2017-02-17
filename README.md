@@ -85,7 +85,7 @@ Response\html(Twig\render('pages/home.twig'));
 
 ### Dotenv
 
-Siler also brings helper functions for [vlucas/phpdotenv](https://github.com/vlucas/phpdotenv), so you can easily acomplish [twelve-factor](https://12factor.net/) apps. 
+Siler also brings helper functions for [vlucas/phpdotenv](https://github.com/vlucas/phpdotenv), so you can easily acomplish [twelve-factor](https://12factor.net/) apps.
 
 ```bash
 composer require vlucas/phpdotenv
@@ -107,6 +107,34 @@ use Siler\{Dotenv, Twig, Route};
 Dotenv\init('/path/to/.env');
 Twig\init('/path/to/templates', '/path/to/templates/cache', Dotenv\env('TWIG_DEBUG'));
 Route\get('/', 'pages/home.php');
+```
+
+### Ratchet
+
+Doing some real-time apps with WebSockets? No problem. Siler simplifies Ratchet.
+
+```bash
+composer require cboden/ratchet
+```
+
+<sub>index.php</sub>
+```php
+<?php
+
+require 'vendor/autoload.php';
+
+use Siler\Ratchet;
+
+Ratchet\connected(function ($conn) {
+    print("New connection\n");
+});
+
+Ratchet\inbox(function ($from, $message) {
+    printf("New message: %s\n", $message);
+});
+
+print("Listen on 3333\n");
+Ratchet\init(3333);
 ```
 
 🚧 WIP

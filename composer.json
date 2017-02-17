@@ -20,7 +20,7 @@
         "vlucas/phpdotenv": "*",
         "twig/twig": "*",
         "phpunit/phpunit": "*",
-        "cboden/ratchet": "^0.3.6"
+        "cboden/ratchet": "*"
     },
     "autoload": {
         "files": [
@@ -32,8 +32,8 @@
             "src/Route/Route.php",
             "src/Dotenv/Dotenv.php",
             "src/Twig/Twig.php",
-            "src/Ws/Ws.php",
-            "src/Ws/MessageComponent.php"
+            "src/Ratchet/Ratchet.php",
+            "src/Ratchet/MessageComponent.php"
         ]
     },
     "autoload-dev": {

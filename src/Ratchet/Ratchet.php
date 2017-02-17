@@ -1,6 +1,6 @@
 <?php
 
-namespace Siler\Ws;
+namespace Siler\Ratchet;
 
 use Siler\Container;
 
@@ -8,6 +8,8 @@ use Ratchet\WebSocket\WsServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\ConnectionInterface;
+
+const FOO = 'bar';
 
 function init($port = null)
 {
@@ -19,39 +21,34 @@ function init($port = null)
     $webSockerServer = new WsServer($messageComponent);
     $server = IoServer::factory(new HttpServer($webSockerServer), $port);
 
-    Container\set('ws_clients', new \SplObjectStorage());
+    Container\set(MessageComponent::RATCHET_CONNECTIONS, new \SplObjectStorage());
 
     $server->run();
 }
 
-function on($event, $callback)
+function connected($callback)
 {
-    Container\set('ws_on_'.$event, $callback);
+    Container\set(MessageComponent::RATCHET_EVENT_OPEN, $callback);
 }
 
-function onopen($callback)
+function inbox($callback)
 {
-    on('open', $callback);
+    Container\set(MessageComponent::RATCHET_EVENT_MESSAGE, $callback);
 }
 
-function onmessage($callback)
+function closed($callback)
 {
-    on('message', $callback);
+    Container\set(MessageComponent::RATCHET_EVENT_CLOSE, $callback);
 }
 
-function onclose($callback)
+function error($callback)
 {
-    on('close', $callback);
-}
-
-function onerror($callback)
-{
-    on('error', $callback);
+    Container\set(MessageComponent::RATCHET_EVENT_ERROR, $callback);
 }
 
 function broadcast($message, ConnectionInterface $from = null)
 {
-    $clients = Container\get('ws_clients');
+    $clients = Container\get(MessageComponent::RATCHET_CONNECTIONS);
 
     foreach ($clients as $client) {
         if (!is_null($from) && $client === $from) {
