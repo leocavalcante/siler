@@ -3,6 +3,7 @@
 namespace Siler\Test;
 
 use Siler\Container;
+use Siler\Ratchet;
 use Siler\Ratchet\MessageComponent;
 use Ratchet\ConnectionInterface;
 
@@ -16,7 +17,7 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
         $this->conn = $this->createMock(ConnectionInterface::class);
         $this->storage = $this->createMock(\SplObjectStorage::class);
 
-        Container\set(MessageComponent::RATCHET_CONNECTIONS, $this->storage);
+        Container\set(Ratchet\RATCHET_CONNECTIONS, $this->storage);
     }
 
     public function testCallbackIsNull()
@@ -34,7 +35,7 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
         $onOpenCalled = false;
         $onOpen = 'not callable';
 
-        Container\set(MessageComponent::RATCHET_EVENT_OPEN, $onOpen);
+        Container\set(Ratchet\RATCHET_EVENT_OPEN, $onOpen);
 
         $messageComponent = new MessageComponent();
         $messageComponent->onOpen($this->conn);
@@ -54,7 +55,7 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
             $onOpenCalled = true;
         };
 
-        Container\set(MessageComponent::RATCHET_EVENT_OPEN, $onOpen);
+        Container\set(Ratchet\RATCHET_EVENT_OPEN, $onOpen);
 
         $messageComponent = new MessageComponent();
         $messageComponent->onOpen($this->conn);
@@ -74,7 +75,7 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
             $onMessageMessage = $message;
         };
 
-        Container\set(MessageComponent::RATCHET_EVENT_MESSAGE, $onMessage);
+        Container\set(Ratchet\RATCHET_EVENT_MESSAGE, $onMessage);
 
         $messageComponent = new MessageComponent();
         $messageComponent->onMessage($this->conn, $message);
@@ -95,7 +96,7 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
             $onCloseCalled = true;
         };
 
-        Container\set(MessageComponent::RATCHET_EVENT_CLOSE, $onClose);
+        Container\set(Ratchet\RATCHET_EVENT_CLOSE, $onClose);
 
         $messageComponent = new MessageComponent();
         $messageComponent->onClose($this->conn);
@@ -115,7 +116,7 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
             $actualException = $e;
         };
 
-        Container\set(MessageComponent::RATCHET_EVENT_ERROR, $onError);
+        Container\set(Ratchet\RATCHET_EVENT_ERROR, $onError);
 
         $messageComponent = new MessageComponent();
         $messageComponent->onError($this->conn, $expectedException);

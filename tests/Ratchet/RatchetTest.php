@@ -15,7 +15,7 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
         };
 
         Ratchet\connected($expected);
-        $actual = Container\get(MessageComponent::RATCHET_EVENT_OPEN);
+        $actual = Container\get(Ratchet\RATCHET_EVENT_OPEN);
 
         $this->assertSame($expected, $actual);
     }
@@ -26,7 +26,7 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
         };
 
         Ratchet\inbox($expected);
-        $actual = Container\get(MessageComponent::RATCHET_EVENT_MESSAGE);
+        $actual = Container\get(Ratchet\RATCHET_EVENT_MESSAGE);
 
         $this->assertSame($expected, $actual);
     }
@@ -37,7 +37,7 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
         };
 
         Ratchet\closed($expected);
-        $actual = Container\get(MessageComponent::RATCHET_EVENT_CLOSE);
+        $actual = Container\get(Ratchet\RATCHET_EVENT_CLOSE);
 
         $this->assertSame($expected, $actual);
     }
@@ -48,7 +48,7 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
         };
 
         Ratchet\error($expected);
-        $actual = Container\get(MessageComponent::RATCHET_EVENT_ERROR);
+        $actual = Container\get(Ratchet\RATCHET_EVENT_ERROR);
 
         $this->assertSame($expected, $actual);
     }
@@ -65,7 +65,7 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
              ->method('send')
              ->with($this->equalTo($message));
 
-        Container\set(MessageComponent::RATCHET_CONNECTIONS, [$mock]);
+        Container\set(Ratchet\RATCHET_CONNECTIONS, [$mock]);
 
         Ratchet\broadcast($message);
     }
@@ -82,7 +82,7 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
              ->method('send')
              ->with($this->equalTo($message));
 
-        Container\set(MessageComponent::RATCHET_CONNECTIONS, [$mock]);
+        Container\set(Ratchet\RATCHET_CONNECTIONS, [$mock]);
 
         Ratchet\broadcast($message, $mock);
     }
