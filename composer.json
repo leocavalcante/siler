@@ -23,6 +23,7 @@
         "cboden/ratchet": "*"
     },
     "autoload": {
+        "psr-4": { "Siler\\": "src/" },
         "files": [
             "src/Siler.php",
             "src/Container/Container.php",
@@ -32,8 +33,7 @@
             "src/Route/Route.php",
             "src/Dotenv/Dotenv.php",
             "src/Twig/Twig.php",
-            "src/Ratchet/Ratchet.php",
-            "src/Ratchet/MessageComponent.php"
+            "src/Ratchet/Ratchet.php"
         ]
     },
     "autoload-dev": {
