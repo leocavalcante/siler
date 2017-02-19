@@ -4,7 +4,6 @@ namespace Siler\Test;
 
 use Siler\Container;
 use Siler\Ratchet;
-use Siler\Ratchet\MessageComponent;
 use Ratchet\ConnectionInterface;
 
 class RatchetTest extends \PHPUnit\Framework\TestCase
