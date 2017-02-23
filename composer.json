@@ -20,7 +20,8 @@
         "vlucas/phpdotenv": "*",
         "twig/twig": "*",
         "phpunit/phpunit": "*",
-        "cboden/ratchet": "*"
+        "cboden/ratchet": "*",
+        "webonyx/graphql-php": "^0.9.4"
     },
     "autoload": {
         "psr-4": { "Siler\\": "src/" },
@@ -33,7 +34,8 @@
             "src/Route/Route.php",
             "src/Dotenv/Dotenv.php",
             "src/Twig/Twig.php",
-            "src/Ratchet/Ratchet.php"
+            "src/Ratchet/Ratchet.php",
+            "src/Graphql/Graphql.php"
         ]
     },
     "autoload-dev": {

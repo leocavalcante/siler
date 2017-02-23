@@ -32,4 +32,23 @@ class RequestTest extends TestCase
         $this->assertCount(1, $params);
         $this->assertArraySubset(['foo' => 'bar'], $params);
     }
+
+    /**
+     * @run
+     * @return [type] [description]
+     */
+    public function testHeaders()
+    {
+        $_SERVER = [
+            'NON_HTTP' => 'Ignore me',
+            'HTTP_CONTENT_TYPE' => 'phpunit/test',
+        ];
+
+        $headers = Request\headers();
+
+        $this->assertArrayHasKey('Content-Type', $headers);
+        $this->assertContains('phpunit/test', $headers);
+        $this->assertCount(1, $headers);
+        $this->assertArraySubset(['Content-Type' => 'phpunit/test'], $headers);
+    }
 }
