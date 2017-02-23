@@ -7,4 +7,6 @@ before_commands:
   - "composer install"
 
 checks:
-  php: true
+  php:
+    excluded_dependencies:
+      - webonyx/graphql-php
