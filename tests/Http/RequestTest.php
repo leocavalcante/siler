@@ -34,8 +34,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @run
-     * @return [type] [description]
+     * @runInSeparateProcess
      */
     public function testHeaders()
     {
@@ -50,5 +49,19 @@ class RequestTest extends TestCase
         $this->assertContains('phpunit/test', $headers);
         $this->assertCount(1, $headers);
         $this->assertArraySubset(['Content-Type' => 'phpunit/test'], $headers);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testHeader()
+    {
+        $_SERVER = [
+            'HTTP_CONTENT_TYPE' => 'phpunit/test',
+        ];
+
+        $contentType = Request\header('Content-Type');
+
+        $this->assertEquals('phpunit/test', $contentType);
     }
 }
