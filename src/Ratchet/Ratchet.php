@@ -82,7 +82,7 @@ function error($callback)
  * Broadcast a message for the connected clients
  *
  * @param  string $message The message to broadcast
- * @param  ConnectionInterface|null $from The client who is sending the message, if given the message will not be broadcasted to it
+ * @param  ConnectionInterface|null $from The sender client, if given the message will not be broadcasted to it
  */
 function broadcast($message, ConnectionInterface $from = null)
 {
