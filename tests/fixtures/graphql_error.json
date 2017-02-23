@@ -1,0 +1,1 @@
+{"data":{"foo":null},"errors":[{"message":"error_message","locations":[{"line":1,"column":3}],"path":["foo"]}]}
