@@ -10,7 +10,6 @@ use Siler\Http\Request;
 use Siler\Http\Response;
 use GraphQL\Schema;
 use GraphQL\GraphQL;
-use \Exception;
 use function Siler\array_get;
 
 /**
