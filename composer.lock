@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2fc4a7fc9d2172d77ec75d2d21549001",
+    "content-hash": "4d3fb3952a41d6981acc45c137b79f2d",
     "packages": [],
     "packages-dev": [
         {
@@ -2965,6 +2965,51 @@
                 "validate"
             ],
             "time": "2016-11-23T20:04:58+00:00"
+        },
+        {
+            "name": "webonyx/graphql-php",
+            "version": "v0.9.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webonyx/graphql-php.git",
+                "reference": "ed41a4ce43e354a0e2218d11c78b5d1ab86e3140"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webonyx/graphql-php/zipball/ed41a4ce43e354a0e2218d11c78b5d1ab86e3140",
+                "reference": "ed41a4ce43e354a0e2218d11c78b5d1ab86e3140",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.4,<8.0-DEV"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8"
+            },
+            "suggest": {
+                "react/promise": "To use ReactPHP promise adapter"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/deprecated.php"
+                ],
+                "psr-4": {
+                    "GraphQL\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "description": "A PHP port of GraphQL reference implementation",
+            "homepage": "https://github.com/webonyx/graphql-php",
+            "keywords": [
+                "api",
+                "graphql"
+            ],
+            "time": "2017-02-21T08:25:14+00:00"
         }
     ],
     "aliases": [],
