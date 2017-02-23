@@ -19,6 +19,7 @@ use function Siler\array_get;
  * @param  Schema $schema    The application root Schema
  * @param   mixed $rootValue Some optional GraphQL root value
  * @param   mixed $context   Some optional GraphQL context
+ * @param  string $input     JSON file input, for testing
  */
 function init(Schema $schema, $rootValue = null, $context = null, $input = 'php://input')
 {
