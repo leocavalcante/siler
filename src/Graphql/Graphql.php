@@ -6,6 +6,7 @@
 namespace Siler\Graphql;
 
 use Siler\Http;
+use Siler\Http\Request;
 use Siler\Http\Response;
 use GraphQL\Schema;
 use GraphQL\GraphQL;
@@ -19,10 +20,10 @@ use function Siler\array_get;
  * @param   mixed $rootValue Some optional GraphQL root value
  * @param   mixed $context   Some optional GraphQL context
  */
-function init(Schema $schema, $rootValue = null, $context = null)
+function init(Schema $schema, $rootValue = null, $context = null, $input = 'php://input')
 {
     if (Request\header('Content-Type') == 'application/json') {
-        $data = Request\json();
+        $data = Request\json($input);
     } else {
         $data = Http\post();
     }
@@ -31,22 +32,14 @@ function init(Schema $schema, $rootValue = null, $context = null)
     $operation = array_get($data, 'operation');
     $variables = array_get($data, 'variables');
 
-    try {
-        $result = GraphQL::execute(
-            $schema,
-            $query,
-            $rootValue,
-            $context,
-            $variables,
-            $operation
-        );
-    } catch (Exception $exception) {
-        $result = [
-            'error' => [
-                'message' => $exception->getMessage()
-            ]
-        ];
-    }
+    $result = GraphQL::execute(
+        $schema,
+        $query,
+        $rootValue,
+        $context,
+        $variables,
+        $operation
+    );
 
     Response\json($result);
 }
