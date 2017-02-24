@@ -5,7 +5,6 @@
 
 namespace Siler\Graphql;
 
-use Siler\Http;
 use Siler\Http\Request;
 use Siler\Http\Response;
 use GraphQL\Schema;
@@ -25,7 +24,7 @@ function init(Schema $schema, $rootValue = null, $context = null, $input = 'php:
     if (Request\header('Content-Type') == 'application/json') {
         $data = Request\json($input);
     } else {
-        $data = Http\post();
+        $data = Request\post();
     }
 
     $query = array_get($data, 'query');

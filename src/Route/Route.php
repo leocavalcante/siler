@@ -6,6 +6,7 @@
 namespace Siler\Route;
 
 use Siler\Http;
+use Siler\Http\Request;
 use function Siler\require_fn;
 
 /**
@@ -78,7 +79,7 @@ function route($method, $path, $callback)
         $callback = require_fn($callback);
     }
 
-    if (Http\method_is($method) && preg_match($path, Http\path(), $params)) {
+    if (Request\method_is($method) && preg_match($path, Http\path(), $params)) {
         $callback($params);
     }
 }

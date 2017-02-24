@@ -16,30 +16,6 @@ class HttpTest extends TestCase
         $_SERVER['PATH_INFO'] = '/bar/baz';
     }
 
-    public function testGet()
-    {
-        $this->assertEquals($_GET, Http\get());
-        $this->assertEquals('bar', Http\get('foo'));
-        $this->assertEquals('qux', Http\get('baz', 'qux'));
-        $this->assertNull(Http\get('baz'));
-    }
-
-    public function testPost()
-    {
-        $this->assertEquals($_POST, Http\post());
-        $this->assertEquals('bar', Http\post('foo'));
-        $this->assertEquals('qux', Http\post('baz', 'qux'));
-        $this->assertNull(Http\post('baz'));
-    }
-
-    public function testInput()
-    {
-        $this->assertEquals($_REQUEST, Http\input());
-        $this->assertEquals('bar', Http\input('foo'));
-        $this->assertEquals('qux', Http\input('baz', 'qux'));
-        $this->assertNull(Http\input('baz'));
-    }
-
     public function testCookie()
     {
         $this->assertEquals($_COOKIE, Http\cookie());
@@ -88,27 +64,6 @@ class HttpTest extends TestCase
         $this->assertEquals('http://test:8000/bar/baz', Http\uri());
     }
 
-    public function testRequestMethodIs()
-    {
-        $_SERVER['REQUEST_METHOD'] = 'POST';
-        $this->assertTrue(Http\is_post());
-
-        $_SERVER['REQUEST_METHOD'] = 'GET';
-        $this->assertTrue(Http\is_get());
-
-        $_SERVER['REQUEST_METHOD'] = 'PUT';
-        $this->assertTrue(Http\is_put());
-
-        $_SERVER['REQUEST_METHOD'] = 'DELETE';
-        $this->assertTrue(Http\is_delete());
-
-        $_SERVER['REQUEST_METHOD'] = 'OPTIONS';
-        $this->assertTrue(Http\is_options());
-
-        $_SERVER['REQUEST_METHOD'] = 'CUSTOM';
-        $this->assertTrue(Http\method_is('custom'));
-    }
-
     /**
      * @runInSeparateProcess
      */
@@ -119,21 +74,5 @@ class HttpTest extends TestCase
         $headers = xdebug_get_headers();
 
         $this->assertContains('Location: test://siler', $headers);
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function testHeader()
-    {
-        Http\header('X-Foo', 'foo');
-        Http\header('X-Bar', 'bar');
-        Http\header('X-Bar', 'baz', false);
-
-        $headers = xdebug_get_headers();
-
-        $this->assertContains('X-Foo: foo', $headers);
-        $this->assertContains('X-Bar: bar', $headers);
-        $this->assertContains('X-Bar: baz', $headers);
     }
 }

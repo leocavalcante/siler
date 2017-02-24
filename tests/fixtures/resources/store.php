@@ -1,1 +1,1 @@
-<?php printf('resources.store %s', Siler\Http\post('foo'));
+<?php printf('resources.store %s', Siler\Http\Request\post('foo'));

@@ -18,7 +18,7 @@ namespace Siler\Http\Response;
 function output($content = '', $code = 204, $mimeType = 'text/plain', $charset = 'utf-8')
 {
     http_response_code($code);
-    header(sprintf('Content-Type: %s;charset=%s', $mimeType, $charset));
+    \header(sprintf('Content-Type: %s;charset=%s', $mimeType, $charset));
     return print($content);
 }
 
@@ -76,4 +76,20 @@ function jsonstr($content, $code = 200, $charset = 'utf-8')
 function json($content, $code = 200, $charset = 'utf-8')
 {
     return jsonstr(json_encode($content), $code, $charset);
+}
+
+/**
+ * Helper method to setup a header item as key-value parts
+ *
+ * @param string $key The response header name
+ * @param string $val The response header value
+ * @param bool $replace Should replace a previous similar header, or add a second header of the same type.
+ */
+function header($key, $val, $replace = null)
+{
+    if (is_null($replace)) {
+        $replace = true;
+    }
+
+    \header($key.': '.$val, $replace);
 }
