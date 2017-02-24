@@ -1,12 +1,12 @@
 build:
-  environment:
-    php:
-      version: '7.0'
+    environment:
+        php:
+            version: '7.0'
 
 before_commands:
-  - "composer install"
+    - "composer install"
 
 checks:
-  php:
-    excluded_dependencies:
-      - webonyx/graphql-php
+    php:
+        excluded_dependencies:
+            - webonyx/graphql-php
