@@ -1,23 +1,23 @@
 <?php
 /**
- * Helper functions for webonyx/graphql-php GraphQL implementation
+ * Helper functions for webonyx/graphql-php GraphQL implementation.
  */
 
 namespace Siler\Graphql;
 
+use GraphQL\GraphQL;
+use GraphQL\Schema;
 use Siler\Http\Request;
 use Siler\Http\Response;
-use GraphQL\Schema;
-use GraphQL\GraphQL;
 use function Siler\array_get;
 
 /**
- * Initializes a new GraphQL endpoint
+ * Initializes a new GraphQL endpoint.
  *
- * @param  Schema $schema    The application root Schema
- * @param   mixed $rootValue Some optional GraphQL root value
- * @param   mixed $context   Some optional GraphQL context
- * @param  string $input     JSON file input, for testing
+ * @param Schema $schema    The application root Schema
+ * @param mixed  $rootValue Some optional GraphQL root value
+ * @param mixed  $context   Some optional GraphQL context
+ * @param string $input     JSON file input, for testing
  */
 function init(Schema $schema, $rootValue = null, $context = null, $input = 'php://input')
 {

@@ -1,1 +1,3 @@
-<?php printf('resources.show %s', $params['id']);
+<?php
+
+printf('resources.show %s', $params['id']);

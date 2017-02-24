@@ -2,10 +2,10 @@
 
 namespace Siler\Test;
 
+use Ratchet\ConnectionInterface;
 use Siler\Container;
 use Siler\Ratchet;
 use Siler\Ratchet\MessageComponent;
-use Ratchet\ConnectionInterface;
 
 class MessageComponentTest extends \PHPUnit\Framework\TestCase
 {

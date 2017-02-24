@@ -55,7 +55,7 @@ class RequestTest extends TestCase
         $this->assertCount(2, $headers);
         $this->assertArraySubset([
             'Content-Type' => 'phpunit/test',
-            'Host' => 'test:8000',
+            'Host'         => 'test:8000',
         ], $headers);
     }
 

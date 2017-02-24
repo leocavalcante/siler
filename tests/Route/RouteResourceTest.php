@@ -5,7 +5,7 @@ namespace Siler\Test;
 use PHPUnit\Framework\TestCase;
 use Siler\Route;
 
-class RouteResouceTest extends TestCase
+class RouteResourceTest extends TestCase
 {
     public function testIndexResource()
     {

@@ -1,13 +1,13 @@
 <?php
 /**
- * Siler's internal MessageComponent
+ * Siler's internal MessageComponent.
  */
 
 namespace Siler\Ratchet;
 
-use Siler\Container;
-use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
+use Ratchet\MessageComponentInterface;
+use Siler\Container;
 
 /**
  * @internal Not meant to be used
@@ -15,7 +15,7 @@ use Ratchet\ConnectionInterface;
 class MessageComponent implements MessageComponentInterface
 {
     /**
-     * {@inherit}
+     * {@inherit}.
      */
     public function onOpen(ConnectionInterface $conn)
     {
@@ -24,7 +24,7 @@ class MessageComponent implements MessageComponentInterface
     }
 
     /**
-     * {@inherit}
+     * {@inherit}.
      */
     public function onMessage(ConnectionInterface $from, $message)
     {
@@ -32,7 +32,7 @@ class MessageComponent implements MessageComponentInterface
     }
 
     /**
-     * {@inherit}
+     * {@inherit}.
      */
     public function onClose(ConnectionInterface $conn)
     {
@@ -41,7 +41,7 @@ class MessageComponent implements MessageComponentInterface
     }
 
     /**
-     * {@inherit}
+     * {@inherit}.
      */
     public function onError(ConnectionInterface $conn, \Exception $exception)
     {
@@ -50,10 +50,10 @@ class MessageComponent implements MessageComponentInterface
     }
 
     /**
-     * Helper function to call event callbacks checking for its existence
+     * Helper function to call event callbacks checking for its existence.
      *
-     * @param  string $ratchetEvent The event name used in the Siler\Container
-     * @param  array $params The array of params to be used as arguments
+     * @param string $ratchetEvent The event name used in the Siler\Container
+     * @param array  $params       The array of params to be used as arguments
      */
     private function callback($ratchetEvent, array $params)
     {

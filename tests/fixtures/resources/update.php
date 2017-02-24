@@ -1,1 +1,3 @@
-<?php printf('resources.update %s', $params['id']);
+<?php
+
+printf('resources.update %s', $params['id']);

@@ -2,10 +2,10 @@
 
 namespace Siler\Test;
 
-use Siler\Graphql;
+use GraphQL\Schema;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
-use GraphQL\Schema;
+use Siler\Graphql;
 
 class GraphqlTest extends \PHPUnit\Framework\TestCase
 {
@@ -21,10 +21,10 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
         ];
 
         $rootQuery = new ObjectType([
-            'name' => 'RootQuery',
+            'name'   => 'RootQuery',
             'fields' => [
                 'foo' => [
-                    'type' => Type::string(),
+                    'type'    => Type::string(),
                     'resolve' => function ($root, $args) {
                         return 'bar';
                     },
@@ -51,10 +51,10 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
         $_SERVER['HTTP_CONTENT_TYPE'] = 'application/json';
 
         $rootQuery = new ObjectType([
-            'name' => 'RootQuery',
+            'name'   => 'RootQuery',
             'fields' => [
                 'foo' => [
-                    'type' => Type::string(),
+                    'type'    => Type::string(),
                     'resolve' => function ($root, $args) {
                         return 'bar';
                     },
@@ -83,10 +83,10 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
         ];
 
         $rootQuery = new ObjectType([
-            'name' => 'RootQuery',
+            'name'   => 'RootQuery',
             'fields' => [
                 'foo' => [
-                    'type' => Type::string(),
+                    'type'    => Type::string(),
                     'resolve' => function ($root, $args) {
                         throw new \Exception('error_message');
                     },

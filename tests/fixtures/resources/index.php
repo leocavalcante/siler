@@ -1,1 +1,3 @@
-<?php print 'resources.index';
+<?php
+
+echo 'resources.index';

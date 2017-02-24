@@ -1,18 +1,17 @@
 <?php
 /**
- * Helpers for the HTTP abstraction
+ * Helpers for the HTTP abstraction.
  */
 
 namespace Siler\Http;
 
-use Siler\Http\Response;
 use function Siler\array_get;
 
 /**
- * Get a value from the $_COOKIE global
+ * Get a value from the $_COOKIE global.
  *
- * @param string $key The key to be searched
- * @param mixed $default The default value to be returned when the key don't exists
+ * @param string $key     The key to be searched
+ * @param mixed  $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
@@ -22,10 +21,10 @@ function cookie($key = null, $default = null)
 }
 
 /**
- * Get a value from the $_SESSION global
+ * Get a value from the $_SESSION global.
  *
- * @param string $key The key to be searched
- * @param mixed $default The default value to be returned when the key don't exists
+ * @param string $key     The key to be searched
+ * @param mixed  $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
@@ -35,9 +34,9 @@ function session($key = null, $default = null)
 }
 
 /**
- * Set a value in the $_SESSION global
+ * Set a value in the $_SESSION global.
  *
- * @param string $key The key to be used
+ * @param string $key   The key to be used
  * @param string $value The value to be stored
  */
 function setsession($key, $value)
@@ -46,10 +45,10 @@ function setsession($key, $value)
 }
 
 /**
- * Get a value from the $_SESSION global and remove it
+ * Get a value from the $_SESSION global and remove it.
  *
- * @param string $key The key to be searched
- * @param mixed $default The default value to be returned when the key don't exists
+ * @param string $key     The key to be searched
+ * @param mixed  $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
@@ -57,11 +56,12 @@ function flash($key = null, $default = null)
 {
     $value = session($key, $default);
     unset($_SESSION[$key]);
+
     return $value;
 }
 
 /**
- * Redirects using the HTTP Location header
+ * Redirects using the HTTP Location header.
  *
  * @param string $url The url to be redirected to
  */
@@ -71,7 +71,7 @@ function redirect($url)
 }
 
 /**
- * Returns a path based on the projects base url
+ * Returns a path based on the projects base url.
  *
  * @param string $path Concat some URI
  *
@@ -84,11 +84,12 @@ function url($path = null)
     }
 
     $scriptName = array_get($_SERVER, 'SCRIPT_NAME', '');
+
     return rtrim(str_replace('\\', '/', dirname($scriptName)), '/').'/'.ltrim($path, '/');
 }
 
 /**
- * Get the current HTTP path info
+ * Get the current HTTP path info.
  *
  * @return string
  */
@@ -98,7 +99,7 @@ function path()
 }
 
 /**
- * Get the absolute project's URI
+ * Get the absolute project's URI.
  *
  * @param string $protocol Pass a protocol, defaults to http or https
  *

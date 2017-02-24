@@ -1,6 +1,6 @@
 <?php
 /**
- * Helper functions to work with the Twig template engine
+ * Helper functions to work with the Twig template engine.
  */
 
 namespace Siler\Twig;
@@ -8,11 +8,11 @@ namespace Siler\Twig;
 use Siler\Container;
 
 /**
- * Initialze the Twig environment
+ * Initialze the Twig environment.
  *
- * @param string $templatesPath Path to templates
+ * @param string $templatesPath      Path to templates
  * @param string $templatesCachePath Path to templates cache
- * @param bool $debug Should TwigEnv allow debugging
+ * @param bool   $debug              Should TwigEnv allow debugging
  *
  * @return \Twig_Environment
  */
@@ -37,10 +37,10 @@ function init($templatesPath, $templatesCachePath = null, $debug = null)
 }
 
 /**
- * Renders the given template within the given data
+ * Renders the given template within the given data.
  *
  * @param string $name The template name in the templates path
- * @param array $data The array of data to used within the template
+ * @param array  $data The array of data to used within the template
  *
  * @throws RuntimeException if Twig isn't initialized
  *

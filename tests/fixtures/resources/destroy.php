@@ -1,1 +1,3 @@
-<?php printf('resources.destroy %s', $params['id']);
+<?php
+
+printf('resources.destroy %s', $params['id']);
