@@ -1,6 +1,6 @@
 <?php
 /**
- * Siler routing facilities
+ * Siler routing facilities.
  */
 
 namespace Siler\Route;
@@ -10,9 +10,9 @@ use Siler\Http\Request;
 use function Siler\require_fn;
 
 /**
- * Define a new route using the GET HTTP method
+ * Define a new route using the GET HTTP method.
  *
- * @param string $path The HTTP URI to listen on
+ * @param string          $path     The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
  */
 function get($path, $callback)
@@ -21,9 +21,9 @@ function get($path, $callback)
 }
 
 /**
- * Define a new route using the POST HTTP method
+ * Define a new route using the POST HTTP method.
  *
- * @param string $path The HTTP URI to listen on
+ * @param string          $path     The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
  */
 function post($path, $callback)
@@ -32,9 +32,9 @@ function post($path, $callback)
 }
 
 /**
- * Define a new route using the PUT HTTP method
+ * Define a new route using the PUT HTTP method.
  *
- * @param string $path The HTTP URI to listen on
+ * @param string          $path     The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
  */
 function put($path, $callback)
@@ -43,9 +43,9 @@ function put($path, $callback)
 }
 
 /**
- * Define a new route using the DELETE HTTP method
+ * Define a new route using the DELETE HTTP method.
  *
- * @param string $path The HTTP URI to listen on
+ * @param string          $path     The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
  */
 function delete($path, $callback)
@@ -54,9 +54,9 @@ function delete($path, $callback)
 }
 
 /**
- * Define a new route using the OPTIONS HTTP method
+ * Define a new route using the OPTIONS HTTP method.
  *
- * @param string $path The HTTP URI to listen on
+ * @param string          $path     The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
  */
 function options($path, $callback)
@@ -65,10 +65,10 @@ function options($path, $callback)
 }
 
 /**
- * Define a new route
+ * Define a new route.
  *
- * @param string $method The HTTP request method to listen on
- * @param string $path The HTTP URI to listen on
+ * @param string          $method   The HTTP request method to listen on
+ * @param string          $path     The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
  */
 function route($method, $path, $callback)
@@ -85,7 +85,7 @@ function route($method, $path, $callback)
 }
 
 /**
- * Turns a URLroute path into a Regexp
+ * Turns a URLroute path into a Regexp.
  *
  * @param string $path The HTTP path
  *
@@ -100,9 +100,9 @@ function regexify($path)
 }
 
 /**
- * Creates a resource route path mapping
+ * Creates a resource route path mapping.
  *
- * @param string $basePath The base for the resource
+ * @param string $basePath      The base for the resource
  * @param string $resourcesPath The base path name for the corresponding PHP files
  */
 function resource($basePath, $resourcesPath, $identityParam = null)

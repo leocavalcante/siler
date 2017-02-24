@@ -1,1 +1,3 @@
-<?php return $params['bar'];
+<?php
+
+return $params['bar'];

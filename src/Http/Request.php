@@ -1,6 +1,6 @@
 <?php
 /**
- * Helpers functions for HTTP requests
+ * Helpers functions for HTTP requests.
  */
 
 namespace Siler\Http\Request;
@@ -8,7 +8,7 @@ namespace Siler\Http\Request;
 use function Siler\array_get;
 
 /**
- * Returns the raw HTTP body request
+ * Returns the raw HTTP body request.
  *
  * @param string The input file to check on
  *
@@ -20,7 +20,7 @@ function raw($input = 'php://input')
 }
 
 /**
- * Returns URL decoded raw request body
+ * Returns URL decoded raw request body.
  *
  * @param string The input file to check on
  *
@@ -30,11 +30,12 @@ function params($input = 'php://input')
 {
     $params = [];
     parse_str(raw($input), $params);
+
     return $params;
 }
 
 /**
- * Returns JSON decoded raw request body
+ * Returns JSON decoded raw request body.
  *
  * @param string The input file to check on
  *
@@ -46,7 +47,7 @@ function json($input = 'php://input')
 }
 
 /**
- * Returns all the HTTP headers
+ * Returns all the HTTP headers.
  *
  * @return array
  */
@@ -69,10 +70,10 @@ function headers()
 }
 
 /**
- * Returns the request header or the given default
+ * Returns the request header or the given default.
  *
- * @param  string $key     The header name
- * @param   mixed $default The default value when header isnt present
+ * @param string $key     The header name
+ * @param mixed  $default The default value when header isnt present
  *
  * @return string
  */
@@ -82,10 +83,10 @@ function header($key, $default = null)
 }
 
 /**
- * Get a value from the $_GET global
+ * Get a value from the $_GET global.
  *
- * @param string $key The key to be searched
- * @param mixed $default The default value to be returned when the key don't exists
+ * @param string $key     The key to be searched
+ * @param mixed  $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
@@ -95,10 +96,10 @@ function get($key = null, $default = null)
 }
 
 /**
- * Get a value from the $_POST global
+ * Get a value from the $_POST global.
  *
- * @param string $key The key to be searched
- * @param mixed $default The default value to be returned when the key don't exists
+ * @param string $key     The key to be searched
+ * @param mixed  $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
@@ -108,10 +109,10 @@ function post($key = null, $default = null)
 }
 
 /**
- * Get a value from the $_REQUEST global
+ * Get a value from the $_REQUEST global.
  *
- * @param string $key The key to be searched
- * @param mixed $default The default value to be returned when the key don't exists
+ * @param string $key     The key to be searched
+ * @param mixed  $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
@@ -121,7 +122,7 @@ function input($key = null, $default = null)
 }
 
 /**
- * Checks for the current HTTP request method
+ * Checks for the current HTTP request method.
  *
  * @param string $method The given method to check on
  *
@@ -130,5 +131,6 @@ function input($key = null, $default = null)
 function method($method)
 {
     $requestMethod = array_get($_SERVER, 'REQUEST_METHOD', 'GET');
+
     return strtolower($method) == strtolower($requestMethod);
 }

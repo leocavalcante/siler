@@ -5,7 +5,7 @@ namespace Siler\Test;
 use PHPUnit\Framework\TestCase;
 use Siler\Route;
 
-class RouteFacadesTest extends TestCase
+class RouteFacadeTest extends TestCase
 {
     protected function setUp()
     {

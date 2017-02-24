@@ -1,16 +1,15 @@
 <?php
 /**
- * Helper functions to work with Ratchet
+ * Helper functions to work with Ratchet.
  */
 
 namespace Siler\Ratchet;
 
-use Siler\Container;
-
-use Ratchet\WebSocket\WsServer;
+use Ratchet\ConnectionInterface;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
-use Ratchet\ConnectionInterface;
+use Ratchet\WebSocket\WsServer;
+use Siler\Container;
 
 const RATCHET_CONNECTIONS = 'ratchet_connections';
 const RATCHET_EVENT_OPEN = 'ratchet_event_open';
@@ -19,7 +18,7 @@ const RATCHET_EVENT_CLOSE = 'ratchet_event_close';
 const RATCHET_EVENT_ERROR = 'ratchet_event_error';
 
 /**
- * Initialize the Ratchet server. Note: this blocks the reset of code execution
+ * Initialize the Ratchet server. Note: this blocks the reset of code execution.
  *
  * @param int $port The port number on which the server should run. Defaults to 8080
  */
@@ -39,7 +38,7 @@ function init($port = null)
 }
 
 /**
- * Sets a callback for connected clients
+ * Sets a callback for connected clients.
  *
  * @param \Closure $callback The callback function to call when there is a new client connected
  */
@@ -49,9 +48,9 @@ function connected($callback)
 }
 
 /**
- * Sets a callback for incoming websocket messages
+ * Sets a callback for incoming websocket messages.
  *
- * @param  \Closure $callback The callback for incoming messages
+ * @param \Closure $callback The callback for incoming messages
  */
 function inbox($callback)
 {
@@ -59,9 +58,9 @@ function inbox($callback)
 }
 
 /**
- * Sets a callback for closed connections
+ * Sets a callback for closed connections.
  *
- * @param  \Closure $callback The callback for closed connections
+ * @param \Closure $callback The callback for closed connections
  */
 function closed($callback)
 {
@@ -69,9 +68,9 @@ function closed($callback)
 }
 
 /**
- * Sets a callback to handle errors
+ * Sets a callback to handle errors.
  *
- * @param  \Closure $callback The callback for errors
+ * @param \Closure $callback The callback for errors
  */
 function error($callback)
 {
@@ -79,10 +78,10 @@ function error($callback)
 }
 
 /**
- * Broadcast a message for the connected clients
+ * Broadcast a message for the connected clients.
  *
- * @param  string $message The message to broadcast
- * @param  ConnectionInterface|null $from The sender client, if given the message will not be broadcasted to it
+ * @param string                   $message The message to broadcast
+ * @param ConnectionInterface|null $from    The sender client, if given the message will not be broadcasted to it
  */
 function broadcast($message, ConnectionInterface $from = null)
 {

@@ -1,1 +1,3 @@
-<?php throw new Exception('Throw was required');
+<?php
+
+throw new Exception('Throw was required');
