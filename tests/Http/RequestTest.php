@@ -92,21 +92,21 @@ class RequestTest extends TestCase
     public function testRequestMethodIs()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $this->assertTrue(Request\is_post());
+        $this->assertTrue(Request\method('post'));
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $this->assertTrue(Request\is_get());
+        $this->assertTrue(Request\method('get'));
 
         $_SERVER['REQUEST_METHOD'] = 'PUT';
-        $this->assertTrue(Request\is_put());
+        $this->assertTrue(Request\method('put'));
 
         $_SERVER['REQUEST_METHOD'] = 'DELETE';
-        $this->assertTrue(Request\is_delete());
+        $this->assertTrue(Request\method('delete'));
 
         $_SERVER['REQUEST_METHOD'] = 'OPTIONS';
-        $this->assertTrue(Request\is_options());
+        $this->assertTrue(Request\method('options'));
 
         $_SERVER['REQUEST_METHOD'] = 'CUSTOM';
-        $this->assertTrue(Request\method_is('custom'));
+        $this->assertTrue(Request\method('custom'));
     }
 }

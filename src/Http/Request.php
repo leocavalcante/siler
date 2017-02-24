@@ -121,63 +121,13 @@ function input($key = null, $default = null)
 }
 
 /**
- * Check if the request method is POST
- *
- * @return bool
- */
-function is_post()
-{
-    return method_is('post');
-}
-
-/**
- * Check if the request method is GET
- *
- * @return bool
- */
-function is_get()
-{
-    return method_is('get');
-}
-
-/**
- * Check if the request method is PUT
- *
- * @return bool
- */
-function is_put()
-{
-    return method_is('put');
-}
-
-/**
- * Check if the request method is DELETE
- *
- * @return bool
- */
-function is_delete()
-{
-    return method_is('delete');
-}
-
-/**
- * Check if the request method is OPTIONS
- *
- * @return bool
- */
-function is_options()
-{
-    return method_is('options');
-}
-
-/**
- * Check for a custom HTTP method
+ * Checks for the current HTTP request method
  *
  * @param string $method The given method to check on
  *
  * @return bool
  */
-function method_is($method)
+function method($method)
 {
     $requestMethod = array_get($_SERVER, 'REQUEST_METHOD', 'GET');
     return strtolower($method) == strtolower($requestMethod);

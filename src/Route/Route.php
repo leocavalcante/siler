@@ -79,7 +79,7 @@ function route($method, $path, $callback)
         $callback = require_fn($callback);
     }
 
-    if (Request\method_is($method) && preg_match($path, Http\path(), $params)) {
+    if (Request\method($method) && preg_match($path, Http\path(), $params)) {
         $callback($params);
     }
 }
