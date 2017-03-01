@@ -12,7 +12,7 @@ class RouteResourceTest extends TestCase
         $this->expectOutputString('resources.index');
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_SERVER['PATH_INFO'] = '/resources';
+        $_SERVER['REQUEST_URI'] = '/resources';
 
         Route\resource('/resources', __DIR__.'/../fixtures/resources');
     }
@@ -25,11 +25,9 @@ class RouteResourceTest extends TestCase
         $this->expectOutputString('resources.create');
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_SERVER['PATH_INFO'] = '/resources/create';
+        $_SERVER['REQUEST_URI'] = '/resources/create';
 
         Route\resource('/resources', __DIR__.'/../fixtures/resources');
-
-        ob_end_clean(); // test only purposes
     }
 
     public function testStoreResource()
@@ -37,7 +35,7 @@ class RouteResourceTest extends TestCase
         $this->expectOutputString('resources.store bar');
 
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_SERVER['PATH_INFO'] = '/resources';
+        $_SERVER['REQUEST_URI'] = '/resources';
         $_POST['foo'] = 'bar';
 
         Route\resource('/resources', __DIR__.'/../fixtures/resources');
@@ -48,7 +46,7 @@ class RouteResourceTest extends TestCase
         $this->expectOutputString('resources.show 8');
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_SERVER['PATH_INFO'] = '/resources/8';
+        $_SERVER['REQUEST_URI'] = '/resources/8';
 
         Route\resource('/resources', __DIR__.'/../fixtures/resources');
     }
@@ -58,7 +56,7 @@ class RouteResourceTest extends TestCase
         $this->expectOutputString('resources.edit 8');
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_SERVER['PATH_INFO'] = '/resources/8/edit';
+        $_SERVER['REQUEST_URI'] = '/resources/8/edit';
 
         Route\resource('/resources', __DIR__.'/../fixtures/resources');
     }
@@ -68,27 +66,31 @@ class RouteResourceTest extends TestCase
         $this->expectOutputString('resources.update 8');
 
         $_SERVER['REQUEST_METHOD'] = 'PUT';
-        $_SERVER['PATH_INFO'] = '/resources/8';
+        $_SERVER['REQUEST_URI'] = '/resources/8';
 
         Route\resource('/resources', __DIR__.'/../fixtures/resources');
     }
 
-    public function testDesotryResource()
+    public function testDestroyResource()
     {
         $this->expectOutputString('resources.destroy 8');
 
         $_SERVER['REQUEST_METHOD'] = 'DELETE';
-        $_SERVER['PATH_INFO'] = '/resources/8';
+        $_SERVER['REQUEST_URI'] = '/resources/8';
 
         Route\resource('/resources', __DIR__.'/../fixtures/resources');
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     public function testOverrideIdentity()
     {
         $this->expectOutputString('resources.edit foo');
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_SERVER['PATH_INFO'] = '/resources/foo/edit';
+        $_SERVER['REQUEST_URI'] = '/resources/foo/edit';
+        $_SERVER['SCRIPT_NAME'] = '/test/index.php';
 
         Route\resource('/resources', __DIR__.'/../fixtures/resources/slug', 'slug');
     }

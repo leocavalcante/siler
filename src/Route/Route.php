@@ -116,9 +116,10 @@ function resource($basePath, $resourcesPath, $identityParam = null)
 
     get($basePath, $resourcesPath.'/index.php');
     get($basePath.'/create', $resourcesPath.'/create.php');
-    post($basePath, $resourcesPath.'/store.php');
-    get($basePath.'/{'.$identityParam.'}', $resourcesPath.'/show.php');
     get($basePath.'/{'.$identityParam.'}/edit', $resourcesPath.'/edit.php');
+    get($basePath.'/{'.$identityParam.'}', $resourcesPath.'/show.php');
+
+    post($basePath, $resourcesPath.'/store.php');
     put($basePath.'/{'.$identityParam.'}', $resourcesPath.'/update.php');
     delete($basePath.'/{'.$identityParam.'}', $resourcesPath.'/destroy.php');
 }

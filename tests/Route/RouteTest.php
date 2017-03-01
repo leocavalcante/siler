@@ -13,7 +13,7 @@ class RouteTest extends TestCase
 
         $_SERVER['HTTP_HOST'] = 'test:8000';
         $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
-        $_SERVER['PATH_INFO'] = '/bar/baz';
+        $_SERVER['REQUEST_URI'] = '/bar/baz';
         $_SERVER['REQUEST_METHOD'] = 'GET';
     }
 
@@ -64,7 +64,7 @@ class RouteTest extends TestCase
      */
     public function testRouteWrappedNamedGroup()
     {
-        $_SERVER['PATH_INFO'] = '/bar/baz/qux';
+        $_SERVER['REQUEST_URI'] = '/bar/baz/qux';
 
         Route\route('get', '/bar/{baz}', function ($params) {
             throw new \Exception('I should not be called');
@@ -81,7 +81,7 @@ class RouteTest extends TestCase
      */
     public function testRouteNamedGroupWithDash()
     {
-        $_SERVER['PATH_INFO'] = '/bar/baz-qux';
+        $_SERVER['REQUEST_URI'] = '/bar/baz-qux';
 
         Route\route('get', '/bar/{baz}', function ($params) {
             throw new \Exception($params['baz']);
@@ -94,7 +94,7 @@ class RouteTest extends TestCase
      */
     public function testRouteNamedGroupWithNumber()
     {
-        $_SERVER['PATH_INFO'] = '/bar/baz-2017';
+        $_SERVER['REQUEST_URI'] = '/bar/baz-2017';
 
         Route\route('get', '/bar/{baz}', function ($params) {
             throw new \Exception($params['baz']);
@@ -107,7 +107,7 @@ class RouteTest extends TestCase
      */
     public function testRouteNamedGroupWithUnderscore()
     {
-        $_SERVER['PATH_INFO'] = '/bar/baz_qux';
+        $_SERVER['REQUEST_URI'] = '/bar/baz_qux';
 
         Route\route('get', '/bar/{baz}', function ($params) {
             throw new \Exception($params['baz']);
@@ -120,7 +120,7 @@ class RouteTest extends TestCase
      */
     public function testRouteDefaultPathInfo()
     {
-        unset($_SERVER['PATH_INFO']);
+        unset($_SERVER['REQUEST_URI']);
 
         Route\route('get', '/', function ($params) {
             throw new \Exception('OK');

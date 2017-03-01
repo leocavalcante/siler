@@ -95,7 +95,13 @@ function url($path = null)
  */
 function path()
 {
-    return array_get($_SERVER, 'PATH_INFO', '/');
+    $scriptName = array_get($_SERVER, 'SCRIPT_NAME', '');
+    $queryString = array_get($_SERVER, 'QUERY_STRING', '');
+    $requestUri = array_get($_SERVER, 'REQUEST_URI', '');
+
+    $requestUri = str_replace('?'.$queryString, '', $requestUri);
+
+    return '/'.ltrim(str_replace(dirname($scriptName), '', $requestUri), '/');
 }
 
 /**
