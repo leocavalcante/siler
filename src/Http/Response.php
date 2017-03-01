@@ -48,7 +48,7 @@ function text($content, $code = 200, $charset = 'utf-8')
  */
 function html($content, $code = 200, $charset = 'utf-8')
 {
-    return output(htmlentities($content), $code, 'text/html', $charset);
+    return output($content, $code, 'text/html', $charset);
 }
 
 /**
