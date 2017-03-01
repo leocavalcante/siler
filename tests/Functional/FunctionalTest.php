@@ -2,8 +2,6 @@
 
 namespace Siler\Test;
 
-use Siler\Functional as λ;
-
 class FunctionalTest extends \PHPUnit\Framework\TestCase
 {
     public function testId()
