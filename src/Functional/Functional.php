@@ -3,13 +3,13 @@
  * In computer science, functional programming is a programming paradigm
  * a style of building the structure and elements of computer programs
  * that treats computation as the evaluation of mathematical functions
- * and avoids changing-state and mutable data
+ * and avoids changing-state and mutable data.
  */
 
 namespace Siler\Functional;
 
 /**
- * Identity function
+ * Identity function.
  *
  * @return callable $value -> $value
  */
@@ -21,9 +21,10 @@ function identity()
 }
 
 /**
- * Is a unary function which evaluates to $value for all inputs
+ * Is a unary function which evaluates to $value for all inputs.
  *
- * @param     mixed $value
+ * @param mixed $value
+ *
  * @return callable a -> $value
  */
 function always($value)
@@ -34,9 +35,10 @@ function always($value)
 }
 
 /**
- * Returns TRUE if $left is equal to $right and they are of the same type
+ * Returns TRUE if $left is equal to $right and they are of the same type.
  *
- * @param     mixed $right
+ * @param mixed $right
+ *
  * @return callable $left -> bool
  */
 function equal($right)
@@ -47,9 +49,10 @@ function equal($right)
 }
 
 /**
- * Returns TRUE if $left is strictly less than $right
+ * Returns TRUE if $left is strictly less than $right.
  *
- * @param     mixed $right
+ * @param mixed $right
+ *
  * @return callable $left -> bool
  */
 function less_than($right)
@@ -60,9 +63,10 @@ function less_than($right)
 }
 
 /**
- * Returns TRUE if $left is strictly greater than $right
+ * Returns TRUE if $left is strictly greater than $right.
  *
- * @param     mixed $right
+ * @param mixed $right
+ *
  * @return callable $left -> bool
  */
 function greater_than($right)
@@ -73,9 +77,10 @@ function greater_than($right)
 }
 
 /**
- * It allows for conditional execution of code fragments
+ * It allows for conditional execution of code fragments.
  *
- * @param  callable $pred
+ * @param callable $pred
+ *
  * @return callable $then -> $else -> $value -> mixed
  */
 function if_else(callable $pred)
@@ -90,9 +95,10 @@ function if_else(callable $pred)
 }
 
 /**
- * Pattern-Matching Semantics
+ * Pattern-Matching Semantics.
  *
- * @param     array $matches
+ * @param array $matches
+ *
  * @return callable $value -> mixed|null
  */
 function match(array $matches)
@@ -109,9 +115,10 @@ function match(array $matches)
 }
 
 /**
- * Determines whether any returns of $functions is TRUE
+ * Determines whether any returns of $functions is TRUE.
  *
- * @param     array $functions
+ * @param array $functions
+ *
  * @return callable $value -> bool
  */
 function any(array $functions)
@@ -124,9 +131,10 @@ function any(array $functions)
 }
 
 /**
- * Determines whether all returns of $functions are TRUE
+ * Determines whether all returns of $functions are TRUE.
  *
- * @param     array $functions
+ * @param array $functions
+ *
  * @return callable $value -> bool
  */
 function all(array $functions)
@@ -139,9 +147,10 @@ function all(array $functions)
 }
 
 /**
- * Boolean "not"
+ * Boolean "not".
  *
- * @param  callable $function
+ * @param callable $function
+ *
  * @return callable $value -> ! $function $value
  */
 function not(callable $function)
@@ -152,9 +161,10 @@ function not(callable $function)
 }
 
 /**
- * Sum of $left and $right
+ * Sum of $left and $right.
  *
- * @param     mixed $right
+ * @param mixed $right
+ *
  * @return callable $left -> $left + $right
  */
 function add($right)
@@ -165,9 +175,10 @@ function add($right)
 }
 
 /**
- * Product of $left and $right
+ * Product of $left and $right.
  *
- * @param     mixed $right
+ * @param mixed $right
+ *
  * @return callable $left -> $left * $right
  */
 function mul($right)
@@ -178,9 +189,10 @@ function mul($right)
 }
 
 /**
- * Difference of $left and $right
+ * Difference of $left and $right.
  *
- * @param     mixed $right
+ * @param mixed $right
+ *
  * @return callable $left -> $left - $right
  */
 function sub($right)
@@ -191,9 +203,10 @@ function sub($right)
 }
 
 /**
- * Quotient of $left and $right
+ * Quotient of $left and $right.
  *
- * @param     mixed $right
+ * @param mixed $right
+ *
  * @return callable $left -> $left / $right
  */
 function div($right)
@@ -205,9 +218,10 @@ function div($right)
 
 /**
  * Function composition is the act of pipelining the result of one function,
- * to the input of another, creating an entirely new function
+ * to the input of another, creating an entirely new function.
  *
- * @param     array $functions
+ * @param array $functions
+ *
  * @return callable $value -> mixed
  */
 function compose(array $functions)
