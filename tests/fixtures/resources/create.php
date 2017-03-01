@@ -1,4 +1,3 @@
 <?php
-
-echo 'resources.create';
-ob_start(); // test only purposes
+echo 'resources.create'
+    and exit;
