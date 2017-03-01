@@ -32,7 +32,7 @@ class ResponseTest extends TestCase
 
     public function testHtml()
     {
-        $this->expectOutputString('&lt;a href=&quot;#&quot;&gt;&lt;/a&gt;');
+        $this->expectOutputString('<a href="#"></a>');
 
         Response\html('<a href="#"></a>');
 
