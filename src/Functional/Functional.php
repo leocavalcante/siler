@@ -56,6 +56,7 @@ function match(array $matches)
         }
 
         $match = $matches[0];
+
         return if_else($match[0])($match[1])(match(array_slice($matches, 1)))($value);
     };
 }
@@ -81,7 +82,7 @@ function all(array $functions)
 function not(callable $function)
 {
     return function ($value) use ($function) {
-        return ! $function($value);
+        return !$function($value);
     };
 }
 
