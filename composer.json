@@ -26,16 +26,17 @@
     "autoload": {
         "psr-4": { "Siler\\": "src/" },
         "files": [
-            "src/Siler.php",
             "src/Container/Container.php",
+            "src/Dotenv/Dotenv.php",
+            "src/Functional/Functional.php",
+            "src/Graphql/Graphql.php",
             "src/Http/Http.php",
             "src/Http/Request.php",
             "src/Http/Response.php",
-            "src/Route/Route.php",
-            "src/Dotenv/Dotenv.php",
-            "src/Twig/Twig.php",
             "src/Ratchet/Ratchet.php",
-            "src/Graphql/Graphql.php"
+            "src/Route/Route.php",
+            "src/Twig/Twig.php",
+            "src/Siler.php"
         ]
     },
     "autoload-dev": {
