@@ -3,10 +3,10 @@
 namespace Siler\Test;
 
 use GraphQL\Schema;
-use GraphQL\Type\Definition\ObjectType;
-use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\EnumType;
 use GraphQL\Type\Definition\InterfaceType;
+use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\IDType;
 use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Definition\FloatType;
@@ -68,7 +68,7 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
     {
         $interfaceType = Graphql\itype('Character', 'A character in the Star Wars Trilogy')([
             Graphql\str('id', 'The id of the character.')(),
-            Graphql\str('name', 'The name of the character.')()
+            Graphql\str('name', 'The name of the character.')(),
         ])(function ($obj) {
             return null;
         });
@@ -79,7 +79,7 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
     public function testObjectType()
     {
         $objectType = Graphql\type('Human', 'A humanoid creature in the Star Wars universe.')([
-            Graphql\str('id', 'The id of the human.')
+            Graphql\str('id', 'The id of the human.'),
         ])();
 
         $this->assertInstanceOf(ObjectType::class, $objectType);
