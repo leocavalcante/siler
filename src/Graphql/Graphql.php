@@ -7,10 +7,10 @@ namespace Siler\Graphql;
 
 use GraphQL\GraphQL;
 use GraphQL\Schema;
-use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Definition\EnumType;
 use GraphQL\Type\Definition\InterfaceType;
 use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\Type;
 use Siler\Http\Request;
 use Siler\Http\Response;
 use function Siler\array_get;
