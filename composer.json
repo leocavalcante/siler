@@ -28,6 +28,7 @@
         "files": [
             "src/Container/Container.php",
             "src/Dotenv/Dotenv.php",
+            "src/Functional/Monad/Monad.php",
             "src/Functional/Functional.php",
             "src/Graphql/Graphql.php",
             "src/Http/Http.php",
