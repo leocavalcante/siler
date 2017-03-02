@@ -5,10 +5,50 @@ namespace Siler\Test;
 use GraphQL\Schema;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Definition\EnumType;
+use GraphQL\Type\Definition\InterfaceType;
 use Siler\Graphql;
 
 class GraphqlTest extends \PHPUnit\Framework\TestCase
 {
+    public function testVal()
+    {
+        $fooVal = Graphql\val('FOO')(4);
+        $this->assertSame(4, $fooVal['value']);
+    }
+
+    public function testEnum()
+    {
+        $enumType = Graphql\enum('Episode')([
+            Graphql\val('NEWHOPE', 'Released in 1977.')(4),
+            Graphql\val('EMPIRE', 'Released in 1980.')(5),
+            Graphql\val('JEDI', 'Released in 1983.')(6),
+        ]);
+
+        $this->assertInstanceOf(EnumType::class, $enumType);
+    }
+
+    public function testInterface()
+    {
+        $interfaceType = Graphql\itype('Character', 'A character in the Star Wars Trilogy')([
+            Graphql\str('id', 'The id of the character.')(),
+            Graphql\str('name', 'The name of the character.')()
+        ])(function ($obj) {
+            return null;
+        });
+
+        $this->assertInstanceOf(InterfaceType::class, $interfaceType);
+    }
+
+    public function testObjectType()
+    {
+        $objectType = Graphql\type('Human', 'A humanoid creature in the Star Wars universe.')([
+            Graphql\str('id', 'The id of the human.')
+        ])();
+
+        $this->assertInstanceOf(ObjectType::class, $objectType);
+    }
+
     /**
      * @runInSeparateProcess
      */
@@ -16,25 +56,15 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectOutputString('{"data":{"foo":"bar"}}');
 
-        $_POST = [
-            'query' => '{ foo }',
-        ];
+        $_POST = ['query' => '{ foo }'];
 
-        $rootQuery = new ObjectType([
-            'name'   => 'RootQuery',
-            'fields' => [
-                'foo' => [
-                    'type'    => Type::string(),
-                    'resolve' => function ($root, $args) {
-                        return 'bar';
-                    },
-                ],
-            ],
+        $root = Graphql\type('Root')([
+            Graphql\str('foo')(function ($root, $args) {
+                return 'bar';
+            })
         ]);
 
-        $schema = new Schema([
-            'query' => $rootQuery,
-        ]);
+        $schema = new Schema(['query' => $root()]);
 
         Graphql\init($schema);
 
@@ -50,21 +80,13 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
 
         $_SERVER['HTTP_CONTENT_TYPE'] = 'application/json';
 
-        $rootQuery = new ObjectType([
-            'name'   => 'RootQuery',
-            'fields' => [
-                'foo' => [
-                    'type'    => Type::string(),
-                    'resolve' => function ($root, $args) {
-                        return 'bar';
-                    },
-                ],
-            ],
+        $root = Graphql\type('Root')([
+            Graphql\str('foo')(function ($root, $args) {
+                return 'bar';
+            })
         ]);
 
-        $schema = new Schema([
-            'query' => $rootQuery,
-        ]);
+        $schema = new Schema(['query' => $root()]);
 
         Graphql\init($schema, null, null, __DIR__.'/../fixtures/graphql_input.json');
 
@@ -78,25 +100,15 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectOutputString(file_get_contents(__DIR__.'/../fixtures/graphql_error.json'));
 
-        $_POST = [
-            'query' => '{ foo }',
-        ];
+        $_POST = ['query' => '{ foo }'];
 
-        $rootQuery = new ObjectType([
-            'name'   => 'RootQuery',
-            'fields' => [
-                'foo' => [
-                    'type'    => Type::string(),
-                    'resolve' => function ($root, $args) {
-                        throw new \Exception('error_message');
-                    },
-                ],
-            ],
+        $root = Graphql\type('Root')([
+            Graphql\str('foo')(function ($root, $args) {
+                throw new \Exception('error_message');
+            })
         ]);
 
-        $schema = new Schema([
-            'query' => $rootQuery,
-        ]);
+        $schema = new Schema(['query' => $root()]);
 
         Graphql\init($schema, null, null, __DIR__.'/../fixtures/graphql_input.json');
 
