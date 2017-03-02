@@ -73,6 +73,26 @@ function str($name, $description = null)
     return field(Type::string(), $name, $description);
 }
 
+function int($name, $description = null)
+{
+    return field(Type::int(), $name, $description);
+}
+
+function float($name, $description = null)
+{
+    return field(Type::float(), $name, $description);
+}
+
+function bool($name, $description = null)
+{
+    return field(Type::boolean(), $name, $description);
+}
+
+function id($name, $description = null)
+{
+    return field(Type::id(), $name, $description);
+}
+
 function itype($name, $description = null)
 {
     return function (array $fields) use ($name, $description) {
