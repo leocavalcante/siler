@@ -17,6 +17,6 @@ class Identity
             return $this->value;
         }
 
-        return new Identity($function($this->value));
+        return new self($function($this->value));
     }
 }

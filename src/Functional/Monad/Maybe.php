@@ -11,9 +11,9 @@ class Maybe extends Identity
         }
 
         if (is_null($this->value)) {
-            return new Maybe(null);
+            return new self(null);
         }
 
-        return new Maybe($function($this->value));
+        return new self($function($this->value));
     }
 }
