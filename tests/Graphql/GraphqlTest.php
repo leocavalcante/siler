@@ -3,15 +3,15 @@
 namespace Siler\Test;
 
 use GraphQL\Schema;
-use GraphQL\Type\Definition\EnumType;
-use GraphQL\Type\Definition\InterfaceType;
-use GraphQL\Type\Definition\ObjectType;
-use GraphQL\Type\Definition\Type;
-use GraphQL\Type\Definition\IDType;
-use GraphQL\Type\Definition\StringType;
-use GraphQL\Type\Definition\FloatType;
-use GraphQL\Type\Definition\IntType;
 use GraphQL\Type\Definition\BooleanType;
+use GraphQL\Type\Definition\EnumType;
+use GraphQL\Type\Definition\FloatType;
+use GraphQL\Type\Definition\IDType;
+use GraphQL\Type\Definition\InterfaceType;
+use GraphQL\Type\Definition\IntType;
+use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\StringType;
+use GraphQL\Type\Definition\Type;
 use Siler\Graphql;
 
 class GraphqlTest extends \PHPUnit\Framework\TestCase
@@ -63,7 +63,6 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(IDType::class, $field['type']);
     }
 
-
     public function testInterface()
     {
         $interfaceType = Graphql\itype('Character', 'A character in the Star Wars Trilogy')([
@@ -97,7 +96,7 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
         $root = Graphql\type('Root')([
             Graphql\str('foo')(function ($root, $args) {
                 return 'bar';
-            })
+            }),
         ]);
 
         $schema = new Schema(['query' => $root()]);
@@ -119,7 +118,7 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
         $root = Graphql\type('Root')([
             Graphql\str('foo')(function ($root, $args) {
                 return 'bar';
-            })
+            }),
         ]);
 
         $schema = new Schema(['query' => $root()]);
@@ -141,7 +140,7 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
         $root = Graphql\type('Root')([
             Graphql\str('foo')(function ($root, $args) {
                 throw new \Exception('error_message');
-            })
+            }),
         ]);
 
         $schema = new Schema(['query' => $root()]);
