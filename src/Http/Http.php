@@ -101,7 +101,7 @@ function path()
 
     $requestUri = str_replace('?'.$queryString, '', $requestUri);
     $scriptPath = dirname($scriptName);
-    if(!strlen(str_replace('/', '', $scriptPath))){
+    if (!strlen(str_replace('/', '', $scriptPath))) {
         return '/'.ltrim($requestUri, '/');
     } else {
         return '/'.ltrim(str_replace($scriptPath, '', $requestUri), '/');
