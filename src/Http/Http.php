@@ -100,8 +100,12 @@ function path()
     $requestUri = array_get($_SERVER, 'REQUEST_URI', '');
 
     $requestUri = str_replace('?'.$queryString, '', $requestUri);
-
-    return '/'.ltrim(str_replace(dirname($scriptName), '', $requestUri), '/');
+    $scriptPath = dirname($scriptName);
+    if(!strlen(str_replace('/', '', $scriptPath))){
+        return '/'.ltrim($requestUri, '/');
+    } else {
+        return '/'.ltrim(str_replace($scriptPath, '', $requestUri), '/');
+    }
 }
 
 /**
