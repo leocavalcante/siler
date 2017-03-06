@@ -59,6 +59,17 @@ class HttpTest extends TestCase
         $this->assertEquals('/bar/baz', Http\path());
     }
 
+    /**
+     * @runInSeparateProcess
+     */
+    public function testNotInSubfolderPath()
+    {
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['REQUEST_URI'] = '/foo/bar';
+
+        $this->assertEquals('/foo/bar', Http\path());
+    }
+
     public function testUri()
     {
         $this->assertEquals('http://test:8000/bar/baz', Http\uri());
