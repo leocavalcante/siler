@@ -274,7 +274,7 @@ function hold(callable $function)
 /**
  * Lazy echo.
  *
- * @param  string $value
+ * @param string $value
  *
  * @return callable a -> echo $value
  */
