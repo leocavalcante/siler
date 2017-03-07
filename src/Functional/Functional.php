@@ -234,7 +234,7 @@ function compose(array $functions)
 }
 
 /**
- * Converts the given $value to a boolean
+ * Converts the given $value to a boolean.
  *
  * @return callable $value -> bool
  */
@@ -258,9 +258,9 @@ function noop()
 }
 
 /**
- * Holds a function for lazily call
+ * Holds a function for lazily call.
  *
- * @param  callable $function [description]
+ * @param callable $function [description]
  *
  * @return callable a -> $function(a)
  */
