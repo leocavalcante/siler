@@ -14,7 +14,7 @@ class RouteResourceTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/resources';
 
-        Route\resource('/resources', __DIR__.'/../fixtures/resources');
+        Route\resource('/resources', __DIR__.'/../../fixtures/resources');
     }
 
     /**
@@ -27,7 +27,7 @@ class RouteResourceTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/resources/create';
 
-        Route\resource('/resources', __DIR__.'/../fixtures/resources');
+        Route\resource('/resources', __DIR__.'/../../fixtures/resources');
     }
 
     public function testStoreResource()
@@ -38,7 +38,7 @@ class RouteResourceTest extends TestCase
         $_SERVER['REQUEST_URI'] = '/resources';
         $_POST['foo'] = 'bar';
 
-        Route\resource('/resources', __DIR__.'/../fixtures/resources');
+        Route\resource('/resources', __DIR__.'/../../fixtures/resources');
     }
 
     public function testShowResource()
@@ -48,7 +48,7 @@ class RouteResourceTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/resources/8';
 
-        Route\resource('/resources', __DIR__.'/../fixtures/resources');
+        Route\resource('/resources', __DIR__.'/../../fixtures/resources');
     }
 
     public function testEditResource()
@@ -58,7 +58,7 @@ class RouteResourceTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/resources/8/edit';
 
-        Route\resource('/resources', __DIR__.'/../fixtures/resources');
+        Route\resource('/resources', __DIR__.'/../../fixtures/resources');
     }
 
     public function testUpdateResource()
@@ -68,7 +68,7 @@ class RouteResourceTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'PUT';
         $_SERVER['REQUEST_URI'] = '/resources/8';
 
-        Route\resource('/resources', __DIR__.'/../fixtures/resources');
+        Route\resource('/resources', __DIR__.'/../../fixtures/resources');
     }
 
     public function testDestroyResource()
@@ -78,7 +78,7 @@ class RouteResourceTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'DELETE';
         $_SERVER['REQUEST_URI'] = '/resources/8';
 
-        Route\resource('/resources', __DIR__.'/../fixtures/resources');
+        Route\resource('/resources', __DIR__.'/../../fixtures/resources');
     }
 
     /**
@@ -92,6 +92,6 @@ class RouteResourceTest extends TestCase
         $_SERVER['REQUEST_URI'] = '/resources/foo/edit';
         $_SERVER['SCRIPT_NAME'] = '/test/index.php';
 
-        Route\resource('/resources', __DIR__.'/../fixtures/resources/slug', 'slug');
+        Route\resource('/resources', __DIR__.'/../../fixtures/resources/slug', 'slug');
     }
 }

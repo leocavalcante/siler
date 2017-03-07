@@ -9,7 +9,7 @@ class DotenvTest extends TestCase
 {
     public function testEnv()
     {
-        $lines = \Siler\Dotenv\init(__DIR__.'/../fixtures');
+        $lines = \Siler\Dotenv\init(__DIR__.'/../../fixtures');
 
         $this->assertEquals(1, count($lines));
         $this->assertEquals('FOO=bar', $lines[0]);

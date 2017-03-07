@@ -15,7 +15,7 @@ class SilerTest extends TestCase
 
     public function testRequireFn()
     {
-        $cb = \Siler\require_fn(__DIR__.'/fixtures/foo.php');
+        $cb = \Siler\require_fn(__DIR__.'/../fixtures/foo.php');
         $this->assertEquals('baz', $cb(['bar' => 'baz']));
     }
 }

@@ -18,13 +18,13 @@ class TwigTest extends TestCase
 
     public function testCreateTwigEnv()
     {
-        $twigEnv = Twig\init(__DIR__.'/../fixtures');
+        $twigEnv = Twig\init(__DIR__.'/../../fixtures');
         $this->assertInstanceOf(\Twig_Environment::class, $twigEnv);
     }
 
     public function testRender()
     {
-        Twig\init(__DIR__.'/../fixtures');
+        Twig\init(__DIR__.'/../../fixtures');
         $this->assertEquals("<p>bar</p>\n", Twig\render('template.twig', ['foo' => 'bar']));
     }
 }

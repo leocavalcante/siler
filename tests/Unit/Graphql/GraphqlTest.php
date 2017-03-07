@@ -123,7 +123,7 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
 
         $schema = new Schema(['query' => $root()]);
 
-        Graphql\init($schema, null, null, __DIR__.'/../fixtures/graphql_input.json');
+        Graphql\init($schema, null, null, __DIR__.'/../../fixtures/graphql_input.json');
 
         $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
     }
@@ -133,7 +133,7 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
      */
     public function testInitException()
     {
-        $this->expectOutputString(file_get_contents(__DIR__.'/../fixtures/graphql_error.json'));
+        $this->expectOutputString(file_get_contents(__DIR__.'/../../fixtures/graphql_error.json'));
 
         $_POST = ['query' => '{ foo }'];
 
@@ -145,7 +145,7 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
 
         $schema = new Schema(['query' => $root()]);
 
-        Graphql\init($schema, null, null, __DIR__.'/../fixtures/graphql_input.json');
+        Graphql\init($schema, null, null, __DIR__.'/../../fixtures/graphql_input.json');
 
         $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
     }

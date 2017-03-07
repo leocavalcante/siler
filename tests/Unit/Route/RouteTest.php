@@ -114,7 +114,7 @@ class RouteTest extends TestCase
     public function testRouteWithString()
     {
         $this->expectOutputString('foo');
-        Route\route('get', '/bar/{bar}', __DIR__.'/../fixtures/to_be_required.php');
+        Route\route('get', '/bar/{bar}', __DIR__.'/../../fixtures/to_be_required.php');
     }
 
     public function testRouteMethod()
