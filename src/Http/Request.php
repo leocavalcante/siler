@@ -130,7 +130,7 @@ function input($key = null, $default = null)
  */
 function method($method)
 {
-    $requestMethod = array_get($_SERVER, 'REQUEST_METHOD', 'GET');
+    $requestMethod = array_get($_POST, '_method', array_get($_SERVER, 'REQUEST_METHOD', 'GET'));
 
     return strtolower($method) == strtolower($requestMethod);
 }
