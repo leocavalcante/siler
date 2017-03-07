@@ -2,9 +2,9 @@
 
 namespace Siler\Test\Integration;
 
-use Siler\Twig;
-use Siler\Route;
 use Siler\Functional as F;
+use Siler\Route;
+use Siler\Twig;
 
 class RoutingTest extends \PHPUnit\Framework\TestCase
 {
