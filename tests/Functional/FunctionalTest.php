@@ -98,4 +98,32 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $test = f\compose([f\div(2), f\sub(1)]);
         $this->assertSame(0, $test(2));
     }
+
+    public function testBool()
+    {
+        $this->assertTrue(f\bool()(true));
+        $this->assertTrue(f\bool()('foo'));
+        $this->assertTrue(f\bool()(1));
+
+        $this->assertFalse(f\bool()(false));
+        $this->assertFalse(f\bool()(''));
+        $this->assertFalse(f\bool()(0));
+    }
+
+    public function testNoop()
+    {
+        f\noop()();
+        $this->assertTrue(true);
+    }
+
+    public function testHold()
+    {
+        $this->expectOutputString('foo');
+
+        $echoFoo = function ($val) {
+            echo $val;
+        };
+
+        f\if_else(f\bool())(f\hold($echoFoo))(f\noop())('foo');
+    }
 }

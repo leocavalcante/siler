@@ -232,3 +232,41 @@ function compose(array $functions)
         }, $value);
     };
 }
+
+/**
+ * Converts the given $value to a boolean
+ *
+ * @return callable $value -> bool
+ */
+function bool()
+{
+    return function ($value) {
+        return (bool) $value;
+    };
+}
+
+/**
+ * In computer science, a NOP or NOOP (short for No Operation) is an assembly language instruction,
+ * programming language statement, or computer protocol command that does nothing.
+ *
+ * @return callable a ->
+ */
+function noop()
+{
+    return function () {
+    };
+}
+
+/**
+ * Holds a function for lazily call
+ *
+ * @param  callable $function [description]
+ *
+ * @return callable a -> $function(a)
+ */
+function hold(callable $function)
+{
+    return function () use ($function) {
+        return call_user_func_array($function, func_get_args());
+    };
+}
