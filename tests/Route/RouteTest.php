@@ -17,139 +17,118 @@ class RouteTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
     }
 
-    /**
-     * @expectedException        \Exception
-     * @expectedExceptionMessage Route /bar/baz should match
-     */
     public function testRouteMatching()
     {
+        $this->expectOutputString('baz');
+
         Route\route('get', '/foo', function ($params) {
-            throw new \Exception('Route /foo should not match');
+            echo 'foo';
         });
 
         Route\route('get', '/bar', function ($params) {
-            throw new \Exception('Route /bar should not match');
+            echo 'bar';
         });
 
         Route\route('get', '/bar/baz', function ($params) {
-            throw new \Exception('Route /bar/baz should match');
+            echo 'baz';
         });
     }
 
-    /**
-     * @expectedException        \Exception
-     * @expectedExceptionMessage baz
-     */
     public function testRouteRegexp()
     {
+        $this->expectOutputString('baz');
+
         Route\route('get', '/bar/([a-z]+)', function ($params) {
-            throw new \Exception($params[1]);
+            echo $params[1];
         });
     }
 
-    /**
-     * @expectedException        \Exception
-     * @expectedExceptionMessage baz
-     */
     public function testRouteNamedGroup()
     {
+        $this->expectOutputString('baz');
+
         Route\route('get', '/bar/{baz}', function ($params) {
-            throw new \Exception($params['baz']);
+            echo $params['baz'];
         });
     }
 
-    /**
-     * @expectedException        \Exception
-     * @expectedExceptionMessage baz
-     */
     public function testRouteWrappedNamedGroup()
     {
+        $this->expectOutputString('baz');
+
         $_SERVER['REQUEST_URI'] = '/bar/baz/qux';
 
         Route\route('get', '/bar/{baz}', function ($params) {
-            throw new \Exception('I should not be called');
+            echo 'foo';
         });
 
         Route\route('get', '/bar/{baz}/qux', function ($params) {
-            throw new \Exception($params['baz']);
+            echo $params['baz'];
         });
     }
 
-    /**
-     * @expectedException        \Exception
-     * @expectedExceptionMessage baz-qux
-     */
     public function testRouteNamedGroupWithDash()
     {
+        $this->expectOutputString('baz-qux');
+
         $_SERVER['REQUEST_URI'] = '/bar/baz-qux';
 
         Route\route('get', '/bar/{baz}', function ($params) {
-            throw new \Exception($params['baz']);
+            echo 'baz-qux';
         });
     }
 
-    /**
-     * @expectedException        \Exception
-     * @expectedExceptionMessage baz-2017
-     */
     public function testRouteNamedGroupWithNumber()
     {
+        $this->expectOutputString('baz-2017');
+
         $_SERVER['REQUEST_URI'] = '/bar/baz-2017';
 
         Route\route('get', '/bar/{baz}', function ($params) {
-            throw new \Exception($params['baz']);
+            echo $params['baz'];
         });
     }
 
-    /**
-     * @expectedException        \Exception
-     * @expectedExceptionMessage baz_qux
-     */
     public function testRouteNamedGroupWithUnderscore()
     {
+        $this->expectOutputString('baz_qux');
+
         $_SERVER['REQUEST_URI'] = '/bar/baz_qux';
 
         Route\route('get', '/bar/{baz}', function ($params) {
-            throw new \Exception($params['baz']);
+            echo $params['baz'];
         });
     }
 
-    /**
-     * @expectedException        \Exception
-     * @expectedExceptionMessage OK
-     */
     public function testRouteDefaultPathInfo()
     {
+        $this->expectOutputString('foo');
+
         unset($_SERVER['REQUEST_URI']);
 
         Route\route('get', '/', function ($params) {
-            throw new \Exception('OK');
+            echo 'foo';
         });
     }
 
-    /**
-     * @expectedException        \Exception
-     * @expectedExceptionMessage Throw was required
-     */
     public function testRouteWithString()
     {
-        Route\route('get', '/bar/{bar}', __DIR__.'/../fixtures/throw.php');
+        $this->expectOutputString('foo');
+        Route\route('get', '/bar/{bar}', __DIR__.'/../fixtures/to_be_required.php');
     }
 
-    /**
-     * @expectedException        \Exception
-     * @expectedExceptionMessage Route POST /bar/baz should match
-     */
     public function testRouteMethod()
     {
+        $this->expectOutputString('bar');
+
         $_SERVER['REQUEST_METHOD'] = 'POST';
 
         Route\route('get', '/bar/baz', function ($params) {
-            throw new \Exception('Route GET /bar/baz should not match');
+            echo 'foo';
         });
 
         Route\route('post', '/bar/baz', function ($params) {
-            throw new \Exception('Route POST /bar/baz should match');
+            echo 'bar';
         });
     }
 
