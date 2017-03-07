@@ -4,6 +4,10 @@
     <directory>tests/Unit</directory>
   </testsuite>
 
+  <testsuite name="Integration">
+    <directory>tests/Integration</directory>
+  </testsuite>
+
   <filter>
     <whitelist processUncoveredFilesFromWhitelist="true">
       <directory>src</directory>
