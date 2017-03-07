@@ -1,6 +1,6 @@
 <?php
 
-namespace Siler\Test;
+namespace Siler\Test\Unit;
 
 use Siler\Functional as f;
 
@@ -125,5 +125,11 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         };
 
         f\if_else(f\bool())(f\hold($echoFoo))(f\noop())('foo');
+    }
+
+    public function testPut()
+    {
+        $this->expectOutputString('foo');
+        f\put('foo')();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Siler\Test;
+namespace Siler\Test\Unit;
 
 use Siler\Functional as f;
 use Siler\Functional\Monad;

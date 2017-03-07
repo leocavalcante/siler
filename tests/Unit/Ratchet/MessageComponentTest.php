@@ -1,6 +1,6 @@
 <?php
 
-namespace Siler\Test;
+namespace Siler\Test\Unit;
 
 use Ratchet\ConnectionInterface;
 use Siler\Container;

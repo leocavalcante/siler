@@ -1,6 +1,6 @@
 <?php
 
-namespace Siler\Test;
+namespace Siler\Test\Unit;
 
 use GraphQL\Schema;
 use GraphQL\Type\Definition\BooleanType;

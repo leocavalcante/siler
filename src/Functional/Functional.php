@@ -260,7 +260,7 @@ function noop()
 /**
  * Holds a function for lazily call.
  *
- * @param callable $function [description]
+ * @param callable $function
  *
  * @return callable a -> $function(a)
  */
@@ -268,5 +268,19 @@ function hold(callable $function)
 {
     return function () use ($function) {
         return call_user_func_array($function, func_get_args());
+    };
+}
+
+/**
+ * Lazy echo.
+ *
+ * @param  string $value
+ *
+ * @return callable a -> echo $value
+ */
+function put($value)
+{
+    return function () use ($value) {
+        echo $value;
     };
 }
