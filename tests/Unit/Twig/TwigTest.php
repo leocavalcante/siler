@@ -25,6 +25,6 @@ class TwigTest extends TestCase
     public function testRender()
     {
         Twig\init(__DIR__.'/../../fixtures');
-        $this->assertEquals("<p>bar</p>\n", Twig\render('template.twig', ['foo' => 'bar']));
+        $this->assertEquals('<p>bar</p>', Twig\render('template.twig', ['foo' => 'bar']));
     }
 }
