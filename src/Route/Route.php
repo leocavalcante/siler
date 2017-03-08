@@ -123,3 +123,42 @@ function resource($basePath, $resourcesPath, $identityParam = null)
     put($basePath.'/{'.$identityParam.'}', $resourcesPath.'/update.php');
     delete($basePath.'/{'.$identityParam.'}', $resourcesPath.'/destroy.php');
 }
+
+/**
+ * Maps a filename to a route method-path pair.
+ *
+ * @param string $filename
+ *
+ * @return array [HTTP_METHOD, HTTP_PATH]
+ */
+function routify($filename)
+{
+    $filename = str_replace('\\', '/', $filename);
+    $filename = trim($filename, '/');
+    $filename = str_replace('/', '.', $filename);
+
+    $tokens = explode('.', $filename);
+    $ext = array_pop($tokens);
+    $method = array_pop($tokens);
+    $path = implode('/', $tokens);
+    $path = '/'.trim(str_replace('index', '', $path), '/');
+
+    return [$method, $path];
+}
+
+/**
+ * Iterates over the given $basePath listening for matching routified files.
+ *
+ * @param string $basePath
+ */
+function files($basePath)
+{
+    $directory = new \RecursiveDirectoryIterator($basePath);
+    $iterator = new \RecursiveIteratorIterator($directory);
+    $regex = new \RegexIterator($iterator, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
+
+    foreach ($regex as $filename => $file) {
+        list($method, $path) = routify(substr($filename, strlen(rtrim($basePath, '/'))));
+        route($method, $path, $filename);
+    }
+}

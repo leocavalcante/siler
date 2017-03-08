@@ -40,4 +40,13 @@ class RoutingTest extends \PHPUnit\Framework\TestCase
             echo Twig\render('template.twig', $params);
         });
     }
+
+    public function testFiles()
+    {
+        $this->expectOutputString('index.get');
+
+        $_SERVER['REQUEST_URI'] = '/';
+
+        Route\files('tests/fixtures/route_files/');
+    }
 }

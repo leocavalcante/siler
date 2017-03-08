@@ -142,4 +142,17 @@ class RouteTest extends TestCase
         $this->assertEquals('#^/foo/(?<bar_baz>[A-z0-9_-]+)/?$#', Route\regexify('/foo/{bar_baz}'));
         $this->assertEquals('#^/foo/(?<baz>[A-z0-9_-]+)/qux/?$#', Route\regexify('/foo/{baz}/qux'));
     }
+
+    public function testRoutify()
+    {
+        $this->assertEquals(['get', '/'], Route\routify('\\index.get.php'));
+        $this->assertEquals(['get', '/'], Route\routify('index.get.php'));
+        $this->assertEquals(['get', '/'], Route\routify('/index.get.php'));
+        $this->assertEquals(['post', '/'], Route\routify('/index.post.php'));
+        $this->assertEquals(['get', '/foo'], Route\routify('/foo.get.php'));
+        $this->assertEquals(['get', '/foo'], Route\routify('/foo/index.get.php'));
+        $this->assertEquals(['get', '/foo/bar'], Route\routify('/foo.bar.get.php'));
+        $this->assertEquals(['get', '/foo/bar'], Route\routify('/foo/bar.get.php'));
+        $this->assertEquals(['get', '/foo/bar'], Route\routify('/foo/bar/index.get.php'));
+    }
 }
