@@ -154,5 +154,6 @@ class RouteTest extends TestCase
         $this->assertEquals(['get', '/foo/bar'], Route\routify('/foo.bar.get.php'));
         $this->assertEquals(['get', '/foo/bar'], Route\routify('/foo/bar.get.php'));
         $this->assertEquals(['get', '/foo/bar'], Route\routify('/foo/bar/index.get.php'));
+        $this->assertEquals(['get', '/foo/{id}'], Route\routify('/foo.{id}.get.php'));
     }
 }

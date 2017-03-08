@@ -45,4 +45,15 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
 
         Route\files(__DIR__.'/../../fixtures/route_files/');
     }
+
+    public function testGetWithParam()
+    {
+        $this->expectOutputString('foo.8.get');
+
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_SERVER['REQUEST_URI'] = '/foo/8';
+
+        Route\files(__DIR__.'/../../fixtures/route_files/');
+    }
 }
