@@ -127,9 +127,9 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         f\if_else(f\bool())(f\hold($echoFoo))(f\noop())('foo');
     }
 
-    public function testPut()
+    public function testPuts()
     {
         $this->expectOutputString('foo');
-        f\put('foo')();
+        f\puts('foo')();
     }
 }

@@ -19,6 +19,6 @@ class RoutingTest extends \PHPUnit\Framework\TestCase
 
         Twig\init(__DIR__.'/../fixtures');
 
-        Route\get('/', F\put(Twig\render('static.twig')));
+        Route\get('/', F\puts(Twig\render('static.twig')));
     }
 }

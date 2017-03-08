@@ -278,7 +278,7 @@ function hold(callable $function)
  *
  * @return callable a -> echo $value
  */
-function put($value)
+function puts($value)
 {
     return function () use ($value) {
         echo $value;
