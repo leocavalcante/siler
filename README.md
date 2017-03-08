@@ -113,8 +113,9 @@ print("Listen on 3333\n");
 Ratchet\init(3333);
 ```
 
-⚠️️ **This is a work in progress, API may change** 🚧<br>
-But if you give a try, I'd love the get some feedback
+More action here: [siler-examples](https://github.com/leocavalcante/siler-examples)
 
 ---
+⚠️️ **This is a work in progress, API may change** 🚧<br>
+But if you give a try, I'd love the get some feedback<br>
 MIT 2017
