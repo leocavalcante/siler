@@ -137,8 +137,7 @@ function routify($filename)
     $filename = trim($filename, '/');
     $filename = str_replace('/', '.', $filename);
 
-    $tokens = explode('.', $filename);
-    $ext = array_pop($tokens);
+    $tokens = array_slice(explode('.', $filename), 0, -1);
     $method = array_pop($tokens);
     $path = implode('/', $tokens);
     $path = '/'.trim(str_replace('index', '', $path), '/');
