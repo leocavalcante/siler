@@ -1,6 +1,4 @@
-# Siler
-
-PHP files and functions as first-class citizens.
+## Siler
 
 [![Build Status](https://travis-ci.org/leocavalcante/siler.svg?branch=master)](https://travis-ci.org/leocavalcante/siler)
 [![codecov](https://codecov.io/gh/leocavalcante/siler/branch/master/graph/badge.svg)](https://codecov.io/gh/leocavalcante/siler)
@@ -10,27 +8,26 @@ PHP files and functions as first-class citizens.
 [![License](https://poser.pugx.org/leocavalcante/siler/license)](https://packagist.org/packages/leocavalcante/siler)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0/mini.png)](https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0)
 
-Zero dependency. Everything is built on top of PHP's built-in functions without any additional overhead, which makes it one of the [fastest *frameworks*](https://github.com/kenjis/php-framework-benchmark#results).
+* 💧 **Files and functions** as first-class citizens
+* 🔋 **Zero dependency**, everything is on top of PHP built-in functions
+* ⚡ **Blazing fast**, no additional overhead - [*benchmark*](https://github.com/kenjis/php-framework-benchmark#results)
 
-## Getting Started
+### Getting Started
 
-### Installation
+#### Installation
 
 ```bash
 composer require leocavalcante/siler dev-master
 ```
 That is it. Actually, Siler is a library, not a framework (maybe a micro-framework), the overall program flow of control is dictated by you. So, no hidden configs or predefined directory structures.
 
-### Hello World
+#### Hello World
 
 ```php
-<?php
+use Siler\Functional as λ;
+use Siler\Route
 
-require 'vendor/autoload.php';
-
-Siler\Route\get('/', function() {
-    echo 'Hello World';
-});
+Route\get('/', λ\puts('Hello World'));
 ```
 Nothing more, nothing less. You don't need even tell Siler to `run` or something like that.
 
@@ -38,22 +35,21 @@ As said before, Siler aims to use PHP files and functions as first-class citizie
 
 <sub>index.php</sub>
 ```php
-<?php
-require 'vendor/autoload.php';
-Siler\Route\get('/', 'pages/home.php');
+use Siler\Route;
+
+Route\get('/', 'pages/home.php');
 ```
 
 <sub>pages/home.php</sub>
 ```php
-<?php
 echo 'Hello World';
 ```
 
-## Namespaces
+### Namespaces
 
 Siler doesn't try to be a fully-featured framework - don't even aim to be a framework - instead it embraces component based architectures and offers helper functions to work with this components under PHP namespaces.
 
-### Twig
+#### Twig
 
 Is one of the libraries that has helpers functions making work with templates quite simple.
 
@@ -61,29 +57,16 @@ Is one of the libraries that has helpers functions making work with templates qu
 composer require twig/twig
 ```
 
-<sub>index.php</sub>
 ```php
-<?php
-
-require 'vendor/autoload.php'
-
-use Siler\{Twig, Route};
-
-Twig\init('/path/to/templates');
-Route\get('/', 'pages/home.php');
-```
-
-<sub>pages/home.php</sub>
-```php
-<?php
-
+use Siler\Functional as F;
+use Siler\Route;
 use Siler\Twig;
-use Siler\Http\Response;
 
-Response\html(Twig\render('pages/home.twig'));
+Twig\init('path/to/templates');
+Route\get('/', F\puts(Twig\render('template.twig')));
 ```
 
-### Dotenv
+#### Dotenv
 
 Siler also brings helper functions for [vlucas/phpdotenv](https://github.com/vlucas/phpdotenv), so you can easily acomplish [twelve-factor](https://12factor.net/) apps.
 
@@ -92,37 +75,30 @@ composer require vlucas/phpdotenv
 ```
 
 <sub>.env</sub>
-```dotenv
+```ini
 TWIG_DEBUG=true
 ```
 
 <sub>index.php</sub>
 ```php
-<?php
+use Siler\Dotenv;
+use Siler\Route;
+use Siler\Twig;
 
-require 'vendor/autoload.php'
-
-use Siler\{Dotenv, Twig, Route};
-
-Dotenv\init('/path/to/.env');
-Twig\init('/path/to/templates', '/path/to/templates/cache', Dotenv\env('TWIG_DEBUG'));
+Dotenv\init('path/to/.env');
+Twig\init('path/to/templates', 'path/to/templates/cache', Dotenv\env('TWIG_DEBUG'));
 Route\get('/', 'pages/home.php');
 ```
 
-### Ratchet
+#### Ratchet
 
-Doing some real-time apps with WebSockets? No problem. Siler simplifies Ratchet.
+Real-time web apps using WebSockets.
 
 ```bash
 composer require cboden/ratchet
 ```
 
-<sub>index.php</sub>
 ```php
-<?php
-
-require 'vendor/autoload.php';
-
 use Siler\Ratchet;
 
 Ratchet\connected(function ($conn) {
@@ -137,7 +113,8 @@ print("Listen on 3333\n");
 Ratchet\init(3333);
 ```
 
-🚧 WIP
+⚠️️ **This is a work in progress, API may change** 🚧<br>
+But if you give a try, I'd love the get some feedback
 
 ---
-MIT
+MIT 2017
