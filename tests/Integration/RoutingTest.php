@@ -27,4 +27,17 @@ class RoutingTest extends \PHPUnit\Framework\TestCase
 
         Route\get('/', F\puts(Twig\render('static.twig')));
     }
+
+    public function testDynamicPages()
+    {
+        $this->expectOutputString('<p>hello-world</p>');
+
+        Twig\init(__DIR__.'/../fixtures');
+
+        $_SERVER['REQUEST_URI'] = '/hello-world';
+
+        Route\get('/{foo}', function ($params) {
+            echo Twig\render('template.twig', $params);
+        });
+    }
 }
