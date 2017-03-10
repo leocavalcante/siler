@@ -71,4 +71,15 @@ class ResponseTest extends TestCase
         $this->assertContains('X-Bar: bar', $headers);
         $this->assertContains('X-Bar: baz', $headers);
     }
+
+    public function testRedirect()
+    {
+        $_SERVER['SCRIPT_NAME'] = '/foo/index.php';
+
+        Response\redirect('/bar');
+
+        $headers = xdebug_get_headers();
+
+        $this->assertContains('Location: /foo/bar', $headers);
+    }
 }

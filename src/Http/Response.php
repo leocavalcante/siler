@@ -5,6 +5,8 @@
 
 namespace Siler\Http\Response;
 
+use Siler\Http;
+
 /**
  * Outputs the given parameters based on a HTTP response.
  *
@@ -93,4 +95,14 @@ function header($key, $val, $replace = null)
     }
 
     \header($key.': '.$val, $replace);
+}
+
+/**
+ * Composes a default HTTP redirect response with the current base url.
+ *
+ * @param string $path
+ */
+function redirect($path)
+{
+    Http\redirect(Http\url($path));
 }
