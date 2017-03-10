@@ -88,6 +88,10 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(2, f\div(2)(4));
         $this->assertSame(-1, f\sub(3)(2));
         $this->assertSame(.5, f\div(4)(2));
+        $this->assertSame(2, f\mod(3)(5));
+        $this->assertSame(2, f\mod(-3)(5));
+        $this->assertSame(-2, f\mod(3)(-5));
+        $this->assertSame(-2, f\mod(-3)(-5));
     }
 
     public function testCompose()
