@@ -217,6 +217,20 @@ function div($right)
 }
 
 /**
+ * Remainder of $left divided by $right.
+ *
+ * @param mixed $right
+ *
+ * @return callable $right -> $left % $right
+ */
+function mod($right)
+{
+    return function ($left) use ($right) {
+        return $left % $right;
+    };
+}
+
+/**
  * Function composition is the act of pipelining the result of one function,
  * to the input of another, creating an entirely new function.
  *
