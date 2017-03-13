@@ -302,8 +302,8 @@ function puts($value)
 /**
  * Flats a multi-dimensional array.
  *
- * @param  array  $list The list to flatten
- * @param  array  $flat The initial state
+ * @param array $list The list to flatten
+ * @param array $flat The initial state
  *
  * @return array
  */
@@ -314,5 +314,6 @@ function flatten(array $list, array $flat = [])
     }
 
     list($head, $tail) = [$list[0], array_slice($list, 1)];
+
     return flatten($tail, is_array($head) ? flatten($head, $flat) : array_merge($flat, [$head]));
 }
