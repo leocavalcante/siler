@@ -25,7 +25,7 @@ That is it. Actually, Siler is a library, not a framework (maybe a micro-framewo
 
 ```php
 use Siler\Functional as λ;
-use Siler\Route
+use Siler\Route;
 
 Route\get('/', λ\puts('Hello World'));
 ```
