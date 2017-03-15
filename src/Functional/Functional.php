@@ -241,7 +241,7 @@ function mod($right)
 function compose(array $functions)
 {
     return function ($value) use ($functions) {
-        return array_reduce($functions, function ($value, $function) {
+        return array_reduce(array_reverse($functions), function ($value, $function) {
             return $function($value);
         }, $value);
     };

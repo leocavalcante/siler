@@ -97,10 +97,10 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
     public function testCompose()
     {
         $test = f\compose([f\add(2), f\mul(2)]);
-        $this->assertSame(8, $test(2));
+        $this->assertSame(6, $test(2));
 
         $test = f\compose([f\div(2), f\sub(1)]);
-        $this->assertSame(0, $test(2));
+        $this->assertSame(0.5, $test(2));
     }
 
     public function testBool()

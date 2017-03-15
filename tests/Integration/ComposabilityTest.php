@@ -12,7 +12,7 @@ class ComposabilityTest extends \PHPUnit\Framework\TestCase
 {
     public function testCompose()
     {
-        $isDivisibleBy3 = compose([mod(3), equal(0)]);
+        $isDivisibleBy3 = compose([equal(0), mod(3)]);
 
         $this->assertTrue($isDivisibleBy3(3));
         $this->assertFalse($isDivisibleBy3(2));
@@ -20,8 +20,8 @@ class ComposabilityTest extends \PHPUnit\Framework\TestCase
 
     public function testAny()
     {
-        $isDivisibleBy3 = compose([mod(3), equal(0)]);
-        $isDivisibleBy5 = compose([mod(5), equal(0)]);
+        $isDivisibleBy3 = compose([equal(0), mod(3)]);
+        $isDivisibleBy5 = compose([equal(0), mod(5)]);
         $isDivisibleBy3Or5 = any([$isDivisibleBy3, $isDivisibleBy5]);
 
         $this->assertFalse($isDivisibleBy3Or5(2));
@@ -32,8 +32,8 @@ class ComposabilityTest extends \PHPUnit\Framework\TestCase
 
     public function testAll()
     {
-        $isDivisibleBy3 = compose([mod(3), equal(0)]);
-        $isDivisibleBy5 = compose([mod(5), equal(0)]);
+        $isDivisibleBy3 = compose([equal(0), mod(3)]);
+        $isDivisibleBy5 = compose([equal(0), mod(5)]);
         $isDivisibleBy3And5 = all([$isDivisibleBy3, $isDivisibleBy5]);
 
         $this->assertFalse($isDivisibleBy3And5(2));
