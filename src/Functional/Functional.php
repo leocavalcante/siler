@@ -302,8 +302,8 @@ function puts($value)
 /**
  * Flats a multi-dimensional array.
  *
- * @param array $list The list to flatten
- * @param array $flat The initial state
+ * @param array $list
+ * @param array $flat
  *
  * @return array
  */
@@ -316,4 +316,64 @@ function flatten(array $list, array $flat = [])
     list($head, $tail) = [$list[0], array_slice($list, 1)];
 
     return flatten($tail, is_array($head) ? flatten($head, $flat) : array_merge($flat, [$head]));
+}
+
+/**
+ * Extract the first element of a list, which must be non-empty.
+ *
+ * @param array $list
+ *
+ * @return mixed
+ */
+function head(array $list)
+{
+    return array_shift($list);
+}
+
+/**
+ * Extract the last element of a list, which must be finite and non-empty.
+ *
+ * @param array $list
+ *
+ * @return mixed
+ */
+function last(array $list)
+{
+    return array_pop($list);
+}
+
+/**
+ * Extract the elements after the head of a list, which must be non-empty.
+ *
+ * @param array $list
+ *
+ * @return array
+ */
+function tail(array $list)
+{
+    return array_slice($list, 1);
+}
+
+/**
+ * Return all the elements of a list except the last one. The list must be non-empty.
+ *
+ * @param array $list
+ *
+ * @return array
+ */
+function init(array $list)
+{
+    return array_slice($list, 0, -1);
+}
+
+/**
+ * Decompose a list into its head and tail.
+ *
+ * @param array $list
+ *
+ * @return array [head, [tail]]
+ */
+function uncons(array $list)
+{
+    return [$list[0], array_slice($list, 1)];
 }
