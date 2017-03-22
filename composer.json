@@ -21,7 +21,8 @@
         "twig/twig": "*",
         "phpunit/phpunit": "*",
         "cboden/ratchet": "*",
-        "webonyx/graphql-php": "*"
+        "webonyx/graphql-php": "*",
+        "lcobucci/jwt": "*"
     },
     "autoload": {
         "psr-4": { "Siler\\": "src/" },
@@ -34,6 +35,7 @@
             "src/Http/Http.php",
             "src/Http/Request.php",
             "src/Http/Response.php",
+            "src/Jwt/Jwt.php",
             "src/Ratchet/Ratchet.php",
             "src/Route/Route.php",
             "src/Twig/Twig.php",
