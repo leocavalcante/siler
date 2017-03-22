@@ -11,7 +11,7 @@ class DotenvTest extends TestCase
     {
         $lines = \Siler\Dotenv\init(__DIR__.'/../../fixtures');
 
-        $this->assertEquals(1, count($lines));
+        $this->assertEquals(4, count($lines));
         $this->assertEquals('FOO=bar', $lines[0]);
         $this->assertEquals($_SERVER, env());
         $this->assertEquals('bar', env('FOO'));
