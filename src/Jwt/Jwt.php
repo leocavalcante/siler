@@ -8,6 +8,7 @@ namespace Siler\Jwt;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer;
+use Lcobucci\JWT\Token;
 use Lcobucci\JWT\ValidationData;
 
 /**
@@ -85,7 +86,7 @@ function validator(array $config, $time)
         $data->setId($config['jti']);
     }
 
-    return function ($token) use ($data) {
+    return function (Token $token) use ($data) {
         return $token->validate($data);
     };
 }
@@ -95,7 +96,7 @@ function validator(array $config, $time)
  *
  * @param string $token
  *
- * @return \Lcobucci\JWT\Token
+ * @return Token
  */
 function parse($token)
 {
