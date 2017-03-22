@@ -12,5 +12,5 @@ indent_size = 4
 [{composer.json,*.neon}]
 indent_size = 4
 
-[{php_input.txt,graphql_error.json,*.twig}]
+[{*.txt,*.json,*.twig}]
 insert_final_newline = false
