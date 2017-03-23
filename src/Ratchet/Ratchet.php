@@ -29,8 +29,8 @@ function init($port = null)
     }
 
     $messageComponent = new MessageComponent();
-    $webSockerServer = new WsServer($messageComponent);
-    $server = IoServer::factory(new HttpServer($webSockerServer), $port);
+    $webSocketServer = new WsServer($messageComponent);
+    $server = IoServer::factory(new HttpServer($webSocketServer), $port);
 
     Container\set(RATCHET_CONNECTIONS, new \SplObjectStorage());
 
@@ -48,7 +48,7 @@ function connected($callback)
 }
 
 /**
- * Sets a callback for incoming websocket messages.
+ * Sets a callback for incoming web socket messages.
  *
  * @param \Closure $callback The callback for incoming messages
  */
@@ -81,12 +81,13 @@ function error($callback)
  * Broadcast a message for the connected clients.
  *
  * @param string                   $message The message to broadcast
- * @param ConnectionInterface|null $from    The sender client, if given the message will not be broadcasted to it
+ * @param ConnectionInterface|null $from    The sender client, if given the message will not be broadcast to it
  */
 function broadcast($message, ConnectionInterface $from = null)
 {
     $clients = Container\get(RATCHET_CONNECTIONS);
 
+    /** @var ConnectionInterface $client */
     foreach ($clients as $client) {
         if (!is_null($from) && $client === $from) {
             continue;
