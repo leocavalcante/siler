@@ -15,7 +15,7 @@ use Siler\Container;
 class MessageComponent implements MessageComponentInterface
 {
     /**
-     * {@inherit}.
+     * {@inheritDoc}.
      */
     public function onOpen(ConnectionInterface $conn)
     {
@@ -24,7 +24,7 @@ class MessageComponent implements MessageComponentInterface
     }
 
     /**
-     * {@inherit}.
+     * {@inheritDoc}.
      */
     public function onMessage(ConnectionInterface $from, $message)
     {
@@ -32,7 +32,7 @@ class MessageComponent implements MessageComponentInterface
     }
 
     /**
-     * {@inherit}.
+     * {@inheritDoc}.
      */
     public function onClose(ConnectionInterface $conn)
     {
@@ -41,7 +41,7 @@ class MessageComponent implements MessageComponentInterface
     }
 
     /**
-     * {@inherit}.
+     * {@inheritDoc}.
      */
     public function onError(ConnectionInterface $conn, \Exception $exception)
     {
