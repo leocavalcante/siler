@@ -10,7 +10,7 @@ use function Siler\array_get;
 /**
  * Returns the raw HTTP body request.
  *
- * @param string The input file to check on
+ * @param string $input The input file to check on
  *
  * @return string
  */
@@ -22,7 +22,7 @@ function raw($input = 'php://input')
 /**
  * Returns URL decoded raw request body.
  *
- * @param string The input file to check on
+ * @param string $input The input file to check on
  *
  * @return array
  */
@@ -37,7 +37,7 @@ function params($input = 'php://input')
 /**
  * Returns JSON decoded raw request body.
  *
- * @param string The input file to check on
+ * @param string $input The input file to check on
  *
  * @return array
  */
