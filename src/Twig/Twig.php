@@ -8,7 +8,7 @@ namespace Siler\Twig;
 use Siler\Container;
 
 /**
- * Initialze the Twig environment.
+ * Initialize the Twig environment.
  *
  * @param string $templatesPath      Path to templates
  * @param string $templatesCachePath Path to templates cache
@@ -42,7 +42,7 @@ function init($templatesPath, $templatesCachePath = null, $debug = null)
  * @param string $name The template name in the templates path
  * @param array  $data The array of data to used within the template
  *
- * @throws RuntimeException if Twig isn't initialized
+ * @throws \RuntimeException if Twig isn't initialized
  *
  * @return string
  */
