@@ -63,14 +63,14 @@ function enum($name, $description = null)
 
 function field($type, $name, $description = null)
 {
-    return function ($resolve = null) use ($type, $name, $description) {
+    return function ($resolve = null, $args = null) use ($type, $name, $description) {
         if (is_string($resolve)) {
             $resolve = function () use ($resolve) {
                 return new $resolve;
             };
         }
 
-        return compact('type', 'name', 'description', 'resolve');
+        return compact('type', 'name', 'description', 'resolve', 'args');
     };
 }
 
@@ -101,7 +101,7 @@ function id($name, $description = null)
 
 function itype($name, $description = null)
 {
-    return function (array $fields) use ($name, $description) {
+    return function (array $fields = []) use ($name, $description) {
         return function (callable $resolveType) use ($name, $description, $fields) {
             return new InterfaceType(compact('name', 'description', 'fields', 'resolveType'));
         };
@@ -110,7 +110,7 @@ function itype($name, $description = null)
 
 function type($name, $description = null)
 {
-    return function (array $fields) use ($name, $description) {
+    return function (array $fields = []) use ($name, $description) {
         return function (callable $resolve = null) use ($name, $description, $fields) {
             return new ObjectType(compact('name', 'description', 'fields', 'resolve'));
         };
