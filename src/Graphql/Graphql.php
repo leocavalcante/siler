@@ -91,7 +91,7 @@ function field(Type $type, $name, $description = null)
     return function ($resolve = null, array $args = null) use ($type, $name, $description) {
         if (is_string($resolve)) {
             $resolve = function () use ($resolve) {
-                return new $resolve;
+                return new $resolve();
             };
         }
 
