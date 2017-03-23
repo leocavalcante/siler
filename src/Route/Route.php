@@ -85,7 +85,7 @@ function route($method, $path, $callback)
 }
 
 /**
- * Turns a URLroute path into a Regexp.
+ * Turns a URL route path into a Regexp.
  *
  * @param string $path The HTTP path
  *
@@ -104,6 +104,7 @@ function regexify($path)
  *
  * @param string $basePath      The base for the resource
  * @param string $resourcesPath The base path name for the corresponding PHP files
+ * @param string $identityParam The param to be used as identity in the URL
  */
 function resource($basePath, $resourcesPath, $identityParam = null)
 {
