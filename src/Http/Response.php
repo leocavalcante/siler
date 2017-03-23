@@ -40,7 +40,7 @@ function text($content, $code = 200, $charset = 'utf-8')
 }
 
 /**
- * Outputs a HTTP response as entitized-HTML.
+ * Outputs a HTML HTTP response.
  *
  * @param string $content The HTTP response body
  * @param int    $code    The HTTP response status code
@@ -54,7 +54,7 @@ function html($content, $code = 200, $charset = 'utf-8')
 }
 
 /**
- * Outputs the given content as JSON Mimetype.
+ * Outputs the given content as JSON mime type.
  *
  * @param string $content The HTTP response body
  * @param int    $code    The HTTP response status code
