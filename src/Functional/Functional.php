@@ -79,16 +79,16 @@ function greater_than($right)
 /**
  * It allows for conditional execution of code fragments.
  *
- * @param callable $pred
+ * @param callable $cond
  *
  * @return callable $then -> $else -> $value -> mixed
  */
-function if_else(callable $pred)
+function if_else(callable $cond)
 {
-    return function (callable $then) use ($pred) {
-        return function (callable $else) use ($pred, $then) {
-            return function ($value) use ($pred, $then, $else) {
-                return $pred($value) ? $then($value) : $else($value);
+    return function (callable $then) use ($cond) {
+        return function (callable $else) use ($cond, $then) {
+            return function ($value) use ($cond, $then, $else) {
+                return $cond($value) ? $then($value) : $else($value);
             };
         };
     };
@@ -108,7 +108,6 @@ function match(array $matches)
             return null;
         }
 
-        $match = $matches[0];
 
         return if_else($match[0])($match[1])(match(array_slice($matches, 1)))($value);
     };
