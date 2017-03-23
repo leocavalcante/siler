@@ -5,14 +5,18 @@
 
 namespace Siler\Dotenv;
 
+use Dotenv\Dotenv;
+
 /**
  * Load the .env file contents into the environment.
  *
- * @param string $path Dirname of the .env file location
+ * @param string $path Directory name of the .env file location
+ *
+ * @return array
  */
 function init($path)
 {
-    $dotenv = new \Dotenv\Dotenv($path);
+    $dotenv = new Dotenv($path);
 
     return $dotenv->load();
 }
