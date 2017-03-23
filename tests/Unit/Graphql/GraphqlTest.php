@@ -149,4 +149,12 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
 
         $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
     }
+
+    public function testFieldResolveString()
+    {
+        $field = Graphql\field(new ObjectType(['name' => 'test']), 'test')('stdClass');
+        $computed = $field['resolve']();
+
+        $this->assertInstanceOf(\stdClass::class, $computed);
+    }
 }

@@ -63,7 +63,13 @@ function enum($name, $description = null)
 
 function field($type, $name, $description = null)
 {
-    return function (callable $resolve = null) use ($type, $name, $description) {
+    return function ($resolve = null) use ($type, $name, $description) {
+        if (is_string($resolve)) {
+            $resolve = function () use ($resolve) {
+                return new $resolve;
+            };
+        }
+
         return compact('type', 'name', 'description', 'resolve');
     };
 }
