@@ -108,6 +108,7 @@ function match(array $matches)
             return null;
         }
 
+        $match = $matches[0];
 
         return if_else($match[0])($match[1])(match(array_slice($matches, 1)))($value);
     };
