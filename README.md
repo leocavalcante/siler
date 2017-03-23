@@ -113,9 +113,37 @@ print("Listen on 3333\n");
 Ratchet\init(3333);
 ```
 
-More action here: [siler-examples](https://github.com/leocavalcante/siler-examples)
+#### GraphQL
+
+[A query language for your API](http://graphql.org/)
+
+```bash
+composer require webonyx/graphql-php
+```
+
+```php
+use Siler\Graphql;
+
+$query = Graphql\type('Query')([
+    Graphql\str('foo')(function ($root, $args) {
+        return 'bar'.$root['baz'];
+    }),
+]);
+
+$mutation = Graphql\type('Mutation')([
+    Graphql\int('sum')(function ($root, $args) {
+        return $args['x'] + $args['y'];
+    }, [Graphql\int('x')(), Graphql\int('y')()])
+]);
+
+$root = ['baz' => 'qux'];
+
+Graphql\init(new \GraphQL\Schema(['query' => $query(), 'mutation' => $mutation()]), $root);
+```
 
 ---
+More action here: [siler-examples](https://github.com/leocavalcante/siler-examples)
+
 ⚠️️ **This is a work in progress, API may change** 🚧<br>
 But if you give a try, I'd love the get some feedback<br>
 MIT 2017
