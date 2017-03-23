@@ -47,6 +47,14 @@ function init(Schema $schema, $rootValue = null, $context = null, $input = 'php:
     Response\json($result);
 }
 
+/**
+ * Returns a GraphQL value definition.
+ *
+ * @param string $name
+ * @param string $description
+ *
+ * @return \Closure -> value -> array
+ */
 function val($name, $description = null)
 {
     return function ($value) use ($name, $description) {
@@ -54,6 +62,14 @@ function val($name, $description = null)
     };
 }
 
+/**
+ *  Returns a GraphQL Enum type.
+ *
+ * @param $name
+ * @param $description
+ *
+ * @return \Closure -> values -> EnumType
+ */
 function enum($name, $description = null)
 {
     return function (array $values) use ($name, $description) {
@@ -61,9 +77,18 @@ function enum($name, $description = null)
     };
 }
 
-function field($type, $name, $description = null)
+/**
+ * Returns an evaluable field definition.
+ *
+ * @param Type   $type
+ * @param string $name
+ * @param string $description
+ *
+ * @return \Closure -> (resolve, args) -> array
+ */
+function field(Type $type, $name, $description = null)
 {
-    return function ($resolve = null, $args = null) use ($type, $name, $description) {
+    return function ($resolve = null, array $args = null) use ($type, $name, $description) {
         if (is_string($resolve)) {
             $resolve = function () use ($resolve) {
                 return new $resolve;
@@ -74,31 +99,79 @@ function field($type, $name, $description = null)
     };
 }
 
+/**
+ * Returns an evaluable String field definition.
+ *
+ * @param string $name
+ * @param string $description
+ *
+ * @return \Closure -> (resolve, args) -> array
+ */
 function str($name, $description = null)
 {
     return field(Type::string(), $name, $description);
 }
 
+/**
+ * Returns an evaluable Integer field definition.
+ *
+ * @param string $name
+ * @param string $description
+ *
+ * @return \Closure -> (resolve, args) -> array
+ */
 function int($name, $description = null)
 {
     return field(Type::int(), $name, $description);
 }
 
+/**
+ * Returns an evaluable Float field definition.
+ *
+ * @param string $name
+ * @param string $description
+ *
+ * @return \Closure -> (resolve, args) -> array
+ */
 function float($name, $description = null)
 {
     return field(Type::float(), $name, $description);
 }
 
+/**
+ * Returns an evaluable Boolean field definition.
+ *
+ * @param string $name
+ * @param string $description
+ *
+ * @return \Closure -> (resolve, args) -> array
+ */
 function bool($name, $description = null)
 {
     return field(Type::boolean(), $name, $description);
 }
 
+/**
+ * Returns an evaluable Id field definition.
+ *
+ * @param string $name
+ * @param string $description
+ *
+ * @return \Closure -> (resolve, args) -> array
+ */
 function id($name, $description = null)
 {
     return field(Type::id(), $name, $description);
 }
 
+/**
+ * Returns an InterfaceType factory function.
+ *
+ * @param string $name
+ * @param string $description
+ *
+ * @return \Closure -> fields -> resolve -> InterfaceType
+ */
 function itype($name, $description = null)
 {
     return function (array $fields = []) use ($name, $description) {
@@ -108,6 +181,14 @@ function itype($name, $description = null)
     };
 }
 
+/**
+ * Returns an ObjectType factory function.
+ *
+ * @param string $name
+ * @param string $description
+ *
+ * @return \Closure -> fields -> resolve -> ObjectType
+ */
 function type($name, $description = null)
 {
     return function (array $fields = []) use ($name, $description) {
