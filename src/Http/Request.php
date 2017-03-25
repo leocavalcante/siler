@@ -134,6 +134,7 @@ function method($method)
 
     if (is_array($method)) {
         $method = array_map('strtolower', $method);
+
         return in_array(strtolower($requestMethod), $method);
     }
 
