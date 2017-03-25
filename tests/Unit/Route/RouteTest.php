@@ -152,6 +152,21 @@ class RouteTest extends TestCase
         });
     }
 
+    public function testRouteMultiMethods()
+    {
+        $this->expectOutputString('foobar');
+
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+
+        Route\route(['get', 'post'], '/bar/baz', function ($params) {
+            echo 'foo';
+        });
+
+        Route\route('post', '/bar/baz', function ($params) {
+            echo 'bar';
+        });
+    }
+
     public function testRegexify()
     {
         $this->assertEquals('#^//?$#', Route\regexify('/'));

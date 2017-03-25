@@ -67,7 +67,7 @@ function options($path, $callback)
 /**
  * Define a new route.
  *
- * @param string          $method   The HTTP request method to listen on
+ * @param string|array    $method   The HTTP request method to listen on
  * @param string          $path     The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
  */

@@ -108,5 +108,14 @@ class RequestTest extends TestCase
 
         $_SERVER['REQUEST_METHOD'] = 'CUSTOM';
         $this->assertTrue(Request\method('custom'));
+
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $this->assertTrue(Request\method(['get', 'post']));
+
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $this->assertTrue(Request\method(['get', 'post']));
+
+        $_SERVER['REQUEST_METHOD'] = 'PUT';
+        $this->assertFalse(Request\method(['get', 'post']));
     }
 }

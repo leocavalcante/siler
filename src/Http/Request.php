@@ -124,13 +124,18 @@ function input($key = null, $default = null)
 /**
  * Checks for the current HTTP request method.
  *
- * @param string $method The given method to check on
+ * @param string|array $method The given method to check on
  *
  * @return bool
  */
 function method($method)
 {
     $requestMethod = array_get($_POST, '_method', array_get($_SERVER, 'REQUEST_METHOD', 'GET'));
+
+    if (is_array($method)) {
+        $method = array_map('strtolower', $method);
+        return in_array(strtolower($requestMethod), $method);
+    }
 
     return strtolower($method) == strtolower($requestMethod);
 }
