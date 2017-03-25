@@ -22,7 +22,7 @@ $ composer require leocavalcante/siler dev-master
 
 That is it. Actually, Siler is a library, not a framework (maybe a micro-framework), the overall program flow of control is dictated by you. So, no hidden configs or predefined directory structures.
 
-##### Bootstrapping
+##### Or you can start by bootstrapping
 
 ```bash
 $ composer create-project siler/project hello-siler
