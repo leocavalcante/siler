@@ -139,6 +139,18 @@ function routify($filename)
     $filename = str_replace('/', '.', $filename);
 
     $tokens = array_slice(explode('.', $filename), 0, -1);
+    $tokens = array_map(function ($token) {
+        if ($token[0] == '$') {
+            $token = '{'.substr($token, 1).'}';
+        }
+
+        if ($token[0] == '@') {
+            $token = '?{'.substr($token, 1).'}?';
+        }
+
+        return $token;
+    }, $tokens);
+
     $method = array_pop($tokens);
     $path = implode('/', $tokens);
     $path = '/'.trim(str_replace('index', '', $path), '/');
