@@ -52,6 +52,26 @@ class RouteTest extends TestCase
         });
     }
 
+    public function testOptionalParam()
+    {
+        $this->expectOutputString('qux');
+
+        Route\route('get', '/bar/baz/?{qux}?', function ($params) {
+            echo array_key_exists('qux', $params) ? 'foobar' : 'qux';
+        });
+    }
+
+    public function testOptionalParamMatch()
+    {
+        $this->expectOutputString('biz');
+
+        $_SERVER['REQUEST_URI'] = '/bar/baz/biz';
+
+        Route\route('get', '/bar/baz/?{qux}?', function ($params) {
+            echo array_key_exists('qux', $params) ? $params['qux'] : 'qux';
+        });
+    }
+
     public function testRouteWrappedNamedGroup()
     {
         $this->expectOutputString('baz');
@@ -141,6 +161,7 @@ class RouteTest extends TestCase
         $this->assertEquals('#^/foo/(?<BaZ>[A-z0-9_-]+)/?$#', Route\regexify('/foo/{BaZ}'));
         $this->assertEquals('#^/foo/(?<bar_baz>[A-z0-9_-]+)/?$#', Route\regexify('/foo/{bar_baz}'));
         $this->assertEquals('#^/foo/(?<baz>[A-z0-9_-]+)/qux/?$#', Route\regexify('/foo/{baz}/qux'));
+        $this->assertEquals('#^/foo/(?<baz>[A-z0-9_-]+)?/?$#', Route\regexify('/foo/{baz}?'));
     }
 
     public function testRoutify()
