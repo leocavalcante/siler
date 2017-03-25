@@ -17,8 +17,13 @@
 #### Installation
 
 ```bash
-composer require leocavalcante/siler dev-master
+λ composer require leocavalcante/siler dev-master
 ```
+or
+```bash
+λ composer create-project siler/project hello-siler
+```
+
 That is it. Actually, Siler is a library, not a framework (maybe a micro-framework), the overall program flow of control is dictated by you. So, no hidden configs or predefined directory structures.
 
 #### Hello World
