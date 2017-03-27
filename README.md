@@ -157,5 +157,7 @@ Graphql\init(new \GraphQL\Schema(['query' => $query(), 'mutation' => $mutation()
 More action here: [siler-examples](https://github.com/leocavalcante/siler-examples)
 
 ⚠️️ **This is a work in progress, API may change** 🚧
+
 But if you give a try, I'd love the get some feedback
+
 MIT 2017
