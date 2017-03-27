@@ -43,7 +43,7 @@ Route\get('/', λ\puts('Hello World'));
 ```
 Nothing more, nothing less. You don't need even tell Siler to `run` or something like that.
 
-As said before, Siler aims to use PHP files and functions as first-class citiziens, so no Controllers here. If you want to call something more self-container instead of a Closure, you can simply give a PHP filename then Siler will require it for you.
+As said before, Siler aims to use PHP files and functions as first-class citizens, so no Controllers here. If you want to call something more self-container instead of a Closure, you can simply give a PHP filename then Siler will require it for you.
 
 <sub>index.php</sub>
 ```php
@@ -66,7 +66,7 @@ Siler doesn't try to be a fully-featured framework - don't even aim to be a fram
 Is one of the libraries that has helpers functions making work with templates quite simple.
 
 ```bash
-composer require twig/twig
+$ composer require twig/twig
 ```
 
 ```php
@@ -83,7 +83,7 @@ Route\get('/', F\puts(Twig\render('template.twig')));
 Siler also brings helper functions for [vlucas/phpdotenv](https://github.com/vlucas/phpdotenv), so you can easily acomplish [twelve-factor](https://12factor.net/) apps.
 
 ```bash
-composer require vlucas/phpdotenv
+$ composer require vlucas/phpdotenv
 ```
 
 <sub>.env</sub>
@@ -107,7 +107,7 @@ Route\get('/', 'pages/home.php');
 Real-time web apps using WebSockets.
 
 ```bash
-composer require cboden/ratchet
+$ composer require cboden/ratchet
 ```
 
 ```php
@@ -127,10 +127,10 @@ Ratchet\init(3333);
 
 #### GraphQL
 
-[A query language for your API](http://graphql.org/)
+[A query language for your API](http://graphql.org/).
 
 ```bash
-composer require webonyx/graphql-php
+$ composer require webonyx/graphql-php
 ```
 
 ```php
@@ -156,6 +156,8 @@ Graphql\init(new \GraphQL\Schema(['query' => $query(), 'mutation' => $mutation()
 ---
 More action here: [siler-examples](https://github.com/leocavalcante/siler-examples)
 
-⚠️️ **This is a work in progress, API may change** 🚧<br>
-But if you give a try, I'd love the get some feedback<br>
+⚠️️ **This is a work in progress, API may change** 🚧
+
+But if you give a try, I'd love the get some feedback
+
 MIT 2017
