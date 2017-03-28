@@ -172,6 +172,15 @@ function bool($name = null, $description = null)
     return field(Type::boolean(), $name, $description);
 }
 
+function list_of(Type $type, $name = null, $description = null)
+{
+    if (is_null($name)) {
+        return Type::listOf($type);
+    }
+
+    return field(Type::listOf($type), $name, $description);
+}
+
 /**
  * Returns an evaluable Id field definition.
  *

@@ -7,6 +7,7 @@ use GraphQL\Type\Definition\IntType;
 use GraphQL\Type\Definition\FloatType;
 use GraphQL\Type\Definition\BooleanType;
 use GraphQL\Type\Definition\IdType;
+use GraphQL\Type\Definition\ListOfType;
 use PHPUnit\Framework\TestCase;
 use Siler\Graphql;
 
@@ -35,5 +36,10 @@ class GraphqlTypeDeclarationTest extends TestCase
     public function testId()
     {
         $this->assertInstanceOf(IdType::class, Graphql\id());
+    }
+
+    public function testListOf()
+    {
+        $this->assertInstanceOf(ListOfType::class, Graphql\list_of(Graphql\int()));
     }
 }
