@@ -11,6 +11,7 @@ use GraphQL\Type\Definition\InterfaceType;
 use GraphQL\Type\Definition\IntType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\StringType;
+use GraphQL\Type\Definition\ListOfType;
 use GraphQL\Type\Definition\Type;
 use Siler\Graphql;
 
@@ -61,6 +62,12 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
     {
         $field = Graphql\id('test')();
         $this->assertInstanceOf(IDType::class, $field['type']);
+    }
+
+    public function testListOf()
+    {
+        $field = Graphql\list_of(Type::int(), 'test')();
+        $this->assertInstanceOf(ListOfType::class, $field['type']);
     }
 
     public function testInterface()
