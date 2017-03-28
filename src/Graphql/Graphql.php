@@ -11,6 +11,11 @@ use GraphQL\Type\Definition\EnumType;
 use GraphQL\Type\Definition\InterfaceType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Definition\StringType;
+use GraphQL\Type\Definition\IntType;
+use GraphQL\Type\Definition\FloatType;
+use GraphQL\Type\Definition\BooleanType;
+use GraphQL\Type\Definition\IdType;
 use Siler\Http\Request;
 use Siler\Http\Response;
 use function Siler\array_get;
@@ -105,10 +110,14 @@ function field(Type $type, $name, $description = null)
  * @param string $name
  * @param string $description
  *
- * @return \Closure -> (resolve, args) -> array
+ * @return StringType|\Closure -> (resolve, args) -> array
  */
-function str($name, $description = null)
+function str($name = null, $description = null)
 {
+    if (is_null($name)) {
+        return Type::string();
+    }
+
     return field(Type::string(), $name, $description);
 }
 
@@ -118,10 +127,14 @@ function str($name, $description = null)
  * @param string $name
  * @param string $description
  *
- * @return \Closure -> (resolve, args) -> array
+ * @return IntType|\Closure -> (resolve, args) -> array
  */
-function int($name, $description = null)
+function int($name = null, $description = null)
 {
+    if (is_null($name)) {
+        return Type::int();
+    }
+
     return field(Type::int(), $name, $description);
 }
 
@@ -131,10 +144,14 @@ function int($name, $description = null)
  * @param string $name
  * @param string $description
  *
- * @return \Closure -> (resolve, args) -> array
+ * @return FloatType|\Closure -> (resolve, args) -> array
  */
-function float($name, $description = null)
+function float($name = null, $description = null)
 {
+    if (is_null($name)) {
+        return Type::float();
+    }
+
     return field(Type::float(), $name, $description);
 }
 
@@ -144,10 +161,14 @@ function float($name, $description = null)
  * @param string $name
  * @param string $description
  *
- * @return \Closure -> (resolve, args) -> array
+ * @return BooleanType|\Closure -> (resolve, args) -> array
  */
-function bool($name, $description = null)
+function bool($name = null, $description = null)
 {
+    if (is_null($name)) {
+        return Type::boolean();
+    }
+
     return field(Type::boolean(), $name, $description);
 }
 
@@ -157,10 +178,14 @@ function bool($name, $description = null)
  * @param string $name
  * @param string $description
  *
- * @return \Closure -> (resolve, args) -> array
+ * @return IdType|\Closure -> (resolve, args) -> array
  */
-function id($name, $description = null)
+function id($name = null, $description = null)
 {
+    if (is_null($name)) {
+        return Type::id();
+    }
+
     return field(Type::id(), $name, $description);
 }
 
