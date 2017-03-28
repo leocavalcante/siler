@@ -9,9 +9,9 @@ use GraphQL\Type\Definition\FloatType;
 use GraphQL\Type\Definition\IDType;
 use GraphQL\Type\Definition\InterfaceType;
 use GraphQL\Type\Definition\IntType;
+use GraphQL\Type\Definition\ListOfType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\StringType;
-use GraphQL\Type\Definition\ListOfType;
 use GraphQL\Type\Definition\Type;
 use Siler\Graphql;
 

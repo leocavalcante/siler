@@ -2,12 +2,12 @@
 
 namespace Siler\Test\Unit;
 
-use GraphQL\Type\Definition\StringType;
-use GraphQL\Type\Definition\IntType;
-use GraphQL\Type\Definition\FloatType;
 use GraphQL\Type\Definition\BooleanType;
+use GraphQL\Type\Definition\FloatType;
 use GraphQL\Type\Definition\IdType;
+use GraphQL\Type\Definition\IntType;
 use GraphQL\Type\Definition\ListOfType;
+use GraphQL\Type\Definition\StringType;
 use PHPUnit\Framework\TestCase;
 use Siler\Graphql;
 
