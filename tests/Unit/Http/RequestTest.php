@@ -9,7 +9,7 @@ class RequestTest extends TestCase
 {
     protected function setUp()
     {
-        $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = ['foo' => 'bar'];
+        $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = $_FILES = ['foo' => 'bar'];
 
         $_SERVER['HTTP_HOST'] = 'test:8000';
         $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
@@ -87,6 +87,14 @@ class RequestTest extends TestCase
         $this->assertEquals('bar', Request\input('foo'));
         $this->assertEquals('qux', Request\input('baz', 'qux'));
         $this->assertNull(Request\input('baz'));
+    }
+
+    public function testFile()
+    {
+        $this->assertEquals($_FILES, Request\file());
+        $this->assertEquals('bar', Request\file('foo'));
+        $this->assertEquals('qux', Request\file('baz', 'qux'));
+        $this->assertNull(Request\file('baz'));
     }
 
     public function testRequestMethodIs()

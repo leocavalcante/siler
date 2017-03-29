@@ -122,6 +122,19 @@ function input($key = null, $default = null)
 }
 
 /**
+ * Get a value from the $_FILES global.
+ *
+ * @param string $key     The key to be searched
+ * @param mixed  $default The default value to be returned when the key don't exists
+ *
+ * @return mixed
+ */
+function file($key = null, $default = null)
+{
+    return array_get($_FILES, $key, $default);
+}
+
+/**
  * Checks for the current HTTP request method.
  *
  * @param string|array $method The given method to check on
