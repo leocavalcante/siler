@@ -8,7 +8,7 @@
 
 # Siler
 
-Siler is a set of general purpose high-level abstractions aiming an API for declarative programing in PHP.
+Siler is a set of general purpose high-level abstractions aiming an API for declarative programming in PHP.
 
 * 💧 **Files and functions** as first-class citizens
 * 🔋 **Zero dependency**, everything is on top of PHP built-in functions
