@@ -1,4 +1,5 @@
 {
+  "root": "./docs",
   "gitbook": "3.2.2",
   "title": "Siler",
   "plugins": ["edit-link", "prism", "-highlight", "github", "anchorjs"],
