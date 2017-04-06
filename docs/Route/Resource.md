@@ -27,12 +27,12 @@ And the file structure:
 ```
 index.php
 /crud
-+ /users
-++ index.php
-++ create.php
-++ store.php
-++ show.php
-++ edit.php
-++ update.php
-++ destroy.php
+└── /users
+    ├─ index.php
+    ├─ create.php
+    ├─ store.php
+    ├─ show.php
+    ├─ edit.php
+    ├─ update.php
+    └─ destroy.php
 ```
