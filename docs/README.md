@@ -19,7 +19,7 @@ use Siler\Route;
 Route\get('/', λ\puts('Hello World'));
 ```
 
-This is outputs `Hello World` when the file is reached via HTTP using the GET method and the URI path matches `/`. Got the idea, right?
+This outputs `Hello World` when the file is reached via HTTP using the GET method and the URI path matches `/`. Got the idea, right?
 
 What can be done with Siler?
 
