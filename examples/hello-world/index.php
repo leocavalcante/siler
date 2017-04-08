@@ -1,13 +1,12 @@
 <?php
 
-use Siler\Functional as λ;
 use Siler\Route;
 
 chdir(dirname(dirname(__DIR__)));
 require 'vendor/autoload.php';
 
 Route\get('/', function () {
-    print('Hello World!');
+    echo 'Hello World!';
 });
 
 Route\get('/hello/{name}', function ($params) {
