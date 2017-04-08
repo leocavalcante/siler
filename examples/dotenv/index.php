@@ -1,6 +1,7 @@
 <?php
 
-use Siler\{Dotenv, Route};
+use Siler\Dotenv;
+use Siler\Route;
 
 chdir(dirname(dirname(__DIR__)));
 require 'vendor/autoload.php';
