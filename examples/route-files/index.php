@@ -1,8 +1,8 @@
 <?php
 
 use RedBeanPHP\R;
-use Siler\Twig;
 use Siler\Route;
+use Siler\Twig;
 
 chdir(dirname(dirname(__DIR__)));
 require 'vendor/autoload.php';

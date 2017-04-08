@@ -1,6 +1,8 @@
 <?php
 
-use Siler\{Twig, Route, Http\Response};
+use Siler\Http\Response;
+use Siler\Route;
+use Siler\Twig;
 
 chdir(dirname(dirname(__DIR__)));
 require 'vendor/autoload.php';
