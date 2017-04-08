@@ -1,0 +1,21 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+  <h1>Contact</h1>
+
+  <form method="post" role="form">
+    <div>
+      <label for="name">Name</label>
+      <input type="text" name="name">
+    </div>
+
+    <div>
+      <label for="message">Message</label>
+      <textarea name="message"></textarea>
+    </div>
+
+    <div>
+      <input type="submit">
+    </div>
+  </form>
+{% endblock %}

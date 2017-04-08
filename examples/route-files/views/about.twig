@@ -1,0 +1,17 @@
+{% extends 'layout.twig' %}
+
+{% block content %}
+  <h1>About</h1>
+
+  <p>Contacts</p>
+
+  <dl>
+  {% for contact in contacts %}
+    <dt>{{ contact.name }}</dt>
+    <dd>
+      <p>{{ contact.message }}</p>
+      <p><small>{{ contact.date|date }}</small></p>
+    </dd>
+  {% endfor %}
+  </dl>
+{% endblock %}
