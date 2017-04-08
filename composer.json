@@ -1,8 +1,14 @@
 {
     "name": "leocavalcante/siler",
     "type": "library",
-    "description": "Keep it simple, stupid",
-    "keywords": ["framework","micro","api","router"],
+    "description": "Siler is a set of general purpose high-level abstractions aiming an API for declarative programming in PHP.",
+    "keywords": [
+        "framework",
+        "micro",
+        "api",
+        "router",
+        "functional"
+    ],
     "license": "MIT",
     "authors": [
         {
@@ -11,7 +17,7 @@
         }
     ],
     "require": {
-        "php": ">=5.6.0"
+        "php": ">=7.0.0"
     },
     "minimum-stability": "stable",
     "require-dev": {
@@ -22,10 +28,13 @@
         "phpunit/phpunit": "*",
         "cboden/ratchet": "*",
         "webonyx/graphql-php": "*",
-        "lcobucci/jwt": "*"
+        "lcobucci/jwt": "*",
+        "gabordemooij/redbean": "*"
     },
     "autoload": {
-        "psr-4": { "Siler\\": "src/" },
+        "psr-4": {
+            "Siler\\": "src/"
+        },
         "files": [
             "src/Container/Container.php",
             "src/Dotenv/Dotenv.php",
@@ -43,7 +52,9 @@
         ]
     },
     "autoload-dev": {
-        "psr-4": { "Siler\\Test\\": "tests/" }
+        "psr-4": {
+            "Siler\\Test\\": "tests/"
+        }
     },
     "scripts": {
         "fix": "phpcbf",
