@@ -44,7 +44,7 @@ function response($body = 'php://memory', $status = 200, array $headers = [])
  * Emits a PSR-7 SAPI response.
  *
  * @param ResponseInterface $response
- * @param int                $maxBufferLevel
+ * @param int               $maxBufferLevel
  */
 function emit(ResponseInterface $response, $maxBufferLevel = null)
 {
