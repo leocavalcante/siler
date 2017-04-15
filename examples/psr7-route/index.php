@@ -2,7 +2,6 @@
 
 use Siler\Diactoros;
 use Siler\Route;
-
 use function Siler\array_get;
 
 chdir(dirname(dirname(__DIR__)));
@@ -19,6 +18,7 @@ $response = Route\get('/', function () {
 // /greet/Leo?salute=Hello
 $response = Route\get('/greet/{name}', function ($params) use ($request) {
     $salute = array_get($request->getQueryParams(), 'salute', 'Olá');
+
     return Diactoros\text("{$salute} {$params['name']}");
 });
 
