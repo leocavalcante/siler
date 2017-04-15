@@ -8,7 +8,6 @@ namespace Siler\Route;
 use Siler\Container;
 use Siler\Http;
 use Siler\Http\Request;
-
 use function Siler\require_fn;
 
 /**
