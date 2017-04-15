@@ -167,6 +167,15 @@ class RouteTest extends TestCase
         });
     }
 
+    public function testRouteReturn()
+    {
+        $actual = Route\route('get', '/bar/baz', function () {
+            return 'foo';
+        });
+
+        $this->assertEquals('foo', $actual);
+    }
+
     public function testRegexify()
     {
         $this->assertEquals('#^//?$#', Route\regexify('/'));

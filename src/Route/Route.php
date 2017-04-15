@@ -70,6 +70,8 @@ function options($path, $callback)
  * @param string|array    $method   The HTTP request method to listen on
  * @param string          $path     The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
+ *
+ * @return mixed|null
  */
 function route($method, $path, $callback)
 {
@@ -80,8 +82,10 @@ function route($method, $path, $callback)
     }
 
     if (Request\method($method) && preg_match($path, Http\path(), $params)) {
-        $callback($params);
+        return $callback($params);
     }
+
+    return null;
 }
 
 /**
