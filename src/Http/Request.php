@@ -141,9 +141,11 @@ function file($key = null, $default = null)
  *
  * @return bool
  */
-function method($method)
+function method($method, $requestMethod = null)
 {
-    $requestMethod = array_get($_POST, '_method', array_get($_SERVER, 'REQUEST_METHOD', 'GET'));
+    if (is_null($requestMethod)) {
+        $requestMethod = array_get($_POST, '_method', array_get($_SERVER, 'REQUEST_METHOD', 'GET'));
+    }
 
     if (is_array($method)) {
         $method = array_map('strtolower', $method);

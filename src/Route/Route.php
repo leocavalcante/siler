@@ -5,8 +5,10 @@
 
 namespace Siler\Route;
 
+use Siler\Container;
 use Siler\Http;
 use Siler\Http\Request;
+
 use function Siler\require_fn;
 
 /**
@@ -17,7 +19,7 @@ use function Siler\require_fn;
  */
 function get($path, $callback)
 {
-    route('get', $path, $callback);
+    return route('get', $path, $callback);
 }
 
 /**
@@ -28,7 +30,7 @@ function get($path, $callback)
  */
 function post($path, $callback)
 {
-    route('post', $path, $callback);
+    return route('post', $path, $callback);
 }
 
 /**
@@ -39,7 +41,7 @@ function post($path, $callback)
  */
 function put($path, $callback)
 {
-    route('put', $path, $callback);
+    return route('put', $path, $callback);
 }
 
 /**
@@ -50,7 +52,7 @@ function put($path, $callback)
  */
 function delete($path, $callback)
 {
-    route('delete', $path, $callback);
+    return route('delete', $path, $callback);
 }
 
 /**
@@ -61,7 +63,7 @@ function delete($path, $callback)
  */
 function options($path, $callback)
 {
-    route('options', $path, $callback);
+    return route('options', $path, $callback);
 }
 
 /**
@@ -79,6 +81,14 @@ function route($method, $path, $callback)
 
     if (is_string($callback)) {
         $callback = require_fn($callback);
+    }
+
+    if ($request = Container\get('psr7_request')) {
+        if (Request\method($method, $request->getMethod()) &&
+            preg_match($path, $request->getUri()->getPath(), $params)
+        ) {
+            return $callback($params);
+        }
     }
 
     if (Request\method($method) && preg_match($path, Http\path(), $params)) {
@@ -177,4 +187,9 @@ function files($basePath)
         list($method, $path) = routify(substr($filename, strlen(rtrim($basePath, '/'))));
         route($method, $path, $filename);
     }
+}
+
+function psr7($request)
+{
+    Container\set('psr7_request', $request);
 }
