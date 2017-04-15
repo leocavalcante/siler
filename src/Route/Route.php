@@ -84,14 +84,14 @@ function route($method, $path, $callback)
     }
 
     if ($request = Container\get('psr7_request')) {
-        if (Request\method($method, $request->getMethod()) &&
+        if (Request\method_is($method, $request->getMethod()) &&
             preg_match($path, $request->getUri()->getPath(), $params)
         ) {
             return $callback($params);
         }
     }
 
-    if (Request\method($method) && preg_match($path, Http\path(), $params)) {
+    if (Request\method_is($method) && preg_match($path, Http\path(), $params)) {
         return $callback($params);
     }
 

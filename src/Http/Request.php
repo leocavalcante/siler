@@ -135,16 +135,39 @@ function file($key = null, $default = null)
 }
 
 /**
+ * Returns the current HTTP request method.
+ * Override with X-Http-Method-Override header or _method on body
+ *
+ * @return string
+ */
+function method()
+{
+    if ($method = header('X-Http-Method-Override')) {
+        return $method;
+    }
+
+    if ($method = array_get($_POST, '_method')) {
+        return $method;
+    }
+
+    if ($method = array_get($_SERVER, 'REQUEST_METHOD')) {
+        return $method;
+    }
+
+    return 'GET';
+}
+
+/**
  * Checks for the current HTTP request method.
  *
  * @param string|array $method The given method to check on
  *
  * @return bool
  */
-function method($method, $requestMethod = null)
+function method_is($method, $requestMethod = null)
 {
     if (is_null($requestMethod)) {
-        $requestMethod = array_get($_POST, '_method', array_get($_SERVER, 'REQUEST_METHOD', 'GET'));
+        $requestMethod = method();
     }
 
     if (is_array($method)) {

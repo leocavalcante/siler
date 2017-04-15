@@ -97,33 +97,49 @@ class RequestTest extends TestCase
         $this->assertNull(Request\file('baz'));
     }
 
+    public function testMethod()
+    {
+        $this->assertEquals('GET', Request\method());
+
+        $_POST['_method'] = 'POST';
+
+        $this->assertEquals('POST', Request\method());
+
+        $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] = 'PUT';
+
+        $this->assertEquals('PUT', Request\method());
+
+        unset($_POST['_method']);
+        unset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
+    }
+
     public function testRequestMethodIs()
     {
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $this->assertTrue(Request\method('post'));
+        $this->assertTrue(Request\method_is('post'));
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $this->assertTrue(Request\method('get'));
+        $this->assertTrue(Request\method_is('get'));
 
         $_SERVER['REQUEST_METHOD'] = 'PUT';
-        $this->assertTrue(Request\method('put'));
+        $this->assertTrue(Request\method_is('put'));
 
         $_SERVER['REQUEST_METHOD'] = 'DELETE';
-        $this->assertTrue(Request\method('delete'));
+        $this->assertTrue(Request\method_is('delete'));
 
         $_SERVER['REQUEST_METHOD'] = 'OPTIONS';
-        $this->assertTrue(Request\method('options'));
+        $this->assertTrue(Request\method_is('options'));
 
         $_SERVER['REQUEST_METHOD'] = 'CUSTOM';
-        $this->assertTrue(Request\method('custom'));
+        $this->assertTrue(Request\method_is('custom'));
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $this->assertTrue(Request\method(['get', 'post']));
+        $this->assertTrue(Request\method_is(['get', 'post']));
 
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $this->assertTrue(Request\method(['get', 'post']));
+        $this->assertTrue(Request\method_is(['get', 'post']));
 
         $_SERVER['REQUEST_METHOD'] = 'PUT';
-        $this->assertFalse(Request\method(['get', 'post']));
+        $this->assertFalse(Request\method_is(['get', 'post']));
     }
 }
