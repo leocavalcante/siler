@@ -136,7 +136,7 @@ function file($key = null, $default = null)
 
 /**
  * Returns the current HTTP request method.
- * Override with X-Http-Method-Override header or _method on body
+ * Override with X-Http-Method-Override header or _method on body.
  *
  * @return string
  */
