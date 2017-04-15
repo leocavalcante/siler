@@ -17,4 +17,11 @@ class ContainerTest extends TestCase
     {
         $this->assertEquals('test', Container\get('test'));
     }
+
+    public function testHas()
+    {
+        Container\Container::getInstance()->values['test_has'] = new \stdClass();
+        $this->assertTrue(Container\has('test_has'));
+        $this->assertFalse(Container\has('test_hasnt'));
+    }
 }
