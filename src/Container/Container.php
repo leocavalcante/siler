@@ -37,13 +37,14 @@ function set($key, $value)
 /**
  * Checks if there is some value in the given $key.
  *
- * @param  string  $key
+ * @param string $key
  *
- * @return boolean
+ * @return bool
  */
 function has($key)
 {
     $container = Container::getInstance();
+
     return array_key_exists($key, $container->values);
 }
 
