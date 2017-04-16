@@ -14,23 +14,21 @@ require 'vendor/autoload.php';
 
 $request = Diactoros\request();
 
-Route\psr7($request); // Link to Siler's Container
+Route\psr7($request);
 
-$response = Route\get('/', function () {
-    return Diactoros\text('hello world');
-});
+$response = Diactoros\text('not found', 404);
 
 // /greet/Leo?salute=Hello
 $response = Route\get('/greet/{name}', function ($params) use ($request) {
     $salute = array_get($request->getQueryParams(), 'salute', 'Olá');
-    return Diactoros\text("{$salute} {$params['name']}");
-});
 
-// Handle Not found 404
-$response = $response ?: Diactoros\text('not found', 404);
+    return Diactoros\text("{$salute} {$params['name']}");
+}) ?: $response;
+
+
+$response = Route\get('/', function () {
+    return Diactoros\text('hello world');
+}) ?: $response;
 
 Diactoros\emit($response);
 ```
-
-
-

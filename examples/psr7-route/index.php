@@ -11,17 +11,18 @@ $request = Diactoros\request();
 
 Route\psr7($request);
 
-$response = Route\get('/', function () {
-    return Diactoros\text('hello world');
-});
+$response = Diactoros\text('not found', 404);
 
 // /greet/Leo?salute=Hello
 $response = Route\get('/greet/{name}', function ($params) use ($request) {
     $salute = array_get($request->getQueryParams(), 'salute', 'Olá');
 
     return Diactoros\text("{$salute} {$params['name']}");
-});
+}) ?: $response;
 
-$response = $response ?: Diactoros\text('not found', 404);
+
+$response = Route\get('/', function () {
+    return Diactoros\text('hello world');
+}) ?: $response;
 
 Diactoros\emit($response);
