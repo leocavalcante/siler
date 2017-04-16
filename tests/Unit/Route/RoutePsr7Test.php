@@ -7,7 +7,7 @@ use Siler\Route;
 use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\ServerRequestFactory;
 
-class RoutePsr7Test //extends \PHPUnit\Framework\TestCase
+class RoutePsr7Test extends \PHPUnit\Framework\TestCase
 {
     public function testPsr7()
     {
