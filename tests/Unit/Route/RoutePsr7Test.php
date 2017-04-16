@@ -34,4 +34,9 @@ class RoutePsr7Test extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals('foo', $actual);
     }
+
+    public function teardown()
+    {
+        unset(Container\Container::getInstance()->values['psr7_request']);
+    }
 }

@@ -87,6 +87,8 @@ function route($method, $path, $callback)
             preg_match($path, $request->getUri()->getPath(), $params)
         ) {
             return $callback($params);
+        } else {
+            return null;
         }
     }
 
