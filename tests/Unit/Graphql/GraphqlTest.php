@@ -164,4 +164,10 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
 
         $this->assertInstanceOf(\stdClass::class, $computed);
     }
+
+    public function testSchema()
+    {
+        $schema = Graphql\schema(__DIR__.'/../../fixtures/schema.graphql');
+        $this->assertInstanceOf(Schema::class, $schema);
+    }
 }

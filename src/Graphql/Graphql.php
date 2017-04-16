@@ -6,6 +6,7 @@
 namespace Siler\Graphql;
 
 use GraphQL\GraphQL;
+use GraphQL\Language\Parser;
 use GraphQL\Schema;
 use GraphQL\Type\Definition\BooleanType;
 use GraphQL\Type\Definition\EnumType;
@@ -16,6 +17,7 @@ use GraphQL\Type\Definition\IntType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Definition\Type;
+use GraphQL\Utils\BuildSchema;
 use Siler\Http\Request;
 use Siler\Http\Response;
 use function Siler\array_get;
@@ -50,6 +52,18 @@ function init(Schema $schema, $rootValue = null, $context = null, $input = 'php:
     );
 
     Response\json($result);
+}
+
+/**
+ * Returns a new GraphQL\Schema from a file containing GraphQL language.
+ *
+ * @param string $filename
+ *
+ * @return Schema
+ */
+function schema($filename)
+{
+    return BuildSchema::buildAST(Parser::parse(file_get_contents($filename)));
 }
 
 /**
