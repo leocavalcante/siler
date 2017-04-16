@@ -25,7 +25,6 @@ $response = Route\get('/greet/{name}', function ($params) use ($request) {
     return Diactoros\text("{$salute} {$params['name']}");
 }) ?: $response;
 
-
 $response = Route\get('/', function () {
     return Diactoros\text('hello world');
 }) ?: $response;
