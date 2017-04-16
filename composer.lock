@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "043557f44922f85b3f934fc359e1f5f0",
+    "content-hash": "6962c1f7cdd920e6d8835d510004f7e3",
     "packages": [],
     "packages-dev": [
         {
@@ -1986,7 +1986,7 @@
                 "server",
                 "streaming"
             ],
-            "time": "2017-04-10 18:27:29"
+            "time": "2017-04-10T18:27:29+00:00"
         },
         {
             "name": "react/promise",
