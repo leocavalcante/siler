@@ -3,11 +3,11 @@
     "type": "library",
     "description": "Siler is a set of general purpose high-level abstractions aiming an API for declarative programming in PHP.",
     "keywords": [
-        "framework",
-        "micro",
         "api",
-        "router",
-        "functional"
+        "framework",
+        "functional",
+        "micro",
+        "router"
     ],
     "license": "MIT",
     "authors": [
@@ -21,15 +21,17 @@
     },
     "minimum-stability": "stable",
     "require-dev": {
-        "phpstan/phpstan": "*",
-        "squizlabs/php_codesniffer": "*",
-        "vlucas/phpdotenv": "*",
-        "twig/twig": "*",
-        "phpunit/phpunit": "*",
         "cboden/ratchet": "*",
-        "webonyx/graphql-php": "*",
-        "lcobucci/jwt": "*",
         "gabordemooij/redbean": "*",
+        "lcobucci/jwt": "*",
+        "phpstan/phpstan": "*",
+        "phpunit/phpunit": "*",
+        "react/http": "dev-master",
+        "react/socket": "0.5 as 0.4",
+        "squizlabs/php_codesniffer": "*",
+        "twig/twig": "*",
+        "vlucas/phpdotenv": "*",
+        "webonyx/graphql-php": "*",
         "zendframework/zend-diactoros": "*"
     },
     "autoload": {
@@ -40,8 +42,8 @@
             "src/Container/Container.php",
             "src/Diactoros/Diactoros.php",
             "src/Dotenv/Dotenv.php",
-            "src/Functional/Monad/Monad.php",
             "src/Functional/Functional.php",
+            "src/Functional/Monad/Monad.php",
             "src/Graphql/Graphql.php",
             "src/Http/Http.php",
             "src/Http/Request.php",
@@ -49,8 +51,8 @@
             "src/Jwt/Jwt.php",
             "src/Ratchet/Ratchet.php",
             "src/Route/Route.php",
-            "src/Twig/Twig.php",
-            "src/Siler.php"
+            "src/Siler.php",
+            "src/Twig/Twig.php"
         ]
     },
     "autoload-dev": {
