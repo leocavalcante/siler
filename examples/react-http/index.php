@@ -2,7 +2,6 @@
 
 use Psr\Http\Message\RequestInterface;
 use React\EventLoop\Factory;
-use React\Http\Response;
 use React\Promise\Promise;
 use React\Socket\Server;
 use Siler\Diactoros;
@@ -34,6 +33,6 @@ $server = new \React\Http\Server($socket, function (RequestInterface $request) {
     });
 });
 
-echo 'Listening on http://' . $socket->getAddress() . PHP_EOL;
+echo 'Listening on http://'.$socket->getAddress().PHP_EOL;
 
 $loop->run();
