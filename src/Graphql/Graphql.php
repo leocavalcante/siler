@@ -15,6 +15,7 @@ use GraphQL\Type\Definition\IdType;
 use GraphQL\Type\Definition\InterfaceType;
 use GraphQL\Type\Definition\IntType;
 use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Utils\BuildSchema;
@@ -79,7 +80,7 @@ function schema($typeDefs, array $resolvers = [])
  */
 function resolvers(array $resolvers)
 {
-    Executor::setDefaultFieldResolver(function ($source, $args, $context, $info) use ($resolvers) {
+    Executor::setDefaultFieldResolver(function ($source, $args, $context, ResolveInfo $info) use ($resolvers) {
         if (array_key_exists($info->parentType->name, $resolvers)) {
             $subject = $resolvers[$info->parentType->name];
 
