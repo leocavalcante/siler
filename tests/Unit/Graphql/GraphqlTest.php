@@ -167,7 +167,8 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
 
     public function testSchema()
     {
-        $schema = Graphql\schema(__DIR__.'/../../fixtures/schema.graphql');
+        $typeDefs = file_get_contents(__DIR__.'/../../fixtures/schema.graphql');
+        $schema = Graphql\schema($typeDefs);
         $this->assertInstanceOf(Schema::class, $schema);
     }
 }

@@ -5,8 +5,8 @@
 
 namespace Siler\Graphql;
 
+use GraphQL\Executor\Executor;
 use GraphQL\GraphQL;
-use GraphQL\Language\Parser;
 use GraphQL\Schema;
 use GraphQL\Type\Definition\BooleanType;
 use GraphQL\Type\Definition\EnumType;
@@ -56,14 +56,50 @@ function init(Schema $schema, $rootValue = null, $context = null, $input = 'php:
 
 /**
  * Returns a new GraphQL\Schema from a file containing GraphQL language.
+ * Also sets a Siler's default field resolver based on $resolvers array.
  *
- * @param string $filename
+ * @param string $typeDefs
+ * @param array  $resolvers
  *
  * @return Schema
  */
-function schema($filename)
+function schema($typeDefs, array $resolvers = [])
 {
-    return BuildSchema::buildAST(Parser::parse(file_get_contents($filename)));
+    if (!empty($resolvers)) {
+        resolvers($resolvers);
+    }
+
+    return BuildSchema::build($typeDefs);
+}
+
+/**
+ * Sets a Siler's default field resolver based on the given $resolvers array.
+ *
+ * @param $resolvers
+ */
+function resolvers(array $resolvers)
+{
+    Executor::setDefaultFieldResolver(function ($source, $args, $context, $info) use ($resolvers) {
+        if (array_key_exists($info->parentType->name, $resolvers)) {
+            $subject = $resolvers[$info->parentType->name];
+
+            if (is_callable($subject)) {
+                $subject = $subject($source, $args, $context, $info);
+            }
+
+            if (is_array($subject)) {
+                $resolver = $subject[$info->fieldName];
+            }
+
+            if (is_object($subject)) {
+                $resolver = $subject->{$info->fieldName};
+            }
+
+            if (isset($resolver)) {
+                return is_callable($resolver) ? $resolver($source, $args, $context, $info) : $resolver;
+            }
+        }
+    });
 }
 
 /**

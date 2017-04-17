@@ -1,0 +1,7 @@
+type Query {
+  message: String
+}
+
+type Mutation {
+  sum(a: Int, b: Int): Int
+}
