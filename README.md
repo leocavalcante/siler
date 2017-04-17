@@ -129,30 +129,47 @@ Ratchet\init(3333);
 
 #### GraphQL
 
-[A query language for your API](http://graphql.org/).
+[A query language for your API](http://graphql.org/). Thanks to webonyx/graphql-php you can build you Schema from a
+type definitions string and thanks to Siler you can tie them to resolvers:
 
 ```bash
 $ composer require webonyx/graphql-php
 ```
 
+<sub>schema.graphql</sub>
+```graphql
+type Query {
+  message: String
+}
+
+type Mutation {
+  sum(a: Int, b: Int): Int
+}
+```
+
+<sub>index.php</sub>
 ```php
 use Siler\Graphql;
+use Siler\Http\Response;
 
-$query = Graphql\type('Query')([
-    Graphql\str('foo')(function ($root, $args) {
-        return 'bar'.$root['baz'];
-    }),
-]);
+// Enable CORS for GraphiQL
+Response\header('Access-Control-Allow-Origin', '*');
+Response\header('Access-Control-Allow-Headers', 'content-type');
 
-$mutation = Graphql\type('Mutation')([
-    Graphql\int('sum')(function ($root, $args) {
-        return $args['x'] + $args['y'];
-    }, [Graphql\int('x')(), Graphql\int('y')()])
-]);
+$typeDefs = file_get_contents('path/to/schema.graphql');
 
-$root = ['baz' => 'qux'];
+$resolvers = [
+    'Query' => [
+        'message' => 'foo',
+    ],
+    'Mutation' => [
+        'sum' => function ($root, $args) {
+            return $args['a'] + $args['b'];
+        },
+    ],
+];
 
-Graphql\init(new \GraphQL\Schema(['query' => $query(), 'mutation' => $mutation()]), $root);
+Graphql\init(Graphql\schema($typeDefs, $resolvers));
 ```
 
 ---
