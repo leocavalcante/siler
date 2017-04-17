@@ -8,25 +8,25 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
 {
     public function testResolver()
     {
-        $typeDefs = "
+        $typeDefs = '
             type Query {
                 message: String
             }
-        ";
+        ';
 
         $resolvers = [
             'Query' => [
-                'message' => 'foo'
-            ]
+                'message' => 'foo',
+            ],
         ];
 
         $expected = [
             'data' => [
-                'message' => 'foo'
-            ]
+                'message' => 'foo',
+            ],
         ];
 
-        $query = "query { message }";
+        $query = 'query { message }';
         $schema = Graphql\schema($typeDefs, $resolvers);
         $actual = \GraphQL\GraphQL::execute($schema, $query);
 
@@ -35,27 +35,27 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
 
     public function testCallableResolver()
     {
-        $typeDefs = "
+        $typeDefs = '
             type Query {
                 message: String
             }
-        ";
+        ';
 
         $resolvers = [
             'Query' => [
                 'message' => function ($root, $args) {
                     return 'foo';
-                }
-            ]
+                },
+            ],
         ];
 
         $expected = [
             'data' => [
-                'message' => 'foo'
-            ]
+                'message' => 'foo',
+            ],
         ];
 
-        $query = "query { message }";
+        $query = 'query { message }';
         $schema = Graphql\schema($typeDefs, $resolvers);
         $actual = \GraphQL\GraphQL::execute($schema, $query);
 
@@ -64,7 +64,7 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
 
     public function testMutation()
     {
-        $typeDefs = "
+        $typeDefs = '
             type Query {
                 message: String
             }
@@ -72,23 +72,23 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
             type Mutation {
                 sum(a: Int, b: Int): Int
             }
-        ";
+        ';
 
         $resolvers = [
             'Mutation' => [
                 'sum' => function ($root, $args) {
                     return $args['a'] + $args['b'];
-                }
-            ]
+                },
+            ],
         ];
 
         $expected = [
             'data' => [
-                'sum' => 4
-            ]
+                'sum' => 4,
+            ],
         ];
 
-        $query = "mutation { sum(a: 2, b: 2) }";
+        $query = 'mutation { sum(a: 2, b: 2) }';
         $schema = Graphql\schema($typeDefs, $resolvers);
         $actual = \GraphQL\GraphQL::execute($schema, $query);
 
@@ -100,23 +100,23 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
         $object = new \stdClass();
         $object->message = 'foo';
 
-        $typeDefs = "
+        $typeDefs = '
             type Query {
                 message: String
             }
-        ";
+        ';
 
         $resolvers = [
-            'Query' => $object
+            'Query' => $object,
         ];
 
         $expected = [
             'data' => [
-                'message' => 'foo'
-            ]
+                'message' => 'foo',
+            ],
         ];
 
-        $query = "query { message }";
+        $query = 'query { message }';
         $schema = Graphql\schema($typeDefs, $resolvers);
         $actual = \GraphQL\GraphQL::execute($schema, $query);
 

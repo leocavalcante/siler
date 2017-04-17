@@ -13,13 +13,13 @@ $typeDefs = file_get_contents('examples/graphql/schema.graphql');
 
 $resolvers = [
     'Query' => [
-        'message' => 'foo'
+        'message' => 'foo',
     ],
     'Mutation' => [
         'sum' => function ($root, $args) {
             return $args['a'] + $args['b'];
-        }
-    ]
+        },
+    ],
 ];
 
 Graphql\init(Graphql\schema($typeDefs, $resolvers));
