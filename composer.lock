@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6962c1f7cdd920e6d8835d510004f7e3",
+    "content-hash": "91815a41e1105a8025f1c5b3fc7f41d5",
     "packages": [],
     "packages-dev": [
         {
@@ -1942,53 +1942,6 @@
             "time": "2016-03-08T02:09:32+00:00"
         },
         {
-            "name": "react/http",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/reactphp/http.git",
-                "reference": "f04febde4e58fbeb202b670a386527ee35a71af9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/http/zipball/f04febde4e58fbeb202b670a386527ee35a71af9",
-                "reference": "f04febde4e58fbeb202b670a386527ee35a71af9",
-                "shasum": ""
-            },
-            "require": {
-                "evenement/evenement": "^2.0 || ^1.0",
-                "php": ">=5.3.0",
-                "react/promise": "^2.0 || ^1.1",
-                "react/socket": "^0.7 || ^0.6 || ^0.5",
-                "react/stream": "^0.6 || ^0.5 || ^0.4.4",
-                "ringcentral/psr7": "^1.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8.10||^5.0",
-                "react/socket": "^0.7"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "React\\Http\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Event-driven, streaming plaintext HTTP and secure HTTPS server for ReactPHP",
-            "keywords": [
-                "event-driven",
-                "http",
-                "https",
-                "reactphp",
-                "server",
-                "streaming"
-            ],
-            "time": "2017-04-10T18:27:29+00:00"
-        },
-        {
             "name": "react/promise",
             "version": "v2.5.1",
             "source": {
@@ -2036,16 +1989,16 @@
         },
         {
             "name": "react/socket",
-            "version": "v0.5.0",
+            "version": "v0.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/socket.git",
-                "reference": "691dbf6cb3aa9ae67ef25d29c32e853d5d34fa99"
+                "reference": "cf074e53c974df52388ebd09710a9018894745d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/socket/zipball/691dbf6cb3aa9ae67ef25d29c32e853d5d34fa99",
-                "reference": "691dbf6cb3aa9ae67ef25d29c32e853d5d34fa99",
+                "url": "https://api.github.com/repos/reactphp/socket/zipball/cf074e53c974df52388ebd09710a9018894745d2",
+                "reference": "cf074e53c974df52388ebd09710a9018894745d2",
                 "shasum": ""
             },
             "require": {
@@ -2074,7 +2027,7 @@
             "keywords": [
                 "Socket"
             ],
-            "time": "2017-02-14T06:49:09+00:00"
+            "time": "2017-01-26T09:23:38+00:00"
         },
         {
             "name": "react/stream",
@@ -2119,64 +2072,6 @@
                 "stream"
             ],
             "time": "2017-01-25T14:44:14+00:00"
-        },
-        {
-            "name": "ringcentral/psr7",
-            "version": "1.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ringcentral/psr7.git",
-                "reference": "2594fb47cdc659f3fcf0aa1559b7355460555303"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ringcentral/psr7/zipball/2594fb47cdc659f3fcf0aa1559b7355460555303",
-                "reference": "2594fb47cdc659f3fcf0aa1559b7355460555303",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3",
-                "psr/http-message": "~1.0"
-            },
-            "provide": {
-                "psr/http-message-implementation": "1.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "RingCentral\\Psr7\\": "src/"
-                },
-                "files": [
-                    "src/functions_include.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                }
-            ],
-            "description": "PSR-7 message implementation",
-            "keywords": [
-                "http",
-                "message",
-                "stream",
-                "uri"
-            ],
-            "time": "2016-03-25T17:36:49+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -3233,16 +3128,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.3.0",
+            "version": "v2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "9718186a5df85a4f7917e78d3ffcabc204c75d25"
+                "reference": "437efc435619c8e67acacda37b3984344854142c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/9718186a5df85a4f7917e78d3ffcabc204c75d25",
-                "reference": "9718186a5df85a4f7917e78d3ffcabc204c75d25",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/437efc435619c8e67acacda37b3984344854142c",
+                "reference": "437efc435619c8e67acacda37b3984344854142c",
                 "shasum": ""
             },
             "require": {
@@ -3292,7 +3187,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-03-22T15:41:51+00:00"
+            "time": "2017-04-18T21:50:11+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -3492,18 +3387,9 @@
             "time": "2017-04-06T16:18:34+00:00"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.4",
-            "alias_normalized": "0.4.0.0",
-            "version": "0.5.0.0",
-            "package": "react/socket"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "react/http": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

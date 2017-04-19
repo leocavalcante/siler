@@ -103,6 +103,11 @@ function resolvers(array $resolvers)
     });
 }
 
+function subscriptions(Schema $schema)
+{
+
+}
+
 /**
  * Returns a GraphQL value definition.
  *
