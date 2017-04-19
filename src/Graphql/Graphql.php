@@ -21,7 +21,19 @@ use GraphQL\Type\Definition\Type;
 use GraphQL\Utils\BuildSchema;
 use Siler\Http\Request;
 use Siler\Http\Response;
+use Ratchet\WebSocket\WsServer;
+use Ratchet\Http\HttpServer;
+use Ratchet\Server\IoServer;
 use function Siler\array_get;
+
+const INIT                 = 'init';
+const INIT_SUCCESS         = 'init_success';
+const INIT_FAIL            = 'init_fail';
+const SUBSCRIPTION_START   = 'subscription_start';
+const SUBSCRIPTION_END     = 'subscription_end';
+const SUBSCRIPTION_SUCCESS = 'subscription_success';
+const SUBSCRIPTION_FAIL    = 'subscription_fail';
+const SUBSCRIPTION_DATA    = 'subscription_data';
 
 /**
  * Initializes a new GraphQL endpoint.
@@ -103,9 +115,17 @@ function resolvers(array $resolvers)
     });
 }
 
-function subscriptions(Schema $schema)
+function subscriptions(Schema $schema, $port = 8080, $host = '0.0.0.0')
 {
+    $manager = new SubscriptionManager($schema);
+    $server = new SubscriptionServer($manager);
 
+    $websocket = new WsServer($server);
+    $websocket->disableVersion(0);
+
+    $http = new HttpServer($websocket);
+
+    return IoServer::factory($http, $post, $host);
 }
 
 /**
