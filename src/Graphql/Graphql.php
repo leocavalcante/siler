@@ -117,6 +117,15 @@ function resolvers(array $resolvers)
     });
 }
 
+/**
+ * Returns a new websocket server bootstraped for GraphQL subscriptions.
+ *
+ * @param Schema  $schema
+ * @param integer $port
+ * @param string  $host
+ *
+ * @return IoServer
+ */
 function subscriptions(Schema $schema, $port = 8080, $host = '0.0.0.0')
 {
     $manager = new SubscriptionManager($schema);
@@ -130,11 +139,22 @@ function subscriptions(Schema $schema, $port = 8080, $host = '0.0.0.0')
     return IoServer::factory($http, $port, $host);
 }
 
+/**
+ * Sets the GraphQL server endpoint where publish should connect to.
+ *
+ * @param string $url
+ */
 function subscriptions_at($url)
 {
     Container\set('graphql_subscriptions_endpoint', $url);
 }
 
+/**
+ * Publishes the given $payload to the $subscribeName.
+ *
+ * @param string $subscriptionName
+ * @param mixed  $payload
+ */
 function publish($subscriptionName, $payload = null)
 {
     $subscriptionsEndpoint = Container\get('graphql_subscriptions_endpoint');
