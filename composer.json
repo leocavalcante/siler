@@ -26,8 +26,6 @@
         "lcobucci/jwt": "*",
         "phpstan/phpstan": "*",
         "phpunit/phpunit": "*",
-        "react/http": "dev-master",
-        "react/socket": "0.5 as 0.4",
         "squizlabs/php_codesniffer": "*",
         "twig/twig": "*",
         "vlucas/phpdotenv": "*",
