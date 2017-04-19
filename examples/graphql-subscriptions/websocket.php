@@ -2,6 +2,7 @@
 
 use Siler\Graphql;
 
-$schema = require __DIR__.'/boot.php';
+require __DIR__.'/boot.php';
 
+$schema = include __DIR__.'/schema.php';
 Graphql\subscriptions($schema)->run();

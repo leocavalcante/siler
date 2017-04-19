@@ -12,7 +12,7 @@ class Subscriber
     public function __construct($id, ConnectionInterface $conn)
     {
         $this->id = $id;
-        $this-conn = $conn;
+        $this->conn = $conn;
     }
 
     public function emit($message)

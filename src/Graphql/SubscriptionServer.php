@@ -27,10 +27,10 @@ class SubscriptionServer implements MessageComponentInterface, WsServerInterface
                 return $this->manager->handleInit($conn);
 
             case Graphql\SUBSCRIPTION_START:
-                return $this->handleSubscriptionState($conn, $data);
+                return $this->manager->handleSubscriptionStart($conn, $data);
 
             case Graphql\SUBSCRIPTION_DATA:
-                return $this->handleSubscriptionData($conn, $data);
+                return $this->manager->handleSubscriptionData($conn, $data);
         }
     }
 

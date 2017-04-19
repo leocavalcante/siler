@@ -2,9 +2,11 @@
 
 namespace Siler\Graphql;
 
-use GraphQL\Lannguage\Parser;
+use GraphQL\Language\Parser;
 use GraphQL\Language\AST\DocumentNode;
+use GraphQL\Schema;
 use Siler\Graphql;
+use Ratchet\ConnectionInterface;
 use function Siler\array_get;
 
 class SubscriptionManager
@@ -40,7 +42,7 @@ class SubscriptionManager
         }
 
         $subscriber = new Subscriber($data->id, $conn);
-        $this->subscriptions->subscribe($subscriber)
+        $this->subscriptions[$subscriptionName]->subscribe($subscriber);
 
         $response = [
             'type' => Graphql\SUBSCRIPTION_SUCCESS,
@@ -63,7 +65,7 @@ class SubscriptionManager
         $result = \GraphQL\GraphQL::execute(
             $this->schema,
             $subscription->query,
-            $data->payload
+            (array) $data->payload
         );
 
         $response = [
