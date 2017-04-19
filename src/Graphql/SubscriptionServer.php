@@ -5,34 +5,41 @@ namespace Siler\Graphql;
 use Ratchet\MessageComponentInterface;
 use Ratchet\WebSocket\WsServerInterface;
 use Ratchet\ConnectionInterface;
+use Siler\Graphql;
 
 class SubscriptionServer implements MessageComponentInterface, WsServerInterface
 {
-    protected $schema;
-
-    public function __construct(Schema $schema)
+    public function __construct(SubscriptionManager $manager)
     {
-        $this->schema = $schema;
+        $this->manager = $manager;
     }
 
     public function onOpen(ConnectionInterface $conn)
     {
-
     }
 
     public function onMessage(ConnectionInterface $conn, $message)
     {
+        $data = json_decode($message);
 
+        switch ($data->type) {
+            case Graphql\INIT:
+                return $this->manager->handleInit($conn);
+
+            case Graphql\SUBSCRIPTION_START:
+                return $this->handleSubscriptionState($conn, $data);
+
+            case Graphql\SUBSCRIPTION_DATA:
+                return $this->handleSubscriptionData($conn, $data);
+        }
     }
 
     public function onClose(ConnectionInterface $conn)
     {
-
     }
 
     public function onError(ConnectionInterface $conn, \Exception $exception)
     {
-
     }
 
     public function getSubProtocols()
