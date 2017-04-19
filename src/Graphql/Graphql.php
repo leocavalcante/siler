@@ -81,25 +81,25 @@ function schema($typeDefs, array $resolvers = [])
 function resolvers(array $resolvers)
 {
     Executor::setDefaultFieldResolver(function ($source, $args, $context, ResolveInfo $info) use ($resolvers) {
-        if (array_key_exists($info->parentType->name, $resolvers)) {
-            $subject = $resolvers[$info->parentType->name];
+        if (is_null($source) || !isset($source[$info->fieldName])) {
+            $resolvers = $resolvers[$info->parentType->name];
+            $fieldName = $info->fieldName;
+            $property = null;
 
-            if (is_callable($subject)) {
-                $subject = $subject($source, $args, $context, $info);
+            if (is_array($resolvers) || $resolvers instanceof \ArrayAccess) {
+                if (isset($resolvers[$fieldName])) {
+                    $property = $resolvers[$fieldName];
+                }
+            } elseif (is_object($resolvers)) {
+                if (isset($resolvers->{$fieldName})) {
+                    $property = $resolvers->{$fieldName};
+                }
             }
 
-            if (is_array($subject)) {
-                $resolver = $subject[$info->fieldName];
-            }
-
-            if (is_object($subject)) {
-                $resolver = $subject->{$info->fieldName};
-            }
-
-            if (isset($resolver)) {
-                return is_callable($resolver) ? $resolver($source, $args, $context, $info) : $resolver;
-            }
+            return $property instanceof \Closure ? $property($source, $args, $context) : $property;
         }
+
+        return Executor::defaultFieldResolver($source, $args, $context, $info);
     });
 }
 
