@@ -21,9 +21,11 @@ use GraphQL\Type\Definition\Type;
 use GraphQL\Utils\BuildSchema;
 use Siler\Http\Request;
 use Siler\Http\Response;
+use Siler\Container;
 use Ratchet\WebSocket\WsServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
+use Ratchet\Client;
 use function Siler\array_get;
 
 const INIT                 = 'init';
@@ -125,7 +127,28 @@ function subscriptions(Schema $schema, $port = 8080, $host = '0.0.0.0')
 
     $http = new HttpServer($websocket);
 
-    return IoServer::factory($http, $post, $host);
+    return IoServer::factory($http, $port, $host);
+}
+
+function subscriptions_at($url)
+{
+    Container\set('graphql_subscriptions_endpoint', $url);
+}
+
+function publish($subscriptionName, $payload = null)
+{
+    $subscriptionsEndpoint = Container\get('graphql_subscriptions_endpoint');
+
+    Client\connect($subscriptionsEndpoint)->then(function ($conn) use ($subscriptionName, $payload) {
+        $request = [
+            'type' => SUBSCRIPTION_DATA,
+            'subscription' => $subscriptionName,
+            'payload' => $payload,
+        ];
+
+        $conn->send(json_encode($request));
+        $conn->close();
+    });
 }
 
 /**

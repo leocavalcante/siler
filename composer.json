@@ -17,7 +17,8 @@
         }
     ],
     "require": {
-        "php": ">=7.0.0"
+        "php": ">=7.0.0",
+        "ratchet/pawl": "*"
     },
     "minimum-stability": "stable",
     "require-dev": {
