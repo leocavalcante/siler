@@ -9,9 +9,7 @@ require __DIR__.'/boot.php';
 Response\header('Access-Control-Allow-Origin', '*');
 Response\header('Access-Control-Allow-Headers', 'content-type');
 
-if (Request\method_is('options')) {
-    exit();
+if (Request\method_is('post')) {
+    $schema = include __DIR__.'/schema.php';
+    Graphql\init($schema);
 }
-
-$schema = include __DIR__.'/schema.php';
-Graphql\init($schema);
