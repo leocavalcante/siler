@@ -2,9 +2,9 @@
 
 namespace Siler\Test\Unit\Graphql;
 
+use GraphQL\Executor\Executor;
 use GraphQL\Language\AST\DocumentNode;
 use GraphQL\Schema;
-use GraphQL\Executor\Executor;
 use GraphQL\Utils\BuildSchema;
 use Ratchet\ConnectionInterface;
 use Siler\Graphql\SubscriptionManager;
@@ -94,17 +94,17 @@ class SubscriptionManagerTest extends \PHPUnit\Framework\TestCase
         });
 
         $startData = [
-            'id' => 1,
+            'id'    => 1,
             'query' => '
                 subscription {
                     test
                 }
-            '
+            ',
         ];
 
         $data = [
             'subscription' => 'test',
-            'payload' => 'foo',
+            'payload'      => 'foo',
         ];
 
         $expected = '{"type":"subscription_data","payload":{"data":{"data":{"test":"foo"}}},"id":1}';
@@ -141,8 +141,8 @@ class SubscriptionManagerTest extends \PHPUnit\Framework\TestCase
                        ->getMock();
 
         $data = [
-            'id' => 1,
-            'query' => 'subscription { test }'
+            'id'    => 1,
+            'query' => 'subscription { test }',
         ];
 
         $manager = new SubscriptionManager($schema);
