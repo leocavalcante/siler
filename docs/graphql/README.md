@@ -12,7 +12,7 @@ $ composer require webonyx/graphql-php
 
 Now let's define your Schema. We're going to use a chat-like domain:
 
-<sub>schema.graphql</sub>
+$$schema.graphql$$
 ```graphql
 type Message {
   id: Int
@@ -41,7 +41,7 @@ Very simple, but if itsn't familiar to you take a look at [GraphQL](http://graph
 
 For each Query and Mutation we can define our resolver functions. We'll be using [RedBean](http://www.redbeanphp.com/index.php) to help us in a simple SQLite storage ORM.
 
-<sub>resolvers.php</sub>
+$$resolvers.php$$
 ```php
 <?php
 
@@ -108,7 +108,7 @@ return [
 
 Awesome. We have out type definitions and our resolve functions. Let's put them together:
 
-<sub>schema.php</sub>
+$$schema.php$$
 ```php
 <?php
 
@@ -125,7 +125,7 @@ Thanks to webonyx/graphql-php we can parse the schema.graphql into an actual Sch
 
 Now, let's create our HTTP endpoint:
 
-<sub>api.php</sub>
+$$api.php$$
 ```php
 <?php
 
@@ -149,7 +149,7 @@ if (Request\method_is('post')) {
 }
 ```
 
-**That's it!**
+### **That's it!**
 
 Start the server:
 
@@ -194,7 +194,7 @@ mutation newRoom($roomName: String) {
 }
 ```
 
-<sub>variables</sub>
+$$variables$$
 ```json
 {
   "roomName": "graphql"
@@ -251,7 +251,7 @@ query roomMessages($roomName: String) {
 }
 ```
 
-<sub>variables</sub>
+$$variables$$
 ```json
 {
   "roomName": "graphql"
@@ -278,7 +278,7 @@ mutation newMessage($roomName: String) {
 }
 ```
 
-<sub>variables</sub>
+$$variables$$
 ```json
 {
   "roomName": "graphql"
@@ -309,7 +309,7 @@ query roomMessages($roomName: String) {
 }
 ```
 
-<sub>variables</sub>
+$$variables$$
 ```json
 {
   "roomName": "graphql"
@@ -332,5 +332,5 @@ Aha! Here we go:
 }
 ```
 
-Liked it? What about listening to added messages and enable real-time features?<br>
+Liked it? What about listening to added messages and enable real-time features?
 Sounds cool? That is **GraphQL Subscriptions** we are going to cover next.
