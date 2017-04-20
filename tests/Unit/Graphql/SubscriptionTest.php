@@ -2,9 +2,9 @@
 
 namespace Siler\Test\Unit\Graphql;
 
-use Siler\Graphql\Subscription;
-use Siler\Graphql\Subscriber;
 use Ratchet\ConnectionInterface;
+use Siler\Graphql\Subscriber;
+use Siler\Graphql\Subscription;
 
 class SubscriptionTest extends \PHPUnit\Framework\TestCase
 {
