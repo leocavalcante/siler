@@ -318,7 +318,7 @@ query roomMessages($roomName: String) {
 }
 ```
 
-$$variables$$
+###### variables
 
 ```json
 {
