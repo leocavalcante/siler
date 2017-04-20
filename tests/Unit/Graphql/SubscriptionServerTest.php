@@ -8,6 +8,21 @@ use Siler\Graphql\SubscriptionServer;
 
 class SubscriptionServerTest extends \PHPUnit\Framework\TestCase
 {
+    public function testOnOpen()
+    {
+        $manager = $this->getMockBuilder(SubscriptionManager::class)
+                        ->disableOriginalConstructor()
+                        ->getMock();
+
+        $conn = $this->getMockBuilder(ConnectionInterface::class)
+                     ->getMock();
+
+        $server = new SubscriptionServer($manager);
+        $server->onOpen($conn);
+
+        $this->assertInstanceOf(SubscriptionServer::class, $server);
+    }
+
     public function testOnMessage()
     {
         $conn = $this->getMockBuilder(ConnectionInterface::class)
@@ -49,6 +64,36 @@ class SubscriptionServerTest extends \PHPUnit\Framework\TestCase
 
         $message = '{"type": "subscription_end"}';
         $server->onMessage($conn, $message);
+    }
+
+    public function testOnClose()
+    {
+        $manager = $this->getMockBuilder(SubscriptionManager::class)
+                        ->disableOriginalConstructor()
+                        ->getMock();
+
+        $conn = $this->getMockBuilder(ConnectionInterface::class)
+                     ->getMock();
+
+        $server = new SubscriptionServer($manager);
+        $server->onClose($conn);
+
+        $this->assertInstanceOf(SubscriptionServer::class, $server);
+    }
+
+    public function testOnError()
+    {
+        $manager = $this->getMockBuilder(SubscriptionManager::class)
+                        ->disableOriginalConstructor()
+                        ->getMock();
+
+        $conn = $this->getMockBuilder(ConnectionInterface::class)
+                     ->getMock();
+
+        $server = new SubscriptionServer($manager);
+        $server->onError($conn, new \Exception());
+
+        $this->assertInstanceOf(SubscriptionServer::class, $server);
     }
 
     public function testGetSubProtocols()
