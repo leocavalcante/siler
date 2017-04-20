@@ -12,7 +12,7 @@ $ composer require webonyx/graphql-php
 
 Now let's define your Schema. We're going to use a chat-like domain:
 
-$$schema.graphql$$
+###### schema.graphql
 
 ```graphql
 type Message {
@@ -38,11 +38,13 @@ type Mutation {
 }
 ```
 
+
+
 Very simple, but if itsn't familiar to you take a look at [GraphQL](http://graphql.org) first since this docs will not cover what is it, but how to use it.
 
 For each Query and Mutation we can define our resolver functions. We'll be using [RedBean](http://www.redbeanphp.com/index.php) to help us in a simple SQLite storage ORM.
 
-$$resolvers.php$$
+###### resolvers.php
 
 ```php
 <?php
@@ -110,7 +112,7 @@ return [
 
 Awesome. We have out type definitions and our resolve functions. Let's put them together:
 
-$$schema.php$$
+###### schema.php
 
 ```php
 <?php
@@ -128,7 +130,7 @@ Thanks to webonyx/graphql-php we can parse the schema.graphql into an actual Sch
 
 Now, let's create our HTTP endpoint:
 
-$$api.php$$
+###### api.php
 
 ```php
 <?php
@@ -198,7 +200,7 @@ mutation newRoom($roomName: String) {
 }
 ```
 
-$$variables$$
+###### variables
 
 ```json
 {
@@ -256,7 +258,7 @@ query roomMessages($roomName: String) {
 }
 ```
 
-$$variables$$
+###### variables
 
 ```json
 {
@@ -284,7 +286,7 @@ mutation newMessage($roomName: String) {
 }
 ```
 
-$$variables$$
+###### variables
 
 ```json
 {
