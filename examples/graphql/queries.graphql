@@ -1,6 +1,6 @@
 # new room
-mutation newRoom($name: String) {
-  start(roomName: $name) {
+mutation newRoom($roomName: String) {
+  start(roomName: $roomName) {
     id
   }
 }
