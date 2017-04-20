@@ -1,0 +1,22 @@
+# new room
+mutation newRoom($name: String) {
+  start(roomName: $name) {
+    id
+  }
+}
+
+# send message
+mutation newMessage($roomName: String) {
+  chat(roomName: $roomName, body: "hello") {
+    id
+  }
+}
+
+# fetch messages
+query roomMessages($roomName: String) {
+  messages(roomName: $roomName) {
+    id
+    body
+    timestamp
+  }
+}

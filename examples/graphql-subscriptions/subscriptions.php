@@ -2,7 +2,7 @@
 
 use Siler\Graphql;
 
-require __DIR__.'/boot.php';
+require dirname(dirname(__DIR__)).'/vendor/autoload.php';
 
 $schema = include __DIR__.'/schema.php';
 Graphql\subscriptions($schema)->run();

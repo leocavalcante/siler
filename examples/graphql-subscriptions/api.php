@@ -4,7 +4,7 @@ use Siler\Graphql;
 use Siler\Http\Request;
 use Siler\Http\Response;
 
-require __DIR__.'/boot.php';
+require dirname(dirname(__DIR__)).'/vendor/autoload.php';
 
 Response\header('Access-Control-Allow-Origin', '*');
 Response\header('Access-Control-Allow-Headers', 'content-type');
