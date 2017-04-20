@@ -1,3 +1,11 @@
+# fetch rooms
+query {
+  rooms {
+    id
+    name
+  }
+}
+
 # new room
 mutation newRoom($roomName: String) {
   start(roomName: $roomName) {
