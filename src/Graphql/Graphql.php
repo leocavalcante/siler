@@ -19,23 +19,23 @@ use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Utils\BuildSchema;
-use Siler\Http\Request;
-use Siler\Http\Response;
-use Siler\Container;
-use Ratchet\WebSocket\WsServer;
+use Ratchet\Client;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
-use Ratchet\Client;
+use Ratchet\WebSocket\WsServer;
+use Siler\Container;
+use Siler\Http\Request;
+use Siler\Http\Response;
 use function Siler\array_get;
 
-const INIT                 = 'init';
-const INIT_SUCCESS         = 'init_success';
-const INIT_FAIL            = 'init_fail';
-const SUBSCRIPTION_START   = 'subscription_start';
-const SUBSCRIPTION_END     = 'subscription_end';
+const INIT = 'init';
+const INIT_SUCCESS = 'init_success';
+const INIT_FAIL = 'init_fail';
+const SUBSCRIPTION_START = 'subscription_start';
+const SUBSCRIPTION_END = 'subscription_end';
 const SUBSCRIPTION_SUCCESS = 'subscription_success';
-const SUBSCRIPTION_FAIL    = 'subscription_fail';
-const SUBSCRIPTION_DATA    = 'subscription_data';
+const SUBSCRIPTION_FAIL = 'subscription_fail';
+const SUBSCRIPTION_DATA = 'subscription_data';
 
 /**
  * Initializes a new GraphQL endpoint.
@@ -120,9 +120,9 @@ function resolvers(array $resolvers)
 /**
  * Returns a new websocket server bootstraped for GraphQL subscriptions.
  *
- * @param Schema  $schema
- * @param integer $port
- * @param string  $host
+ * @param Schema $schema
+ * @param int    $port
+ * @param string $host
  *
  * @return IoServer
  */
@@ -161,9 +161,9 @@ function publish($subscriptionName, $payload = null)
 
     Client\connect($subscriptionsEndpoint)->then(function ($conn) use ($subscriptionName, $payload) {
         $request = [
-            'type' => SUBSCRIPTION_DATA,
+            'type'         => SUBSCRIPTION_DATA,
             'subscription' => $subscriptionName,
-            'payload' => $payload,
+            'payload'      => $payload,
         ];
 
         $conn->send(json_encode($request));
