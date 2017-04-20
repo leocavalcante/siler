@@ -50,8 +50,8 @@ $chat = function ($root, $args) use ($roomByName) {
 };
 
 return [
-    'Query' => compact('rooms', 'messages'),
-    'Mutation' => compact('start', 'chat'),
+    'Query'        => compact('rooms', 'messages'),
+    'Mutation'     => compact('start', 'chat'),
     'Subscription' => [
         'inbox' => function ($root, $args) {
             return $root;
