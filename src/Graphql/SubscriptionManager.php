@@ -101,6 +101,8 @@ class SubscriptionManager
 
         if (!is_null($subscriber)) {
             $subscriber->unsubscribe();
+            unset($subscribers[$data['id']]);
+            $this->subscribers->offsetSet($conn, $subscribers);
         }
     }
 
@@ -111,5 +113,10 @@ class SubscriptionManager
                         ->selections[0]
                         ->name
                         ->value;
+    }
+
+    public function getSubscribers()
+    {
+        return $this->subscribers;
     }
 }
