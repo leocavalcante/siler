@@ -2,11 +2,11 @@
 
 namespace Siler\Graphql;
 
-use GraphQL\Language\Parser;
 use GraphQL\Language\AST\DocumentNode;
+use GraphQL\Language\Parser;
 use GraphQL\Schema;
-use Siler\Graphql;
 use Ratchet\ConnectionInterface;
+use Siler\Graphql;
 use function Siler\array_get;
 
 class SubscriptionManager
@@ -25,7 +25,7 @@ class SubscriptionManager
     public function handleInit(ConnectionInterface $conn)
     {
         $response = [
-            'type' => Graphql\INIT_SUCCESS
+            'type' => Graphql\INIT_SUCCESS,
         ];
 
         $conn->send(json_encode($response));
@@ -57,13 +57,13 @@ class SubscriptionManager
 
             $response = [
                 'type' => Graphql\SUBSCRIPTION_SUCCESS,
-                'id' => $data->id,
+                'id'   => $data->id,
             ];
         } catch (\Exception $exception) {
             $response = [
-                'type' => Graphql\SUBSCRIPTION_FAIL,
-                'id' => $data->id,
-                'payload' => $exception->getMessage()
+                'type'    => Graphql\SUBSCRIPTION_FAIL,
+                'id'      => $data->id,
+                'payload' => $exception->getMessage(),
             ];
         } finally {
             $conn->send(json_encode($response));
@@ -87,8 +87,8 @@ class SubscriptionManager
         );
 
         $response = [
-            'type' => Graphql\SUBSCRIPTION_DATA,
-            'payload' => $result
+            'type'    => Graphql\SUBSCRIPTION_DATA,
+            'payload' => $result,
         ];
 
         $subscription->broadcast($response);

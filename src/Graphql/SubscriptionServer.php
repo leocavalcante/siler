@@ -2,9 +2,9 @@
 
 namespace Siler\Graphql;
 
+use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 use Ratchet\WebSocket\WsServerInterface;
-use Ratchet\ConnectionInterface;
 use Siler\Graphql;
 
 class SubscriptionServer implements MessageComponentInterface, WsServerInterface
