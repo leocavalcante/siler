@@ -2,7 +2,7 @@
 
 > GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data. GraphQL provides a complete and understandable description of the data in your API, gives clients the power to ask for exactly what they need and nothing more, makes it easier to evolve APIs over time, and enables powerful developer tools. — [graphql.org](http://graphql.org)
 
-Where is how you can create a GraphQL endpoint using Siler's simplicity powered by the [PHP's GraphQL implemention](http://webonyx.github.io/graphql-php/).
+Here is how you can create a GraphQL endpoint using Siler's simplicity powered by the [PHP's GraphQL implemention](http://webonyx.github.io/graphql-php/).
 
 First, let's require it:
 
@@ -10,7 +10,7 @@ First, let's require it:
 $ composer require webonyx/graphql-php
 ```
 
-Now let's define your Schema. We're going to use a chat-like domain:
+Now let's define our Schema. We're going to use a chat-like domain:
 
 ###### schema.graphql
 
@@ -38,11 +38,9 @@ type Mutation {
 }
 ```
 
+Very simple, but if it's not familiar to you, take a look at [GraphQL](http://graphql.org) first since this docs will not cover what is it, but how to use it.
 
-
-Very simple, but if itsn't familiar to you take a look at [GraphQL](http://graphql.org) first since this docs will not cover what is it, but how to use it.
-
-For each Query and Mutation we can define our resolver functions. We'll be using [RedBean](http://www.redbeanphp.com/index.php) to help us in a simple SQLite storage ORM.
+For each Query and Mutation we can define our resolver functions. We'll be using [RedBean](http://www.redbeanphp.com/index.php) to help us as a simple SQLite storage ORM.
 
 ###### resolvers.php
 
@@ -103,14 +101,14 @@ $chat = function ($root, $args) use ($roomByName) {
     return $message;
 };
 
-// Return them glued into each operation Query/Mutation
+// Return them glued into each operation
 return [
     'Query' => compact('rooms', 'messages'),
     'Mutation' => compact('start', 'chat'),
 ];
 ```
 
-Awesome. We have out type definitions and our resolve functions. Let's put them together:
+Awesome. We have type definitions and resolver functions. Let's put them together in a Schema:
 
 ###### schema.php
 
@@ -178,7 +176,7 @@ query {
 }
 ```
 
-Yeah, there isn't none yet:
+Yeah, there isn't any Rooms yet:
 
 ```json
 {
@@ -208,7 +206,7 @@ mutation newRoom($roomName: String) {
 }
 ```
 
-When our first room is created:
+Then our first room is created:
 
 ```json
 {
@@ -220,7 +218,7 @@ When our first room is created:
 }
 ```
 
-Call the query that fetches Rooms to check:
+Call the query that fetches Rooms to check again:
 
 ```graphql
 query {
@@ -231,7 +229,7 @@ query {
 }
 ```
 
-Yup! Is there:
+Yup! It's there:
 
 ```json
 {
@@ -266,7 +264,7 @@ query roomMessages($roomName: String) {
 }
 ```
 
-No messaes yet:
+No messages yet:
 
 ```json
 {
@@ -306,7 +304,7 @@ First message created:
 }
 ```
 
-Then let's refetch our messages Query to check:
+Let's refetch our messages to check:
 
 ```graphql
 query roomMessages($roomName: String) {
@@ -342,5 +340,5 @@ Aha! Here we go:
 }
 ```
 
-Liked it? What about listening to added messages and enable real-time features?
+Liked it? What about listening to added messages and enable real-time features?<br>
 Sounds cool? That is **GraphQL Subscriptions** we are going to cover next.
