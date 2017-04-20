@@ -20,6 +20,7 @@ use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Utils\BuildSchema;
 use Ratchet\Client;
+use Ratchet\Client\WebSocket;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
@@ -159,7 +160,7 @@ function publish($subscriptionName, $payload = null)
 {
     $subscriptionsEndpoint = Container\get('graphql_subscriptions_endpoint');
 
-    Client\connect($subscriptionsEndpoint)->then(function ($conn) use ($subscriptionName, $payload) {
+    Client\connect($subscriptionsEndpoint)->then(function (WebSocket $conn) use ($subscriptionName, $payload) {
         $request = [
             'type'         => SUBSCRIPTION_DATA,
             'subscription' => $subscriptionName,

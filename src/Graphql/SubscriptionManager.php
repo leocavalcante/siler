@@ -31,20 +31,20 @@ class SubscriptionManager
         $conn->send(json_encode($response));
     }
 
-    public function handleSubscriptionStart(ConnectionInterface $conn, $data)
+    public function handleSubscriptionStart(ConnectionInterface $conn, array $data)
     {
         try {
-            $document = Parser::parse($data->query);
+            $document = Parser::parse($data['query']);
             $subscriptionName = $this->getSubscriptionName($document);
 
             if (empty($this->subscriptions[$subscriptionName])) {
                 $this->subscriptions[$subscriptionName] = new Subscription(
                     $subscriptionName,
-                    $data->query
+                    $data['query']
                 );
             }
 
-            $subscriber = new Subscriber(uniqid(), $data->id, $conn);
+            $subscriber = new Subscriber(uniqid(), $data['id'], $conn);
             $subscriber->subscribe($this->subscriptions[$subscriptionName]);
 
             if (!$this->subscribers->contains($conn)) {
@@ -57,12 +57,12 @@ class SubscriptionManager
 
             $response = [
                 'type' => Graphql\SUBSCRIPTION_SUCCESS,
-                'id'   => $data->id,
+                'id'   => $data['id'],
             ];
         } catch (\Exception $exception) {
             $response = [
                 'type'    => Graphql\SUBSCRIPTION_FAIL,
-                'id'      => $data->id,
+                'id'      => $data['id'],
                 'payload' => $exception->getMessage(),
             ];
         } finally {
@@ -70,9 +70,9 @@ class SubscriptionManager
         }
     }
 
-    public function handleSubscriptionData(ConnectionInterface $conn, $data)
+    public function handleSubscriptionData(array $data)
     {
-        $subscriptionName = $data->subscription;
+        $subscriptionName = $data['subscription'];
 
         $subscription = array_get($this->subscriptions, $subscriptionName);
 
@@ -83,22 +83,25 @@ class SubscriptionManager
         $result = \GraphQL\GraphQL::execute(
             $this->schema,
             $subscription->query,
-            (array) $data->payload
+            $data['payload']
         );
 
         $response = [
             'type'    => Graphql\SUBSCRIPTION_DATA,
-            'payload' => $result,
+            'payload' => ['data' => $result],
         ];
 
         $subscription->broadcast($response);
     }
 
-    public function handleSubscriptionEnd(ConnectionInterface $conn, $data)
+    public function handleSubscriptionEnd(ConnectionInterface $conn, array $data)
     {
         $subscribers = $this->subscribers->offsetGet($conn);
-        $subscriber = $subscribers[$data->id];
-        $subscriber->unsubscribe();
+        $subscriber = array_get($subscribers, $data['id']);
+
+        if (!is_null($subscriber)) {
+            $subscriber->unsubscribe();
+        }
     }
 
     public function getSubscriptionName(DocumentNode $document)
