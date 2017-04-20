@@ -163,7 +163,7 @@ Start the server:
 $ php -S localhost:8000 api.php
 ```
 
-Test with a Graph*i*QL app.
+Test with a [Graph*i*QL](https://github.com/graphql/graphiql) app.
 
 Here are some queries you can execute:
 
