@@ -20,9 +20,9 @@ class SubscriptionServer implements MessageComponentInterface, WsServerInterface
 
     public function onMessage(ConnectionInterface $conn, $message)
     {
-        $data = json_decode($message);
+        $data = json_decode($message, true);
 
-        switch ($data->type) {
+        switch ($data['type']) {
             case Graphql\INIT:
                 return $this->manager->handleInit($conn);
 
@@ -30,7 +30,7 @@ class SubscriptionServer implements MessageComponentInterface, WsServerInterface
                 return $this->manager->handleSubscriptionStart($conn, $data);
 
             case Graphql\SUBSCRIPTION_DATA:
-                return $this->manager->handleSubscriptionData($conn, $data);
+                return $this->manager->handleSubscriptionData($data);
 
             case Graphql\SUBSCRIPTION_END:
                 return $this->manager->handleSubscriptionEnd($conn, $data);
