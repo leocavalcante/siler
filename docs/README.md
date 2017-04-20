@@ -21,12 +21,6 @@ Route\get('/', λ\puts('Hello World'));
 
 This outputs `Hello World` when the file is reached via HTTP using the GET method and the URI path matches `/`. Got the idea, right?
 
-What can be done with Siler?
+See here on the left a section to read more about.
 
-* [Route](Route/README.md)
-  * [Callable](Route/Callable.md)
-  * [Filename](Route/Filename.md)
-  * [Resource](Route/Resource.md)
-  * [Files](Route/Files.md)
-* [Http](Http.md)
-* [Web Servers](WebServers.md)
+Feel free to submit any [issues](https://github.com/leocavalcante/siler/issues) or [pull requests](https://github.com/leocavalcante/siler/pulls).

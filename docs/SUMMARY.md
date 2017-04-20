@@ -11,5 +11,6 @@
   * [PSR-7](Http/psr-7.md)
 * [Web Servers](WebServers.md)
 * [Twig Templating](twig-templating.md)
+* [GraphQL](graphql.md)
 * [Concepts](concepts.md)
 
