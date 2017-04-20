@@ -17,12 +17,12 @@ class Subscription
 
     public function subscribe(Subscriber $subscriber)
     {
-        $this->subscribers[$subscriber->id] = $subscriber;
+        $this->subscribers[$subscriber->uid] = $subscriber;
     }
 
     public function unsubscribe(Subscriber $subscriber)
     {
-        unset($this->subscribers[$subscriber->id]);
+        unset($this->subscribers[$subscriber->uid]);
     }
 
     public function broadcast($message)
