@@ -34,7 +34,7 @@ function init($port = null)
 
     Container\set(RATCHET_CONNECTIONS, new \SplObjectStorage());
 
-    $server->run();
+    return $server;
 }
 
 /**

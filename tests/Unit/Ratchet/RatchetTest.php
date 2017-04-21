@@ -3,11 +3,20 @@
 namespace Siler\Test\Unit;
 
 use Ratchet\ConnectionInterface;
+use Ratchet\Server\IoServer;
 use Siler\Container;
 use Siler\Ratchet;
 
 class RatchetTest extends \PHPUnit\Framework\TestCase
 {
+    public function testInit()
+    {
+        $server = Ratchet\init();
+
+        $this->assertInstanceOf(\SplObjectStorage::class, Container\get(Ratchet\RATCHET_CONNECTIONS));
+        $this->assertInstanceOf(IoServer::class, $server);
+    }
+
     public function testConnected()
     {
         $expected = function () {

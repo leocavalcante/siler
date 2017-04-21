@@ -9,6 +9,8 @@ use Siler\Graphql;
 
 class SubscriptionServer implements MessageComponentInterface, WsServerInterface
 {
+    protected $manager;
+
     public function __construct(SubscriptionManager $manager)
     {
         $this->manager = $manager;

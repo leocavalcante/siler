@@ -59,13 +59,15 @@ class SubscriptionManager
                 'type' => Graphql\SUBSCRIPTION_SUCCESS,
                 'id'   => $data['id'],
             ];
+
+            $conn->send(json_encode($response));
         } catch (\Exception $exception) {
             $response = [
                 'type'    => Graphql\SUBSCRIPTION_FAIL,
                 'id'      => $data['id'],
                 'payload' => $exception->getMessage(),
             ];
-        } finally {
+
             $conn->send(json_encode($response));
         }
     }

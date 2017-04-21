@@ -35,6 +35,24 @@ class RoutePsr7Test extends \PHPUnit\Framework\TestCase
         $this->assertEquals('foo', $actual);
     }
 
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
+    public function testNullRoute()
+    {
+        $server = ['REQUEST_URI' => '/foo'];
+        $request = ServerRequestFactory::fromGlobals($server);
+
+        Route\psr7($request);
+
+        $actual = Route\get('/bar', function () {
+            return 'baz';
+        });
+
+        $this->assertNull($actual);
+    }
+
     public function teardown()
     {
         unset(Container\Container::getInstance()->values['psr7_request']);
