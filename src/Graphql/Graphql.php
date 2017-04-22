@@ -96,7 +96,7 @@ function schema($typeDefs, array $resolvers = [])
 function resolvers(array $resolvers)
 {
     Executor::setDefaultFieldResolver(function ($source, $args, $context, ResolveInfo $info) use ($resolvers) {
-        if (is_null($source) || !isset($source[$info->fieldName])) {
+        if (is_null($source)) {
             $resolvers = $resolvers[$info->parentType->name];
             $fieldName = $info->fieldName;
             $property = null;
