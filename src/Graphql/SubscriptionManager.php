@@ -6,7 +6,6 @@ use GraphQL\Language\AST\DocumentNode;
 use GraphQL\Language\Parser;
 use GraphQL\Schema;
 use Ratchet\ConnectionInterface;
-use Siler\Graphql;
 use function Siler\array_get;
 
 class SubscriptionManager
@@ -33,7 +32,7 @@ class SubscriptionManager
         $this->connSubStorage->offsetSet($conn, []);
 
         $response = [
-            'type' => Graphql\INIT_SUCCESS,
+            'type' => INIT_SUCCESS,
         ];
 
         $conn->send(json_encode($response));
@@ -55,14 +54,14 @@ class SubscriptionManager
             $this->connSubStorage->offsetSet($conn, $connSubscriptions);
 
             $response = [
-                'type' => Graphql\SUBSCRIPTION_SUCCESS,
+                'type' => SUBSCRIPTION_SUCCESS,
                 'id'   => $subscription['id'],
             ];
 
             $conn->send(json_encode($response));
         } catch (\Exception $exception) {
             $response = [
-                'type'    => Graphql\SUBSCRIPTION_FAIL,
+                'type'    => SUBSCRIPTION_FAIL,
                 'id'      => $subscription['id'],
                 'payload' => [
                     'errors' => [
@@ -103,7 +102,7 @@ class SubscriptionManager
             );
 
             $response = [
-                'type'    => Graphql\SUBSCRIPTION_DATA,
+                'type'    => SUBSCRIPTION_DATA,
                 'payload' => $result,
                 'id'      => $subscription['id'],
             ];
