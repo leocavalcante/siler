@@ -11,5 +11,6 @@
   * [PSR-7](http/psr-7.md)
 * [Twig Templating](twig-templating.md)
 * [GraphQL](graphql/README.md)
+  * [Subscriptions](graphql/subscriptions.md)
 * [Web Servers](web-servers.md)
 * [Concepts](concepts.md)
