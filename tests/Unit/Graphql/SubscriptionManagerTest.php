@@ -37,10 +37,6 @@ class SubscriptionManagerTest extends \PHPUnit\Framework\TestCase
 
         $response = '{"type":"subscription_success","id":1}';
 
-        $conn->expects($this->once())
-             ->method('send')
-             ->with($response);
-
         $schema = $this->getMockBuilder(Schema::class)
                        ->disableOriginalConstructor()
                        ->getMock();
@@ -49,6 +45,12 @@ class SubscriptionManagerTest extends \PHPUnit\Framework\TestCase
         $data['id'] = 1;
 
         $manager = new SubscriptionManager($schema);
+        $manager->handleInit($conn);
+
+        $conn->expects($this->once())
+             ->method('send')
+             ->with($response);
+
         $manager->handleSubscriptionStart($conn, $data);
     }
 
@@ -57,7 +59,7 @@ class SubscriptionManagerTest extends \PHPUnit\Framework\TestCase
         $conn = $this->getMockBuilder(ConnectionInterface::class)
                      ->getMock();
 
-        $response = '{"type":"subscription_fail","id":1,"payload":"Undefined index: query"}';
+        $response = '{"type":"subscription_fail","id":1,"payload":{"errors":[{"message":"Undefined index: query"}]}}';
 
         $conn->expects($this->once())
              ->method('send')
@@ -107,7 +109,7 @@ class SubscriptionManagerTest extends \PHPUnit\Framework\TestCase
             'payload'      => 'foo',
         ];
 
-        $expected = '{"type":"subscription_data","payload":{"data":{"data":{"test":"foo"}}},"id":1}';
+        $expected = '{"type":"subscription_data","payload":{"data":{"test":"foo"}},"id":1}';
 
         $manager = new SubscriptionManager($schema);
         $manager->handleSubscriptionStart($conn, $startData);
@@ -146,10 +148,12 @@ class SubscriptionManagerTest extends \PHPUnit\Framework\TestCase
         ];
 
         $manager = new SubscriptionManager($schema);
+        $manager->handleInit($conn);
         $manager->handleSubscriptionStart($conn, $data);
         $manager->handleSubscriptionEnd($conn, ['id' => 1]);
 
-        $this->assertEmpty($manager->getSubscribers()->offsetGet($conn));
+        $this->assertEmpty($manager->getConnSubStorage()->offsetGet($conn));
+        $this->assertEmpty($manager->getSubscriptions()['test']);
     }
 
     public function testGetSubscriptionName()

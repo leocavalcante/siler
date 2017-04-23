@@ -96,22 +96,25 @@ function schema($typeDefs, array $resolvers = [])
 function resolvers(array $resolvers)
 {
     Executor::setDefaultFieldResolver(function ($source, $args, $context, ResolveInfo $info) use ($resolvers) {
-        if (is_null($source)) {
-            $resolvers = $resolvers[$info->parentType->name];
-            $fieldName = $info->fieldName;
-            $property = null;
+        $fieldName = $info->fieldName;
+        $parentTypeName = $info->parentType->name;
 
-            if (is_array($resolvers) || $resolvers instanceof \ArrayAccess) {
-                if (isset($resolvers[$fieldName])) {
-                    $property = $resolvers[$fieldName];
-                }
-            } elseif (is_object($resolvers)) {
-                if (isset($resolvers->{$fieldName})) {
-                    $property = $resolvers->{$fieldName};
+        if (isset($resolvers[$parentTypeName])) {
+            $resolver = $resolvers[$parentTypeName];
+
+            if (is_array($resolver) || $resolver instanceof \ArrayAccess) {
+                if (array_key_exists($fieldName, $resolver)) {
+                    $value = $resolver[$fieldName];
+                    return is_callable($value) ? $value($source, $args, $context) : $value;
                 }
             }
 
-            return $property instanceof \Closure ? $property($source, $args, $context) : $property;
+            if (is_object($resolver)) {
+                if (isset($resolver->{$fieldName})) {
+                    $value = $resolver->{$fieldName};
+                    return is_callable($value) ? $value($source, $args, $context) : $value;
+                }
+            }
         }
 
         return Executor::defaultFieldResolver($source, $args, $context, $info);
@@ -122,14 +125,16 @@ function resolvers(array $resolvers)
  * Returns a new websocket server bootstraped for GraphQL subscriptions.
  *
  * @param Schema $schema
+ * @param array  $rootValue
+ * @param array  $context
  * @param int    $port
  * @param string $host
  *
  * @return IoServer
  */
-function subscriptions(Schema $schema, $port = 8080, $host = '0.0.0.0')
+function subscriptions(Schema $schema, array $rootValue = null, array $context = null, $port = 8080, $host = '0.0.0.0')
 {
-    $manager = new SubscriptionManager($schema);
+    $manager = new SubscriptionManager($schema, $rootValue, $context);
     $server = new SubscriptionServer($manager);
 
     $websocket = new WsServer($server);

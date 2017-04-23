@@ -10,51 +10,64 @@ $roomByName = function ($name) {
     return R::findOne('room', 'name = ?', [$name]);
 };
 
-$messages = function ($root, $args) use ($roomByName) {
-    $roomName = $args['roomName'];
-    $room = $roomByName($roomName);
-    $messages = R::find('message', 'room_id = ?', [$room['id']]);
+$roomType = [
+    'messages' => function ($room) {
+        return R::findAll('message', 'room_id = ?', [$room['id']]);
+    },
+];
 
-    return $messages;
-};
+$queryType = [
+    'rooms' => function () {
+        return R::findAll('room');
+    },
+    'messages' => function () use ($roomByName) {
+        $roomName = $args['roomName'];
+        $room = $roomByName($roomName);
+        $messages = R::find('message', 'room_id = ?', [$room['id']]);
 
-$rooms = function () {
-    return R::findAll('room');
-};
+        return $messages;
+    }
+];
 
-$start = function ($root, $args) {
-    $roomName = $args['roomName'];
+$mutationType = [
+    'start' => function ($root, $args) {
+        $roomName = $args['roomName'];
 
-    $room = R::dispense('room');
-    $room['name'] = $roomName;
+        $room = R::dispense('room');
+        $room['name'] = $roomName;
 
-    R::store($room);
+        R::store($room);
 
-    return $room;
-};
+        return $room;
+    },
+    'chat' => function ($root, $args) use ($roomByName) {
+        $roomName = $args['roomName'];
+        $body = $args['body'];
 
-$chat = function ($root, $args) use ($roomByName) {
-    $roomName = $args['roomName'];
-    $body = $args['body'];
+        $room = $roomByName($roomName);
 
-    $room = $roomByName($roomName);
+        $message = R::dispense('message');
+        $message['roomId'] = $room['id'];
+        $message['body'] = $body;
+        $message['timestamp'] = new \DateTime();
 
-    $message = R::dispense('message');
-    $message['roomId'] = $room['id'];
-    $message['body'] = $body;
-    $message['timestamp'] = new \DateTime();
+        R::store($message);
 
-    R::store($message);
+        Graphql\publish('inbox', $message); // <- Exactly what "inbox" will receive
 
-    return $message;
-};
+        return $message;
+    },
+];
+
+$subscriptionType = [
+    'inbox' => function ($message) { // <- Received from "publish"
+        return $message;
+    },
+];
 
 return [
-    'Query'        => compact('rooms', 'messages'),
-    'Mutation'     => compact('start', 'chat'),
-    'Subscription' => [
-        'inbox' => function ($root, $args) {
-            return $root;
-        },
-    ],
+    'Room' => $roomType,
+    'Query' => $queryType,
+    'Mutation' => $mutationType,
+    'Subscription' => $subscriptionType,
 ];

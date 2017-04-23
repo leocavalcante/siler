@@ -28,3 +28,11 @@ query roomMessages($roomName: String) {
     timestamp
   }
 }
+
+# subscribe
+subscription newMessages($roomName: String) {
+  inbox(roomName: $roomName) {
+    id
+    body
+  }
+}
