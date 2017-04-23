@@ -25,6 +25,7 @@ type Message {
 type Room {
   id: Int
   name: String
+  messages: [Message]
 }
 
 type Query {
@@ -50,61 +51,63 @@ For each Query and Mutation we can define our resolver functions. We'll be using
 use RedBeanPHP\R;
 use Siler\Graphql;
 
-// Setup RedBean to use a db.sqlite file at projects dir
 R::setup('sqlite:'.__DIR__.'/db.sqlite');
 
-// A helper to find a Room by its name
 $roomByName = function ($name) {
     return R::findOne('room', 'name = ?', [$name]);
 };
 
-// Our messages Query resolver
-$messages = function ($root, $args) use ($roomByName) {
-    $roomName = $args['roomName'];
-    $room = $roomByName($roomName);
-    $messages = R::find('message', 'room_id = ?', [$room['id']]);
+$roomType = [
+    'messages' => function ($room) {
+        return R::findAll('message', 'room_id = ?', [$room['id']]);
+    },
+];
 
-    return $messages;
-};
+$queryType = [
+    'rooms' => function () {
+        return R::findAll('room');
+    },
+    'messages' => function () use ($roomByName) {
+        $roomName = $args['roomName'];
+        $room = $roomByName($roomName);
+        $messages = R::find('message', 'room_id = ?', [$room['id']]);
 
-// Our rooms Query resolver
-$rooms = function () {
-    return R::findAll('room');
-};
+        return $messages;
+    },
+];
 
-// Our start Mutation resolver. It creates new rooms
-$start = function ($root, $args) {
-    $roomName = $args['roomName'];
+$mutationType = [
+    'start' => function ($root, $args) {
+        $roomName = $args['roomName'];
 
-    $room = R::dispense('room');
-    $room['name'] = $roomName;
+        $room = R::dispense('room');
+        $room['name'] = $roomName;
 
-    R::store($room);
+        R::store($room);
 
-    return $room;
-};
+        return $room;
+    },
+    'chat' => function ($root, $args) use ($roomByName) {
+        $roomName = $args['roomName'];
+        $body = $args['body'];
 
-// Our chat Mutation resolver. It sends new messages
-$chat = function ($root, $args) use ($roomByName) {
-    $roomName = $args['roomName'];
-    $body = $args['body'];
+        $room = $roomByName($roomName);
 
-    $room = $roomByName($roomName);
+        $message = R::dispense('message');
+        $message['roomId'] = $room['id'];
+        $message['body'] = $body;
+        $message['timestamp'] = new \DateTime();
 
-    $message = R::dispense('message');
-    $message['roomId'] = $room['id'];
-    $message['body'] = $body;
-    $message['timestamp'] = new \DateTime();
+        R::store($message);
 
-    R::store($message);
+        return $message;
+    },
+];
 
-    return $message;
-};
-
-// Return them glued into each operation
 return [
-    'Query' => compact('rooms', 'messages'),
-    'Mutation' => compact('start', 'chat'),
+    'Room'     => $roomType,
+    'Query'    => $queryType,
+    'Mutation' => $mutationType,
 ];
 ```
 
