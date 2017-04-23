@@ -281,4 +281,4 @@ Graphql\publish('inbox', $message); // <- Exactly what "inbox" will receive
 
 *Note: when a RedBeanObject is converted to JSON it automatically converts camel case properties to underscore ones. That is why we give `roomName`, but receives as `room_name`.*
 
-And that should be enough to solve our problem, now you only receive data from the subscribed rooms. Enjoy!
+And that should be enough to solve our problem, now you only receive data from the subscribed rooms. **Enjoy!**
