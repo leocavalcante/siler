@@ -344,4 +344,4 @@ Aha! Here we go:
 ```
 
 Liked it? What about listening to added messages and enable real-time features?<br>
-Sounds cool? That is **GraphQL Subscriptions** we are going to cover next.
+Sounds cool? That is **GraphQL Subscriptions** we are going to cover [next](subscriptions.md).
