@@ -1,12 +1,12 @@
 # GraphQL Subscriptions
 
-Here is how you can add real-time capabilities to your GraphQL application.
+Here is how you can add real-time capabilities to your GraphQL applications.
 
-Siler implementation is based on [Apollo's WebSocket transport layer](https://github.com/apollographql/subscriptions-transport-ws).
+**Siler** implementation is based on [Apollo's WebSocket transport layer](https://github.com/apollographql/subscriptions-transport-ws).
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/wo9XFmW0W2c" frameborder="0" allowfullscreen></iframe>
 
-We'll need some help to get WebSockets working, so let's require two libs.
+We'll need some help to get WebSockets working, so let's require two libraries.
 
 One is for the server-side:
 
@@ -20,14 +20,14 @@ And the other is for the client-side:
 $ composer require ratchet/pawl
 ```
 
-We are going to extend our [previous guide](README.md), so if you haven't read it, [take a look](README.md) before continue.
+We are going to extend our [previous guide](README.md), so if you didn't read it, [take a look](README.md) before continue.
 
-First, last add our Subscription type to our Schema:
+First, let's add our **Subscription** type to our Schema:
 
 ###### schema.graphql
 
 ```graphql
-# ...
+# (...previous work...)
 
 type Subscription {
   inbox(roomName: String): Message
@@ -41,7 +41,7 @@ And our resolver will look like that:
 ###### resolvers.php
 
 ```php
-# ...
+# (...previous work...)
 
 $subscriptionType = [
     'inbox' => function ($message) {
@@ -50,7 +50,7 @@ $subscriptionType = [
 ];
 ```
 
-Yeap, it is just resolving to the message that it received.
+Yeap, it is just resolving to the message that it receives.
 
 ** But where this message comes from?**
 
@@ -66,15 +66,15 @@ Here we are assuming that they are running at localhost on port 8080.<br>
 
 ### And why is that for?
 
-This is just a helper that adds the Subscriptions endpoint to the Siler container so another function can actually use it when need. ANd this function is `publish`!
+This is just a helper that adds the **Subscriptions endpoint** to the Siler container so another function can actually use it when needed. And this function is `publish`!
 
-`Siler\Graphql\publish` will make websocket calls to our Subscriptions server notifying that something has happend.
+`Siler\Graphql\publish` will make a WebSocket calls to our Subscriptions server notifying that something has happened.
 
 ```php
 Graphql\publish('inbox', $message);
 ```
 
-It's first argument is the subscription that will be triggered and the second argument is a data payload, in our case, the new message that has arrived.
+It's first argument is the **Subscription** that will be triggered and the second argument is a data payload, in our case, the new message that has been created.
 
 Out new `resolvers.php` will look like this:
 
@@ -162,7 +162,7 @@ return [
 
 ## Starting the server
 
-As our `api.php` endpoint, we need a setup for the Subscriptions:
+As in our `api.php` endpoint we need to setup the Subscriptions server:
 
 ###### subscriptions.php
 
@@ -177,7 +177,7 @@ $schema = include __DIR__.'/schema.php';
 Graphql\subscriptions($schema)->run();
 ```
 
-Yeah, easy like that. Let Siler do the boring stuff. You just pass the Schema to a `subscriptions` function. This function will return an `IoServer` that you call the `run` method.
+Yeah, easy like that. Let Siler do the boring stuff. You just pass the Schema to a `subscriptions` function. This function will return an `IoServer` where you call the `run` method.
 
 ```
 php subscriptions.php
@@ -189,11 +189,11 @@ By default, Siler will run the subscriptions at localhost on port 8080.
 
 No kidding.
 
-Behind the scenes ReactPHP, Ratchet and Ratchet\Pawl are doing the hard work of handling WebSocket communication protocol while Siler is doing the work of adding resolver resolution to webonyx/graphql-php and handling Apollo's subprotocol.
+Behind the scenes [ReactPHP](http://reactphp.org/), [Ratchet](http://socketo.me/) and [Pawl](https://github.com/ratchetphp/Pawl) are doing the hard work of handling WebSocket communication protocol while **Siler** is doing the work of adding resolver resolution to [webonyx/graphql-php](https://github.com/webonyx/graphql-php) and handling [Apollo's sub-protocol](https://github.com/apollographql/subscriptions-transport-ws#client-server-communication).
 
 ### Ready to test?
 
-You'll need a Graph*i*QL app with Subscriptions enabled. For example: [leocavalcante/graphiql-app](https://github.com/leocavalcante/graphiql-app).
+You'll need a [Graph*i*QL](https://github.com/graphql/graphiql) app with Subscriptions enabled. For example: [leocavalcante/graphiql-app](https://github.com/leocavalcante/graphiql-app).
 
 A subscription query looks like this:
 
@@ -216,7 +216,7 @@ subscription newMessages($roomName: String) {
 
 The result will not be immediate since we are now listening to new messages, not querying them.
 
-Let's take a mutation from our previous guide. Open the Graph*i*QL app into another tab and execute:
+Let's take a mutation from our [previous guide](README.md). Open the Graph*i*QL app into another tab and execute:
 
 ```graphql
 mutation newMessage($roomName: String) {
@@ -245,11 +245,11 @@ Now go back to the subscription tab and see the update!
 }
 ```
 
-**Awesome!** Just one thing you probaly have noticed. We have subscribed to all rooms. Do the test, created another Room if you haven't, add a new message to that and see that our subscription tab with `{"roomName": "graphql"}` as variables just got this new message to the new Room created. How to solve this?
+**Awesome!** Just one thing you probably have noticed. We have subscribed to all rooms. Make a test: created another Room if you haven't, add a new message to that and see that our subscription tab with `{"roomName": "graphql"}` as variables just got this new message to the new Room created. How to solve this?
 
 ## Filters
 
-Filters are part of Siler and based on Apollo's setup functions. Filter functions receives the published payload data as the first argument and the subscription variables as the second, so you can use them to perform matches:
+Filters are part of **Siler** and based on Apollo's setup functions. Filter functions receives the published payload data as the first argument and the subscription variables as the second, so you can use them to perform matches:
 
 ###### subscriptions.php
 
@@ -270,7 +270,7 @@ $schema = include __DIR__.'/schema.php';
 Graphql\subscriptions($schema, $filters)->run();
 ```
 
-As you can see, we have extend our Subscriptions endpoint adding filters. The filters array keys should match corresponding Subscription names, in our case: `inbox`. We are justing checking if the given payload `room_name` is the same as the provided by the Subscription variable `roomName`. Siler will perform this checks for each subscription before trying to resolve and broadcast them.
+As you can see, we have extend our Subscriptions endpoint adding filters. The filters array keys should match corresponding Subscription names, in our case: `inbox`. We are just checking if the given payload `room_name` is the same as the provided by the Subscription variable `roomName`. **Siler** will perform this checks for each subscription before trying to resolve and broadcast them.
 
 We need just a little thing to get working. Adding this `room_name` field to our payload since Message only has the `room_id`. At the chat resolver, before the publish, add this line:
 
@@ -281,4 +281,4 @@ Graphql\publish('inbox', $message); // <- Exactly what "inbox" will receive
 
 *Note: when a RedBeanObject is converted to JSON it automatically converts camel case properties to underscore ones. That is why we give `roomName`, but receives as `room_name`.*
 
-And that should be enought to solve our problem, now you only receive data from the subscribed rooms.
+And that should be enough to solve our problem, now you only receive data from the subscribed rooms. Enjoy!
