@@ -133,6 +133,67 @@ class SubscriptionManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($manager->handleSubscriptionData($data));
     }
 
+    public function testHandleSubscriptionDataWithFilters()
+    {
+        $conn = $this->getMockBuilder(ConnectionInterface::class)
+                     ->getMock();
+
+        $schema = BuildSchema::build('
+            type Query {
+                dummy: String
+            }
+
+            type Subscription {
+                test: String
+            }
+        ');
+
+        Executor::setDefaultFieldResolver(function ($root) {
+            return $root;
+        });
+
+        $startData = [
+            'id'    => 1,
+            'query' => '
+                subscription {
+                    test
+                }
+            ',
+            'variables' => [
+                'pass' => 'bar',
+            ],
+        ];
+
+        $data = [
+            'subscription' => 'test',
+            'payload'      => 'foo',
+        ];
+
+        $expected = '{"type":"subscription_data","payload":{"data":{"test":"bar"}},"id":1}';
+
+        $filters = [
+            'test' => function ($payload, $vars) {
+                return $payload == $vars['pass'];
+            },
+        ];
+
+        $manager = new SubscriptionManager($schema, $filters);
+        $manager->handleSubscriptionStart($conn, $startData);
+
+        $conn->expects($this->once())
+             ->method('send')
+             ->with($expected);
+
+        $manager->handleSubscriptionData($data);
+
+        $data = [
+            'subscription' => 'test',
+            'payload'      => 'bar',
+        ];
+
+        $manager->handleSubscriptionData($data);
+    }
+
     public function testHandleSubscriptionEnd()
     {
         $conn = $this->getMockBuilder(ConnectionInterface::class)

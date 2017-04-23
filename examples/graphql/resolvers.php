@@ -53,6 +53,7 @@ $mutationType = [
 
         R::store($message);
 
+        $message['roomName'] = $roomName; // For the inbox filter
         Graphql\publish('inbox', $message); // <- Exactly what "inbox" will receive
 
         return $message;

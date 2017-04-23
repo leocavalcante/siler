@@ -12,14 +12,16 @@ use function Siler\array_get;
 class SubscriptionManager
 {
     protected $schema;
+    protected $filters;
     protected $rootValue;
     protected $context;
     protected $subscriptions;
     protected $connSubStorage;
 
-    public function __construct(Schema $schema, array $rootValue = null, array $context = null)
+    public function __construct(Schema $schema, array $filters = null, array $rootValue = null, array $context = null)
     {
         $this->schema = $schema;
+        $this->filters = $filters;
         $this->rootValue = $rootValue;
         $this->context = $context;
         $this->subscriptions = [];
@@ -83,12 +85,21 @@ class SubscriptionManager
         }
 
         foreach ($subscriptions as $subscription) {
+            $payload = array_get($data, 'payload');
+            $variables = array_get($subscription, 'variables');
+
+            if (!is_null($this->filters) && isset($this->filters[$subscription['name']])) {
+                if (!$this->filters[$subscription['name']]($payload, $variables, $this->context)) {
+                    continue;
+                }
+            }
+
             $result = \GraphQL\GraphQL::execute(
                 $this->schema,
                 $subscription['query'],
-                $data['payload'],
+                $payload,
                 $this->context,
-                array_get($subscription, 'variables')
+                $variables
             );
 
             $response = [

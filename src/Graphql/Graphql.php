@@ -134,9 +134,15 @@ function resolvers(array $resolvers)
  *
  * @return IoServer
  */
-function subscriptions(Schema $schema, array $rootValue = null, array $context = null, $port = 8080, $host = '0.0.0.0')
-{
-    $manager = new SubscriptionManager($schema, $rootValue, $context);
+function subscriptions(
+    Schema $schema,
+    array $filters = null,
+    array $rootValue = null,
+    array $context = null,
+    $port = 8080,
+    $host = '0.0.0.0'
+) {
+    $manager = new SubscriptionManager($schema, $filters, $rootValue, $context);
     $server = new SubscriptionServer($manager);
 
     $websocket = new WsServer($server);
