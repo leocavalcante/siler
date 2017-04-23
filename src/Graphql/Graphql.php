@@ -105,6 +105,7 @@ function resolvers(array $resolvers)
             if (is_array($resolver) || $resolver instanceof \ArrayAccess) {
                 if (array_key_exists($fieldName, $resolver)) {
                     $value = $resolver[$fieldName];
+
                     return is_callable($value) ? $value($source, $args, $context) : $value;
                 }
             }
@@ -112,6 +113,7 @@ function resolvers(array $resolvers)
             if (is_object($resolver)) {
                 if (isset($resolver->{$fieldName})) {
                     $value = $resolver->{$fieldName};
+
                     return is_callable($value) ? $value($source, $args, $context) : $value;
                 }
             }

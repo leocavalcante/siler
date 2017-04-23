@@ -26,7 +26,7 @@ $queryType = [
         $messages = R::find('message', 'room_id = ?', [$room['id']]);
 
         return $messages;
-    }
+    },
 ];
 
 $mutationType = [
@@ -66,8 +66,8 @@ $subscriptionType = [
 ];
 
 return [
-    'Room' => $roomType,
-    'Query' => $queryType,
-    'Mutation' => $mutationType,
+    'Room'         => $roomType,
+    'Query'        => $queryType,
+    'Mutation'     => $mutationType,
     'Subscription' => $subscriptionType,
 ];

@@ -92,9 +92,9 @@ class SubscriptionManager
             );
 
             $response = [
-                'type' => Graphql\SUBSCRIPTION_DATA,
+                'type'    => Graphql\SUBSCRIPTION_DATA,
                 'payload' => $result,
-                'id' => $subscription['id'],
+                'id'      => $subscription['id'],
             ];
 
             $subscription['conn']->send(json_encode($response));
