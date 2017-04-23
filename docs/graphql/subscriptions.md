@@ -68,7 +68,7 @@ Here we are assuming that they are running at localhost on port 8080.<br>
 
 This is just a helper that adds the **Subscriptions endpoint** to the Siler container so another function can actually use it when needed. And this function is `publish`!
 
-`Siler\Graphql\publish` will make a WebSocket calls to our Subscriptions server notifying that something has happened.
+`Siler\Graphql\publish` will make a WebSocket call to the Subscriptions server notifying that something has happened.
 
 ```php
 Graphql\publish('inbox', $message);
@@ -76,7 +76,7 @@ Graphql\publish('inbox', $message);
 
 It's first argument is the **Subscription** that will be triggered and the second argument is a data payload, in our case, the new message that has been created.
 
-Out new `resolvers.php` will look like this:
+Our `resolvers.php` will look like this:
 
 ###### resolvers.php
 
@@ -162,7 +162,7 @@ return [
 
 ## Starting the server
 
-As in our `api.php` endpoint we need to setup the Subscriptions server:
+As in `api.php` endpoint we need to setup the Subscriptions server:
 
 ###### subscriptions.php
 
@@ -177,7 +177,7 @@ $schema = include __DIR__.'/schema.php';
 Graphql\subscriptions($schema)->run();
 ```
 
-Yeah, easy like that. Let Siler do the boring stuff. You just pass the Schema to a `subscriptions` function. This function will return an `IoServer` where you call the `run` method.
+Yeah, easy like that. Let Siler do the boring stuff. You just give a Schema to the `subscriptions` function. This function will return an `IoServer` where you can call the `run` method.
 
 ```
 php subscriptions.php
@@ -216,7 +216,7 @@ subscription newMessages($roomName: String) {
 
 The result will not be immediate since we are now listening to new messages, not querying them.
 
-Let's take a mutation from our [previous guide](README.md). Open the Graph*i*QL app into another tab and execute:
+Let's take a mutation from the [previous guide](README.md). Open the Graph*i*QL app in another tab and execute:
 
 ```graphql
 mutation newMessage($roomName: String) {
@@ -245,7 +245,7 @@ Now go back to the subscription tab and see the update!
 }
 ```
 
-**Awesome!** Just one thing you probably have noticed. We have subscribed to all rooms. Make a test: created another Room if you haven't, add a new message to that and see that our subscription tab with `{"roomName": "graphql"}` as variables just got this new message to the new Room created. How to solve this?
+**Awesome!** Just one thing you probably have noticed. We have subscribed to all rooms. Make a test: create another Room if you haven't already and add a new message to that to see that our subscription tab, with `{"roomName": "graphql"}` as variables, just got this new message. How to solve this?
 
 ## Filters
 
@@ -279,6 +279,6 @@ $message['roomName'] = $roomName; // For the inbox filter
 Graphql\publish('inbox', $message); // <- Exactly what "inbox" will receive
 ```
 
-*Note: when a RedBeanObject is converted to JSON it automatically converts camel case properties to underscore ones. That is why we give `roomName`, but receives as `room_name`.*
+*Note: when a RedBeanObject is encoded to JSON it automatically converts camel case properties to underscore ones. That is why we give `roomName`, but receives as `room_name`.*
 
 And that should be enough to solve our problem, now you only receive data from the subscribed rooms. **Enjoy!**
