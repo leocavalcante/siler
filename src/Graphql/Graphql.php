@@ -19,9 +19,24 @@ use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Utils\BuildSchema;
+use Ratchet\Client;
+use Ratchet\Client\WebSocket;
+use Ratchet\Http\HttpServer;
+use Ratchet\Server\IoServer;
+use Ratchet\WebSocket\WsServer;
+use Siler\Container;
 use Siler\Http\Request;
 use Siler\Http\Response;
 use function Siler\array_get;
+
+const INIT = 'init';
+const INIT_SUCCESS = 'init_success';
+const INIT_FAIL = 'init_fail';
+const SUBSCRIPTION_START = 'subscription_start';
+const SUBSCRIPTION_END = 'subscription_end';
+const SUBSCRIPTION_SUCCESS = 'subscription_success';
+const SUBSCRIPTION_FAIL = 'subscription_fail';
+const SUBSCRIPTION_DATA = 'subscription_data';
 
 /**
  * Initializes a new GraphQL endpoint.
@@ -81,25 +96,92 @@ function schema($typeDefs, array $resolvers = [])
 function resolvers(array $resolvers)
 {
     Executor::setDefaultFieldResolver(function ($source, $args, $context, ResolveInfo $info) use ($resolvers) {
-        if (array_key_exists($info->parentType->name, $resolvers)) {
-            $subject = $resolvers[$info->parentType->name];
+        $fieldName = $info->fieldName;
+        $parentTypeName = $info->parentType->name;
 
-            if (is_callable($subject)) {
-                $subject = $subject($source, $args, $context, $info);
+        if (isset($resolvers[$parentTypeName])) {
+            $resolver = $resolvers[$parentTypeName];
+
+            if (is_array($resolver) || $resolver instanceof \ArrayAccess) {
+                if (array_key_exists($fieldName, $resolver)) {
+                    $value = $resolver[$fieldName];
+
+                    return is_callable($value) ? $value($source, $args, $context) : $value;
+                }
             }
 
-            if (is_array($subject)) {
-                $resolver = $subject[$info->fieldName];
-            }
+            if (is_object($resolver)) {
+                if (isset($resolver->{$fieldName})) {
+                    $value = $resolver->{$fieldName};
 
-            if (is_object($subject)) {
-                $resolver = $subject->{$info->fieldName};
-            }
-
-            if (isset($resolver)) {
-                return is_callable($resolver) ? $resolver($source, $args, $context, $info) : $resolver;
+                    return is_callable($value) ? $value($source, $args, $context) : $value;
+                }
             }
         }
+
+        return Executor::defaultFieldResolver($source, $args, $context, $info);
+    });
+}
+
+/**
+ * Returns a new websocket server bootstraped for GraphQL subscriptions.
+ *
+ * @param Schema $schema
+ * @param array  $rootValue
+ * @param array  $context
+ * @param int    $port
+ * @param string $host
+ *
+ * @return IoServer
+ */
+function subscriptions(
+    Schema $schema,
+    array $filters = null,
+    array $rootValue = null,
+    array $context = null,
+    $port = 8080,
+    $host = '0.0.0.0'
+) {
+    $manager = new SubscriptionManager($schema, $filters, $rootValue, $context);
+    $server = new SubscriptionServer($manager);
+
+    $websocket = new WsServer($server);
+    $websocket->disableVersion(0);
+
+    $http = new HttpServer($websocket);
+
+    return IoServer::factory($http, $port, $host);
+}
+
+/**
+ * Sets the GraphQL server endpoint where publish should connect to.
+ *
+ * @param string $url
+ */
+function subscriptions_at($url)
+{
+    Container\set('graphql_subscriptions_endpoint', $url);
+}
+
+/**
+ * Publishes the given $payload to the $subscribeName.
+ *
+ * @param string $subscriptionName
+ * @param mixed  $payload
+ */
+function publish($subscriptionName, $payload = null)
+{
+    $subscriptionsEndpoint = Container\get('graphql_subscriptions_endpoint');
+
+    Client\connect($subscriptionsEndpoint)->then(function (WebSocket $conn) use ($subscriptionName, $payload) {
+        $request = [
+            'type'         => SUBSCRIPTION_DATA,
+            'subscription' => $subscriptionName,
+            'payload'      => $payload,
+        ];
+
+        $conn->send(json_encode($request));
+        $conn->close();
     });
 }
 

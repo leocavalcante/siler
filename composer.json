@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "php": ">=5.5.0 || >=7.0.0"
+        "php": ">=5.5.0"
     },
     "minimum-stability": "stable",
     "require-dev": {
@@ -26,8 +26,7 @@
         "lcobucci/jwt": "*",
         "phpstan/phpstan": "*",
         "phpunit/phpunit": "*",
-        "react/http": "dev-master",
-        "react/socket": "0.5 as 0.4",
+        "ratchet/pawl": "*",
         "squizlabs/php_codesniffer": "*",
         "twig/twig": "*",
         "vlucas/phpdotenv": "*",

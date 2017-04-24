@@ -1,7 +1,26 @@
+type Message {
+  id: Int
+  roomId: Int
+  body: String
+  timestamp: String
+}
+
+type Room {
+  id: Int
+  name: String
+  messages: [Message]
+}
+
 type Query {
-  message: String
+  messages(roomName: String): [Message]
+  rooms: [Room]
 }
 
 type Mutation {
-  sum(a: Int, b: Int): Int
+  start(roomName: String): Room
+  chat(roomName: String, body: String): Message
+}
+
+type Subscription {
+  inbox(roomName: String): Message
 }

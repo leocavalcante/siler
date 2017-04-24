@@ -1,5 +1,10 @@
 # Siler
 
+<!-- Place this tag where you want the button to render. -->
+<a class="github-button" href="https://github.com/leocavalcante/siler" data-count-href="/leocavalcante/siler/stargazers" data-count-api="/repos/leocavalcante/siler#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star leocavalcante/siler on GitHub">Star</a>
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
 Siler is a set of general purpose high-level abstractions aiming an API for declarative programming in PHP.
 
 > Simplicity is the ultimate sophistication. – <cite>Leonardo Da Vinci</cite>
@@ -21,12 +26,6 @@ Route\get('/', λ\puts('Hello World'));
 
 This outputs `Hello World` when the file is reached via HTTP using the GET method and the URI path matches `/`. Got the idea, right?
 
-What can be done with Siler?
+See here on the left a section to read more about.
 
-* [Route](Route/README.md)
-  * [Callable](Route/Callable.md)
-  * [Filename](Route/Filename.md)
-  * [Resource](Route/Resource.md)
-  * [Files](Route/Files.md)
-* [Http](Http.md)
-* [Web Servers](WebServers.md)
+Feel free to submit any [issues](https://github.com/leocavalcante/siler/issues) or [pull requests](https://github.com/leocavalcante/siler/pulls).
