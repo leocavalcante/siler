@@ -17,8 +17,7 @@
         }
     ],
     "require": {
-        "php": ">=7.0.0",
-        "ratchet/pawl": "*"
+        "php": ">=7.0.0"
     },
     "minimum-stability": "stable",
     "require-dev": {
@@ -27,6 +26,7 @@
         "lcobucci/jwt": "*",
         "phpstan/phpstan": "*",
         "phpunit/phpunit": "*",
+        "ratchet/pawl": "*",
         "squizlabs/php_codesniffer": "*",
         "twig/twig": "*",
         "vlucas/phpdotenv": "*",
