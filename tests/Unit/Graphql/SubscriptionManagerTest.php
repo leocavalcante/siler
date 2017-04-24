@@ -59,8 +59,7 @@ class SubscriptionManagerTest extends \PHPUnit\Framework\TestCase
         $conn = $this->getMockBuilder(ConnectionInterface::class)
                      ->getMock();
 
-        $response = '{"type":"subscription_fail","id":1,"payload":{"errors":[{"message":"GraphQL query body is ';
-        $response .= 'expected to be string, but got NULL"}]}}';
+        $response = '{"type":"subscription_fail","id":1,"payload":{"errors":[{"message":"Undefined index: query"}]}}';
 
         $conn->expects($this->once())
              ->method('send')
