@@ -1,4 +1,0 @@
-parameters:
-    excludes_analyse:
-        - tests/fixtures/foo.php
-        - src/Graphql/SubscriptionManager.php

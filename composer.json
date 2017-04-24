@@ -24,7 +24,6 @@
         "cboden/ratchet": "*",
         "gabordemooij/redbean": "*",
         "lcobucci/jwt": "*",
-        "phpstan/phpstan": "*",
         "phpunit/phpunit": "*",
         "ratchet/pawl": "*",
         "squizlabs/php_codesniffer": "*",
@@ -63,11 +62,9 @@
         "fix": "phpcbf",
         "lint": "phpcs",
         "unit": "phpunit",
-        "stan": "phpstan analyse -l 4 -c phpstan.neon src",
         "test": [
             "@composer lint",
-            "@composer unit",
-            "@composer stan"
+            "@composer unit"
         ]
     },
     "suggest": {

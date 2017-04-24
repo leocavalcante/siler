@@ -8,40 +8,52 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
 {
     public function testId()
     {
-        $this->assertSame('foo', f\identity()('foo'));
+        $id = f\identity();
+        $this->assertSame('foo', $id('foo'));
     }
 
     public function testAlways()
     {
-        $this->assertSame('foo', f\always('foo')());
-        $this->assertSame('foo', f\always('foo')('bar'));
+        $const = f\always('foo');
+        $this->assertSame('foo', $const());
+        $this->assertSame('foo', $const('bar'));
     }
 
     public function testEq()
     {
-        $this->assertTrue(f\equal('foo')('foo'));
-        $this->assertTrue(f\equal(1)(1));
-        $this->assertFalse(f\equal(1)('1'));
-        $this->assertFalse(f\equal(1)(true));
+        $equalFoo = f\equal('foo');
+        $equalOne = f\equal(1);
+
+        $this->assertTrue($equalFoo('foo'));
+        $this->assertTrue($equalOne(1));
+        $this->assertFalse($equalOne('1'));
+        $this->assertFalse($equalOne(true));
     }
 
     public function testLt()
     {
-        $this->assertTrue(f\less_than(2)(1));
-        $this->assertFalse(f\less_than(2)(2));
-        $this->assertFalse(f\less_than(2)(3));
+        $lessThanTwo = f\less_than(2);
+
+        $this->assertTrue($lessThanTwo(1));
+        $this->assertFalse($lessThanTwo(2));
+        $this->assertFalse($lessThanTwo(3));
     }
 
     public function testGt()
     {
-        $this->assertFalse(f\greater_than(2)(1));
-        $this->assertFalse(f\greater_than(2)(2));
-        $this->assertTrue(f\greater_than(2)(3));
+        $greaterThanTwo = f\greater_than(2);
+
+        $this->assertFalse($greaterThanTwo(1));
+        $this->assertFalse($greaterThanTwo(2));
+        $this->assertTrue($greaterThanTwo(3));
     }
 
     public function testIfe()
     {
-        $foo = f\if_else(f\identity())(f\always('foo'))(f\always('bar'));
+        $then = f\if_else(f\identity());
+        $else = $then(f\always('foo'));
+        $foo = $else(f\always('bar'));
+
         $this->assertSame('foo', $foo(true));
     }
 
@@ -70,28 +82,49 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
 
     public function testAll()
     {
-        $this->assertTrue(f\all([f\less_than(2), f\less_than(3)])(1));
-        $this->assertFalse(f\all([f\equal(1), f\greater_than(1)])(1));
+        $lessThan2AndLessThan3 = f\all([f\less_than(2), f\less_than(3)]);
+        $equalTo1AndGreaterThan1 = f\all([f\equal(1), f\greater_than(1)]);
+
+        $this->assertTrue($lessThan2AndLessThan3(1));
+        $this->assertFalse($equalTo1AndGreaterThan1(1));
     }
 
     public function testNot()
     {
-        $this->assertTrue(f\not(f\equal(2))(3));
-        $this->assertFalse(f\not(f\equal(2))(2));
+        $notEqual2 = f\not(f\equal(2));
+
+        $this->assertTrue($notEqual2(3));
+        $this->assertFalse($notEqual2(2));
     }
 
     public function testMath()
     {
-        $this->assertSame(2, f\add(1)(1));
-        $this->assertSame(1, f\sub(2)(3));
-        $this->assertSame(4, f\mul(2)(2));
-        $this->assertSame(2, f\div(2)(4));
-        $this->assertSame(-1, f\sub(3)(2));
-        $this->assertSame(.5, f\div(4)(2));
-        $this->assertSame(2, f\mod(3)(5));
-        $this->assertSame(2, f\mod(-3)(5));
-        $this->assertSame(-2, f\mod(3)(-5));
-        $this->assertSame(-2, f\mod(-3)(-5));
+        $add1 = f\add(1);
+        $this->assertSame(2, $add1(1));
+
+        $sub2 = f\sub(2);
+        $this->assertSame(1, $sub2(3));
+
+        $mul2 = f\mul(2);
+        $this->assertSame(4, $mul2(2));
+
+        $div2 = f\div(2);
+        $this->assertSame(2, $div2(4));
+
+        $sub3 = f\sub(3);
+        $this->assertSame(-1, $sub3(2));
+
+        $div4 = f\div(4);
+        $this->assertSame(.5, $div4(2));
+
+        $mod3 = f\mod(3);
+        $this->assertSame(2, $mod3(5));
+
+        $modNeg3 = f\mod(-3);
+        $this->assertSame(2, $modNeg3(5));
+
+        $this->assertSame(-2, $mod3(-5));
+        $this->assertSame(-2, $modNeg3(-5));
     }
 
     public function testCompose()
@@ -105,18 +138,22 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
 
     public function testBool()
     {
-        $this->assertTrue(f\bool()(true));
-        $this->assertTrue(f\bool()('foo'));
-        $this->assertTrue(f\bool()(1));
+        $bool = f\bool();
 
-        $this->assertFalse(f\bool()(false));
-        $this->assertFalse(f\bool()(''));
-        $this->assertFalse(f\bool()(0));
+        $this->assertTrue($bool(true));
+        $this->assertTrue($bool('foo'));
+        $this->assertTrue($bool(1));
+
+        $this->assertFalse($bool(false));
+        $this->assertFalse($bool(''));
+        $this->assertFalse($bool(0));
     }
 
     public function testNoop()
     {
-        f\noop()();
+        $noop = f\noop();
+        $noop();
+
         $this->assertTrue(true);
     }
 
@@ -128,13 +165,19 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
             echo $val;
         };
 
-        f\if_else(f\bool())(f\hold($echoFoo))(f\noop())('foo');
+        $then = f\if_else(f\bool());
+        $else = $then(f\hold($echoFoo));
+        $ifelse = $else(f\noop());
+
+        $ifelse('foo');
     }
 
     public function testPuts()
     {
         $this->expectOutputString('foo');
-        f\puts('foo')();
+
+        $putsFoo = f\puts('foo');
+        $putsFoo();
     }
 
     public function testFlatten()

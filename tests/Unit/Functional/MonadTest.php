@@ -45,10 +45,16 @@ class MonadTest extends \PHPUnit\Framework\TestCase
             return $value['parent'];
         };
 
-        $grandparent = Monad\maybe($baz)($parent)($parent);
+        $maybeBaz = Monad\maybe($baz);
+        $maybeParent = $maybeBaz($parent);
+        $grandparent = $maybeParent($parent);
+
         $this->assertSame($foo, $grandparent());
 
-        $grandparent = Monad\maybe($foo)($parent)($parent);
+        $maybeFoo = Monad\maybe($foo);
+        $maybeParent = $maybeFoo($parent);
+        $grandparent = $maybeParent($parent);
+
         $this->assertNull($grandparent());
     }
 }

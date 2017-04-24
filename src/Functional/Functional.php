@@ -110,7 +110,11 @@ function match(array $matches)
 
         $match = $matches[0];
 
-        return if_else($match[0])($match[1])(match(array_slice($matches, 1)))($value);
+        $pred = if_else($match[0]);
+        $then = $pred($match[1]);
+        $else = $then(match(array_slice($matches, 1)));
+
+        return $else($value);
     };
 }
 

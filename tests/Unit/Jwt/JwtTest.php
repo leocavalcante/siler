@@ -39,7 +39,8 @@ class JwtTest extends \PHPUnit\Framework\TestCase
 
     public function testBuilder()
     {
-        $token = Jwt\builder($this->config)($this->data);
+        $token = Jwt\builder($this->config);
+        $token = $token($this->data);
 
         $this->assertEquals(self::JTI, $token->getHeader('jti'));
 
@@ -56,17 +57,26 @@ class JwtTest extends \PHPUnit\Framework\TestCase
 
     public function testValidate()
     {
-        $token = Jwt\builder($this->config)($this->data);
+        $token = Jwt\builder($this->config);
+        $token = $token($this->data);
 
-        $this->assertFalse(Jwt\validator($this->config, self::IAT)($token));
-        $this->assertTrue(Jwt\validator($this->config, self::NBF)($token));
-        $this->assertTrue(Jwt\validator($this->config, self::EXP)($token));
-        $this->assertFalse(Jwt\validator($this->config, self::EXP + 1)($token));
+        $iatValidator = Jwt\validator($this->config, self::IAT);
+        $this->assertFalse($iatValidator($token));
+
+        $nbfValidator = Jwt\validator($this->config, self::NBF);
+        $this->assertTrue($nbfValidator($token));
+
+        $expValidator = Jwt\validator($this->config, self::EXP);
+        $this->assertTrue($expValidator($token));
+
+        $anotherExpValidator = Jwt\validator($this->config, self::EXP + 1);
+        $this->assertFalse($anotherExpValidator($token));
     }
 
     public function testBuilderWithSigner()
     {
-        $token = Jwt\builder($this->config, $this->signer, self::KEY)($this->data);
+        $token = Jwt\builder($this->config, $this->signer, self::KEY);
+        $token = $token($this->data);
 
         $this->assertEquals(file_get_contents(__DIR__.'/../../fixtures/jwt_signed.txt'), (string) $token);
 

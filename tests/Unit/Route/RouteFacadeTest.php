@@ -13,71 +13,62 @@ class RouteFacadeTest extends TestCase
 
         $_SERVER['HTTP_HOST'] = 'test:8000';
         $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
-        $_SERVER['PATH_INFO'] = '/bar/baz';
+        $_SERVER['REQUEST_URI'] = '/bar/baz';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
     }
 
-    /**
-     * @expectedException        \Exception
-     * @expectedExceptionMessage Route /bar/baz should match
-     */
     public function testGet()
     {
+        $this->expectOutputString('test get');
+
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
         Route\get('/bar/baz', function ($params) {
-            throw new \Exception('Route /bar/baz should match');
+            echo 'test get';
         });
     }
 
-    /**
-     * @expectedException        \Exception
-     * @expectedExceptionMessage Route /bar/baz should match
-     */
     public function testPost()
     {
+        $this->expectOutputString('test post');
+
         $_SERVER['REQUEST_METHOD'] = 'POST';
 
         Route\post('/bar/baz', function ($params) {
-            throw new \Exception('Route /bar/baz should match');
+            echo 'test post';
         });
     }
 
-    /**
-     * @expectedException        \Exception
-     * @expectedExceptionMessage Route /bar/baz should match
-     */
     public function testPut()
     {
+        $this->expectOutputString('test put');
+
         $_SERVER['REQUEST_METHOD'] = 'PUT';
 
         Route\put('/bar/baz', function ($params) {
-            throw new \Exception('Route /bar/baz should match');
+            echo 'test put';
         });
     }
 
-    /**
-     * @expectedException        \Exception
-     * @expectedExceptionMessage Route /bar/baz should match
-     */
     public function testDelete()
     {
+        $this->expectOutputString('test delete');
+
         $_SERVER['REQUEST_METHOD'] = 'DELETE';
 
         Route\delete('/bar/baz', function ($params) {
-            throw new \Exception('Route /bar/baz should match');
+            echo 'test delete';
         });
     }
 
-    /**
-     * @expectedException        \Exception
-     * @expectedExceptionMessage Route /bar/baz should match
-     */
     public function testOptions()
     {
+        $this->expectOutputString('test options');
+
         $_SERVER['REQUEST_METHOD'] = 'OPTIONS';
 
         Route\options('/bar/baz', function ($params) {
-            throw new \Exception('Route /bar/baz should match');
+            echo 'test options';
         });
     }
 }
