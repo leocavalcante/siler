@@ -3,9 +3,7 @@
 namespace Siler\Test\Integration;
 
 use Lcobucci\JWT\Signer\Hmac\Sha256;
-use Siler\Dotenv;
 use Siler\Jwt;
-use function Siler\Dotenv\env;
 
 class JwtAuthTest extends \PHPUnit\Framework\TestCase
 {
