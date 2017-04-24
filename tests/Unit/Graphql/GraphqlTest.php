@@ -95,7 +95,7 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
         $name = Graphql\str('id', 'The id of the character.');
 
         $interfaceType = Graphql\itype('Character', 'A character in the Star Wars Trilogy');
-        $interfaceType = $interfaceType([$id(),$name()]);
+        $interfaceType = $interfaceType([$id(), $name()]);
         $interfaceType = $interfaceType(function ($obj) {
             return null;
         });
