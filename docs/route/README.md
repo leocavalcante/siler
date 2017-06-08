@@ -46,7 +46,7 @@ The URL matches are available to the handlers by the `$params` pseudo-global.
 
 Route handlers can be set using:
 
-* [Callable](Callable.md)
-* [Filename](Filename.md)
-* [Resource](Resource.md)
-* [Files](Files.md)
+* [Callable](callable.md)
+* [Filename](filename.md)
+* [Resource](resource.md)
+* [Files](files.md)
