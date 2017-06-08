@@ -1,0 +1,8 @@
+# HTTPD mod_rewrite required
+RewriteEngine on
+# If file/directory's present, serving it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# Else, redirecting the request to the index.php file
+RewriteRule . index.php
+
