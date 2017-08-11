@@ -109,8 +109,8 @@ function parse($token)
  * @param string $iss configures the issuer (iss claim)
  * @param string $aud configures the audience (aud claim)
  * @param string $jti configures the id (jti claim), replicating as a header item
- * @param string $iat configures the time that the token was issue (iat claim)
- * @param string $nbf configures the time that the token can be used (nbf claim)
+ * @param string $iat configures the time at which the token was issued (iat claim)
+ * @param string $nbf configures the time at which the token can be used (nbf claim)
  * @param string $exp configures the expiration time of the token (nbf claim)
  *
  * @return array

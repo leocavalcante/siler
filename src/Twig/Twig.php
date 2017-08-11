@@ -16,16 +16,8 @@ use Siler\Container;
  *
  * @return \Twig_Environment
  */
-function init($templatesPath, $templatesCachePath = null, $debug = null)
+function init($templatesPath, $templatesCachePath = false, $debug = false)
 {
-    if (is_null($templatesCachePath)) {
-        $templatesCachePath = false;
-    }
-
-    if (is_null($debug)) {
-        $debug = false;
-    }
-
     $twig = new \Twig_Environment(new \Twig_Loader_Filesystem($templatesPath), [
         'debug' => $debug,
         'cache' => $templatesCachePath,

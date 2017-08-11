@@ -91,7 +91,7 @@ function schema($typeDefs, array $resolvers = [])
 /**
  * Sets a Siler's default field resolver based on the given $resolvers array.
  *
- * @param $resolvers
+ * @param array $resolvers
  */
 function resolvers(array $resolvers)
 {
@@ -127,6 +127,7 @@ function resolvers(array $resolvers)
  * Returns a new websocket server bootstraped for GraphQL subscriptions.
  *
  * @param Schema $schema
+ * @param array  $filters
  * @param array  $rootValue
  * @param array  $context
  * @param int    $port
