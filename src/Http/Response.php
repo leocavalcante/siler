@@ -70,7 +70,7 @@ function jsonstr($content, $code = 200, $charset = 'utf-8')
 /**
  * Outputs the given content encoded as JSON string.
  *
- * @param string $content The HTTP response body
+ * @param mixed  $content The HTTP response body
  * @param int    $code    The HTTP response status code
  * @param string $charset The HTTP response charset
  *
@@ -88,12 +88,8 @@ function json($content, $code = 200, $charset = 'utf-8')
  * @param string $val     The response header value
  * @param bool   $replace Should replace a previous similar header, or add a second header of the same type.
  */
-function header($key, $val, $replace = null)
+function header($key, $val, $replace = true)
 {
-    if (is_null($replace)) {
-        $replace = true;
-    }
-
     \header($key.': '.$val, $replace);
 }
 

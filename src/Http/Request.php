@@ -75,7 +75,7 @@ function headers()
  * @param string $key     The header name
  * @param mixed  $default The default value when header isnt present
  *
- * @return string
+ * @return mixed
  */
 function header($key, $default = null)
 {

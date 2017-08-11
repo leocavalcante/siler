@@ -22,12 +22,8 @@ const RATCHET_EVENT_ERROR = 'ratchet_event_error';
  *
  * @param int $port The port number on which the server should run. Defaults to 8080
  */
-function init($port = null)
+function init($port = 8080)
 {
-    if (is_null($port)) {
-        $port = 8080;
-    }
-
     $messageComponent = new MessageComponent();
     $webSocketServer = new WsServer($messageComponent);
     $server = IoServer::factory(new HttpServer($webSocketServer), $port);
@@ -81,7 +77,7 @@ function error($callback)
  * Broadcast a message for the connected clients.
  *
  * @param string                   $message The message to broadcast
- * @param ConnectionInterface|null $from    The sender client, if given the message will not be broadcast to it
+ * @param ConnectionInterface|null $from    The sender client. If given, the message will not be broadcast to it
  */
 function broadcast($message, ConnectionInterface $from = null)
 {
