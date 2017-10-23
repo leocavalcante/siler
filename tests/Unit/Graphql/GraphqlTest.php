@@ -2,7 +2,8 @@
 
 namespace Siler\Test\Unit;
 
-use GraphQL\Schema;
+use GraphQL\Error\Error;
+use GraphQL\Type\Schema;
 use GraphQL\Type\Definition\BooleanType;
 use GraphQL\Type\Definition\EnumType;
 use GraphQL\Type\Definition\FloatType;
@@ -146,7 +147,7 @@ class GraphqlTest extends \PHPUnit\Framework\TestCase
 
         $root = Graphql\type('Root')([
             Graphql\str('foo')(function ($root, $args) {
-                throw new \Exception('error_message');
+                throw new Error('error_message');
             }),
         ]);
 
