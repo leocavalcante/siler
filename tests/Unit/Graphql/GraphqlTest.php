@@ -3,7 +3,6 @@
 namespace Siler\Test\Unit;
 
 use GraphQL\Error\Error;
-use GraphQL\Type\Schema;
 use GraphQL\Type\Definition\BooleanType;
 use GraphQL\Type\Definition\EnumType;
 use GraphQL\Type\Definition\FloatType;
@@ -14,6 +13,7 @@ use GraphQL\Type\Definition\ListOfType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Schema;
 use Siler\Graphql;
 
 class GraphqlTest extends \PHPUnit\Framework\TestCase

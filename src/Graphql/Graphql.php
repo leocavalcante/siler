@@ -7,7 +7,6 @@ namespace Siler\Graphql;
 
 use GraphQL\Executor\Executor;
 use GraphQL\GraphQL;
-use GraphQL\Type\Schema;
 use GraphQL\Type\Definition\BooleanType;
 use GraphQL\Type\Definition\EnumType;
 use GraphQL\Type\Definition\FloatType;
@@ -18,6 +17,7 @@ use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Schema;
 use GraphQL\Utils\BuildSchema;
 use Ratchet\Client;
 use Ratchet\Client\WebSocket;
