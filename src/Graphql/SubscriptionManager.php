@@ -4,7 +4,7 @@ namespace Siler\Graphql;
 
 use GraphQL\Language\AST\DocumentNode;
 use GraphQL\Language\Parser;
-use GraphQL\Schema;
+use GraphQL\Type\Schema;
 use Ratchet\ConnectionInterface;
 use function Siler\array_get;
 

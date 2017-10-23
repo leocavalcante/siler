@@ -7,7 +7,7 @@ namespace Siler\Graphql;
 
 use GraphQL\Executor\Executor;
 use GraphQL\GraphQL;
-use GraphQL\Schema;
+use GraphQL\Type\Schema;
 use GraphQL\Type\Definition\BooleanType;
 use GraphQL\Type\Definition\EnumType;
 use GraphQL\Type\Definition\FloatType;
