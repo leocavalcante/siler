@@ -216,13 +216,13 @@ function accepted_locales(): array
  * Get locale asked in request, or system default if none found.
  *
  * Priority is as follows:
- * 
+ *
  * - GET param `lang`: ?lang=en.
  * - Session param `lang`: $_SESSION['lang].
  * - Most requested locale as given by accepted_locales().
  * - Fallback locale, passed in parameter (optional).
  * - Default system locale.
- * 
+ *
  * @param string $default Fallback locale to use if nothing could be selected, just before default system locale.
  * @return string selected locale.
  */
