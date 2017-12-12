@@ -235,7 +235,7 @@ function recommended_locale(string $default = ''): string
     }
     if (empty($locale)) {
         $locales = accepted_locales();
-        $locale = empty($locales) ? '' : $locales[0];
+        $locale = empty($locales) ? '' : array_keys($locales)[0];
     }
     if (empty($locale)) {
         $locale = $default;
