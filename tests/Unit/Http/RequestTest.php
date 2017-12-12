@@ -177,5 +177,9 @@ class RequestTest extends TestCase
         $this->assertTrue(
             Request\recommended_locale('it') === 'en-US'
         );
+        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '';
+        $this->assertTrue(
+            Request\recommended_locale() === \locale_get_default()
+        );
     }
 }

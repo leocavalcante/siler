@@ -244,7 +244,7 @@ function recommended_locale(string $default = ''): string
         $locale = $default;
     }
     if (empty($locale)) {
-        $locale = locale_get_default();
+        $locale = \locale_get_default();
     }
 
     return $locale;
