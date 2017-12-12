@@ -188,7 +188,7 @@ function method_is($method, $requestMethod = null)
 function accepted_locales(): array
 {
     $langs = [];
-    
+
     if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         // break up string into pieces (languages and q factors)
         preg_match_all(
@@ -203,27 +203,34 @@ function accepted_locales(): array
 
             // set default to 1 for any without q factor
             foreach ($langs as $lang => $val) {
-                if ($val === '') $langs[$lang] = 1;
+                if ($val === '')
+                    $langs[$lang] = 1;
             }
 
             arsort($langs, SORT_NUMERIC | SORT_DESC);
         }
     }
-    return count($langs) > 0 ? array_keys($langs)[0] : '';   
+    return $langs;
 }
 /**
- * Get locale asked in request, or system default if none found
+ * Get locale asked in request, or system default if none found.
  *
- * @return string locale
+ * @return string selected locale.
  */
 function recommended_locale(): string
 {
-    $locale = accepted_locales();
-    if (empty($locale))
-        $locale = $_GET['lang'] ?? '';
-    if (empty($locale))
+    $locale = $_GET['lang'] ?? '';
+
+    if (empty($locale)) {
         $locale = $_SESSION['lang'] ?? '';
-    if (empty($locale))
+    }
+    if (empty($locale)) {
+        $locales = accepted_locales();
+        $locale = empty($locales) ? '' : $locales[0];
+    }
+    if (empty($locale)) {
         $locale = locale_get_default();
+    }
+
     return $locale;
 }
