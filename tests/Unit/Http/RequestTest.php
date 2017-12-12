@@ -142,4 +142,44 @@ class RequestTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'PUT';
         $this->assertFalse(Request\method_is(['get', 'post']));
     }
+
+    public function testAcceptedLocales()
+    {
+        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en-US,en;q=0.5';
+        $this->assertTrue(
+            array_keys(
+                Request\accepted_locales()
+            )[0] === 'en-US'
+        );
+        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '';
+        $this->assertTrue(empty(Request\accepted_locales()));
+    }
+
+    public function testRecommendedLocale()
+    {
+        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en-US,en;q=0.5';
+        $this->assertTrue(
+            Request\recommended_locale() === 'en-US'
+        );
+        $_GET['lang'] = 'fr';
+        $this->assertTrue(
+            Request\recommended_locale() === 'fr'
+        );
+        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '';
+        $this->assertTrue(
+            Request\recommended_locale() === 'fr'
+        );
+        unset($_GET['lang']);
+        $this->assertTrue(
+            Request\recommended_locale('it') === 'it'
+        );
+        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en-US,en;q=0.5';
+        $this->assertTrue(
+            Request\recommended_locale('it') === 'en-US'
+        );
+        $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '';
+        $this->assertTrue(
+            Request\recommended_locale() === \locale_get_default()
+        );
+    }
 }
