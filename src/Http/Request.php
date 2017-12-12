@@ -211,6 +211,7 @@ function accepted_locales(): array
             arsort($langs, SORT_NUMERIC | SORT_DESC);
         }
     }
+
     return $langs;
 }
 /**
@@ -225,6 +226,7 @@ function accepted_locales(): array
  * - Default system locale.
  *
  * @param string $default Fallback locale to use if nothing could be selected, just before default system locale.
+ *
  * @return string selected locale.
  */
 function recommended_locale(string $default = ''): string
