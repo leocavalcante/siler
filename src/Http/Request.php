@@ -203,8 +203,9 @@ function accepted_locales(): array
 
             // set default to 1 for any without q factor
             foreach ($langs as $lang => $val) {
-                if ($val === '')
+                if ($val === '') {
                     $langs[$lang] = 1;
+                }
             }
 
             arsort($langs, SORT_NUMERIC | SORT_DESC);
