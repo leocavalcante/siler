@@ -185,6 +185,10 @@ php subscriptions.php
 
 By default, Siler will run the subscriptions at localhost on port 8080.
 
+### Production-grade
+
+To run subscriptions server at a production-grade level, please consider using some long-running process manager like Supervisor. Take a look at [http://socketo.me/docs/deploy#supervisor](http://socketo.me/docs/deploy#supervisor).
+
 ## That's it
 
 No kidding.
