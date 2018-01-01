@@ -9,6 +9,7 @@ install:
 
 script:
   - ./vendor/bin/phpunit
+  - ./vendor/bin/psalm --show-info=false
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
