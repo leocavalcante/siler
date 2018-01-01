@@ -178,4 +178,4 @@ Graphql\init(Graphql\schema($typeDefs, $resolvers));
 
 But if you give a try, I'd love the get some feedback
 
-MIT 2017
+MIT 2018
