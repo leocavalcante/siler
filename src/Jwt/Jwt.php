@@ -72,7 +72,7 @@ function builder(array $config, Signer $signer = null, $key = null)
 function validator(array $config, $time)
 {
     $data = new ValidationData();
-    $data->setCurrentTime($time);
+    $data->setCurrentTime((int) $time);
 
     if (isset($config['iss'])) {
         $data->setIssuer($config['iss']);

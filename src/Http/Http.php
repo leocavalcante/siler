@@ -55,6 +55,7 @@ function setsession($key, $value)
 function flash($key = null, $default = null)
 {
     $value = session($key, $default);
+    /** @psalm-suppress PossiblyNullArrayOffset */
     unset($_SESSION[$key]);
 
     return $value;

@@ -35,6 +35,7 @@ class SubscriptionManager
             'type' => INIT_SUCCESS,
         ];
 
+        /** @psalm-suppress PossiblyFalseArgument */
         $conn->send(json_encode($response));
     }
 
@@ -58,6 +59,7 @@ class SubscriptionManager
                 'id'   => $subscription['id'],
             ];
 
+            /** @psalm-suppress PossiblyFalseArgument */
             $conn->send(json_encode($response));
         } catch (\Exception $exception) {
             $response = [
@@ -70,6 +72,7 @@ class SubscriptionManager
                 ],
             ];
 
+            /** @psalm-suppress PossiblyFalseArgument */
             $conn->send(json_encode($response));
         }
     }
@@ -125,6 +128,7 @@ class SubscriptionManager
 
     public function getSubscriptionName(DocumentNode $document)
     {
+        /** @psalm-suppress NoInterfaceProperties */
         return $document->definitions[0]
                         ->selectionSet
                         ->selections[0]
