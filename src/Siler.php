@@ -29,11 +29,12 @@ function array_get($array, $key = null, $default = null)
  * @param string $filename The file to be required
  *
  * @return \Closure
+ *
+ * @psalm-suppress UnresolvableInclude
  */
 function require_fn($filename)
 {
     return function ($params = null) use ($filename) {
-    	/** @psalm-suppress UnresolvableInclude */
         return require $filename;
     };
 }

@@ -10,9 +10,9 @@ use Siler\Container;
 /**
  * Initialize the Twig environment.
  *
- * @param string        $templatesPath      Path to templates
- * @param string|false  $templatesCachePath Path to templates cache
- * @param bool          $debug              Should TwigEnv allow debugging
+ * @param string       $templatesPath      Path to templates
+ * @param string|false $templatesCachePath Path to templates cache
+ * @param bool         $debug              Should TwigEnv allow debugging
  *
  * @return \Twig_Environment
  */
