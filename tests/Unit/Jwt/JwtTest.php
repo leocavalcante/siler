@@ -41,17 +41,17 @@ class JwtTest extends \PHPUnit\Framework\TestCase
     {
         $token = Jwt\builder($this->config)($this->data);
 
-        $this->assertEquals(self::JTI, $token->getHeader('jti'));
+        $this->assertSame(self::JTI, $token->getHeader('jti'));
 
-        $this->assertEquals(self::ISS, $token->getClaim('iss'));
-        $this->assertEquals(self::AUD, $token->getClaim('aud'));
+        $this->assertSame(self::ISS, $token->getClaim('iss'));
+        $this->assertSame(self::AUD, $token->getClaim('aud'));
         $this->assertEquals(self::IAT, $token->getClaim('iat'));
         $this->assertEquals(self::NBF, $token->getClaim('nbf'));
         $this->assertEquals(self::EXP, $token->getClaim('exp'));
 
-        $this->assertEquals(1, $token->getClaim('uid'));
+        $this->assertSame(1, $token->getClaim('uid'));
 
-        $this->assertEquals(file_get_contents(__DIR__.'/../../fixtures/jwt_unsigned.txt'), (string) $token);
+        $this->assertStringEqualsFile(__DIR__.'/../../fixtures/jwt_unsigned.txt', $token);
     }
 
     public function testValidate()
@@ -68,7 +68,7 @@ class JwtTest extends \PHPUnit\Framework\TestCase
     {
         $token = Jwt\builder($this->config, $this->signer, self::KEY)($this->data);
 
-        $this->assertEquals(file_get_contents(__DIR__.'/../../fixtures/jwt_signed.txt'), (string) $token);
+        $this->assertStringEqualsFile(__DIR__.'/../../fixtures/jwt_signed.txt', $token);
 
         $this->assertTrue($token->verify($this->signer, self::KEY));
         $this->assertFalse($token->verify($this->signer, 'wrong key'));
@@ -78,15 +78,15 @@ class JwtTest extends \PHPUnit\Framework\TestCase
     {
         $token = Jwt\parse(file_get_contents(__DIR__.'/../../fixtures/jwt_signed.txt'));
 
-        $this->assertEquals(self::JTI, $token->getHeader('jti'));
+        $this->assertSame(self::JTI, $token->getHeader('jti'));
 
-        $this->assertEquals(self::ISS, $token->getClaim('iss'));
-        $this->assertEquals(self::AUD, $token->getClaim('aud'));
+        $this->assertSame(self::ISS, $token->getClaim('iss'));
+        $this->assertSame(self::AUD, $token->getClaim('aud'));
         $this->assertEquals(self::IAT, $token->getClaim('iat'));
         $this->assertEquals(self::NBF, $token->getClaim('nbf'));
         $this->assertEquals(self::EXP, $token->getClaim('exp'));
 
-        $this->assertEquals(1, $token->getClaim('uid'));
+        $this->assertSame(1, $token->getClaim('uid'));
 
         $this->assertTrue($token->verify($this->signer, self::KEY));
     }
@@ -94,6 +94,6 @@ class JwtTest extends \PHPUnit\Framework\TestCase
     public function testConf()
     {
         $config = Jwt\conf(self::ISS, self::AUD, self::JTI, self::IAT, self::NBF, self::EXP);
-        $this->assertEquals($this->config, $config);
+        $this->assertSame($this->config, $config);
     }
 }

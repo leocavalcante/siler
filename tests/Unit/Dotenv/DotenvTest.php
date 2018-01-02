@@ -11,11 +11,11 @@ class DotenvTest extends TestCase
     {
         $lines = \Siler\Dotenv\init(__DIR__.'/../../fixtures');
 
-        $this->assertEquals(4, count($lines));
-        $this->assertEquals('FOO=bar', $lines[0]);
-        $this->assertEquals($_SERVER, env());
-        $this->assertEquals('bar', env('FOO'));
-        $this->assertEquals('baz', env('BAR', 'baz'));
+        $this->assertCount(4, $lines);
+        $this->assertSame('FOO=bar', $lines[0]);
+        $this->assertSame($_SERVER, env());
+        $this->assertSame('bar', env('FOO'));
+        $this->assertSame('baz', env('BAR', 'baz'));
         $this->assertNull(env('BAR'));
     }
 }

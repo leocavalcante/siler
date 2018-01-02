@@ -27,8 +27,8 @@ class JwtAuthTest extends \PHPUnit\Framework\TestCase
 
         self::$cookies['jwt'] = (string) $token;
 
-        $this->assertEquals(env('JWT_ISS'), $token->getClaim('iss'));
-        $this->assertEquals(1, $token->getClaim('uid'));
+        $this->assertSame(env('JWT_ISS'), $token->getClaim('iss'));
+        $this->assertSame(1, $token->getClaim('uid'));
     }
 
     /**
@@ -43,6 +43,6 @@ class JwtAuthTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(Jwt\validator(Jwt\conf(env('JWT_ISS'), env('JWT_AUD')), time())($token));
         $this->assertTrue($token->verify(new Sha256(), env('APP_KEY')));
 
-        $this->assertEquals(1, $token->getClaim('uid'));
+        $this->assertSame(1, $token->getClaim('uid'));
     }
 }

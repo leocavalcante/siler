@@ -30,7 +30,7 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
         $schema = Graphql\schema($typeDefs, $resolvers);
         $actual = \GraphQL\GraphQL::execute($schema, $query);
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function testCallableResolver()
@@ -59,7 +59,7 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
         $schema = Graphql\schema($typeDefs, $resolvers);
         $actual = \GraphQL\GraphQL::execute($schema, $query);
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function testMutation()
@@ -92,7 +92,7 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
         $schema = Graphql\schema($typeDefs, $resolvers);
         $actual = \GraphQL\GraphQL::execute($schema, $query);
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function testObjectResolve()
@@ -120,6 +120,6 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
         $schema = Graphql\schema($typeDefs, $resolvers);
         $actual = \GraphQL\GraphQL::execute($schema, $query);
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 }

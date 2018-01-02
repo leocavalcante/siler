@@ -15,7 +15,7 @@ class ContainerTest extends TestCase
 
     public function testGet()
     {
-        $this->assertEquals('test', Container\get('test'));
+        $this->assertSame('test', Container\get('test'));
     }
 
     public function testHas()
