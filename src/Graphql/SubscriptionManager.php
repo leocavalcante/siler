@@ -27,6 +27,13 @@ class SubscriptionManager
         $this->connSubStorage = new \SplObjectStorage();
     }
 
+    /**
+     * @param ConnectionInterface $conn
+     *
+     * @return void
+     *
+     * @psalm-suppress PossiblyFalseArgument
+     */
     public function handleInit(ConnectionInterface $conn)
     {
         $this->connSubStorage->offsetSet($conn, []);
@@ -38,6 +45,14 @@ class SubscriptionManager
         $conn->send(json_encode($response));
     }
 
+    /**
+     * @param ConnectionInterface $conn
+     * @param array               $subscription
+     *
+     * @return void
+     *
+     * @psalm-suppress PossiblyFalseArgument
+     */
     public function handleSubscriptionStart(ConnectionInterface $conn, array $subscription)
     {
         try {
@@ -123,6 +138,11 @@ class SubscriptionManager
         }
     }
 
+    /**
+     * @param DocumentNode $document
+     *
+     * @psalm-suppress NoInterfaceProperties
+     */
     public function getSubscriptionName(DocumentNode $document)
     {
         return $document->definitions[0]

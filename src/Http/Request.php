@@ -16,7 +16,7 @@ use function Siler\array_get;
  */
 function raw($input = 'php://input')
 {
-    return file_get_contents($input);
+    return (string) file_get_contents($input);
 }
 
 /**

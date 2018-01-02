@@ -31,7 +31,8 @@
         "twig/twig": "^2.4",
         "vlucas/phpdotenv": "^2.4",
         "webonyx/graphql-php": "^0.11",
-        "zendframework/zend-diactoros": "^1.6"
+        "zendframework/zend-diactoros": "^1.6",
+        "vimeo/psalm": "dev-master"
     },
     "autoload": {
         "psr-4": {

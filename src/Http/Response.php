@@ -75,6 +75,8 @@ function jsonstr($content, $code = 200, $charset = 'utf-8')
  * @param string $charset The HTTP response charset
  *
  * @return int Returns 1, always
+ *
+ * @psalm-suppress PossiblyFalseArgument
  */
 function json($content, $code = 200, $charset = 'utf-8')
 {

@@ -10,9 +10,10 @@ use GraphQL\GraphQL;
 use GraphQL\Type\Definition\BooleanType;
 use GraphQL\Type\Definition\EnumType;
 use GraphQL\Type\Definition\FloatType;
-use GraphQL\Type\Definition\IdType;
+use GraphQL\Type\Definition\IDType;
 use GraphQL\Type\Definition\InterfaceType;
 use GraphQL\Type\Definition\IntType;
+use GraphQL\Type\Definition\ListOfType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\StringType;
@@ -102,7 +103,7 @@ function resolvers(array $resolvers)
         if (isset($resolvers[$parentTypeName])) {
             $resolver = $resolvers[$parentTypeName];
 
-            if (is_array($resolver) || $resolver instanceof \ArrayAccess) {
+            if (is_array($resolver)) {
                 if (array_key_exists($fieldName, $resolver)) {
                     $value = $resolver[$fieldName];
 
@@ -147,7 +148,6 @@ function subscriptions(
     $server = new SubscriptionServer($manager);
 
     $websocket = new WsServer($server);
-    $websocket->disableVersion(0);
 
     $http = new HttpServer($websocket);
 
@@ -306,6 +306,15 @@ function bool($name = null, $description = null)
     return field(Type::boolean(), $name, $description);
 }
 
+/**
+ * @param Type    $type
+ * @param ?string $name
+ * @param ?string $description
+ *
+ * @return ListOfType|\Closure -> (resolve, args) -> array
+ *
+ * @psalm-suppress TypeCoercion
+ */
 function list_of(Type $type, $name = null, $description = null)
 {
     if (is_null($name)) {
@@ -321,7 +330,7 @@ function list_of(Type $type, $name = null, $description = null)
  * @param string $name
  * @param string $description
  *
- * @return IdType|\Closure -> (resolve, args) -> array
+ * @return IDType|\Closure -> (resolve, args) -> array
  */
 function id($name = null, $description = null)
 {

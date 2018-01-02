@@ -51,6 +51,8 @@ function setsession($key, $value)
  * @param mixed  $default The default value to be returned when the key don't exists
  *
  * @return mixed
+ *
+ * @psalm-suppress PossiblyNullArrayOffset
  */
 function flash($key = null, $default = null)
 {
