@@ -21,7 +21,7 @@ class RequestTest extends TestCase
     public function testRaw()
     {
         $rawContent = Request\raw(__DIR__.'/../../fixtures/php_input.txt');
-        $this->assertEquals('foo=bar', $rawContent);
+        $this->assertSame('foo=bar', $rawContent);
     }
 
     public function testParams()
@@ -62,52 +62,52 @@ class RequestTest extends TestCase
     public function testHeader()
     {
         $contentType = Request\header('Content-Type');
-        $this->assertEquals('phpunit/test', $contentType);
+        $this->assertSame('phpunit/test', $contentType);
     }
 
     public function testGet()
     {
-        $this->assertEquals($_GET, Request\get());
-        $this->assertEquals('bar', Request\get('foo'));
-        $this->assertEquals('qux', Request\get('baz', 'qux'));
+        $this->assertSame($_GET, Request\get());
+        $this->assertSame('bar', Request\get('foo'));
+        $this->assertSame('qux', Request\get('baz', 'qux'));
         $this->assertNull(Request\get('baz'));
     }
 
     public function testPost()
     {
-        $this->assertEquals($_POST, Request\post());
-        $this->assertEquals('bar', Request\post('foo'));
-        $this->assertEquals('qux', Request\post('baz', 'qux'));
+        $this->assertSame($_POST, Request\post());
+        $this->assertSame('bar', Request\post('foo'));
+        $this->assertSame('qux', Request\post('baz', 'qux'));
         $this->assertNull(Request\post('baz'));
     }
 
     public function testInput()
     {
-        $this->assertEquals($_REQUEST, Request\input());
-        $this->assertEquals('bar', Request\input('foo'));
-        $this->assertEquals('qux', Request\input('baz', 'qux'));
+        $this->assertSame($_REQUEST, Request\input());
+        $this->assertSame('bar', Request\input('foo'));
+        $this->assertSame('qux', Request\input('baz', 'qux'));
         $this->assertNull(Request\input('baz'));
     }
 
     public function testFile()
     {
-        $this->assertEquals($_FILES, Request\file());
-        $this->assertEquals('bar', Request\file('foo'));
-        $this->assertEquals('qux', Request\file('baz', 'qux'));
+        $this->assertSame($_FILES, Request\file());
+        $this->assertSame('bar', Request\file('foo'));
+        $this->assertSame('qux', Request\file('baz', 'qux'));
         $this->assertNull(Request\file('baz'));
     }
 
     public function testMethod()
     {
-        $this->assertEquals('GET', Request\method());
+        $this->assertSame('GET', Request\method());
 
         $_POST['_method'] = 'POST';
 
-        $this->assertEquals('POST', Request\method());
+        $this->assertSame('POST', Request\method());
 
         $_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] = 'PUT';
 
-        $this->assertEquals('PUT', Request\method());
+        $this->assertSame('PUT', Request\method());
 
         unset($_POST['_method']);
         unset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
@@ -146,40 +146,30 @@ class RequestTest extends TestCase
     public function testAcceptedLocales()
     {
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en-US,en;q=0.5';
-        $this->assertTrue(
-            array_keys(
-                Request\accepted_locales()
-            )[0] === 'en-US'
-        );
+        $this->assertSame('en-US', array_keys(Request\accepted_locales())[0]);
+
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '';
-        $this->assertTrue(empty(Request\accepted_locales()));
+        $this->assertEmpty(Request\accepted_locales());
     }
 
     public function testRecommendedLocale()
     {
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en-US,en;q=0.5';
-        $this->assertTrue(
-            Request\recommended_locale() === 'en-US'
-        );
+        $this->assertSame('en-US', Request\recommended_locale());
+
         $_GET['lang'] = 'fr';
-        $this->assertTrue(
-            Request\recommended_locale() === 'fr'
-        );
+        $this->assertSame('fr', Request\recommended_locale());
+
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '';
-        $this->assertTrue(
-            Request\recommended_locale() === 'fr'
-        );
+        $this->assertSame('fr', Request\recommended_locale());
+
         unset($_GET['lang']);
-        $this->assertTrue(
-            Request\recommended_locale('it') === 'it'
-        );
+        $this->assertSame('it', Request\recommended_locale('it'));
+
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en-US,en;q=0.5';
-        $this->assertTrue(
-            Request\recommended_locale('it') === 'en-US'
-        );
+        $this->assertSame('en-US', Request\recommended_locale('it'));
+
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '';
-        $this->assertTrue(
-            Request\recommended_locale() === \locale_get_default()
-        );
+        $this->assertSame(\locale_get_default(), Request\recommended_locale());
     }
 }

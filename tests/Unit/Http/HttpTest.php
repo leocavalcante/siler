@@ -18,17 +18,17 @@ class HttpTest extends TestCase
 
     public function testCookie()
     {
-        $this->assertEquals($_COOKIE, Http\cookie());
-        $this->assertEquals('bar', Http\cookie('foo'));
-        $this->assertEquals('qux', Http\cookie('baz', 'qux'));
+        $this->assertSame($_COOKIE, Http\cookie());
+        $this->assertSame('bar', Http\cookie('foo'));
+        $this->assertSame('qux', Http\cookie('baz', 'qux'));
         $this->assertNull(Http\cookie('baz'));
     }
 
     public function testSession()
     {
-        $this->assertEquals($_SESSION, Http\session());
-        $this->assertEquals('bar', Http\session('foo'));
-        $this->assertEquals('qux', Http\session('baz', 'qux'));
+        $this->assertSame($_SESSION, Http\session());
+        $this->assertSame('bar', Http\session('foo'));
+        $this->assertSame('qux', Http\session('baz', 'qux'));
         $this->assertNull(Http\session('baz'));
     }
 
@@ -44,19 +44,19 @@ class HttpTest extends TestCase
     {
         $actual = Http\flash('foo');
 
-        $this->assertEquals('bar', $actual);
+        $this->assertSame('bar', $actual);
         $this->assertNull(Http\session('foo'));
     }
 
     public function testUrl()
     {
-        $this->assertEquals('/foo/qux', Http\url('/qux'));
-        $this->assertEquals('/foo/', Http\url());
+        $this->assertSame('/foo/qux', Http\url('/qux'));
+        $this->assertSame('/foo/', Http\url());
     }
 
     public function testPath()
     {
-        $this->assertEquals('/bar/baz', Http\path());
+        $this->assertSame('/bar/baz', Http\path());
     }
 
     /**
@@ -67,12 +67,12 @@ class HttpTest extends TestCase
         $_SERVER['SCRIPT_NAME'] = '/index.php';
         $_SERVER['REQUEST_URI'] = '/foo/bar';
 
-        $this->assertEquals('/foo/bar', Http\path());
+        $this->assertSame('/foo/bar', Http\path());
     }
 
     public function testUri()
     {
-        $this->assertEquals('http://test:8000/bar/baz', Http\uri());
+        $this->assertSame('http://test:8000/bar/baz', Http\uri());
     }
 
     /**

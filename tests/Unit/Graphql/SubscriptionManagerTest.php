@@ -243,6 +243,6 @@ class SubscriptionManagerTest extends \PHPUnit\Framework\TestCase
 
         $manager = new SubscriptionManager($schema);
 
-        $this->assertEquals('test', $manager->getSubscriptionName($document));
+        $this->assertSame('test', $manager->getSubscriptionName($document));
     }
 }

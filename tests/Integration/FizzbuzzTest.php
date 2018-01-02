@@ -24,6 +24,6 @@ class FizzbuzzTest extends \PHPUnit\Framework\TestCase
 
         $actual = array_map($match, $input);
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 }

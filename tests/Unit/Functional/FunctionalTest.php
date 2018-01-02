@@ -143,7 +143,7 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $expected = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         $actual = f\flatten($input);
 
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function testHead()
@@ -152,8 +152,8 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $expected = 1;
         $actual = f\head($input);
 
-        $this->assertEquals($expected, $actual);
-        $this->assertEquals([1, 2, 3, 4, 5], $input);
+        $this->assertSame($expected, $actual);
+        $this->assertSame([1, 2, 3, 4, 5], $input);
     }
 
     public function testLast()
@@ -162,8 +162,8 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $expected = 5;
         $actual = f\last($input);
 
-        $this->assertEquals($expected, $actual);
-        $this->assertEquals([1, 2, 3, 4, 5], $input);
+        $this->assertSame($expected, $actual);
+        $this->assertSame([1, 2, 3, 4, 5], $input);
     }
 
     public function testTail()
@@ -172,8 +172,8 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $expected = [2, 3, 4, 5];
         $actual = f\tail($input);
 
-        $this->assertEquals($expected, $actual);
-        $this->assertEquals([1, 2, 3, 4, 5], $input);
+        $this->assertSame($expected, $actual);
+        $this->assertSame([1, 2, 3, 4, 5], $input);
     }
 
     public function testInit()
@@ -182,8 +182,8 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $expected = [1, 2, 3, 4];
         $actual = f\init($input);
 
-        $this->assertEquals($expected, $actual);
-        $this->assertEquals([1, 2, 3, 4, 5], $input);
+        $this->assertSame($expected, $actual);
+        $this->assertSame([1, 2, 3, 4, 5], $input);
     }
 
     public function testUncons()
@@ -194,7 +194,7 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         list($head, $tail) = f\uncons($input);
         $actual = [$head, $tail];
 
-        $this->assertEquals($expected, $actual);
-        $this->assertEquals([1, 2, 3, 4, 5], $input);
+        $this->assertSame($expected, $actual);
+        $this->assertSame([1, 2, 3, 4, 5], $input);
     }
 }

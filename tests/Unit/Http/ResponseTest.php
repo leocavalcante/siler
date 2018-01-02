@@ -16,7 +16,7 @@ class ResponseTest extends TestCase
 
         Response\output();
 
-        $this->assertEquals(204, http_response_code());
+        $this->assertSame(204, http_response_code());
         $this->assertContains('Content-Type: text/plain;charset=utf-8', xdebug_get_headers());
     }
 
@@ -26,7 +26,7 @@ class ResponseTest extends TestCase
 
         Response\text('foo');
 
-        $this->assertEquals(200, http_response_code());
+        $this->assertSame(200, http_response_code());
         $this->assertContains('Content-Type: text/plain;charset=utf-8', xdebug_get_headers());
     }
 
@@ -36,7 +36,7 @@ class ResponseTest extends TestCase
 
         Response\html('<a href="#"></a>');
 
-        $this->assertEquals(200, http_response_code());
+        $this->assertSame(200, http_response_code());
         $this->assertContains('Content-Type: text/html;charset=utf-8', xdebug_get_headers());
     }
 
@@ -46,7 +46,7 @@ class ResponseTest extends TestCase
 
         Response\json(['foo' => 'bar', 'baz' => true, 'qux' => 2]);
 
-        $this->assertEquals(200, http_response_code());
+        $this->assertSame(200, http_response_code());
         $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
     }
 
@@ -56,7 +56,7 @@ class ResponseTest extends TestCase
 
         Response\json(['error' => true, 'message' => 'test'], 400);
 
-        $this->assertEquals(400, http_response_code());
+        $this->assertSame(400, http_response_code());
     }
 
     public function testHeader()

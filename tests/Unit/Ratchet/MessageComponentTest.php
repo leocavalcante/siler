@@ -81,7 +81,7 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
         $messageComponent->onMessage($this->conn, $message);
 
         $this->assertSame($this->conn, $onMessageFrom);
-        $this->assertEquals($message, $onMessageMessage);
+        $this->assertSame($message, $onMessageMessage);
     }
 
     public function testOnClose()

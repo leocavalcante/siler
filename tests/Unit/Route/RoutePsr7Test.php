@@ -32,7 +32,7 @@ class RoutePsr7Test extends \PHPUnit\Framework\TestCase
             return 'foo';
         });
 
-        $this->assertEquals('foo', $actual);
+        $this->assertSame('foo', $actual);
     }
 
     /**
