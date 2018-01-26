@@ -55,11 +55,26 @@ function init(Schema $schema, $rootValue = null, $context = null, $input = 'php:
         $data = Request\post();
     }
 
-    $query = array_get($data, 'query');
-    $operation = array_get($data, 'operation');
-    $variables = array_get($data, 'variables');
+    $result = execute($schema, $data, $rootValue, $context);
 
-    $result = GraphQL::execute(
+    Response\json($result);
+}
+
+/**
+ * Executes a GraphQL query over a schema.
+ *
+ * @param Schema $schema    The application root Schema
+ * @param string $input     Incoming query, operation and variables
+ * @param mixed  $rootValue Some optional GraphQL root value
+ * @param mixed  $context   Some optional GraphQL context
+ */
+function execute(Schema $schema, array $input, $rootValue = null, $context = null)
+{
+    $query = array_get($input, 'query');
+    $operation = array_get($input, 'operation');
+    $variables = array_get($input, 'variables');
+
+    return GraphQL::execute(
         $schema,
         $query,
         $rootValue,
@@ -67,8 +82,6 @@ function init(Schema $schema, $rootValue = null, $context = null, $input = 'php:
         $variables,
         $operation
     );
-
-    Response\json($result);
 }
 
 /**
