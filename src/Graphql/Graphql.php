@@ -87,7 +87,7 @@ function execute(Schema $schema, array $input, $rootValue = null, $context = nul
 }
 
 /**
- * Returns a PSR-7 complaint ServerRequestInterface handler
+ * Returns a PSR-7 complaint ServerRequestInterface handler.
  *
  * @param Schema $schema GraphQL schema to execute
  *
@@ -98,6 +98,7 @@ function psr7(Schema $schema)
     return function (ServerRequestInterface $request) use ($schema) {
         $input = json_decode((string) $request->getBody(), true);
         $data = execute($schema, $input);
+
         return Diactoros\json($data);
     };
 }
