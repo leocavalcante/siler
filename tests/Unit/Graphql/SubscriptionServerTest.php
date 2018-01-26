@@ -64,6 +64,9 @@ class SubscriptionServerTest extends \PHPUnit\Framework\TestCase
 
         $message = '{"type": "subscription_end"}';
         $server->onMessage($conn, $message);
+
+        $message = '{"type": "unknown"}';
+        $server->onMessage($conn, $message);
     }
 
     public function testOnClose()

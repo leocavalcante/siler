@@ -15,7 +15,8 @@ class RequestTest extends TestCase
         $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
         $_SERVER['PATH_INFO'] = '/bar/baz';
         $_SERVER['NON_HTTP'] = 'Ignore me';
-        $_SERVER['HTTP_CONTENT_TYPE'] = 'phpunit/test';
+        $_SERVER['CONTENT_TYPE'] = 'phpunit/test';
+        $_SERVER['CONTENT_LENGTH'] = '123';
     }
 
     public function testRaw()
@@ -49,13 +50,15 @@ class RequestTest extends TestCase
         $headers = Request\headers();
 
         $this->assertArrayHasKey('Content-Type', $headers);
+        $this->assertArrayHasKey('Content-Length', $headers);
         $this->assertArrayHasKey('Host', $headers);
         $this->assertContains('phpunit/test', $headers);
         $this->assertContains('test:8000', $headers);
-        $this->assertCount(2, $headers);
+        $this->assertCount(3, $headers);
         $this->assertArraySubset([
-            'Content-Type' => 'phpunit/test',
-            'Host'         => 'test:8000',
+            'Content-Type'   => 'phpunit/test',
+            'Content-Length' => '123',
+            'Host'           => 'test:8000',
         ], $headers);
     }
 

@@ -54,16 +54,32 @@ function json($input = 'php://input')
 function headers()
 {
     $serverKeys = array_keys($_SERVER);
-    $httpHeaders = array_filter($serverKeys, function ($key) {
-        return substr($key, 0, 5) == 'HTTP_';
-    });
+    $httpHeaders = array_reduce($serverKeys, function (array $headers, string $key): array {
+        if ($key == 'CONTENT_TYPE') {
+            $headers[] = $key;
+        }
+
+        if ($key == 'CONTENT_LENGTH') {
+            $headers[] = $key;
+        }
+
+        if (substr($key, 0, 5) == 'HTTP_') {
+            $headers[] = $key;
+        }
+
+        return $headers;
+    }, []);
 
     $values = array_map(function ($header) {
         return $_SERVER[$header];
     }, $httpHeaders);
 
     $headers = array_map(function ($header) {
-        return str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($header, 5)))));
+        if (substr($header, 0, 5) == 'HTTP_') {
+            $header = substr($header, 5);
+        }
+
+        return str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', $header))));
     }, $httpHeaders);
 
     return array_combine($headers, $values);
@@ -79,7 +95,7 @@ function headers()
  */
 function header($key, $default = null)
 {
-    return array_get(headers(), $key, $default);
+    return array_get(headers(), $key, $default, true);
 }
 
 /**

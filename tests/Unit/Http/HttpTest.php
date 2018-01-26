@@ -86,4 +86,12 @@ class HttpTest extends TestCase
 
         $this->assertContains('Location: test://siler', $headers);
     }
+
+    public function testServer()
+    {
+        $loop = Http\server(function () {
+        });
+
+        $this->assertInstanceOf(\React\EventLoop\LoopInterface::class, $loop);
+    }
 }
