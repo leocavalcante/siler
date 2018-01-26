@@ -130,3 +130,20 @@ function uri($protocol = null)
 
     return $protocol.'://'.$httpHost.path();
 }
+
+/**
+ * Event-driven, non-blocking I/O with PHP.
+ *
+ * @param callable $handler Callable to execute for every request
+ * @param int $port Port to listen, default 8080
+ *
+ * @return LoopInterface
+ */
+function server(callable $handler, int $port = 8080): \React\EventLoop\LoopInterface
+{
+    $loop = \React\EventLoop\Factory::create();
+    $socket = new \React\Socket\Server($port, $loop);
+    $server = new \React\Http\Server($handler);
+    $server->listen($socket);
+    return $loop;
+}

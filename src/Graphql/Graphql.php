@@ -20,12 +20,14 @@ use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
 use GraphQL\Utils\BuildSchema;
+use Psr\Http\Message\ServerRequestInterface;
 use Ratchet\Client;
 use Ratchet\Client\WebSocket;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
 use Siler\Container;
+use Siler\Diactoros;
 use Siler\Http\Request;
 use Siler\Http\Response;
 use function Siler\array_get;
@@ -82,6 +84,22 @@ function execute(Schema $schema, array $input, $rootValue = null, $context = nul
         $variables,
         $operation
     );
+}
+
+/**
+ * Returns a PSR-7 complaint ServerRequestInterface handler
+ *
+ * @param Schema $schema GraphQL schema to execute
+ *
+ * @return \Closure ServerRequestInterface -> IO
+ */
+function psr7(Schema $schema)
+{
+    return function (ServerRequestInterface $request) use ($schema) {
+        $input = json_decode((string) $request->getBody(), true);
+        $data = execute($schema, $input);
+        return Diactoros\json($data);
+    };
 }
 
 /**
