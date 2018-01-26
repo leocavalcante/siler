@@ -11,7 +11,7 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
 {
     public function testInit()
     {
-        $server = Ratchet\init();
+        $server = Ratchet\init(8888);
 
         $this->assertInstanceOf(\SplObjectStorage::class, Container\get(Ratchet\RATCHET_CONNECTIONS));
         $this->assertInstanceOf(IoServer::class, $server);
