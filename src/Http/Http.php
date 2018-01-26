@@ -137,7 +137,7 @@ function uri($protocol = null)
  * @param callable $handler Callable to execute for every request
  * @param int $port Port to listen, default 8080
  *
- * @return LoopInterface
+ * @return \React\EventLoop\LoopInterface
  */
 function server(callable $handler, int $port = 8080): \React\EventLoop\LoopInterface
 {

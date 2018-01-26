@@ -66,7 +66,7 @@ function init(Schema $schema, $rootValue = null, $context = null, $input = 'php:
  * Executes a GraphQL query over a schema.
  *
  * @param Schema $schema    The application root Schema
- * @param string $input     Incoming query, operation and variables
+ * @param array  $input     Incoming query, operation and variables
  * @param mixed  $rootValue Some optional GraphQL root value
  * @param mixed  $context   Some optional GraphQL context
  */
