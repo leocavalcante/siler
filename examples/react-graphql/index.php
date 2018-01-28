@@ -3,9 +3,9 @@
 declare(strict_types=1);
 require_once __DIR__.'/../../vendor/autoload.php';
 
+use Siler\Diactoros;
 use Siler\Graphql;
 use Siler\Http;
-use Siler\Diactoros;
 
 $typeDefs = file_get_contents(__DIR__.'/schema.graphql');
 $resolvers = [
@@ -21,7 +21,7 @@ Http\server(Graphql\psr7($schema), function (\Throwable $err) {
     var_dump($err);
 
     return Diactoros\json([
-        'error' => true,
+        'error'   => true,
         'message' => $err->getMessage(),
     ]);
 })()->run();

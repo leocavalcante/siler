@@ -192,7 +192,7 @@ function files($basePath)
 }
 
 /**
- * Define the current HTTP PSR-7 compilant request message
+ * Define the current HTTP PSR-7 compilant request message.
  *
  * @param ServerRequestInterface $request
  */

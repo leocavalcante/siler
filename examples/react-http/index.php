@@ -1,12 +1,11 @@
 <?php
 
+use Psr\Http\Message\ResponseInterface;
 use Siler\Diactoros;
 use Siler\Functional as F;
 use Siler\Http;
 use Siler\Route;
 use Siler\Twig;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
 
 chdir(dirname(dirname(__DIR__)));
 require 'vendor/autoload.php';
@@ -25,6 +24,7 @@ $req = function (): ResponseInterface {
 
 $err = function (\Exception $e) {
     var_dump($e);
+
     return Diactoros\text("Oops! {$e->getMessage()}", 500);
 };
 
