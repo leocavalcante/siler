@@ -152,7 +152,7 @@ function server(callable $handler, callable $err = null)
             return new \React\Promise\Promise(function ($resolve, $reject) use ($handler, $err, $request) {
                 try {
                     $resolve($handler($request));
-                } catch (\Exception $e) {
+                } catch (\Throwable $e) {
                     if (is_null($err)) {
                         return $reject($e);
                     }
