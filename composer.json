@@ -64,10 +64,12 @@
     "scripts": {
         "fix": "phpcbf",
         "lint": "phpcs",
+        "analyse": "psalm",
         "unit": "phpunit",
-        "stan": "phpstan analyse -l 4 -c phpstan.neon src",
         "test": [
+            "@composer fix",
             "@composer lint",
+            "@composer analyse",
             "@composer unit"
         ]
     },

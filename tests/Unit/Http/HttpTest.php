@@ -89,9 +89,12 @@ class HttpTest extends TestCase
 
     public function testServer()
     {
-        $loop = Http\server(function () {
+        $srv = Http\server(function () {
         });
 
+        $loop = $srv();
+
+        $this->assertInstanceOf(\Closure::class, $srv);
         $this->assertInstanceOf(\React\EventLoop\LoopInterface::class, $loop);
     }
 }

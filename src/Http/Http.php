@@ -5,6 +5,8 @@
 
 namespace Siler\Http;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use function Siler\array_get;
 
 /**
@@ -134,17 +136,35 @@ function uri($protocol = null)
 /**
  * Event-driven, non-blocking I/O with PHP.
  *
- * @param callable $handler Callable to execute for every request
- * @param int      $port    Port to listen, default 8080
+ * @param callable $handler Callable to execute for requests
+ * @param callable $err     Callable to execute for exceptions
  *
- * @return \React\EventLoop\LoopInterface
+ * @return \Closure Address to listen, default 0.0.0.0:8080 -> \React\EventLoop\LoopInterface
  */
-function server(callable $handler, int $port = 8080): \React\EventLoop\LoopInterface
+function server(callable $handler, callable $err = null)
 {
-    $loop = \React\EventLoop\Factory::create();
-    $socket = new \React\Socket\Server($port, $loop);
-    $server = new \React\Http\Server($handler);
-    $server->listen($socket);
+    return function (string $addr = '0.0.0.0:8080') use ($handler, $err) {
+        $loop = \React\EventLoop\Factory::create();
 
-    return $loop;
+        $server = new \React\Http\Server(function (ServerRequestInterface $request) use ($handler, $err) {
+            \Siler\Route\psr7($request);
+
+            return new \React\Promise\Promise(function ($resolve, $reject) use ($handler, $err, $request) {
+                try {
+                    $resolve($handler($request));
+                } catch (\Exception $e) {
+                    if (is_null($err)) {
+                        return $reject($e);
+                    }
+
+                    $resolve($err($e));
+                }
+            });
+        });
+
+        $socket = new \React\Socket\Server($addr, $loop);
+        $server->listen($socket);
+
+        return $loop;
+    };
 }

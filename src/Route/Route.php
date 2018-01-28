@@ -5,6 +5,7 @@
 
 namespace Siler\Route;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Siler\Container;
 use Siler\Http;
 use Siler\Http\Request;
@@ -190,7 +191,12 @@ function files($basePath)
     }
 }
 
-function psr7($request)
+/**
+ * Define the current HTTP PSR-7 compilant request message
+ *
+ * @param ServerRequestInterface $request
+ */
+function psr7(ServerRequestInterface $request)
 {
     Container\set('psr7_request', $request);
 }
