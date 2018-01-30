@@ -1,4 +1,8 @@
-# Siler
+<p align="center">
+    <br><br><br><br>    
+    <img src="../siλer.png" height="100"/>
+    <br><br><br><br>
+</p>
 
 <!-- Place this tag where you want the button to render. -->
 <a class="github-button" href="https://github.com/leocavalcante/siler" data-count-href="/leocavalcante/siler/stargazers" data-count-api="/repos/leocavalcante/siler#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star leocavalcante/siler on GitHub">Star</a>
