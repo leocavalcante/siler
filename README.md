@@ -6,9 +6,13 @@
 [![License](https://poser.pugx.org/leocavalcante/siler/license)](https://packagist.org/packages/leocavalcante/siler)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0/mini.png)](https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0)
 
-<p align="center" style="margin-bottom:24px">
-    <img src="siλer.png" height="100">
+
+<p align="center">
+    <br><br><br><br>    
+    <img src="siλer.png" height="100"/>
+    <br><br><br><br>
 </p>
+
 
 Siler is a set of general purpose high-level abstractions aiming an API for declarative programming in PHP.
 
