@@ -84,8 +84,14 @@ function route($method, $path, $callback)
     }
 
     if ($request = Container\get('psr7_request')) {
-        if (Request\method_is($method, $request->getMethod()) &&
-            preg_match($path, $request->getUri()->getPath(), $params)
+        if (Request\method_is(
+            $method,
+            $request->getMethod()
+        ) && preg_match(
+            $path,
+            $request->getUri()->getPath(),
+            $params
+        )
         ) {
             return $callback($params);
         } else {
@@ -121,24 +127,57 @@ function regexify($path)
  * @param string $basePath      The base for the resource
  * @param string $resourcesPath The base path name for the corresponding PHP files
  * @param string $identityParam The param to be used as identity in the URL
+ *
+ * @return void
  */
-function resource($basePath, $resourcesPath, $identityParam = null)
+function resource($basePath, $resourcesPath = null, $identityParam = null)
 {
-    $basePath = '/'.trim($basePath, '/');
-    $resourcesPath = rtrim($resourcesPath, '/');
+    if (is_iterable($basePath)) {
+        $path = array_map(
+            function ($value) {
+                return '/'.trim($value, '/');
+            },
+            array_keys($basePath)
+        );
+        $folderPath = array_map(
+            function ($value) {
+                return rtrim($value, '/');
+            },
+            $basePath
+        );
+        $basePath = array_combine($path, $folderPath);
 
-    if (is_null($identityParam)) {
-        $identityParam = 'id';
+        if (is_null($identityParam)) {
+            $identityParam = 'id';
+        }
+
+        foreach ($basePath as $basePath => $resourcesPath) {
+            get($basePath, $resourcesPath.'/index.php');
+            get($basePath.'/create', $resourcesPath.'/create.php');
+            get($basePath.'/{'.$identityParam.'}/edit', $resourcesPath.'/edit.php');
+            get($basePath.'/{'.$identityParam.'}', $resourcesPath.'/show.php');
+
+            post($basePath, $resourcesPath.'/store.php');
+            put($basePath.'/{'.$identityParam.'}', $resourcesPath.'/update.php');
+            delete($basePath.'/{'.$identityParam.'}', $resourcesPath.'/destroy.php');
+        }
+    } else {
+        $basePath = '/'.trim($basePath, '/');
+        $resourcesPath = rtrim($resourcesPath, '/');
+
+        if (is_null($identityParam)) {
+            $identityParam = 'id';
+        }
+
+        get($basePath, $resourcesPath.'/index.php');
+        get($basePath.'/create', $resourcesPath.'/create.php');
+        get($basePath.'/{'.$identityParam.'}/edit', $resourcesPath.'/edit.php');
+        get($basePath.'/{'.$identityParam.'}', $resourcesPath.'/show.php');
+
+        post($basePath, $resourcesPath.'/store.php');
+        put($basePath.'/{'.$identityParam.'}', $resourcesPath.'/update.php');
+        delete($basePath.'/{'.$identityParam.'}', $resourcesPath.'/destroy.php');
     }
-
-    get($basePath, $resourcesPath.'/index.php');
-    get($basePath.'/create', $resourcesPath.'/create.php');
-    get($basePath.'/{'.$identityParam.'}/edit', $resourcesPath.'/edit.php');
-    get($basePath.'/{'.$identityParam.'}', $resourcesPath.'/show.php');
-
-    post($basePath, $resourcesPath.'/store.php');
-    put($basePath.'/{'.$identityParam.'}', $resourcesPath.'/update.php');
-    delete($basePath.'/{'.$identityParam.'}', $resourcesPath.'/destroy.php');
 }
 
 /**
@@ -155,17 +194,20 @@ function routify($filename)
     $filename = str_replace('/', '.', $filename);
 
     $tokens = array_slice(explode('.', $filename), 0, -1);
-    $tokens = array_map(function ($token) {
-        if ($token[0] == '$') {
-            $token = '{'.substr($token, 1).'}';
-        }
+    $tokens = array_map(
+        function ($token) {
+            if ($token[0] == '$') {
+                $token = '{'.substr($token, 1).'}';
+            }
 
-        if ($token[0] == '@') {
-            $token = '?{'.substr($token, 1).'}?';
-        }
+            if ($token[0] == '@') {
+                $token = '?{'.substr($token, 1).'}?';
+            }
 
-        return $token;
-    }, $tokens);
+            return $token;
+        },
+        $tokens
+    );
 
     $method = array_pop($tokens);
     $path = implode('/', $tokens);
@@ -178,6 +220,8 @@ function routify($filename)
  * Iterates over the given $basePath listening for matching routified files.
  *
  * @param string $basePath
+ *
+ * @return void
  */
 function files($basePath)
 {
@@ -195,6 +239,8 @@ function files($basePath)
  * Define the current HTTP PSR-7 compilant request message.
  *
  * @param ServerRequestInterface $request
+ *
+ * @return void
  */
 function psr7(ServerRequestInterface $request)
 {
