@@ -2,9 +2,7 @@
 
 namespace Siler\Test\Unit;
 
-use Siler\Container;
 use Siler\Route;
-use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\ServerRequestFactory;
 
 class RoutePsr7Test extends \PHPUnit\Framework\TestCase

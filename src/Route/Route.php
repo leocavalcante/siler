@@ -40,9 +40,9 @@ function post($path, $callback, $request = null)
 /**
  * Define a new route using the PUT HTTP method.
  *
- * @param string          $path                      The HTTP URI to listen on
- * @param string|callable $callback                  The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param string                            $path     The HTTP URI to listen on
+ * @param string|callable                   $callback The callable to be executed or a string to be used with Siler\require_fn
+ * @param array|ServerRequestInterface|null $request  null, array[method, path] or Psr7 Request Message
  *
  * @return mixed|null
  */
@@ -54,9 +54,9 @@ function put($path, $callback, $request = null)
 /**
  * Define a new route using the DELETE HTTP method.
  *
- * @param string          $path                      The HTTP URI to listen on
- * @param string|callable $callback                  The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param string                            $path     The HTTP URI to listen on
+ * @param string|callable                   $callback The callable to be executed or a string to be used with Siler\require_fn
+ * @param array|ServerRequestInterface|null $request  null, array[method, path] or Psr7 Request Message
  *
  * @return mixed|null
  */
@@ -68,9 +68,9 @@ function delete($path, $callback, $request = null)
 /**
  * Define a new route using the OPTIONS HTTP method.
  *
- * @param string          $path                      The HTTP URI to listen on
- * @param string|callable $callback                  The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param string                            $path     The HTTP URI to listen on
+ * @param string|callable                   $callback The callable to be executed or a string to be used with Siler\require_fn
+ * @param array|ServerRequestInterface|null $request  null, array[method, path] or Psr7 Request Message
  *
  * @return mixed|null
  */
@@ -82,10 +82,10 @@ function options($path, $callback, $request = null)
 /**
  * Define a new route.
  *
- * @param string|array    $method                    The HTTP request method to listen on
- * @param string          $path                      The HTTP URI to listen on
- * @param string|callable $callback                  The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request Null, array[method, path] or Psr7 Request Message
+ * @param string|array                      $method   The HTTP request method to listen on
+ * @param string                            $path     The HTTP URI to listen on
+ * @param string|callable                   $callback The callable to be executed or a string to be used with Siler\require_fn
+ * @param array|ServerRequestInterface|null $request  Null, array[method, path] or Psr7 Request Message
  *
  * @return mixed|null
  */
@@ -132,28 +132,28 @@ function regexify($path)
 /**
  * Creates a resource route path mapping.
  *
- * @param string $basePath                           The base for the resource
- * @param string $resourcesPath                      The base path name for the corresponding PHP files
- * @param string $identityParam                      The param to be used as identity in the URL
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param string                            $basePath      The base for the resource
+ * @param string                            $resourcesPath The base path name for the corresponding PHP files
+ * @param string                            $identityParam The param to be used as identity in the URL
+ * @param array|ServerRequestInterface|null $request       null, array[method, path] or Psr7 Request Message
  */
 function resource($basePath, $resourcesPath, $identityParam = null, $request = null)
 {
-    $basePath = '/' . trim($basePath, '/');
+    $basePath = '/'.trim($basePath, '/');
     $resourcesPath = rtrim($resourcesPath, '/');
 
     if (is_null($identityParam)) {
         $identityParam = 'id';
     }
 
-    get($basePath, $resourcesPath . '/index.php', $request);
-    get($basePath . '/create', $resourcesPath . '/create.php', $request);
-    get($basePath . '/{' . $identityParam . '}/edit', $resourcesPath . '/edit.php', $request);
-    get($basePath . '/{' . $identityParam . '}', $resourcesPath . '/show.php', $request);
+    get($basePath, $resourcesPath.'/index.php', $request);
+    get($basePath.'/create', $resourcesPath.'/create.php', $request);
+    get($basePath.'/{'.$identityParam.'}/edit', $resourcesPath.'/edit.php', $request);
+    get($basePath.'/{'.$identityParam.'}', $resourcesPath.'/show.php', $request);
 
-    post($basePath, $resourcesPath . '/store.php', $request);
-    put($basePath . '/{' . $identityParam . '}', $resourcesPath . '/update.php', $request);
-    delete($basePath . '/{' . $identityParam . '}', $resourcesPath . '/destroy.php', $request);
+    post($basePath, $resourcesPath.'/store.php', $request);
+    put($basePath.'/{'.$identityParam.'}', $resourcesPath.'/update.php', $request);
+    delete($basePath.'/{'.$identityParam.'}', $resourcesPath.'/destroy.php', $request);
 }
 
 /**
@@ -172,11 +172,11 @@ function routify($filename)
     $tokens = array_slice(explode('.', $filename), 0, -1);
     $tokens = array_map(function ($token) {
         if ($token[0] == '$') {
-            $token = '{' . substr($token, 1) . '}';
+            $token = '{'.substr($token, 1).'}';
         }
 
         if ($token[0] == '@') {
-            $token = '?{' . substr($token, 1) . '}?';
+            $token = '?{'.substr($token, 1).'}?';
         }
 
         return $token;
@@ -184,7 +184,7 @@ function routify($filename)
 
     $method = array_pop($tokens);
     $path = implode('/', $tokens);
-    $path = '/' . trim(str_replace('index', '', $path), '/');
+    $path = '/'.trim(str_replace('index', '', $path), '/');
 
     return [$method, $path];
 }
@@ -192,8 +192,8 @@ function routify($filename)
 /**
  * Iterates over the given $basePath listening for matching routified files.
  *
- * @param string $basePath
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param string                            $basePath
+ * @param array|ServerRequestInterface|null $request  null, array[method, path] or Psr7 Request Message
  */
 function files($basePath, $routePrefix = '', $request = null)
 {
@@ -212,6 +212,6 @@ function files($basePath, $routePrefix = '', $request = null)
 
     foreach ($regex as $filename => $file) {
         list($method, $path) = routify(substr($filename, $cut));
-        route($method, $routePrefix . $path, $filename, $request);
+        route($method, $routePrefix.$path, $filename, $request);
     }
 }
