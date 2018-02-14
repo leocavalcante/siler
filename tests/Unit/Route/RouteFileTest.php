@@ -13,7 +13,7 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/';
 
-        Route\files(__DIR__.'/../../fixtures/route_files/');
+        Route\files(__DIR__ . '/../../fixtures/route_files/');
     }
 
     public function testGetContact()
@@ -23,7 +23,7 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/contact';
 
-        Route\files(__DIR__.'/../../fixtures/route_files/');
+        Route\files(__DIR__ . '/../../fixtures/route_files/');
     }
 
     public function testPostContact()
@@ -33,7 +33,7 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REQUEST_URI'] = '/contact';
 
-        Route\files(__DIR__.'/../../fixtures/route_files/');
+        Route\files(__DIR__ . '/../../fixtures/route_files/');
     }
 
     public function testGetAbout()
@@ -43,7 +43,7 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/about';
 
-        Route\files(__DIR__.'/../../fixtures/route_files/');
+        Route\files(__DIR__ . '/../../fixtures/route_files/');
     }
 
     public function testGetWithParam()
@@ -54,6 +54,12 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/foo/8';
 
-        Route\files(__DIR__.'/../../fixtures/route_files/');
+        Route\files(__DIR__ . '/../../fixtures/route_files/');
+    }
+
+    public function testNotExists()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        Route\files('path/does/not/exists');
     }
 }

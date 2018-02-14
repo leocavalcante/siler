@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <psalm
     name="Example Psalm config with recommended defaults"
-    stopOnFirstError="false"
+    stopOnFirstError="true"
     useDocblockTypes="true"
     totallyTyped="false"
 >
