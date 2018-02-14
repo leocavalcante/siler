@@ -8,9 +8,6 @@ chdir(dirname(dirname(__DIR__)));
 require 'vendor/autoload.php';
 
 $request = Diactoros\request();
-
-Route\psr7($request);
-
 $response = Diactoros\text('not found', 404);
 
 // /greet/Leo?salute=Hello
@@ -18,10 +15,10 @@ $response = Route\get('/greet/{name}', function ($params) use ($request) {
     $salute = array_get($request->getQueryParams(), 'salute', 'Olá');
 
     return Diactoros\text("{$salute} {$params['name']}");
-}) ?: $response;
+}, $request) ?? $response;
 
 $response = Route\get('/', function () {
     return Diactoros\text('hello world');
-}) ?: $response;
+}, $request) ?? $response;
 
 Diactoros\emit($response);
