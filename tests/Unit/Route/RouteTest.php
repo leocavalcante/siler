@@ -24,7 +24,7 @@ class RouteTest extends TestCase
     {
         $this->expectOutputString('bar');
 
-        Route\route('get', '/foo', function() {
+        Route\route('get', '/foo', function () {
             echo 'bar';
         }, ['get', '/foo']);
     }
