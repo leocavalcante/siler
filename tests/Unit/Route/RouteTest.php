@@ -18,7 +18,7 @@ class RouteTest extends TestCase
     }
 
     /**
-     * Test route with request parameter as an array
+     * Test route with request parameter as an array.
      */
     public function testRouteWithRequest()
     {
