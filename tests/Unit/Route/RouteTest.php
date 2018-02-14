@@ -17,6 +17,18 @@ class RouteTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
     }
 
+    /**
+     * Test route with request parameter as an array
+     */
+    public function testRouteWithRequest()
+    {
+        $this->expectOutputString('bar');
+
+        Route\route('get', '/foo', function() {
+            echo 'bar';
+        }, ['get', '/foo']);
+    }
+
     public function testRouteMatching()
     {
         $this->expectOutputString('baz');

@@ -9,14 +9,6 @@ use Zend\Diactoros\ServerRequestFactory;
 
 class RoutePsr7Test extends \PHPUnit\Framework\TestCase
 {
-    public function testPsr7()
-    {
-        $request = new ServerRequest();
-        Route\psr7($request);
-
-        $this->assertSame($request, Container\get('psr7_request'));
-    }
-
     /**
      * @runInSeparateProcess
      * @preserveGlobalState disabled
@@ -26,11 +18,9 @@ class RoutePsr7Test extends \PHPUnit\Framework\TestCase
         $server = ['REQUEST_URI' => '/test'];
         $request = ServerRequestFactory::fromGlobals($server);
 
-        Route\psr7($request);
-
         $actual = Route\get('/test', function () {
             return 'foo';
-        });
+        }, $request);
 
         $this->assertSame('foo', $actual);
     }
@@ -44,17 +34,10 @@ class RoutePsr7Test extends \PHPUnit\Framework\TestCase
         $server = ['REQUEST_URI' => '/foo'];
         $request = ServerRequestFactory::fromGlobals($server);
 
-        Route\psr7($request);
-
         $actual = Route\get('/bar', function () {
             return 'baz';
-        });
+        }, $request);
 
         $this->assertNull($actual);
-    }
-
-    public function teardown()
-    {
-        unset(Container\Container::getInstance()->values['psr7_request']);
     }
 }
