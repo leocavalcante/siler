@@ -218,7 +218,7 @@ function files($basePath, $routePrefix = '', $request = null)
                 $path = $routePrefix;
             }
         } else {
-            $path = $routePrefix . $path;
+            $path = $routePrefix.$path;
         }
 
         route($method, $path, $filename, $request);
