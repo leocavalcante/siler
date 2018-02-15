@@ -212,6 +212,15 @@ function files($basePath, $routePrefix = '', $request = null)
 
     foreach ($regex as $filename => $file) {
         list($method, $path) = routify(substr($filename, $cut));
-        route($method, $routePrefix.$path, $filename, $request);
+
+        if ('/' === $path) {
+            if ($routePrefix) {
+                $path = $routePrefix;
+            }
+        } else {
+            $path = $routePrefix . $path;
+        }
+
+        route($method, $path, $filename, $request);
     }
 }
