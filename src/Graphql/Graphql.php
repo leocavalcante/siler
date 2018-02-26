@@ -206,7 +206,7 @@ function publish($subscriptionName, $payload = null)
 {
     $subscriptionsEndpoint = Container\get('graphql_subscriptions_endpoint');
 
-    Client\connect($subscriptionsEndpoint)->then(function (WebSocket $conn) use ($subscriptionName, $payload) {
+    Client\connect($subscriptionsEndpoint, ['graphql-subscriptions'])->then(function (WebSocket $conn) use ($subscriptionName, $payload) {
         $request = [
             'type'         => SUBSCRIPTION_DATA,
             'subscription' => $subscriptionName,
