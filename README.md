@@ -22,6 +22,8 @@ Siler is a set of general purpose high-level abstractions aiming an API for decl
 
 ### Getting Started
 
+[![Join the chat at https://gitter.im/leocavalcante/siler](https://badges.gitter.im/leocavalcante/siler.svg)](https://gitter.im/leocavalcante/siler?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 #### Installation
 
 ```bash
