@@ -236,7 +236,7 @@ function accepted_locales(): array
  * Priority is as follows:
  *
  * - GET param `lang`: ?lang=en.
- * - Session param `lang`: $_SESSION['lang].
+ * - Session param `lang`: $_SESSION['lang'].
  * - Most requested locale as given by accepted_locales().
  * - Fallback locale, passed in parameter (optional).
  * - Default system locale.
@@ -245,7 +245,7 @@ function accepted_locales(): array
  *
  * @return string selected locale.
  */
-function recommended_locale(string $default = ''): string
+function recommended_locale(string $default = ""): string
 {
     $locale = $_GET['lang'] ?? '';
 
