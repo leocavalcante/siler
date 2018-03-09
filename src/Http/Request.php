@@ -245,7 +245,7 @@ function accepted_locales(): array
  *
  * @return string selected locale.
  */
-function recommended_locale(string $default = ""): string
+function recommended_locale(string $default = ''): string
 {
     $locale = $_GET['lang'] ?? '';
 
