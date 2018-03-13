@@ -49,6 +49,6 @@ class SubscriptionServer implements MessageComponentInterface, WsServerInterface
 
     public function getSubProtocols()
     {
-        return ['graphql-subscriptions'];
+        return ['graphql-ws', 'graphql-subscriptions'];
     }
 }
