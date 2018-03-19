@@ -73,7 +73,7 @@ You can output JSON encoded body with proper headers in just one line:
 ```php
 use Siler\Http\Response;
 
-Response\json(['error' => false, 'message' => 'It works'));
+Response\json(['error' => false, 'message' => 'It works']);
 ```
 
 It will already output the given data, you don't need to call `echo` or `print` so use carefully, it's not a encoder, it's an output-er.
