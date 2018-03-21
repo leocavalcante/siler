@@ -32,7 +32,7 @@ use Siler\Http\Response;
 use function Siler\array_get;
 
 /**
- * Protocol messages
+ * Protocol messages.
  *
  * @see https://github.com/apollographql/subscriptions-transport-ws/blob/master/src/message-types.ts
  */
@@ -186,6 +186,7 @@ function ws(
     $server = new WsServer($manager);
     $websocket = new \Ratchet\WebSocket\WsServer($server);
     $http = new HttpServer($websocket);
+
     return IoServer::factory($http, $port, $host);
 }
 

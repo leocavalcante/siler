@@ -40,12 +40,12 @@ class WsManager
             $this->connStorage->offsetSet($conn, []);
 
             $response = [
-                'type' => GQL_CONNECTION_ACK,
+                'type'    => GQL_CONNECTION_ACK,
                 'payload' => [],
             ];
         } catch (\Exception $e) {
             $response = [
-                'type' => GQL_CONNECTION_ERROR,
+                'type'    => GQL_CONNECTION_ERROR,
                 'payload' => $e->getMessage(),
             ];
         } finally {
@@ -78,8 +78,8 @@ class WsManager
             $result = $this->execute($query, $payload, $variables);
 
             $response = [
-                'type' => GQL_DATA,
-                'id'   => $data['id'],
+                'type'    => GQL_DATA,
+                'id'      => $data['id'],
                 'payload' => $result,
             ];
 
@@ -99,7 +99,7 @@ class WsManager
             } else {
                 $response = [
                     'type' => GQL_COMPLETE,
-                    'id' => $data['id'],
+                    'id'   => $data['id'],
                 ];
 
                 $conn->send(json_encode($response));
@@ -115,7 +115,7 @@ class WsManager
 
             $response = [
                 'type' => GQL_COMPLETE,
-                'id' => $data['id'],
+                'id'   => $data['id'],
             ];
 
             $conn->send(json_encode($response));
