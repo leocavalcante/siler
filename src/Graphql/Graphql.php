@@ -25,21 +25,27 @@ use Ratchet\Client;
 use Ratchet\Client\WebSocket;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
-use Ratchet\WebSocket\WsServer;
 use Siler\Container;
 use Siler\Diactoros;
 use Siler\Http\Request;
 use Siler\Http\Response;
 use function Siler\array_get;
 
-const INIT = 'init';
-const INIT_SUCCESS = 'init_success';
-const INIT_FAIL = 'init_fail';
-const SUBSCRIPTION_START = 'subscription_start';
-const SUBSCRIPTION_END = 'subscription_end';
-const SUBSCRIPTION_SUCCESS = 'subscription_success';
-const SUBSCRIPTION_FAIL = 'subscription_fail';
-const SUBSCRIPTION_DATA = 'subscription_data';
+/**
+ * Protocol messages
+ *
+ * @see https://github.com/apollographql/subscriptions-transport-ws/blob/master/src/message-types.ts
+ */
+const GQL_CONNECTION_INIT = 'connection_init'; // Client -> Server
+const GQL_CONNECTION_ACK = 'connection_ack'; // Server -> Client
+const GQL_CONNECTION_ERROR = 'connection_error'; // Server -> Client
+const GQL_CONNECTION_KEEP_ALIVE = 'ka'; // Server -> Client
+const GQL_CONNECTION_TERMINATE = 'connection_terminate'; // Client -> Server
+const GQL_START = 'start'; // Client -> Server
+const GQL_DATA = 'data'; // Server -> Client
+const GQL_ERROR = 'error'; // Server -> Client
+const GQL_COMPLETE = 'complete'; // Server -> Client
+const GQL_STOP = 'stop'; // Client -> Server
 
 /**
  * Initializes a new GraphQL endpoint.
@@ -157,7 +163,7 @@ function resolvers(array $resolvers)
 }
 
 /**
- * Returns a new websocket server bootstraped for GraphQL subscriptions.
+ * Returns a new websocket server bootstraped for GraphQL.
  *
  * @param Schema $schema
  * @param array  $filters
@@ -168,21 +174,18 @@ function resolvers(array $resolvers)
  *
  * @return IoServer
  */
-function subscriptions(
+function ws(
     Schema $schema,
     array $filters = null,
+    $host = '0.0.0.0',
+    $port = 5000,
     array $rootValue = null,
-    array $context = null,
-    $port = 8080,
-    $host = '0.0.0.0'
+    array $context = null
 ) {
-    $manager = new SubscriptionManager($schema, $filters, $rootValue, $context);
-    $server = new SubscriptionServer($manager);
-
-    $websocket = new WsServer($server);
-
+    $manager = new WsManager($schema, $filters, $rootValue, $context);
+    $server = new WsServer($manager);
+    $websocket = new \Ratchet\WebSocket\WsServer($server);
     $http = new HttpServer($websocket);
-
     return IoServer::factory($http, $port, $host);
 }
 
@@ -191,9 +194,9 @@ function subscriptions(
  *
  * @param string $url
  */
-function subscriptions_at($url)
+function ws_endpoint($url)
 {
-    Container\set('graphql_subscriptions_endpoint', $url);
+    Container\set('graphql_ws_endpoint', $url);
 }
 
 /**
@@ -204,11 +207,11 @@ function subscriptions_at($url)
  */
 function publish($subscriptionName, $payload = null)
 {
-    $subscriptionsEndpoint = Container\get('graphql_subscriptions_endpoint');
+    $wsEndpoint = Container\get('graphql_ws_endpoint');
 
-    Client\connect($subscriptionsEndpoint, ['graphql-subscriptions'])->then(function (WebSocket $conn) use ($subscriptionName, $payload) {
+    Client\connect($wsEndpoint, ['graphql-ws'])->then(function (WebSocket $conn) use ($subscriptionName, $payload) {
         $request = [
-            'type'         => SUBSCRIPTION_DATA,
+            'type'         => GQL_DATA,
             'subscription' => $subscriptionName,
             'payload'      => $payload,
         ];

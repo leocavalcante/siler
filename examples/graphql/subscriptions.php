@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
+
+require_once(__DIR__.'/../../vendor/autoload.php');
 
 use Siler\Graphql;
-
-require dirname(dirname(__DIR__)).'/vendor/autoload.php';
 
 $filters = [
     'inbox' => function ($payload, $vars) {
@@ -10,5 +10,10 @@ $filters = [
     },
 ];
 
+$host = '0.0.0.0';
+$port = 5000;
 $schema = include __DIR__.'/schema.php';
-Graphql\subscriptions($schema, $filters)->run();
+
+printf("Listening at %s:%s\n", $host, $port);
+
+Graphql\ws($schema, $filters, $host, $port)->run();
