@@ -49,9 +49,9 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
         });
 
         $data = [
-            'id' => 1,
+            'id'      => 1,
             'payload' => [
-                'query' => 'query { dummy }'
+                'query' => 'query { dummy }',
             ],
         ];
 
@@ -86,9 +86,9 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
         });
 
         $data = [
-            'id' => 1,
+            'id'      => 1,
             'payload' => [
-                'query' => 'mutation { dummy }'
+                'query' => 'mutation { dummy }',
             ],
         ];
 
@@ -122,9 +122,9 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
         });
 
         $data = [
-            'id' => 1,
+            'id'      => 1,
             'payload' => [
-                'query' => 'subscription { dummy }'
+                'query' => 'subscription { dummy }',
             ],
         ];
 
@@ -155,7 +155,7 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
                        ->getMock();
 
         $data = [
-            'id' => 1,
+            'id'      => 1,
             'payload' => [],
         ];
 
@@ -183,7 +183,7 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
         });
 
         $startData = [
-            'id' => 1,
+            'id'      => 1,
             'payload' => [
                 'query' => 'subscription { dummy }',
             ],
@@ -191,7 +191,7 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
 
         $data = [
             'subscription' => 'dummy',
-            'payload' => 'test',
+            'payload'      => 'test',
         ];
 
         $startExpected = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
@@ -238,12 +238,12 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
         });
 
         $startData = [
-            'id'    => 1,
+            'id'      => 1,
             'payload' => [
-                'query' => 'subscription { dummy }',
+                'query'     => 'subscription { dummy }',
                 'variables' => [
-                    'pass' => 'bar'
-                ]
+                    'pass' => 'bar',
+                ],
             ],
         ];
 
@@ -286,7 +286,7 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
                        ->getMock();
 
         $data = [
-            'id'    => 1,
+            'id'      => 1,
             'payload' => [
                 'query' => 'subscription { test }',
             ],
