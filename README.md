@@ -1,18 +1,16 @@
 [![Build Status](https://travis-ci.org/leocavalcante/siler.svg?branch=master)](https://travis-ci.org/leocavalcante/siler)
 [![codecov](https://codecov.io/gh/leocavalcante/siler/branch/master/graph/badge.svg)](https://codecov.io/gh/leocavalcante/siler)
 [![StyleCI](https://styleci.io/repos/75350712/shield)](https://styleci.io/repos/75350712)
-[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-brightgreen.svg?style=flat)](https://github.com/phpstan/phpstan)
-[![Latest Unstable Version](https://poser.pugx.org/leocavalcante/siler/v/unstable)](//packagist.org/packages/leocavalcante/siler)
-[![License](https://poser.pugx.org/leocavalcante/siler/license)](https://packagist.org/packages/leocavalcante/siler)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0/mini.png)](https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0)
 
+[![Latest Stable Version](https://poser.pugx.org/leocavalcante/siler/v/stable)](https://packagist.org/packages/leocavalcante/siler)
+[![Total Downloads](https://poser.pugx.org/leocavalcante/siler/downloads)](https://packagist.org/packages/leocavalcante/siler)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0/mini.png)](https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0)
 
 <p align="center">
     <br><br><br><br>    
     <img src="siλer.png" height="100"/>
     <br><br><br><br>
 </p>
-
 
 Siler is a set of general purpose high-level abstractions aiming an API for declarative programming in PHP.
 
@@ -181,9 +179,5 @@ Graphql\init(Graphql\schema($typeDefs, $resolvers));
 ```
 
 ---
-
-⚠️️ **This is a work in progress, API may change** 🚧
-
-But if you give a try, I'd love the get some feedback
 
 MIT 2018
