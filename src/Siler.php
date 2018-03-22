@@ -41,7 +41,7 @@ function array_get(array $array, $key = null, $default = null, bool $caseInsensi
 function require_fn(string $filename) : \Closure
 {
     return function ($params = null) use ($filename) {
-        /* @psalm-suppress UnresolvableInclude */
+        /** @psalm-suppress UnresolvableInclude */
         return require $filename;
     };
 }

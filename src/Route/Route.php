@@ -105,7 +105,7 @@ function route($method, string $path, $callback, $request = null)
         $request = [Request\method(), Http\path()];
     }
 
-    /* @psalm-suppress PossiblyInvalidArgument */
+    /** @psalm-suppress PossiblyInvalidArgument */
     if (is_a($request, 'Psr\Http\Message\ServerRequestInterface')) {
         $request = [$request->getMethod(), $request->getUri()->getPath()];
     }

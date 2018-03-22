@@ -211,7 +211,7 @@ class WsManager
      */
     public function getSubscriptionName(DocumentNode $document) : string
     {
-        /* @psalm-suppress NoInterfaceProperties */
+        /** @psalm-suppress NoInterfaceProperties */
         return $document->definitions[0]
             ->selectionSet
             ->selections[0]

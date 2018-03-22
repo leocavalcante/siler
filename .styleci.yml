@@ -1,2 +1,5 @@
 preset: recommended
 risky: false
+
+disabled:
+  - phpdoc_to_comment
