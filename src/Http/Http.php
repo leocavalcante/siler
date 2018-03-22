@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Helpers for the HTTP abstraction.
@@ -8,6 +8,7 @@ namespace Siler\Http;
 
 use Psr\Http\Message\ServerRequestInterface;
 use function Siler\array_get;
+use Ratchet\Server\IoServer;
 
 /**
  * Get a value from the $_COOKIE global.
@@ -17,7 +18,7 @@ use function Siler\array_get;
  *
  * @return mixed
  */
-function cookie($key = null, $default = null)
+function cookie(string $key = null, $default = null)
 {
     return array_get($_COOKIE, $key, $default);
 }
@@ -30,7 +31,7 @@ function cookie($key = null, $default = null)
  *
  * @return mixed
  */
-function session($key = null, $default = null)
+function session(string $key = null, $default = null)
 {
     return array_get($_SESSION, $key, $default);
 }
@@ -41,7 +42,7 @@ function session($key = null, $default = null)
  * @param string $key   The key to be used
  * @param mixed  $value The value to be stored
  */
-function setsession($key, $value)
+function setsession(string $key, $value)
 {
     $_SESSION[$key] = $value;
 }
@@ -53,13 +54,14 @@ function setsession($key, $value)
  * @param mixed  $default The default value to be returned when the key don't exists
  *
  * @return mixed
- *
- * @psalm-suppress PossiblyNullArrayOffset
  */
-function flash($key = null, $default = null)
+function flash(string $key = null, $default = null)
 {
     $value = session($key, $default);
-    unset($_SESSION[$key]);
+
+    if (!is_null($key)) {
+        unset($_SESSION[$key]);
+    }
 
     return $value;
 }
@@ -69,7 +71,7 @@ function flash($key = null, $default = null)
  *
  * @param string $url The url to be redirected to
  */
-function redirect($url)
+function redirect(string $url)
 {
     Response\header('Location', $url);
 }
@@ -81,7 +83,7 @@ function redirect($url)
  *
  * @return string
  */
-function url($path = null)
+function url(string $path = null) : string
 {
     if (is_null($path)) {
         $path = '/';
@@ -89,7 +91,7 @@ function url($path = null)
 
     $scriptName = array_get($_SERVER, 'SCRIPT_NAME', '');
 
-    return rtrim(str_replace('\\', '/', dirname($scriptName)), '/').'/'.ltrim($path, '/');
+    return rtrim(str_replace('\\', '/', dirname($scriptName)), '/') . '/' . ltrim($path, '/');
 }
 
 /**
@@ -97,19 +99,19 @@ function url($path = null)
  *
  * @return string
  */
-function path()
+function path() : string
 {
     $scriptName = array_get($_SERVER, 'SCRIPT_NAME', '');
     $queryString = array_get($_SERVER, 'QUERY_STRING', '');
     $requestUri = array_get($_SERVER, 'REQUEST_URI', '');
 
-    $requestUri = str_replace('?'.$queryString, '', $requestUri);
+    $requestUri = str_replace('?' . $queryString, '', $requestUri);
     $scriptPath = str_replace('\\', '/', dirname($scriptName));
 
     if (!strlen(str_replace('/', '', $scriptPath))) {
-        return '/'.ltrim($requestUri, '/');
+        return '/' . ltrim($requestUri, '/');
     } else {
-        return '/'.ltrim(str_replace($scriptPath, '', $requestUri), '/');
+        return '/' . ltrim(str_replace($scriptPath, '', $requestUri), '/');
     }
 }
 
@@ -120,7 +122,7 @@ function path()
  *
  * @return string
  */
-function uri($protocol = null)
+function uri(string $protocol = null) : string
 {
     $https = array_get($_SERVER, 'HTTPS', '');
 
@@ -130,7 +132,7 @@ function uri($protocol = null)
 
     $httpHost = array_get($_SERVER, 'HTTP_HOST', '');
 
-    return $protocol.'://'.$httpHost.path();
+    return $protocol . '://' . $httpHost . path();
 }
 
 /**
@@ -141,13 +143,13 @@ function uri($protocol = null)
  *
  * @return \Closure Address to listen, default 0.0.0.0:8080 -> \React\EventLoop\LoopInterface
  */
-function server(callable $handler, callable $err = null)
+function server(callable $handler, callable $err = null) : \Closure
 {
-    return function (string $addr = '0.0.0.0:8080') use ($handler, $err) {
+    return function (string $addr = '0.0.0.0:8080') use ($handler, $err) : \React\EventLoop\LoopInterface {
         $loop = \React\EventLoop\Factory::create();
 
         $server = new \React\Http\Server(function (ServerRequestInterface $request) use ($handler, $err) {
-            return new \React\Promise\Promise(function ($resolve, $reject) use ($handler, $err, $request) {
+            return new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($handler, $err, $request) {
                 try {
                     $resolve($handler($request));
                 } catch (\Throwable $e) {

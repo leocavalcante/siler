@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Siler\Test\Integration;
 
@@ -20,7 +20,7 @@ class JwtAuthTest extends \PHPUnit\Framework\TestCase
     {
         Dotenv\init(__DIR__.'/../fixtures');
 
-        $jwtConfig = Jwt\conf(env('JWT_ISS'), env('JWT_AUD'), uniqid(), time(), time(), time() + 3600);
+        $jwtConfig = Jwt\conf(env('JWT_ISS'), env('JWT_AUD'), uniqid(), strval(time()), strval(time()), strval(time() + 3600));
         $jwtBuilder = Jwt\builder($jwtConfig, new Sha256(), env('APP_KEY'));
 
         $token = $jwtBuilder(['uid' => 1]);
@@ -40,7 +40,7 @@ class JwtAuthTest extends \PHPUnit\Framework\TestCase
 
         $token = Jwt\parse($token);
 
-        $this->assertTrue(Jwt\validator(Jwt\conf(env('JWT_ISS'), env('JWT_AUD')), time())($token));
+        $this->assertTrue(Jwt\validator(Jwt\conf(env('JWT_ISS'), env('JWT_AUD')), strval(time()))($token));
         $this->assertTrue($token->verify(new Sha256(), env('APP_KEY')));
 
         $this->assertSame(1, $token->getClaim('uid'));

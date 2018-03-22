@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Siler\Graphql;
 
@@ -10,14 +10,37 @@ use function Siler\array_get;
 
 class WsManager
 {
+    /**
+     * @var Schema
+     */
     protected $schema;
+
+    /**
+     * @var array|null
+     */
     protected $filters;
+
+    /**
+     * @var array|null
+     */
     protected $rootValue;
+
+    /**
+     * @var array|null
+     */
     protected $context;
+
+    /**
+     * @var array
+     */
     protected $subscriptions;
+
+    /**
+     * @var \SplObjectStorage
+     */
     protected $connStorage;
 
-    public function __construct(Schema $schema, array $filters = null, array $rootValue = null, array $context = null)
+    public function __construct(Schema $schema, ?array $filters = null, ?array $rootValue = null, ?array $context = null)
     {
         $this->schema = $schema;
         $this->filters = $filters;
@@ -31,8 +54,6 @@ class WsManager
      * @param ConnectionInterface $conn
      *
      * @return void
-     *
-     * @psalm-suppress PossiblyFalseArgument
      */
     public function handleConnectionInit(ConnectionInterface $conn)
     {
@@ -40,15 +61,16 @@ class WsManager
             $this->connStorage->offsetSet($conn, []);
 
             $response = [
-                'type'    => GQL_CONNECTION_ACK,
+                'type' => GQL_CONNECTION_ACK,
                 'payload' => [],
             ];
         } catch (\Exception $e) {
             $response = [
-                'type'    => GQL_CONNECTION_ERROR,
+                'type' => GQL_CONNECTION_ERROR,
                 'payload' => $e->getMessage(),
             ];
-        } finally {
+        }
+        finally {
             $conn->send(json_encode($response));
         }
     }
@@ -58,8 +80,6 @@ class WsManager
      * @param array               $data
      *
      * @return void
-     *
-     * @psalm-suppress PossiblyFalseArgument
      */
     public function handleStart(ConnectionInterface $conn, array $data)
     {
@@ -74,12 +94,13 @@ class WsManager
             $variables = array_get($payload, 'variables');
 
             $document = Parser::parse($query);
+            /** @psalm-suppress NoInterfaceProperties */
             $operation = $document->definitions[0]->operation;
             $result = $this->execute($query, $payload, $variables);
 
             $response = [
-                'type'    => GQL_DATA,
-                'id'      => $data['id'],
+                'type' => GQL_DATA,
+                'id' => $data['id'],
                 'payload' => $result,
             ];
 
@@ -99,15 +120,15 @@ class WsManager
             } else {
                 $response = [
                     'type' => GQL_COMPLETE,
-                    'id'   => $data['id'],
+                    'id' => $data['id'],
                 ];
 
                 $conn->send(json_encode($response));
             }
         } catch (\Exception $e) {
             $response = [
-                'type'    => GQL_ERROR,
-                'id'      => $data['id'],
+                'type' => GQL_ERROR,
+                'id' => $data['id'],
                 'payload' => $e->getMessage(),
             ];
 
@@ -115,13 +136,16 @@ class WsManager
 
             $response = [
                 'type' => GQL_COMPLETE,
-                'id'   => $data['id'],
+                'id' => $data['id'],
             ];
 
             $conn->send(json_encode($response));
         }
     }
 
+    /**
+     * @return void
+     */
     public function handleData(array $data)
     {
         $subscriptionName = $data['subscription'];
@@ -146,16 +170,16 @@ class WsManager
                 $result = $this->execute($query, $payload, $variables);
 
                 $response = [
-                    'type'    => GQL_DATA,
-                    'id'      => $subscription['id'],
+                    'type' => GQL_DATA,
+                    'id' => $subscription['id'],
                     'payload' => $result,
                 ];
 
                 $subscription['conn']->send(json_encode($response));
             } catch (\Exception $e) {
                 $response = [
-                    'type'    => GQL_ERROR,
-                    'id'      => $subscription['id'],
+                    'type' => GQL_ERROR,
+                    'id' => $subscription['id'],
                     'payload' => $e->getMessage(),
                 ];
 
@@ -164,6 +188,9 @@ class WsManager
         }
     }
 
+    /**
+     * @return void
+     */
     public function handleStop(ConnectionInterface $conn, array $data)
     {
         $connSubscriptions = $this->connStorage->offsetGet($conn);
@@ -179,28 +206,34 @@ class WsManager
     /**
      * @param DocumentNode $document
      *
-     * @psalm-suppress NoInterfaceProperties
+     * @return string
      */
-    public function getSubscriptionName(DocumentNode $document)
+    public function getSubscriptionName(DocumentNode $document) : string
     {
+        /** @psalm-suppress NoInterfaceProperties */
         return $document->definitions[0]
-                        ->selectionSet
-                        ->selections[0]
-                        ->name
-                        ->value;
+            ->selectionSet
+            ->selections[0]
+            ->name
+            ->value;
     }
 
-    public function getSubscriptions()
+    public function getSubscriptions() : array
     {
         return $this->subscriptions;
     }
 
-    public function getConnStorage()
+    public function getConnStorage() : \SplObjectStorage
     {
         return $this->connStorage;
     }
 
-    private function execute($query, $payload, $variables)
+    /**
+     * @param mixed $payload
+     *
+     * @return array|\GraphQL\Executor\Promise\Promise
+     */
+    private function execute(string $query, $payload = null, ?array $variables = null)
     {
         return \GraphQL\GraphQL::execute(
             $this->schema,

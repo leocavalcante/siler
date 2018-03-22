@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * Helpers functions to work with vlucas/phpdotenv.
  */
@@ -14,7 +15,7 @@ use Dotenv\Dotenv;
  *
  * @return array
  */
-function init($path)
+function init(string $path) : array
 {
     $dotenv = new Dotenv($path);
 
@@ -29,7 +30,7 @@ function init($path)
  *
  * @return mixed
  */
-function env($key = null, $default = null)
+function env(string $key = null, $default = null)
 {
     return \Siler\array_get($_SERVER, $key, $default);
 }

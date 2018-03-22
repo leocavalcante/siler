@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Helper functions for lcobucci/jwt library.
  */
@@ -18,9 +18,9 @@ use Lcobucci\JWT\ValidationData;
  * @param Signer|null $signer
  * @param string      $key
  *
- * @return callable
+ * @return \Closure
  */
-function builder(array $config, Signer $signer = null, $key = null)
+function builder(array $config, Signer $signer = null, string $key = null) : \Closure
 {
     $builder = new Builder();
 
@@ -67,12 +67,12 @@ function builder(array $config, Signer $signer = null, $key = null)
  * @param array  $config
  * @param string $time
  *
- * @return callable
+ * @return \Closure
  */
-function validator(array $config, $time)
+function validator(array $config, string $time) : \Closure
 {
     $data = new ValidationData();
-    $data->setCurrentTime((int) $time);
+    $data->setCurrentTime((int)$time);
 
     if (isset($config['iss'])) {
         $data->setIssuer($config['iss']);
@@ -98,7 +98,7 @@ function validator(array $config, $time)
  *
  * @return Token
  */
-function parse($token)
+function parse(string $token) : Token
 {
     return (new Parser())->parse($token);
 }
@@ -115,7 +115,13 @@ function parse($token)
  *
  * @return array
  */
-function conf($iss = null, $aud = null, $jti = null, $iat = null, $nbf = null, $exp = null)
-{
+function conf(
+    string $iss = null,
+    string $aud = null,
+    string $jti = null,
+    string $iat = null,
+    string $nbf = null,
+    string $exp = null
+) : array {
     return compact('iss', 'aud', 'jti', 'iat', 'nbf', 'exp');
 }

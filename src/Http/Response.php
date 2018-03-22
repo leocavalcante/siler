@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Helper functions to handle HTTP responses.
  */
@@ -17,7 +17,7 @@ use Siler\Http;
  *
  * @return int Returns 1, always
  */
-function output($content = '', $code = 204, $mimeType = 'text/plain', $charset = 'utf-8')
+function output(string $content = '', int $code = 204, string $mimeType = 'text/plain', string $charset = 'utf-8') : int
 {
     http_response_code($code);
     \header(sprintf('Content-Type: %s;charset=%s', $mimeType, $charset));
@@ -34,7 +34,7 @@ function output($content = '', $code = 204, $mimeType = 'text/plain', $charset =
  *
  * @return int Returns 1, always
  */
-function text($content, $code = 200, $charset = 'utf-8')
+function text(string $content, int $code = 200, string $charset = 'utf-8') : int
 {
     return output(strval($content), $code, 'text/plain', $charset);
 }
@@ -48,7 +48,7 @@ function text($content, $code = 200, $charset = 'utf-8')
  *
  * @return int Returns 1, always
  */
-function html($content, $code = 200, $charset = 'utf-8')
+function html(string $content, int $code = 200, string $charset = 'utf-8') : int
 {
     return output($content, $code, 'text/html', $charset);
 }
@@ -62,7 +62,7 @@ function html($content, $code = 200, $charset = 'utf-8')
  *
  * @return int Returns 1, always
  */
-function jsonstr($content, $code = 200, $charset = 'utf-8')
+function jsonstr(string $content, int $code = 200, string $charset = 'utf-8') : int
 {
     return output(strval($content), $code, 'application/json', $charset);
 }
@@ -75,10 +75,8 @@ function jsonstr($content, $code = 200, $charset = 'utf-8')
  * @param string $charset The HTTP response charset
  *
  * @return int Returns 1, always
- *
- * @psalm-suppress PossiblyFalseArgument
  */
-function json($content, $code = 200, $charset = 'utf-8')
+function json($content, int $code = 200, string $charset = 'utf-8') : int
 {
     return jsonstr(json_encode($content), $code, $charset);
 }
@@ -90,9 +88,9 @@ function json($content, $code = 200, $charset = 'utf-8')
  * @param string $val     The response header value
  * @param bool   $replace Should replace a previous similar header, or add a second header of the same type.
  */
-function header($key, $val, $replace = true)
+function header(string $key, string $val, bool $replace = true)
 {
-    \header($key.': '.$val, $replace);
+    \header($key . ': ' . $val, $replace);
 }
 
 /**
@@ -100,7 +98,7 @@ function header($key, $val, $replace = true)
  *
  * @param string $path
  */
-function redirect($path)
+function redirect(string $path)
 {
     Http\redirect(Http\url($path));
 }

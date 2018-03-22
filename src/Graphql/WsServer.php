@@ -9,6 +9,9 @@ use Siler\Graphql;
 
 class WsServer implements MessageComponentInterface, WsServerInterface
 {
+    /**
+     * @var WsManager
+     */
     protected $manager;
 
     public function __construct(WsManager $manager)
@@ -16,38 +19,54 @@ class WsServer implements MessageComponentInterface, WsServerInterface
         $this->manager = $manager;
     }
 
+    /**
+     * @return void
+     */
     public function onOpen(ConnectionInterface $conn)
     {
     }
 
+    /**
+     * @return void
+     */
     public function onMessage(ConnectionInterface $conn, $message)
     {
         $data = json_decode($message, true);
 
         switch ($data['type']) {
             case Graphql\GQL_CONNECTION_INIT:
-                return $this->manager->handleConnectionInit($conn);
+                $this->manager->handleConnectionInit($conn);
+                break;
 
             case Graphql\GQL_START:
-                return $this->manager->handleStart($conn, $data);
+                $this->manager->handleStart($conn, $data);
+                break;
 
             case Graphql\GQL_DATA:
-                return $this->manager->handleData($data);
+                $this->manager->handleData($data);
+                break;
 
             case Graphql\GQL_STOP:
-                return $this->manager->handleStop($conn, $data);
+                $this->manager->handleStop($conn, $data);
+                break;
         }
     }
 
+    /**
+     * @return void
+     */
     public function onClose(ConnectionInterface $conn)
     {
     }
 
+    /**
+     * @return void
+     */
     public function onError(ConnectionInterface $conn, \Exception $exception)
     {
     }
 
-    public function getSubProtocols()
+    public function getSubProtocols() : array
     {
         return ['graphql-ws'];
     }

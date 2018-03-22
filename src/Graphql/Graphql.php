@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Helper functions for webonyx/graphql-php GraphQL implementation.
  */
@@ -54,8 +54,10 @@ const GQL_STOP = 'stop'; // Client -> Server
  * @param mixed  $rootValue Some optional GraphQL root value
  * @param mixed  $context   Some optional GraphQL context
  * @param string $input     JSON file input, for testing
+ *
+ * @return void
  */
-function init(Schema $schema, $rootValue = null, $context = null, $input = 'php://input')
+function init(Schema $schema, $rootValue = null, $context = null, string $input = 'php://input')
 {
     if (Request\header('Content-Type') == 'application/json') {
         $data = Request\json($input);
@@ -75,6 +77,8 @@ function init(Schema $schema, $rootValue = null, $context = null, $input = 'php:
  * @param array  $input     Incoming query, operation and variables
  * @param mixed  $rootValue Some optional GraphQL root value
  * @param mixed  $context   Some optional GraphQL context
+ *
+ * @return array<mixed, mixed>|\GraphQL\Executor\Promise\Promise
  */
 function execute(Schema $schema, array $input, $rootValue = null, $context = null)
 {
@@ -99,10 +103,10 @@ function execute(Schema $schema, array $input, $rootValue = null, $context = nul
  *
  * @return \Closure ServerRequestInterface -> IO
  */
-function psr7(Schema $schema)
+function psr7(Schema $schema) : \Closure
 {
     return function (ServerRequestInterface $request) use ($schema) {
-        $input = json_decode((string) $request->getBody(), true);
+        $input = json_decode((string)$request->getBody(), true);
         $data = execute($schema, $input);
 
         return Diactoros\json($data);
@@ -118,7 +122,7 @@ function psr7(Schema $schema)
  *
  * @return Schema
  */
-function schema($typeDefs, array $resolvers = [])
+function schema(string $typeDefs, array $resolvers = []) : Schema
 {
     if (!empty($resolvers)) {
         resolvers($resolvers);
@@ -131,9 +135,14 @@ function schema($typeDefs, array $resolvers = [])
  * Sets a Siler's default field resolver based on the given $resolvers array.
  *
  * @param array $resolvers
+ *
+ * @return void
  */
 function resolvers(array $resolvers)
 {
+    /**
+     * @psalm-suppress MissingClosureParamType
+     */
     Executor::setDefaultFieldResolver(function ($source, $args, $context, ResolveInfo $info) use ($resolvers) {
         $fieldName = $info->fieldName;
         $parentTypeName = $info->parentType->name;
@@ -177,11 +186,11 @@ function resolvers(array $resolvers)
 function ws(
     Schema $schema,
     array $filters = null,
-    $host = '0.0.0.0',
-    $port = 5000,
+    string $host = '0.0.0.0',
+    int $port = 5000,
     array $rootValue = null,
     array $context = null
-) {
+) : IoServer {
     $manager = new WsManager($schema, $filters, $rootValue, $context);
     $server = new WsServer($manager);
     $websocket = new \Ratchet\WebSocket\WsServer($server);
@@ -194,8 +203,10 @@ function ws(
  * Sets the GraphQL server endpoint where publish should connect to.
  *
  * @param string $url
+ *
+ * @return void
  */
-function ws_endpoint($url)
+function ws_endpoint(string $url)
 {
     Container\set('graphql_ws_endpoint', $url);
 }
@@ -205,16 +216,18 @@ function ws_endpoint($url)
  *
  * @param string $subscriptionName
  * @param mixed  $payload
+ *
+ * @return void
  */
-function publish($subscriptionName, $payload = null)
+function publish(string $subscriptionName, $payload = null)
 {
     $wsEndpoint = Container\get('graphql_ws_endpoint');
 
     Client\connect($wsEndpoint, ['graphql-ws'])->then(function (WebSocket $conn) use ($subscriptionName, $payload) {
         $request = [
-            'type'         => GQL_DATA,
+            'type' => GQL_DATA,
             'subscription' => $subscriptionName,
-            'payload'      => $payload,
+            'payload' => $payload,
         ];
 
         $conn->send(json_encode($request));
@@ -230,9 +243,9 @@ function publish($subscriptionName, $payload = null)
  *
  * @return \Closure -> value -> array
  */
-function val($name, $description = null)
+function val(string $name, string $description = null) : \Closure
 {
-    return function ($value) use ($name, $description) {
+    return function ($value) use ($name, $description) : array {
         return compact('name', 'description', 'value');
     };
 }
@@ -240,14 +253,14 @@ function val($name, $description = null)
 /**
  *  Returns a GraphQL Enum type.
  *
- * @param $name
- * @param $description
+ * @param string $name
+ * @param string $description
  *
  * @return \Closure -> values -> EnumType
  */
-function enum($name, $description = null)
+function enum(string $name, string $description = null) : \Closure
 {
-    return function (array $values) use ($name, $description) {
+    return function (array $values) use ($name, $description) : EnumType {
         return new EnumType(compact('name', 'description', 'values'));
     };
 }
@@ -261,7 +274,7 @@ function enum($name, $description = null)
  *
  * @return \Closure -> (resolve, args) -> array
  */
-function field(Type $type, $name, $description = null)
+function field(Type $type, string $name, string $description = null) : \Closure
 {
     return function ($resolve = null, array $args = null) use ($type, $name, $description) {
         if (is_string($resolve)) {
@@ -282,7 +295,7 @@ function field(Type $type, $name, $description = null)
  *
  * @return StringType|\Closure -> (resolve, args) -> array
  */
-function str($name = null, $description = null)
+function str(string $name = null, string $description = null)
 {
     if (is_null($name)) {
         return Type::string();
@@ -299,7 +312,7 @@ function str($name = null, $description = null)
  *
  * @return IntType|\Closure -> (resolve, args) -> array
  */
-function int($name = null, $description = null)
+function int(string $name = null, string $description = null)
 {
     if (is_null($name)) {
         return Type::int();
@@ -316,7 +329,7 @@ function int($name = null, $description = null)
  *
  * @return FloatType|\Closure -> (resolve, args) -> array
  */
-function float($name = null, $description = null)
+function float(string $name = null, string $description = null)
 {
     if (is_null($name)) {
         return Type::float();
@@ -333,7 +346,7 @@ function float($name = null, $description = null)
  *
  * @return BooleanType|\Closure -> (resolve, args) -> array
  */
-function bool($name = null, $description = null)
+function bool(string $name = null, string $description = null)
 {
     if (is_null($name)) {
         return Type::boolean();
@@ -344,14 +357,14 @@ function bool($name = null, $description = null)
 
 /**
  * @param Type    $type
- * @param ?string $name
- * @param ?string $description
+ * @param string $name
+ * @param string $description
  *
  * @return ListOfType|\Closure -> (resolve, args) -> array
  *
  * @psalm-suppress TypeCoercion
  */
-function list_of(Type $type, $name = null, $description = null)
+function list_of(Type $type, string $name = null, string $description = null)
 {
     if (is_null($name)) {
         return Type::listOf($type);
@@ -368,7 +381,7 @@ function list_of(Type $type, $name = null, $description = null)
  *
  * @return IDType|\Closure -> (resolve, args) -> array
  */
-function id($name = null, $description = null)
+function id(string $name = null, string $description = null)
 {
     if (is_null($name)) {
         return Type::id();
@@ -385,7 +398,7 @@ function id($name = null, $description = null)
  *
  * @return \Closure -> fields -> resolve -> InterfaceType
  */
-function itype($name, $description = null)
+function itype(string $name, string $description = null)
 {
     return function (array $fields = []) use ($name, $description) {
         return function (callable $resolveType) use ($name, $description, $fields) {
@@ -402,10 +415,10 @@ function itype($name, $description = null)
  *
  * @return \Closure -> fields -> resolve -> ObjectType
  */
-function type($name, $description = null)
+function type(string $name, string $description = null) : \Closure
 {
-    return function (array $fields = []) use ($name, $description) {
-        return function (callable $resolve = null) use ($name, $description, $fields) {
+    return function (array $fields = []) use ($name, $description) : \Closure {
+        return function (callable $resolve = null) use ($name, $description, $fields) : ObjectType {
             return new ObjectType(compact('name', 'description', 'fields', 'resolve'));
         };
     };

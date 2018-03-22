@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Adds a layer of helper functions to work with Zend Diactoros.
  */
@@ -21,7 +21,7 @@ use Zend\Diactoros\ServerRequestFactory;
  *
  * @return ServerRequest
  */
-function request()
+function request() : ServerRequest
 {
     return ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
 }
@@ -35,7 +35,7 @@ function request()
  *
  * @return Response
  */
-function response($body = 'php://memory', $status = 200, array $headers = [])
+function response(string $body = 'php://memory', int $status = 200, array $headers = []) : Response
 {
     return new Response($body, $status, $headers);
 }
@@ -44,6 +44,8 @@ function response($body = 'php://memory', $status = 200, array $headers = [])
  * Emits a PSR-7 SAPI response.
  *
  * @param ResponseInterface $response
+ *
+ * @return void
  */
 function emit(ResponseInterface $response)
 {
@@ -59,7 +61,7 @@ function emit(ResponseInterface $response)
  *
  * @return HtmlResponse
  */
-function html($html, $status = 200, array $headers = [])
+function html(string $html, int $status = 200, array $headers = []) : HtmlResponse
 {
     return new HtmlResponse($html, $status, $headers);
 }
@@ -74,7 +76,7 @@ function html($html, $status = 200, array $headers = [])
  *
  * @return JsonResponse
  */
-function json($data, $status = 200, array $headers = [], $encodingOptions = JsonResponse::DEFAULT_JSON_FLAGS)
+function json($data, int $status = 200, array $headers = [], int $encodingOptions = JsonResponse::DEFAULT_JSON_FLAGS) : JsonResponse
 {
     return new JsonResponse($data, $status, $headers, $encodingOptions);
 }
@@ -88,7 +90,7 @@ function json($data, $status = 200, array $headers = [], $encodingOptions = Json
  *
  * @return TextResponse
  */
-function text($text, $status = 200, array $headers = [])
+function text(string $text, int $status = 200, array $headers = []) : TextResponse
 {
     return new TextResponse($text, $status, $headers);
 }
@@ -102,7 +104,7 @@ function text($text, $status = 200, array $headers = [])
  *
  * @return RedirectResponse
  */
-function redirect($uri, $status = 302, array $headers = [])
+function redirect(string $uri, int $status = 302, array $headers = []) : RedirectResponse
 {
     return new RedirectResponse($uri, $status, $headers);
 }
@@ -115,7 +117,7 @@ function redirect($uri, $status = 302, array $headers = [])
  *
  * @return EmptyResponse
  */
-function none($status = 204, array $headers = [])
+function none(int $status = 204, array $headers = []) : EmptyResponse
 {
     return new EmptyResponse($status, $headers);
 }
