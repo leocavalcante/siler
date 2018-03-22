@@ -25,7 +25,7 @@ Siler is a set of general purpose high-level abstractions aiming an API for decl
 #### Installation
 
 ```bash
-$ composer require leocavalcante/siler dev-master
+$ composer require leocavalcante/siler
 ```
 
 That is it. Actually, Siler is a library, not a framework (maybe a micro-framework), the overall program flow of control is dictated by you. So, no hidden configs or predefined directory structures.
