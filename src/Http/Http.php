@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * Helpers for the HTTP abstraction.
@@ -8,7 +10,6 @@ namespace Siler\Http;
 
 use Psr\Http\Message\ServerRequestInterface;
 use function Siler\array_get;
-use Ratchet\Server\IoServer;
 
 /**
  * Get a value from the $_COOKIE global.
@@ -91,7 +92,7 @@ function url(string $path = null) : string
 
     $scriptName = array_get($_SERVER, 'SCRIPT_NAME', '');
 
-    return rtrim(str_replace('\\', '/', dirname($scriptName)), '/') . '/' . ltrim($path, '/');
+    return rtrim(str_replace('\\', '/', dirname($scriptName)), '/').'/'.ltrim($path, '/');
 }
 
 /**
@@ -105,13 +106,13 @@ function path() : string
     $queryString = array_get($_SERVER, 'QUERY_STRING', '');
     $requestUri = array_get($_SERVER, 'REQUEST_URI', '');
 
-    $requestUri = str_replace('?' . $queryString, '', $requestUri);
+    $requestUri = str_replace('?'.$queryString, '', $requestUri);
     $scriptPath = str_replace('\\', '/', dirname($scriptName));
 
     if (!strlen(str_replace('/', '', $scriptPath))) {
-        return '/' . ltrim($requestUri, '/');
+        return '/'.ltrim($requestUri, '/');
     } else {
-        return '/' . ltrim(str_replace($scriptPath, '', $requestUri), '/');
+        return '/'.ltrim(str_replace($scriptPath, '', $requestUri), '/');
     }
 }
 
@@ -132,7 +133,7 @@ function uri(string $protocol = null) : string
 
     $httpHost = array_get($_SERVER, 'HTTP_HOST', '');
 
-    return $protocol . '://' . $httpHost . path();
+    return $protocol.'://'.$httpHost.path();
 }
 
 /**

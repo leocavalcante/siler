@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Siler\Graphql;
 
@@ -61,16 +63,15 @@ class WsManager
             $this->connStorage->offsetSet($conn, []);
 
             $response = [
-                'type' => GQL_CONNECTION_ACK,
+                'type'    => GQL_CONNECTION_ACK,
                 'payload' => [],
             ];
         } catch (\Exception $e) {
             $response = [
-                'type' => GQL_CONNECTION_ERROR,
+                'type'    => GQL_CONNECTION_ERROR,
                 'payload' => $e->getMessage(),
             ];
-        }
-        finally {
+        } finally {
             $conn->send(json_encode($response));
         }
     }
@@ -99,8 +100,8 @@ class WsManager
             $result = $this->execute($query, $payload, $variables);
 
             $response = [
-                'type' => GQL_DATA,
-                'id' => $data['id'],
+                'type'    => GQL_DATA,
+                'id'      => $data['id'],
                 'payload' => $result,
             ];
 
@@ -120,15 +121,15 @@ class WsManager
             } else {
                 $response = [
                     'type' => GQL_COMPLETE,
-                    'id' => $data['id'],
+                    'id'   => $data['id'],
                 ];
 
                 $conn->send(json_encode($response));
             }
         } catch (\Exception $e) {
             $response = [
-                'type' => GQL_ERROR,
-                'id' => $data['id'],
+                'type'    => GQL_ERROR,
+                'id'      => $data['id'],
                 'payload' => $e->getMessage(),
             ];
 
@@ -136,7 +137,7 @@ class WsManager
 
             $response = [
                 'type' => GQL_COMPLETE,
-                'id' => $data['id'],
+                'id'   => $data['id'],
             ];
 
             $conn->send(json_encode($response));
@@ -170,16 +171,16 @@ class WsManager
                 $result = $this->execute($query, $payload, $variables);
 
                 $response = [
-                    'type' => GQL_DATA,
-                    'id' => $subscription['id'],
+                    'type'    => GQL_DATA,
+                    'id'      => $subscription['id'],
                     'payload' => $result,
                 ];
 
                 $subscription['conn']->send(json_encode($response));
             } catch (\Exception $e) {
                 $response = [
-                    'type' => GQL_ERROR,
-                    'id' => $subscription['id'],
+                    'type'    => GQL_ERROR,
+                    'id'      => $subscription['id'],
                     'payload' => $e->getMessage(),
                 ];
 
@@ -210,7 +211,7 @@ class WsManager
      */
     public function getSubscriptionName(DocumentNode $document) : string
     {
-        /** @psalm-suppress NoInterfaceProperties */
+        /* @psalm-suppress NoInterfaceProperties */
         return $document->definitions[0]
             ->selectionSet
             ->selections[0]

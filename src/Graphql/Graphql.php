@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /**
  * Helper functions for webonyx/graphql-php GraphQL implementation.
  */
@@ -106,7 +108,7 @@ function execute(Schema $schema, array $input, $rootValue = null, $context = nul
 function psr7(Schema $schema) : \Closure
 {
     return function (ServerRequestInterface $request) use ($schema) {
-        $input = json_decode((string)$request->getBody(), true);
+        $input = json_decode((string) $request->getBody(), true);
         $data = execute($schema, $input);
 
         return Diactoros\json($data);
@@ -140,7 +142,7 @@ function schema(string $typeDefs, array $resolvers = []) : Schema
  */
 function resolvers(array $resolvers)
 {
-    /**
+    /*
      * @psalm-suppress MissingClosureParamType
      */
     Executor::setDefaultFieldResolver(function ($source, $args, $context, ResolveInfo $info) use ($resolvers) {
@@ -225,9 +227,9 @@ function publish(string $subscriptionName, $payload = null)
 
     Client\connect($wsEndpoint, ['graphql-ws'])->then(function (WebSocket $conn) use ($subscriptionName, $payload) {
         $request = [
-            'type' => GQL_DATA,
+            'type'         => GQL_DATA,
             'subscription' => $subscriptionName,
-            'payload' => $payload,
+            'payload'      => $payload,
         ];
 
         $conn->send(json_encode($request));
@@ -356,7 +358,7 @@ function bool(string $name = null, string $description = null)
 }
 
 /**
- * @param Type    $type
+ * @param Type   $type
  * @param string $name
  * @param string $description
  *

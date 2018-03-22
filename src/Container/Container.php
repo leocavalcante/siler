@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /**
  * IoC container.
  */
@@ -60,7 +62,7 @@ final class Container
     /**
      * Singleton -> instance.
      */
-    public static function getInstance() : Container
+    public static function getInstance() : self
     {
         static $instance = null;
 
