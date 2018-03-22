@@ -16,7 +16,7 @@ Siler is a set of general purpose high-level abstractions aiming an API for decl
 You can use it within your current framework or standalone, as some kind of micro-framework:
 
 ```shell
-$ composer require leocavalcante/siler dev-master
+$ composer require leocavalcante/siler
 ```
 
 ## Hello World
