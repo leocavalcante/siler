@@ -59,7 +59,7 @@ Yeap, it is just resolving to the message that it receives.
 Siler has a function at the `Graphql` namespace to define where your subscriptions are running:
 
 ```php
-Graphql\subscriptions_at('ws://127.0.0.1:8080');
+Graphql\ws_endpoint('ws://127.0.0.1:5000');
 ```
 
 Here we are assuming that they are running at localhost on port 8080.<br>
@@ -174,7 +174,7 @@ use Siler\Graphql;
 require 'vendor/autoload.php';
 
 $schema = include __DIR__.'/schema.php';
-Graphql\subscriptions($schema)->run();
+Graphql\ws($schema)->run();
 ```
 
 Yeah, easy like that. Let Siler do the boring stuff. You just give a Schema to the `subscriptions` function. This function will return an `IoServer` where you can call the `run` method.
@@ -271,7 +271,7 @@ $filters = [
 ];
 
 $schema = include __DIR__.'/schema.php';
-Graphql\subscriptions($schema, $filters)->run();
+Graphql\ws($schema, $filters)->run();
 ```
 
 As you can see, we have extend our Subscriptions endpoint adding filters. The filters array keys should match corresponding Subscription names, in our case: `inbox`. We are just checking if the given payload `room_name` is the same as the provided by the Subscription variable `roomName`. **Siler** will perform this checks for each subscription before trying to resolve and broadcast them.
