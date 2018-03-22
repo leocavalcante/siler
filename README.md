@@ -1,15 +1,16 @@
 <p align="center">
-    <br><br><br><br>    
+    <br><br>
     <img src="siλer.png" height="100"/>
-    <br><br><br><br>
+    <br><br><br><br><br><br>
 </p>
 
 [![Build Status](https://travis-ci.org/leocavalcante/siler.svg?branch=master)](https://travis-ci.org/leocavalcante/siler)
 [![codecov](https://codecov.io/gh/leocavalcante/siler/branch/master/graph/badge.svg)](https://codecov.io/gh/leocavalcante/siler)
 [![StyleCI](https://styleci.io/repos/75350712/shield)](https://styleci.io/repos/75350712)
-[![Latest Stable Version](https://poser.pugx.org/leocavalcante/siler/v/stable)](https://packagist.org/packages/leocavalcante/siler)
-[![Total Downloads](https://poser.pugx.org/leocavalcante/siler/downloads)](https://packagist.org/packages/leocavalcante/siler)
+[![Packagist](https://img.shields.io/packagist/v/leocavalcante/siler.svg)](https://packagist.org/packages/leocavalcante/siler)
+[![Packagist](https://img.shields.io/packagist/dt/leocavalcante/siler.svg)](https://packagist.org/packages/leocavalcante/siler)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0/mini.png)](https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0)
+![Static Analisys](https://img.shields.io/badge/static%20analysis-passed-brightgreen.svg)
 
 Siler is a set of general purpose high-level abstractions aiming an API for declarative programming in PHP.
 
