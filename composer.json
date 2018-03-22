@@ -64,12 +64,12 @@
     "scripts": {
         "fix": "phpcbf",
         "lint": "phpcs",
-        "analyse": "psalm",
+        "analyze": "psalm --show-info=false",
         "unit": "phpunit",
         "test": [
             "@composer fix",
             "@composer lint",
-            "@composer analyse",
+            "@composer analyze",
             "@composer unit"
         ]
     },

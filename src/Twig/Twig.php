@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Helper functions to work with the Twig template engine.
  */
@@ -16,7 +18,7 @@ use Siler\Container;
  *
  * @return \Twig_Environment
  */
-function init($templatesPath, $templatesCachePath = false, $debug = false)
+function init(string $templatesPath, $templatesCachePath = false, bool $debug = false) : \Twig_Environment
 {
     $twig = new \Twig_Environment(new \Twig_Loader_Filesystem($templatesPath), [
         'debug' => $debug,
@@ -38,7 +40,7 @@ function init($templatesPath, $templatesCachePath = false, $debug = false)
  *
  * @return string
  */
-function render($name, $data = [])
+function render(string $name, array $data = []) : string
 {
     $twig = Container\get('twig');
 

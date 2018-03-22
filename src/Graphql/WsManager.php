@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siler\Graphql;
 
 use GraphQL\Language\AST\DocumentNode;
@@ -10,14 +12,37 @@ use function Siler\array_get;
 
 class WsManager
 {
+    /**
+     * @var Schema
+     */
     protected $schema;
+
+    /**
+     * @var array|null
+     */
     protected $filters;
+
+    /**
+     * @var array|null
+     */
     protected $rootValue;
+
+    /**
+     * @var array|null
+     */
     protected $context;
+
+    /**
+     * @var array
+     */
     protected $subscriptions;
+
+    /**
+     * @var \SplObjectStorage
+     */
     protected $connStorage;
 
-    public function __construct(Schema $schema, array $filters = null, array $rootValue = null, array $context = null)
+    public function __construct(Schema $schema, ?array $filters = null, ?array $rootValue = null, ?array $context = null)
     {
         $this->schema = $schema;
         $this->filters = $filters;
@@ -31,8 +56,6 @@ class WsManager
      * @param ConnectionInterface $conn
      *
      * @return void
-     *
-     * @psalm-suppress PossiblyFalseArgument
      */
     public function handleConnectionInit(ConnectionInterface $conn)
     {
@@ -58,8 +81,6 @@ class WsManager
      * @param array               $data
      *
      * @return void
-     *
-     * @psalm-suppress PossiblyFalseArgument
      */
     public function handleStart(ConnectionInterface $conn, array $data)
     {
@@ -74,6 +95,7 @@ class WsManager
             $variables = array_get($payload, 'variables');
 
             $document = Parser::parse($query);
+            /** @psalm-suppress NoInterfaceProperties */
             $operation = $document->definitions[0]->operation;
             $result = $this->execute($query, $payload, $variables);
 
@@ -122,6 +144,9 @@ class WsManager
         }
     }
 
+    /**
+     * @return void
+     */
     public function handleData(array $data)
     {
         $subscriptionName = $data['subscription'];
@@ -164,6 +189,9 @@ class WsManager
         }
     }
 
+    /**
+     * @return void
+     */
     public function handleStop(ConnectionInterface $conn, array $data)
     {
         $connSubscriptions = $this->connStorage->offsetGet($conn);
@@ -179,28 +207,34 @@ class WsManager
     /**
      * @param DocumentNode $document
      *
-     * @psalm-suppress NoInterfaceProperties
+     * @return string
      */
-    public function getSubscriptionName(DocumentNode $document)
+    public function getSubscriptionName(DocumentNode $document) : string
     {
+        /** @psalm-suppress NoInterfaceProperties */
         return $document->definitions[0]
-                        ->selectionSet
-                        ->selections[0]
-                        ->name
-                        ->value;
+            ->selectionSet
+            ->selections[0]
+            ->name
+            ->value;
     }
 
-    public function getSubscriptions()
+    public function getSubscriptions() : array
     {
         return $this->subscriptions;
     }
 
-    public function getConnStorage()
+    public function getConnStorage() : \SplObjectStorage
     {
         return $this->connStorage;
     }
 
-    private function execute($query, $payload, $variables)
+    /**
+     * @param mixed $payload
+     *
+     * @return array|\GraphQL\Executor\Promise\Promise
+     */
+    private function execute(string $query, $payload = null, ?array $variables = null)
     {
         return \GraphQL\GraphQL::execute(
             $this->schema,

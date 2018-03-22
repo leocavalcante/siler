@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * In computer science, functional programming is a programming paradigm
  * a style of building the structure and elements of computer programs
@@ -11,9 +14,9 @@ namespace Siler\Functional;
 /**
  * Identity function.
  *
- * @return callable $value -> $value
+ * @return \Closure $value -> $value
  */
-function identity()
+function identity() : \Closure
 {
     return function ($value) {
         return $value;
@@ -25,9 +28,9 @@ function identity()
  *
  * @param mixed $value
  *
- * @return callable a -> $value
+ * @return \Closure a -> $value
  */
-function always($value)
+function always($value) : \Closure
 {
     return function () use ($value) {
         return $value;
@@ -39,9 +42,9 @@ function always($value)
  *
  * @param mixed $right
  *
- * @return callable $left -> bool
+ * @return \Closure $left -> bool
  */
-function equal($right)
+function equal($right) : \Closure
 {
     return function ($left) use ($right) {
         return $left === $right;
@@ -53,9 +56,9 @@ function equal($right)
  *
  * @param mixed $right
  *
- * @return callable $left -> bool
+ * @return \Closure $left -> bool
  */
-function less_than($right)
+function less_than($right) : \Closure
 {
     return function ($left) use ($right) {
         return $left < $right;
@@ -67,9 +70,9 @@ function less_than($right)
  *
  * @param mixed $right
  *
- * @return callable $left -> bool
+ * @return \Closure $left -> bool
  */
-function greater_than($right)
+function greater_than($right) : \Closure
 {
     return function ($left) use ($right) {
         return $left > $right;
@@ -81,9 +84,9 @@ function greater_than($right)
  *
  * @param callable $cond
  *
- * @return callable $then -> $else -> $value -> mixed
+ * @return \Closure $then -> $else -> $value -> mixed
  */
-function if_else(callable $cond)
+function if_else(callable $cond) : \Closure
 {
     return function (callable $then) use ($cond) {
         return function (callable $else) use ($cond, $then) {
@@ -99,9 +102,9 @@ function if_else(callable $cond)
  *
  * @param array $matches
  *
- * @return callable $value -> mixed|null
+ * @return \Closure $value -> mixed|null
  */
-function match(array $matches)
+function match(array $matches) : \Closure
 {
     return function ($value) use ($matches) {
         if (empty($matches)) {
@@ -119,9 +122,9 @@ function match(array $matches)
  *
  * @param array $functions
  *
- * @return callable $value -> bool
+ * @return \Closure $value -> bool
  */
-function any(array $functions)
+function any(array $functions) : \Closure
 {
     return function ($value) use ($functions) {
         return array_reduce($functions, function ($current, $function) use ($value) {
@@ -133,11 +136,11 @@ function any(array $functions)
 /**
  * Determines whether all returns of $functions are TRUE.
  *
- * @param array $functions
+ * @param callable[] $functions
  *
- * @return callable $value -> bool
+ * @return \Closure $value -> bool
  */
-function all(array $functions)
+function all(array $functions) : \Closure
 {
     return function ($value) use ($functions) {
         return array_reduce($functions, function ($current, $function) use ($value) {
@@ -151,9 +154,9 @@ function all(array $functions)
  *
  * @param callable $function
  *
- * @return callable $value -> ! $function $value
+ * @return \Closure $value -> ! $function $value
  */
-function not(callable $function)
+function not(callable $function) : \Closure
 {
     return function ($value) use ($function) {
         return !$function($value);
@@ -165,9 +168,9 @@ function not(callable $function)
  *
  * @param mixed $right
  *
- * @return callable $left -> $left + $right
+ * @return \Closure $left -> $left + $right
  */
-function add($right)
+function add($right) : \Closure
 {
     return function ($left) use ($right) {
         return $left + $right;
@@ -179,9 +182,9 @@ function add($right)
  *
  * @param mixed $right
  *
- * @return callable $left -> $left * $right
+ * @return \Closure $left -> $left * $right
  */
-function mul($right)
+function mul($right) : \Closure
 {
     return function ($left) use ($right) {
         return $left * $right;
@@ -193,9 +196,9 @@ function mul($right)
  *
  * @param mixed $right
  *
- * @return callable $left -> $left - $right
+ * @return \Closure $left -> $left - $right
  */
-function sub($right)
+function sub($right) : \Closure
 {
     return function ($left) use ($right) {
         return $left - $right;
@@ -207,9 +210,9 @@ function sub($right)
  *
  * @param mixed $right
  *
- * @return callable $left -> $left / $right
+ * @return \Closure $left -> $left / $right
  */
-function div($right)
+function div($right) : \Closure
 {
     return function ($left) use ($right) {
         return $left / $right;
@@ -221,9 +224,9 @@ function div($right)
  *
  * @param mixed $right
  *
- * @return callable $right -> $left % $right
+ * @return \Closure $right -> $left % $right
  */
-function mod($right)
+function mod($right) : \Closure
 {
     return function ($left) use ($right) {
         return $left % $right;
@@ -236,9 +239,9 @@ function mod($right)
  *
  * @param array $functions
  *
- * @return callable $value -> mixed
+ * @return \Closure $value -> mixed
  */
-function compose(array $functions)
+function compose(array $functions) : \Closure
 {
     return function ($value) use ($functions) {
         return array_reduce(array_reverse($functions), function ($value, $function) {
@@ -250,11 +253,11 @@ function compose(array $functions)
 /**
  * Converts the given $value to a boolean.
  *
- * @return callable $value -> bool
+ * @return \Closure $value -> bool
  */
-function bool()
+function bool() : \Closure
 {
-    return function ($value) {
+    return function ($value) : bool {
         return (bool) $value;
     };
 }
@@ -263,9 +266,9 @@ function bool()
  * In computer science, a NOP or NOOP (short for No Operation) is an assembly language instruction,
  * programming language statement, or computer protocol command that does nothing.
  *
- * @return callable a ->
+ * @return \Closure a ->
  */
-function noop()
+function noop() : \Closure
 {
     return function () {
     };
@@ -276,9 +279,9 @@ function noop()
  *
  * @param callable $function
  *
- * @return callable a -> $function(a)
+ * @return \Closure a -> $function(a)
  */
-function hold(callable $function)
+function hold(callable $function) : \Closure
 {
     return function () use ($function) {
         return call_user_func_array($function, func_get_args());
@@ -290,9 +293,9 @@ function hold(callable $function)
  *
  * @param string $value
  *
- * @return callable a -> echo $value
+ * @return \Closure a -> echo $value
  */
-function puts($value)
+function puts($value) : \Closure
 {
     return function () use ($value) {
         echo $value;
@@ -307,7 +310,7 @@ function puts($value)
  *
  * @return array
  */
-function flatten(array $list, array $flat = [])
+function flatten(array $list, array $flat = []) : array
 {
     if (empty($list)) {
         return $flat;
@@ -361,7 +364,7 @@ function tail(array $list)
  *
  * @return array
  */
-function init(array $list)
+function init(array $list) : array
 {
     return array_slice($list, 0, -1);
 }
@@ -373,7 +376,7 @@ function init(array $list)
  *
  * @return array [head, [tail]]
  */
-function uncons(array $list)
+function uncons(array $list) : array
 {
     return [$list[0], array_slice($list, 1)];
 }

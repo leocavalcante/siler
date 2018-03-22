@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Helpers functions for HTTP requests.
  */
@@ -14,7 +16,7 @@ use function Siler\array_get;
  *
  * @return string
  */
-function raw($input = 'php://input')
+function raw(string $input = 'php://input') : string
 {
     return (string) file_get_contents($input);
 }
@@ -26,7 +28,7 @@ function raw($input = 'php://input')
  *
  * @return array
  */
-function params($input = 'php://input')
+function params(string $input = 'php://input') : array
 {
     $params = [];
     parse_str(raw($input), $params);
@@ -41,7 +43,7 @@ function params($input = 'php://input')
  *
  * @return array
  */
-function json($input = 'php://input')
+function json(string $input = 'php://input') : array
 {
     return json_decode(raw($input), true);
 }
@@ -51,10 +53,10 @@ function json($input = 'php://input')
  *
  * @return array
  */
-function headers()
+function headers() : array
 {
     $serverKeys = array_keys($_SERVER);
-    $httpHeaders = array_reduce($serverKeys, function (array $headers, string $key): array {
+    $httpHeaders = array_reduce($serverKeys, function (array $headers, string $key) : array {
         if ($key == 'CONTENT_TYPE') {
             $headers[] = $key;
         }
@@ -70,11 +72,11 @@ function headers()
         return $headers;
     }, []);
 
-    $values = array_map(function ($header) {
+    $values = array_map(function (string $header) {
         return $_SERVER[$header];
     }, $httpHeaders);
 
-    $headers = array_map(function ($header) {
+    $headers = array_map(function (string $header) {
         if (substr($header, 0, 5) == 'HTTP_') {
             $header = substr($header, 5);
         }
@@ -93,7 +95,7 @@ function headers()
  *
  * @return mixed
  */
-function header($key, $default = null)
+function header(string $key, $default = null)
 {
     return array_get(headers(), $key, $default, true);
 }
@@ -106,7 +108,7 @@ function header($key, $default = null)
  *
  * @return mixed
  */
-function get($key = null, $default = null)
+function get(string $key = null, $default = null)
 {
     return array_get($_GET, $key, $default);
 }
@@ -119,7 +121,7 @@ function get($key = null, $default = null)
  *
  * @return mixed
  */
-function post($key = null, $default = null)
+function post(string $key = null, $default = null)
 {
     return array_get($_POST, $key, $default);
 }
@@ -132,7 +134,7 @@ function post($key = null, $default = null)
  *
  * @return mixed
  */
-function input($key = null, $default = null)
+function input(string $key = null, $default = null)
 {
     return array_get($_REQUEST, $key, $default);
 }
@@ -145,7 +147,7 @@ function input($key = null, $default = null)
  *
  * @return mixed
  */
-function file($key = null, $default = null)
+function file(string $key = null, $default = null)
 {
     return array_get($_FILES, $key, $default);
 }
@@ -156,9 +158,9 @@ function file($key = null, $default = null)
  *
  * @return string
  */
-function method()
+function method() : string
 {
-    if ($method = header('X-Http-Method-Override')) {
+    if ($method = \Siler\Http\Request\header('X-Http-Method-Override')) {
         return $method;
     }
 
@@ -176,11 +178,12 @@ function method()
 /**
  * Checks for the current HTTP request method.
  *
- * @param string|array $method The given method to check on
+ * @param string|array $method        The given method to check on
+ * @param string       $requestMethod
  *
  * @return bool
  */
-function method_is($method, $requestMethod = null)
+function method_is($method, string $requestMethod = null) : bool
 {
     if (is_null($requestMethod)) {
         $requestMethod = method();
@@ -201,7 +204,7 @@ function method_is($method, $requestMethod = null)
  *
  * @return array Languages by [language => priority], or empty if none could be found.
  */
-function accepted_locales(): array
+function accepted_locales() : array
 {
     $langs = [];
 
@@ -245,7 +248,7 @@ function accepted_locales(): array
  *
  * @return string selected locale.
  */
-function recommended_locale(string $default = ''): string
+function recommended_locale(string $default = '') : string
 {
     $locale = $_GET['lang'] ?? '';
 

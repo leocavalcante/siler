@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siler\Test\Unit;
 
 use Ratchet\ConnectionInterface;

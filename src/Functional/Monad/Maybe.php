@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siler\Functional\Monad;
 
 class Maybe extends Identity

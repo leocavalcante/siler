@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Siler core file.
  */
@@ -8,14 +10,14 @@ namespace Siler;
 /**
  * Get a value from an array checking if the key exists and returning a default value if not.
  *
- * @param array  $array           The array to be searched on
- * @param string $key             The key to be searched
- * @param mixed  $default         The default value to be returned when the key don't exists
- * @param bool   $caseInsensitive Ignore key case, default false
+ * @param array $array           The array to be searched on
+ * @param mixed $key             The key to be searched
+ * @param mixed $default         The default value to be returned when the key don't exists
+ * @param bool  $caseInsensitive Ignore key case, default false
  *
  * @return mixed
  */
-function array_get($array, $key = null, $default = null, $caseInsensitive = false)
+function array_get(array $array, $key = null, $default = null, bool $caseInsensitive = false)
 {
     if (is_null($key)) {
         return $array;
@@ -35,12 +37,11 @@ function array_get($array, $key = null, $default = null, $caseInsensitive = fals
  * @param string $filename The file to be required
  *
  * @return \Closure
- *
- * @psalm-suppress UnresolvableInclude
  */
-function require_fn($filename)
+function require_fn(string $filename) : \Closure
 {
     return function ($params = null) use ($filename) {
+        /** @psalm-suppress UnresolvableInclude */
         return require $filename;
     };
 }

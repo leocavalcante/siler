@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siler\Test\Integration;
 
 use function Siler\Functional\all;

@@ -1,11 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siler\Functional\Monad;
 
 class Identity
 {
+    /**
+     * @var mixed
+     */
     protected $value;
 
+    /**
+     * @param mixed $value
+     */
     public function __construct($value)
     {
         $this->value = $value;

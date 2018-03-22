@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * IoC container.
  */
@@ -15,7 +17,7 @@ use function Siler\array_get;
  *
  * @return mixed
  */
-function get($key, $default = null)
+function get(string $key, $default = null)
 {
     $container = Container::getInstance();
 
@@ -27,8 +29,10 @@ function get($key, $default = null)
  *
  * @param string $key   Identified by the given key
  * @param mixed  $value The value to be stored
+ *
+ * @return void
  */
-function set($key, $value)
+function set(string $key, $value)
 {
     $container = Container::getInstance();
     $container->values[$key] = $value;
@@ -41,7 +45,7 @@ function set($key, $value)
  *
  * @return bool
  */
-function has($key)
+function has(string $key) : bool
 {
     $container = Container::getInstance();
 
@@ -58,7 +62,7 @@ final class Container
     /**
      * Singleton -> instance.
      */
-    public static function getInstance()
+    public static function getInstance() : self
     {
         static $instance = null;
 
@@ -71,6 +75,8 @@ final class Container
 
     /**
      *  The actual holder.
+     *
+     * @var array
      */
     public $values = [];
 

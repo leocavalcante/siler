@@ -2,12 +2,22 @@
 
 namespace Siler\Functional\Monad;
 
-function identity($value)
+/**
+ * @param mixed $value
+ *
+ * @return Identity
+ */
+function identity($value) : Identity
 {
     return new Identity($value);
 }
 
-function maybe($value)
+/**
+ * @param mixed $value
+ *
+ * @return Maybe
+ */
+function maybe($value) : Maybe
 {
     return new Maybe($value);
 }

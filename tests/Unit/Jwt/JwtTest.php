@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siler\Test\Unit;
 
 use Lcobucci\JWT\Signer\Hmac\Sha256;
@@ -51,7 +53,7 @@ class JwtTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame(1, $token->getClaim('uid'));
 
-        $this->assertStringEqualsFile(__DIR__.'/../../fixtures/jwt_unsigned.txt', $token);
+        $this->assertStringEqualsFile(__DIR__.'/../../fixtures/jwt_unsigned.txt', (string) $token);
     }
 
     public function testValidate()
@@ -61,14 +63,14 @@ class JwtTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse(Jwt\validator($this->config, self::IAT)($token));
         $this->assertTrue(Jwt\validator($this->config, self::NBF)($token));
         $this->assertTrue(Jwt\validator($this->config, self::EXP)($token));
-        $this->assertFalse(Jwt\validator($this->config, self::EXP + 1)($token));
+        $this->assertFalse(Jwt\validator($this->config, strval(self::EXP + 1))($token));
     }
 
     public function testBuilderWithSigner()
     {
         $token = Jwt\builder($this->config, $this->signer, self::KEY)($this->data);
 
-        $this->assertStringEqualsFile(__DIR__.'/../../fixtures/jwt_signed.txt', $token);
+        $this->assertStringEqualsFile(__DIR__.'/../../fixtures/jwt_signed.txt', (string) $token);
 
         $this->assertTrue($token->verify($this->signer, self::KEY));
         $this->assertFalse($token->verify($this->signer, 'wrong key'));

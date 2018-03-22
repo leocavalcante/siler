@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Helper functions to work with Ratchet.
  */
@@ -22,7 +25,7 @@ const RATCHET_EVENT_ERROR = 'ratchet_event_error';
  *
  * @param int $port The port number on which the server should run. Defaults to 8080
  */
-function init($port = 8080)
+function init(int $port = 8080) : IoServer
 {
     $messageComponent = new MessageComponent();
     $webSocketServer = new WsServer($messageComponent);
@@ -36,9 +39,9 @@ function init($port = 8080)
 /**
  * Sets a callback for connected clients.
  *
- * @param \Closure $callback The callback function to call when there is a new client connected
+ * @param callable $callback The callback function to call when there is a new client connected
  */
-function connected($callback)
+function connected(callable $callback)
 {
     Container\set(RATCHET_EVENT_OPEN, $callback);
 }
@@ -46,9 +49,9 @@ function connected($callback)
 /**
  * Sets a callback for incoming web socket messages.
  *
- * @param \Closure $callback The callback for incoming messages
+ * @param callable $callback The callback for incoming messages
  */
-function inbox($callback)
+function inbox(callable $callback)
 {
     Container\set(RATCHET_EVENT_MESSAGE, $callback);
 }
@@ -56,9 +59,9 @@ function inbox($callback)
 /**
  * Sets a callback for closed connections.
  *
- * @param \Closure $callback The callback for closed connections
+ * @param callable $callback The callback for closed connections
  */
-function closed($callback)
+function closed(callable $callback)
 {
     Container\set(RATCHET_EVENT_CLOSE, $callback);
 }
@@ -66,9 +69,9 @@ function closed($callback)
 /**
  * Sets a callback to handle errors.
  *
- * @param \Closure $callback The callback for errors
+ * @param callable $callback The callback for errors
  */
-function error($callback)
+function error(callable $callback)
 {
     Container\set(RATCHET_EVENT_ERROR, $callback);
 }
@@ -79,7 +82,7 @@ function error($callback)
  * @param string                   $message The message to broadcast
  * @param ConnectionInterface|null $from    The sender client. If given, the message will not be broadcast to it
  */
-function broadcast($message, ConnectionInterface $from = null)
+function broadcast(string $message, ConnectionInterface $from = null)
 {
     $clients = Container\get(RATCHET_CONNECTIONS);
 
