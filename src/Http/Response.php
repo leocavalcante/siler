@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /**
  * Helper functions to handle HTTP responses.
  */
@@ -90,7 +92,7 @@ function json($content, int $code = 200, string $charset = 'utf-8') : int
  */
 function header(string $key, string $val, bool $replace = true)
 {
-    \header($key . ': ' . $val, $replace);
+    \header($key.': '.$val, $replace);
 }
 
 /**

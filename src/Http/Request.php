@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /**
  * Helpers functions for HTTP requests.
  */
@@ -16,7 +18,7 @@ use function Siler\array_get;
  */
 function raw(string $input = 'php://input') : string
 {
-    return (string)file_get_contents($input);
+    return (string) file_get_contents($input);
 }
 
 /**

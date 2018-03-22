@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /**
  * Helper functions for lcobucci/jwt library.
  */
@@ -72,7 +74,7 @@ function builder(array $config, Signer $signer = null, string $key = null) : \Cl
 function validator(array $config, string $time) : \Closure
 {
     $data = new ValidationData();
-    $data->setCurrentTime((int)$time);
+    $data->setCurrentTime((int) $time);
 
     if (isset($config['iss'])) {
         $data->setIssuer($config['iss']);

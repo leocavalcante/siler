@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * In computer science, functional programming is a programming paradigm
@@ -88,7 +90,6 @@ function if_else(callable $cond) : \Closure
 {
     return function (callable $then) use ($cond) {
         return function (callable $else) use ($cond, $then) {
-
             return function ($value) use ($cond, $then, $else) {
                 return $cond($value) ? $then($value) : $else($value);
             };
@@ -257,7 +258,7 @@ function compose(array $functions) : \Closure
 function bool() : \Closure
 {
     return function ($value) : bool {
-        return (bool)$value;
+        return (bool) $value;
     };
 }
 
