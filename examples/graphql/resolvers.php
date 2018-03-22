@@ -4,7 +4,6 @@ use RedBeanPHP\R;
 use Siler\Graphql;
 
 R::setup('sqlite:'.__DIR__.'/db.sqlite');
-Graphql\subscriptions_at('ws://127.0.0.1:8080');
 
 $roomByName = function ($name) {
     return R::findOne('room', 'name = ?', [$name]);
