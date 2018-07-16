@@ -1,0 +1,9 @@
+*
+!src
+!tests
+!install_composer.sh
+!composer.json
+!composer.lock
+!phpcs.xml
+!psalm.xml
+!phpunit.xml.dist

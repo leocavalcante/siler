@@ -50,7 +50,7 @@ class RouteFileWithPrefixTest extends \PHPUnit\Framework\TestCase
 
     public function testGetWithParam()
     {
-        $this->expectOutputString('foo.$8.getfoo.@8.getfoo.8.get', '/foo');
+        $this->expectOutputString('foo.@8.getfoo.8.getfoo.$8.get', '/foo');
 
         $_SERVER['SCRIPT_NAME'] = '/index.php';
         $_SERVER['REQUEST_METHOD'] = 'GET';
