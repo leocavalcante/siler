@@ -45,6 +45,9 @@ class RequestTest extends TestCase
         $this->assertContains('bar', $params);
         $this->assertCount(1, $params);
         $this->assertArraySubset(['foo' => 'bar'], $params);
+
+        $params = Request\json();
+        $this->assertEmpty($params);
     }
 
     public function testHeaders()

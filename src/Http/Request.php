@@ -45,7 +45,13 @@ function params(string $input = 'php://input') : array
  */
 function json(string $input = 'php://input') : array
 {
-    return json_decode(raw($input), true);
+    $params = json_decode(raw($input), true);
+
+    if (is_null($params)) {
+        return [];
+    }
+
+    return $params;
 }
 
 /**
