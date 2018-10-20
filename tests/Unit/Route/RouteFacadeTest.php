@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace Siler\Test\Unit;
 
@@ -79,6 +79,19 @@ class RouteFacadeTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'OPTIONS';
 
         Route\options('/bar/baz', function ($params) {
+            throw new \Exception('Route /bar/baz should match');
+        });
+    }
+
+    /**
+     * @expectedException        \Exception
+     * @expectedExceptionMessage Route /bar/baz should match
+     */
+    public function testAny()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'ANYTHING';
+
+        Route\any('/bar/baz', function ($params) {
             throw new \Exception('Route /bar/baz should match');
         });
     }
