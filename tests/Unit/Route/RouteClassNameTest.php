@@ -44,6 +44,10 @@ class RouteClassNameTest extends TestCase
         Route\class_name('/class-name', 'Siler\Test\Unit\MyClass');
     }
 
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testPostFoo()
     {
         $this->expectOutputString('className.postFoo');
@@ -56,6 +60,7 @@ class RouteClassNameTest extends TestCase
 
     /**
      * @runInSeparateProcess
+     * @preserveGlobalState disabled
      */
     public function testPutFooBar()
     {
@@ -67,9 +72,6 @@ class RouteClassNameTest extends TestCase
         Route\class_name('/class-name', 'Siler\Test\Unit\MyClass');
     }
 
-    /**
-     * @runInSeparateProcess
-     */
     public function testAnyParams()
     {
         $this->expectOutputString('className.baz.qux');
@@ -78,5 +80,10 @@ class RouteClassNameTest extends TestCase
         $_SERVER['REQUEST_URI'] = '/class-name/baz/qux';
 
         Route\class_name('/class-name', 'Siler\Test\Unit\MyClass');
+    }
+
+    public function tearDown()
+    {
+        Route\resume();
     }
 }
