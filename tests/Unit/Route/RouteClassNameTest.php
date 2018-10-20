@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
@@ -30,7 +30,6 @@ class MyClass
         echo "className.$baz.$qux";
         Route\stop_propagation();
     }
-
 }
 
 class RouteClassNameTest extends TestCase
