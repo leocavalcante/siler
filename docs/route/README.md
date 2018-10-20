@@ -3,6 +3,7 @@
 Declare path listeners for a web app.
 
 Siler comes with 5 convenient helpers for common HTTP methods: GET, POST, PUT, DELETE and OPTIONS.
+Also a facade for any method.
 
 ```php
 use Siler\Route;
@@ -12,6 +13,7 @@ Route\post('/path', <handler>);
 Route\put('/path', <handler>);
 Route\delete('/path', <handler>);
 Route\options('/path', <handler>);
+Route\any('/path', <handler>);
 ```
 
 Additional and custom methods can be set using the `route` function:
