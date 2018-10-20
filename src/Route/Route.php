@@ -110,7 +110,7 @@ function any(string $path, $callback, $request = null)
  */
 function route($method, string $path, $callback, $request = null)
 {
-    if (Container\get('route_match') && Container\get('route_stop_propagation')) {
+    if (Container\get('route_match', false) && Container\get('route_stop_propagation', false)) {
         return null;
     }
 
@@ -302,4 +302,9 @@ function class_name(string $basePath, string $className, $request = null)
 function stop_propagation()
 {
     Container\set('route_stop_propagation', true);
+}
+
+function resume()
+{
+    Container\set('route_stop_propagation', false);
 }

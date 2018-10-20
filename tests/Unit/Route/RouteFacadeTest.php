@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace Siler\Test\Unit;
 
@@ -16,6 +16,7 @@ class RouteFacadeTest extends TestCase
         $_SERVER['HTTP_HOST'] = 'test:8000';
         $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
         $_SERVER['PATH_INFO'] = '/bar/baz';
+        $_SERVER['REQUEST_URI'] = '/bar/baz';
     }
 
     /**
