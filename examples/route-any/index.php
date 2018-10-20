@@ -1,9 +1,11 @@
-<?php declare (strict_types = 1);
+<?php
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+declare(strict_types=1);
 
-use Siler\Route;
+require_once __DIR__.'/../../vendor/autoload.php';
+
 use Siler\Http\Request;
+use Siler\Route;
 
 Route\any('/any-route', function () {
     if (Request\method_is('get')) {
