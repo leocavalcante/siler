@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
@@ -15,7 +15,7 @@ class RouteFileWithPrefixTest extends \PHPUnit\Framework\TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/foo/';
 
-        Route\files(__DIR__ . '/../../fixtures/route_files/', '/foo');
+        Route\files(__DIR__.'/../../fixtures/route_files/', '/foo');
     }
 
     public function testGetContact()
@@ -25,7 +25,7 @@ class RouteFileWithPrefixTest extends \PHPUnit\Framework\TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/foo/contact';
 
-        Route\files(__DIR__ . '/../../fixtures/route_files/', '/foo');
+        Route\files(__DIR__.'/../../fixtures/route_files/', '/foo');
     }
 
     public function testPostContact()
@@ -35,7 +35,7 @@ class RouteFileWithPrefixTest extends \PHPUnit\Framework\TestCase
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REQUEST_URI'] = '/foo/contact';
 
-        Route\files(__DIR__ . '/../../fixtures/route_files/', '/foo');
+        Route\files(__DIR__.'/../../fixtures/route_files/', '/foo');
     }
 
     public function testGetAbout()
@@ -45,7 +45,7 @@ class RouteFileWithPrefixTest extends \PHPUnit\Framework\TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/foo/about';
 
-        Route\files(__DIR__ . '/../../fixtures/route_files/', '/foo');
+        Route\files(__DIR__.'/../../fixtures/route_files/', '/foo');
     }
 
     public function testGetWithParam()
@@ -56,6 +56,6 @@ class RouteFileWithPrefixTest extends \PHPUnit\Framework\TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/foo/foo/8';
 
-        Route\files(__DIR__ . '/../../fixtures/route_files/', '/foo');
+        Route\files(__DIR__.'/../../fixtures/route_files/', '/foo');
     }
 }
