@@ -1,6 +1,6 @@
 <p align="center">
     <br><br><br><br>    
-    <img src="https://raw.githubusercontent.com/leocavalcante/siler/master/si%CE%BBer.png" height="100"/>
+    <img src="https://raw.githubusercontent.com/leocavalcante/siler/master/siler.png" height="100"/>
     <br><br><br><br>
 </p>
 
