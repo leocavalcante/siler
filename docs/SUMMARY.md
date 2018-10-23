@@ -7,6 +7,7 @@
   * [Files](route/files.md)
   * [Resource](route/resource.md)
   * [PSR-7](route/psr-7.md)
+  * [Note on Handlers](route/note-on-handlers.md)
 * [Http](http/README.md)
   * [PSR-7](http/psr-7.md)
 * [Twig Templating](twig-templating.md)
