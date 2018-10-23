@@ -52,3 +52,6 @@ Route handlers can be set using:
 * [Filename](filename.md)
 * [Resource](resource.md)
 * [Files](files.md)
+
+Also, is good to take a look at:<br>
+[Note on Handlers](note-on-handlers.md)
