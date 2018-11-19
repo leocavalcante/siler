@@ -88,14 +88,14 @@ function execute(Schema $schema, array $input, $rootValue = null, $context = nul
     $operation = array_get($input, 'operation');
     $variables = array_get($input, 'variables');
 
-    return GraphQL::execute(
+    return GraphQL::executeQuery(
         $schema,
         $query,
         $rootValue,
         $context,
         $variables,
         $operation
-    );
+    )->toArray();
 }
 
 /**
