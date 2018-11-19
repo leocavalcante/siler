@@ -85,7 +85,7 @@ function init(Schema $schema, $rootValue = null, $context = null, string $input 
 function execute(Schema $schema, array $input, $rootValue = null, $context = null)
 {
     $query = array_get($input, 'query');
-    $operation = array_get($input, 'operation');
+    $operation = array_get($input, 'operationName');
     $variables = array_get($input, 'variables');
 
     return GraphQL::executeQuery(
