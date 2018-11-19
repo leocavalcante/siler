@@ -7,31 +7,6 @@ namespace Siler\Test\Unit;
 use PHPUnit\Framework\TestCase;
 use Siler\Route;
 
-class MyClass
-{
-    public function getIndex()
-    {
-        echo 'className.index';
-    }
-
-    public function postFoo()
-    {
-        echo 'className.postFoo';
-    }
-
-    public function putFooBar()
-    {
-        echo 'className.putFooBar';
-        Route\stop_propagation();
-    }
-
-    public function anyIndex(string $baz, string $qux)
-    {
-        echo "className.$baz.$qux";
-        Route\stop_propagation();
-    }
-}
-
 class RouteClassNameTest extends TestCase
 {
     public function testIndex()
@@ -41,7 +16,7 @@ class RouteClassNameTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_SERVER['REQUEST_URI'] = '/class-name';
 
-        Route\class_name('/class-name', 'Siler\Test\Unit\MyClass');
+        Route\class_name('/class-name', 'Siler\Test\Unit\Route\RouteClass');
     }
 
     /**
@@ -55,7 +30,7 @@ class RouteClassNameTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'POST';
         $_SERVER['REQUEST_URI'] = '/class-name/foo';
 
-        Route\class_name('/class-name', 'Siler\Test\Unit\MyClass');
+        Route\class_name('/class-name', 'Siler\Test\Unit\Route\RouteClass');
     }
 
     /**
@@ -69,7 +44,7 @@ class RouteClassNameTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'PUT';
         $_SERVER['REQUEST_URI'] = '/class-name/foo/bar';
 
-        Route\class_name('/class-name', 'Siler\Test\Unit\MyClass');
+        Route\class_name('/class-name', 'Siler\Test\Unit\Route\RouteClass');
     }
 
     public function testAnyParams()
@@ -79,7 +54,7 @@ class RouteClassNameTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'ANYTHING';
         $_SERVER['REQUEST_URI'] = '/class-name/baz/qux';
 
-        Route\class_name('/class-name', 'Siler\Test\Unit\MyClass');
+        Route\class_name('/class-name', 'Siler\Test\Unit\Route\RouteClass');
     }
 
     public function tearDown()
