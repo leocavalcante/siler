@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="vendor/autoload.php" colors="true" verbose="true">
-  <testsuite name="Unit">
-    <directory>tests/Unit</directory>
-  </testsuite>
+  <testsuites>
+    <testsuite name="Unit">
+      <directory>tests/Unit</directory>
+    </testsuite>
 
-  <testsuite name="Integration">
-    <directory>tests/Integration</directory>
-  </testsuite>
+    <testsuite name="Integration">
+      <directory>tests/Integration</directory>
+    </testsuite>
+  </testsuites>
 
   <filter>
     <whitelist processUncoveredFilesFromWhitelist="true">
