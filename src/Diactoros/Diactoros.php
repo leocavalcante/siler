@@ -13,7 +13,6 @@ use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 use Zend\Diactoros\Response\RedirectResponse;
-use Zend\Diactoros\Response\SapiEmitter;
 use Zend\Diactoros\Response\TextResponse;
 use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\ServerRequestFactory;
@@ -40,18 +39,6 @@ function request() : ServerRequest
 function response(string $body = 'php://memory', int $status = 200, array $headers = []) : Response
 {
     return new Response($body, $status, $headers);
-}
-
-/**
- * Emits a PSR-7 SAPI response.
- *
- * @param ResponseInterface $response
- *
- * @return void
- */
-function emit(ResponseInterface $response)
-{
-    (new SapiEmitter())->emit($response);
 }
 
 /**

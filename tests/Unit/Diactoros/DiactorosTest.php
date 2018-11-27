@@ -26,19 +26,6 @@ class DiactorosTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(ResponseInterface::class, Diactoros\response());
     }
 
-    /**
-     * @runInSeparateProcess
-     */
-    public function testEmit()
-    {
-        $this->expectOutputString('foo');
-
-        $response = new Response();
-        $response->getBody()->write('foo');
-
-        Diactoros\emit($response);
-    }
-
     public function testHtml()
     {
         $this->assertInstanceOf(HtmlResponse::class, Diactoros\html('test'));
