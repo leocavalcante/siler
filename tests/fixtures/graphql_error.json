@@ -1,1 +1,1 @@
-{"errors":[{"message":"error_message","category":"graphql","locations":[{"line":1,"column":3}],"path":["foo"]}],"data":{"foo":null}}
+{"errors":[{"message":"error_message","extensions":{"category":"graphql"},"locations":[{"line":1,"column":3}],"path":["foo"]}],"data":{"foo":null}}

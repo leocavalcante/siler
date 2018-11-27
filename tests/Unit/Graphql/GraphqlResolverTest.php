@@ -30,7 +30,7 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
 
         $query = 'query { message }';
         $schema = Graphql\schema($typeDefs, $resolvers);
-        $actual = \GraphQL\GraphQL::execute($schema, $query);
+        $actual = \GraphQL\GraphQL::executeQuery($schema, $query)->toArray();
 
         $this->assertSame($expected, $actual);
     }
@@ -59,7 +59,7 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
 
         $query = 'query { message }';
         $schema = Graphql\schema($typeDefs, $resolvers);
-        $actual = \GraphQL\GraphQL::execute($schema, $query);
+        $actual = \GraphQL\GraphQL::executeQuery($schema, $query)->toArray();
 
         $this->assertSame($expected, $actual);
     }
@@ -92,7 +92,7 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
 
         $query = 'mutation { sum(a: 2, b: 2) }';
         $schema = Graphql\schema($typeDefs, $resolvers);
-        $actual = \GraphQL\GraphQL::execute($schema, $query);
+        $actual = \GraphQL\GraphQL::executeQuery($schema, $query)->toArray();
 
         $this->assertSame($expected, $actual);
     }
@@ -120,7 +120,7 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
 
         $query = 'query { message }';
         $schema = Graphql\schema($typeDefs, $resolvers);
-        $actual = \GraphQL\GraphQL::execute($schema, $query);
+        $actual = \GraphQL\GraphQL::executeQuery($schema, $query)->toArray();
 
         $this->assertSame($expected, $actual);
     }
