@@ -21,19 +21,19 @@
     },
     "minimum-stability": "stable",
     "require-dev": {
-        "cboden/ratchet": "^0.4.1",
-        "gabordemooij/redbean": "^5.0.0",
-        "lcobucci/jwt": "^3.2.2",
-        "phpstan/phpstan": "^0.9.2",
-        "phpunit/phpunit": "^7.0.2",
-        "ratchet/pawl": "^0.3.1",
-        "react/http": "^0.8.1",
-        "squizlabs/php_codesniffer": "^3.2.3",
-        "twig/twig": "^2.4.7",
-        "vimeo/psalm": "^1.0.4",
-        "vlucas/phpdotenv": "^2.4.0",
-        "webonyx/graphql-php": "^0.11.5",
-        "zendframework/zend-diactoros": "^1.7.1"
+        "cboden/ratchet": "^0.4",
+        "gabordemooij/redbean": "^5.2",
+        "lcobucci/jwt": "^3.2",
+        "phpstan/phpstan": "^0.10",
+        "phpunit/phpunit": "^7.4",
+        "ratchet/pawl": "^0.3",
+        "react/http": "^0.8",
+        "squizlabs/php_codesniffer": "^3.3",
+        "twig/twig": "^2.5",
+        "vimeo/psalm": "^3.0",
+        "vlucas/phpdotenv": "^2.5",
+        "webonyx/graphql-php": "^0.13",
+        "zendframework/zend-diactoros": "^2.0"
     },
     "autoload": {
         "psr-4": {
