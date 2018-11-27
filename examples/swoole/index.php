@@ -8,9 +8,8 @@ use Siler\Route;
 use Siler\Functional as F;
 
 Swoole\handle(function ($req, $res) {
-    $req = Swoole\wrap($req);
-
-    Route\get('/', F\puts('Hello World'), $req);
+    $body = Route\get('/', F\always('Hello World'), Swoole\request($req));
+    $res->end($body);
 });
 
 Swoole\start('0.0.0.0', 9502);
