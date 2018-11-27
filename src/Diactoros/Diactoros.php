@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace Siler\Diactoros;
 
-use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Diactoros\Response\HtmlResponse;
