@@ -304,7 +304,7 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
         $manager->handleStop($conn, ['id' => 1]);
 
         $this->assertEmpty($manager->getConnStorage()->offsetGet($conn));
-        $this->assertEmpty($manager->getSubscriptions()['test']);
+        $this->assertTrue(empty($manager->getSubscriptions()['test']));
     }
 
     public function testGetSubscriptionName()
