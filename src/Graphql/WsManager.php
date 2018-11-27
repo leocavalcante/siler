@@ -236,12 +236,12 @@ class WsManager
      */
     private function execute(string $query, $payload = null, ?array $variables = null)
     {
-        return \GraphQL\GraphQL::execute(
+        return \GraphQL\GraphQL::executeQuery(
             $this->schema,
             $query,
             $payload,
             $this->context,
             $variables
-        );
+        )->toArray();
     }
 }

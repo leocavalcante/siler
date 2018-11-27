@@ -6,7 +6,7 @@ namespace Siler\Test\Unit\Graphql;
 
 use GraphQL\Executor\Executor;
 use GraphQL\Language\AST\DocumentNode;
-use GraphQL\Schema;
+use GraphQL\Type\Schema;
 use GraphQL\Utils\BuildSchema;
 use Ratchet\ConnectionInterface;
 use Siler\Graphql\WsManager;
@@ -76,7 +76,9 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
         $completeResponse = '{"type":"complete","id":1}';
 
         $schema = BuildSchema::build('
-            type Query {}
+            type Query {
+                dummy: String
+            }
 
             type Mutation {
                 dummy: String
@@ -112,7 +114,9 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
         $dataResponse = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
 
         $schema = BuildSchema::build('
-            type Query {}
+            type Query {
+                dummy: String
+            }
 
             type Subscription {
                 dummy: String
