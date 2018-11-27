@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <psalm
     name="Example Psalm config with recommended defaults"
-    stopOnFirstError="true"
     useDocblockTypes="true"
     totallyTyped="false">
 
@@ -24,6 +23,5 @@
 
         <PropertyNotSetInConstructor errorLevel="info" />
         <MissingConstructor errorLevel="info" />
-        <UntypedParam errorLevel="info" />
     </issueHandlers>
 </psalm>
