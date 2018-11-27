@@ -2,9 +2,9 @@ ARG php_version=7.2
 FROM php:${php_version}
 
 RUN apt-get update \
-  && apt-get install -y wget zlib1g-dev libicu-dev \
+  && apt-get install -y wget unzip libicu-dev \
   && docker-php-ext-configure intl \
-  && docker-php-ext-install -j$(nproc) zip intl \
+  && docker-php-ext-install -j$(nproc) intl \
   && pecl install xdebug \
   && docker-php-ext-enable xdebug
 
