@@ -146,7 +146,16 @@ function resolvers(array $resolvers)
      * @psalm-suppress MissingClosureParamType
      */
     Executor::setDefaultFieldResolver(function ($source, $args, $context, ResolveInfo $info) use ($resolvers) {
+        if (is_null($info->fieldName)) {
+            throw new \UnexpectedValueException('Could not get $fieldName from ResolveInfo');
+        }
+
         $fieldName = $info->fieldName;
+
+        if (is_null($info->parentType)) {
+            throw new \UnexpectedValueException('Could not get $parentType from ResolveInfo');
+        }
+
         $parentTypeName = $info->parentType->name;
 
         if (isset($resolvers[$parentTypeName])) {
