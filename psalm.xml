@@ -23,5 +23,8 @@
 
         <PropertyNotSetInConstructor errorLevel="info" />
         <MissingConstructor errorLevel="info" />
+
+        <UndefinedConstant errorLevel="suppress" />
+        <InvalidStringClass errorLevel="suppress" />
     </issueHandlers>
 </psalm>
