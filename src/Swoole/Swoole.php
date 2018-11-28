@@ -5,6 +5,7 @@ declare(strict_types=1);
 /**
  * Siler helpers to work with Swoole.
  */
+
 namespace Siler\Swoole;
 
 use Siler\Container;
@@ -34,7 +35,7 @@ function start(string $host, int $port)
 }
 
 /**
- * Casts a regular Swoole\Http\Request to Siler's tuple-mimic request;
+ * Casts a regular Swoole\Http\Request to Siler's tuple-mimic request;.
  *
  * @param mixed $request The request to be casted
  */
