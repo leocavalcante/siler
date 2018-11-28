@@ -221,7 +221,7 @@ function routify(string $filename) : array
  * @param string                            $routePrefix
  * @param array|ServerRequestInterface|null $request     null, array[method, path] or Psr7 Request Message
  *
- * @return void
+ * @return mixed|null
  */
 function files(string $basePath, string $routePrefix = '', $request = null)
 {
@@ -237,6 +237,7 @@ function files(string $basePath, string $routePrefix = '', $request = null)
 
     $cut = strlen($realpath);
     $routePrefix = rtrim($routePrefix, '/');
+    $routeResult = null;
 
     foreach ($regex as $filename => $file) {
         list($method, $path) = routify(substr($filename, $cut));
@@ -249,8 +250,10 @@ function files(string $basePath, string $routePrefix = '', $request = null)
             $path = $routePrefix.$path;
         }
 
-        route($method, $path, $filename, $request);
+        $routeResult = route($method, $path, $filename, $request) ?? $routeResult;
     }
+
+    return $routeResult;
 }
 
 /**
