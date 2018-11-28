@@ -53,6 +53,7 @@
             "src/Ratchet/Ratchet.php",
             "src/Route/Route.php",
             "src/Siler.php",
+            "src/Swoole/Swoole.php",
             "src/Twig/Twig.php"
         ]
     },

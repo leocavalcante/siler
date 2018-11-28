@@ -305,7 +305,26 @@ function stop_propagation()
     Container\set('route_stop_propagation', true);
 }
 
+/**
+ * Resets default routing behaviour.
+ */
 function resume()
 {
     Container\set('route_stop_propagation', false);
+}
+
+/**
+ * Returns the first non-null route result.
+ *
+ * @param array $routes The route results to br tested
+ */
+function match(array $routes)
+{
+    foreach ($routes as $route) {
+        if (!is_null($route)) {
+            return $route;
+        }
+    }
+
+    return null;
 }

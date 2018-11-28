@@ -217,4 +217,10 @@ class RouteTest extends TestCase
         $this->assertSame(['get', '/foo/{id}'], Route\routify('/foo.$id.get.php'));
         $this->assertSame(['get', '/foo/?{id}?'], Route\routify('/foo.@id.get.php'));
     }
+
+    public function testMatch()
+    {
+        $routes = [null, false];
+        $this->assertFalse(Route\match($routes));
+    }
 }

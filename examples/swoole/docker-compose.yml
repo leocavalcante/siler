@@ -1,0 +1,9 @@
+version: '3.6'
+services:
+  swoole:
+    container_name: siler_swoole
+    build: .
+    ports:
+      - 9502:9502
+    volumes:
+      - ../../:/app
