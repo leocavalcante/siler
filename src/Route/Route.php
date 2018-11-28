@@ -5,6 +5,7 @@ declare(strict_types=1);
 /**
  * Siler routing facilities.
  */
+
 namespace Siler\Route;
 
 use Psr\Http\Message\ServerRequestInterface;
@@ -163,21 +164,21 @@ function regexify(string $path) : string
  */
 function resource(string $basePath, string $resourcesPath, string $identityParam = null, $request = null)
 {
-    $basePath = '/' . trim($basePath, '/');
+    $basePath = '/'.trim($basePath, '/');
     $resourcesPath = rtrim($resourcesPath, '/');
 
     if (is_null($identityParam)) {
         $identityParam = 'id';
     }
 
-    get($basePath, $resourcesPath . '/index.php', $request);
-    get($basePath . '/create', $resourcesPath . '/create.php', $request);
-    get($basePath . '/{' . $identityParam . '}/edit', $resourcesPath . '/edit.php', $request);
-    get($basePath . '/{' . $identityParam . '}', $resourcesPath . '/show.php', $request);
+    get($basePath, $resourcesPath.'/index.php', $request);
+    get($basePath.'/create', $resourcesPath.'/create.php', $request);
+    get($basePath.'/{'.$identityParam.'}/edit', $resourcesPath.'/edit.php', $request);
+    get($basePath.'/{'.$identityParam.'}', $resourcesPath.'/show.php', $request);
 
-    post($basePath, $resourcesPath . '/store.php', $request);
-    put($basePath . '/{' . $identityParam . '}', $resourcesPath . '/update.php', $request);
-    delete($basePath . '/{' . $identityParam . '}', $resourcesPath . '/destroy.php', $request);
+    post($basePath, $resourcesPath.'/store.php', $request);
+    put($basePath.'/{'.$identityParam.'}', $resourcesPath.'/update.php', $request);
+    delete($basePath.'/{'.$identityParam.'}', $resourcesPath.'/destroy.php', $request);
 }
 
 /**
@@ -196,11 +197,11 @@ function routify(string $filename) : array
     $tokens = array_slice(explode('.', $filename), 0, -1);
     $tokens = array_map(function ($token) {
         if ($token[0] == '$') {
-            $token = '{' . substr($token, 1) . '}';
+            $token = '{'.substr($token, 1).'}';
         }
 
         if ($token[0] == '@') {
-            $token = '?{' . substr($token, 1) . '}?';
+            $token = '?{'.substr($token, 1).'}?';
         }
 
         return $token;
@@ -208,7 +209,7 @@ function routify(string $filename) : array
 
     $method = array_pop($tokens);
     $path = implode('/', $tokens);
-    $path = '/' . trim(str_replace('index', '', $path), '/');
+    $path = '/'.trim(str_replace('index', '', $path), '/');
 
     return [$method, $path];
 }
@@ -245,7 +246,7 @@ function files(string $basePath, string $routePrefix = '', $request = null)
                 $path = $routePrefix;
             }
         } else {
-            $path = $routePrefix . $path;
+            $path = $routePrefix.$path;
         }
 
         route($method, $path, $filename, $request);
@@ -305,7 +306,7 @@ function stop_propagation()
 }
 
 /**
- * Resets default routing behaviour
+ * Resets default routing behaviour.
  */
 function resume()
 {
