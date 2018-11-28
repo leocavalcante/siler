@@ -26,5 +26,11 @@
 
         <UndefinedConstant errorLevel="suppress" />
         <InvalidStringClass errorLevel="suppress" />
+
+        <UndefinedClass>
+            <errorLevel type="suppress">
+                <file name="src/Swoole/Swoole.php" />
+            </errorLevel>
+        </UndefinedClass>
     </issueHandlers>
 </psalm>
