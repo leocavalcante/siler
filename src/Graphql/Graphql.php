@@ -165,7 +165,7 @@ function resolvers(array $resolvers)
                 if (array_key_exists($fieldName, $resolver)) {
                     $value = $resolver[$fieldName];
 
-                    return is_callable($value) ? $value($source, $args, $context) : $value;
+                    return is_callable($value) ? $value($source, $args, $context, $info) : $value;
                 }
             }
 
@@ -173,7 +173,7 @@ function resolvers(array $resolvers)
                 if (isset($resolver->{$fieldName})) {
                     $value = $resolver->{$fieldName};
 
-                    return is_callable($value) ? $value($source, $args, $context) : $value;
+                    return is_callable($value) ? $value($source, $args, $context, $info) : $value;
                 }
             }
         }
