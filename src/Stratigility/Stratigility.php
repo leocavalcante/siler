@@ -33,7 +33,7 @@ function pipeline(string $name = DEFAULT_STRATIGILITY_PIPELINE): MiddlewarePipe
  * @param MiddlewareInterface $middleware The given middleware.
  * @param string              $name       The pipeline name stored in Siler\Container.
  *
- * @return MiddlwarePipe
+ * @return MiddlewarePipe
  */
 function pipe(MiddlewareInterface $middleware, string $name = DEFAULT_STRATIGILITY_PIPELINE): MiddlewarePipe
 {
