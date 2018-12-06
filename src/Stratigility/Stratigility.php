@@ -13,7 +13,7 @@ use Zend\Stratigility\MiddlewarePipe;
 const DEFAULT_STRATIGILITY_PIPELINE = 'default_stratigility_pipeline';
 
 /**
- * Creates a new Stratigility pipeline
+ * Creates a new Stratigility pipeline.
  *
  * @param string $name The pipeline name used by the Siler\Container.
  *
@@ -23,11 +23,12 @@ function pipeline(string $name = DEFAULT_STRATIGILITY_PIPELINE): MiddlewarePipe
 {
     $pipeline = new MiddlewarePipe();
     Container\set($name, $pipeline);
+
     return $pipeline;
 }
 
 /**
- * Adds a MiddlewareInterface to a pipeline
+ * Adds a MiddlewareInterface to a pipeline.
  *
  * @param MiddlewareInterface $middleware The given middleware.
  * @param string              $name       The pipeline name stored in Siler\Container.
@@ -43,11 +44,12 @@ function pipe(MiddlewareInterface $middleware, string $name = DEFAULT_STRATIGILI
     }
 
     $pipeline->pipe($middleware);
+
     return $pipeline;
 }
 
 /**
- * Calls handle on the given MiddlewarePipe
+ * Calls handle on the given MiddlewarePipe.
  *
  * @param ServerRequestInterface $request The Request message to be handled.
  * @param string                 $name    The pipeline name on Siler\Container.

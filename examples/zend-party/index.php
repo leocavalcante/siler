@@ -14,6 +14,7 @@ use function Zend\Stratigility\middleware;
 // A PSR-15 Middleware
 $greet = function ($req, $handler) {
     $name = get('name', 'world');
+
     return $handler->handle($req->withAttribute('name', $name));
 };
 
@@ -37,10 +38,10 @@ sapi_emit($res);
 
 /**
  * > curl http://localhost:8080
- * < {"hello":"world"}
+ * < {"hello":"world"}.
  */
 
 /**
  * > curl http://localhost:8080?name=leo
- * < {"hello":"leo"}
+ * < {"hello":"leo"}.
  */
