@@ -33,7 +33,9 @@
         "vimeo/psalm": "^3.0",
         "vlucas/phpdotenv": "^2.5",
         "webonyx/graphql-php": "^0.13",
-        "zendframework/zend-diactoros": "^2.0"
+        "zendframework/zend-diactoros": "^2.0",
+        "zendframework/zend-httphandlerrunner": "^1.0",
+        "zendframework/zend-stratigility": "^3.0"
     },
     "autoload": {
         "psr-4": {
@@ -49,10 +51,12 @@
             "src/Http/Http.php",
             "src/Http/Request.php",
             "src/Http/Response.php",
+            "src/HttpHandlerRunner/HttpHandlerRunner.php",
             "src/Jwt/Jwt.php",
             "src/Ratchet/Ratchet.php",
             "src/Route/Route.php",
             "src/Siler.php",
+            "src/Stratigility/Stratigility.php",
             "src/Swoole/Swoole.php",
             "src/Twig/Twig.php"
         ]
