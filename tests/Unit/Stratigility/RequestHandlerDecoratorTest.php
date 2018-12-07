@@ -9,12 +9,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Siler\Diactoros;
 use Siler\Stratigility\RequesthandlerDecorator;
+use Zend\Diactoros\ServerRequest;
 
 class RequestHandlerDecoratorTest extends TestCase
 {
     public function testHandle()
     {
-        $request = Diactoros\request();
+        $request = new ServerRequest();
         $response = Diactoros\response();
         $pathParams = ['foo' => 'bar'];
 
