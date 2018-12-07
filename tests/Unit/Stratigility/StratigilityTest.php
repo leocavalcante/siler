@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Siler\Container;
 use Siler\Diactoros;
 use Siler\Stratigility;
+use Zend\Diactoros\ServerRequest;
 use Zend\Stratigility\MiddlewarePipe;
 
 class StratigilityTest extends TestCase
@@ -17,7 +18,7 @@ class StratigilityTest extends TestCase
      */
     public function testProcessThrowsWhenNull()
     {
-        Stratigility\process(Diactoros\request(), 'null_process_test');
+        Stratigility\process(new ServerRequest(), 'null_process_test');
     }
 
     /**
@@ -26,7 +27,7 @@ class StratigilityTest extends TestCase
     public function testProcessThrowsWhenNotMiddlewarePipe()
     {
         Container\set('not_middlewarepipe', 1);
-        Stratigility\process(Diactoros\request(), 'not_middlewarepipe');
+        Stratigility\process(new ServerRequest(), 'not_middlewarepipe');
     }
 
     public function testProcess()
@@ -47,7 +48,7 @@ class StratigilityTest extends TestCase
         };
 
         Stratigility\pipe($middleware);
-        Stratigility\process(Diactoros\request()->withAttribute('step', 1))($handler)(['foo' => 'bar']);
+        Stratigility\process((new ServerRequest())->withAttribute('step', 1))($handler)(['foo' => 'bar']);
     }
 
     public function testPipe()
@@ -68,7 +69,7 @@ class StratigilityTest extends TestCase
      */
     public function testHandleThrowsWhenNull()
     {
-        Stratigility\handle(Diactoros\request(), 'null_handle_test');
+        Stratigility\handle(new ServerRequest(), 'null_handle_test');
     }
 
     /**
@@ -77,7 +78,7 @@ class StratigilityTest extends TestCase
     public function testHandleThrowsWhenNotMiddlewarePipe()
     {
         Container\set('not_middlewarepipe', 1);
-        Stratigility\handle(Diactoros\request(), 'not_middlewarepipe');
+        Stratigility\handle(new ServerRequest(), 'not_middlewarepipe');
     }
 
     public function testHandle()
@@ -90,7 +91,7 @@ class StratigilityTest extends TestCase
 
         Stratigility\pipe($middleware, 'handle_test');
 
-        $response = Stratigility\handle(Diactoros\request(), 'handle_test');
+        $response = Stratigility\handle(new ServerRequest(), 'handle_test');
 
         $this->assertSame($payload, $response->getPayload());
     }
