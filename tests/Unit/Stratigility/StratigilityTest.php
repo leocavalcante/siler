@@ -34,6 +34,7 @@ class StratigilityTest extends TestCase
         $middleware = function ($request, $handler) {
             $step = $request->getAttribute('step');
             $this->assertEquals(1, $step);
+
             return $handler->handle($request->withAttribute('step', $step + 1));
         };
 
@@ -41,6 +42,7 @@ class StratigilityTest extends TestCase
             $step = $request->getAttribute('step');
             $this->assertEquals(2, $step);
             $this->assertEquals('bar', $params['foo']);
+
             return Diactoros\response();
         };
 
