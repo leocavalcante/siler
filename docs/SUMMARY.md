@@ -10,6 +10,7 @@
   * [Note on Handlers](route/note-on-handlers.md)
 * [Http](http/README.md)
   * [PSR-7](http/psr-7.md)
+  * [PSRs, Middlewares & Pipelines](http/psrs-middlewares-pipelines.md-.md)
 * [Twig Templating](twig-templating.md)
 * [GraphQL](graphql/README.md)
   * [Subscriptions](graphql/subscriptions.md)
