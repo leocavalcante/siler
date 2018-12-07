@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Siler\Test\Unit\HttpHandlerRunner;
 
 use PHPUnit\Framework\TestCase;
-use Siler\HttpHandlerRunner;
 use Siler\Diactoros;
+use Siler\HttpHandlerRunner;
 
 class HttpHandlerRunnerTest extends TestCase
 {

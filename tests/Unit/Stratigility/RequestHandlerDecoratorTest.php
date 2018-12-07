@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit\Stratigility;
 
-use Psr\Http\Message\ResponseInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Siler\Diactoros;
 use Siler\Stratigility\RequesthandlerDecorator;
@@ -21,6 +21,7 @@ class RequestHandlerDecoratorTest extends TestCase
         $handler = function (ServerRequestInterface $_request, array $_pathParams) use ($request, $response, $pathParams): ResponseInterface {
             $this->assertSame($request, $_request);
             $this->assertSame($pathParams, $_pathParams);
+
             return $response;
         };
 
