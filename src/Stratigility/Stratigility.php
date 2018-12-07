@@ -23,6 +23,10 @@ function process(ServerRequestInterface $request, string $name = DEFAULT_STRATIG
 {
     $pipeline = Container\get($name);
 
+    if (is_null($pipeline) || !($pipeline instanceof MiddlewarePipe)) {
+        throw new \UnexpectedValueException("MiddlewarePipe with name $name not found");
+    }
+
     return function (callable $handler) use ($pipeline, $request) {
         return function (array $pathParams) use ($pipeline, $request, $handler) {
             return $pipeline->process($request, new RequestHandlerDecorator($handler, $pathParams));
