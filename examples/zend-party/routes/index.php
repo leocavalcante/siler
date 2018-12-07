@@ -3,11 +3,11 @@
 declare(strict_types=1);
 require_once __DIR__.'/../../../vendor/autoload.php';
 
-use Siler\Route;
 use Siler\Diactoros;
-use Siler\HttpHandlerRunner;
-use Siler\Stratigility;
 use Siler\Http\Request;
+use Siler\HttpHandlerRunner;
+use Siler\Route;
+use Siler\Stratigility;
 
 $userMiddleware = function ($request, $handler) {
     $token = Request\get('token');

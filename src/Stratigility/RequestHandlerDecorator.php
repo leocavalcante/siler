@@ -31,6 +31,7 @@ class RequestHandlerDecorator implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $handler = $this->handler;
+
         return $handler($request, $this->pathParams);
     }
 }
