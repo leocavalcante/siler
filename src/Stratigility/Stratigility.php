@@ -9,38 +9,46 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Siler\Container;
 use Zend\Stratigility\MiddlewarePipe;
+use function Zend\Stratigility\middleware;
 
 const DEFAULT_STRATIGILITY_PIPELINE = 'default_stratigility_pipeline';
 
 /**
- * Creates a new Stratigility pipeline.
+ * Process a pipeline wrapped on a Siler's route.
  *
- * @param string $name The pipeline name used by the Siler\Container.
- *
- * @return MiddlewarePipe
+ * @param ServerRequestInterface $request The PSR-7 request.
+ * @param string                 $name    The pipeline name.
  */
-function pipeline(string $name = DEFAULT_STRATIGILITY_PIPELINE): MiddlewarePipe
+function process(ServerRequestInterface $request, string $name = DEFAULT_STRATIGILITY_PIPELINE): \Closure
 {
-    $pipeline = new MiddlewarePipe();
-    Container\set($name, $pipeline);
+    $pipeline = Container\get($name);
 
-    return $pipeline;
+    return function (callable $handler) use ($pipeline, $request) {
+        return function (array $pathParams) use ($pipeline, $request, $handler) {
+            return $pipeline->process($request, new RequestHandlerDecorator($handler, $pathParams));
+        };
+    };
 }
 
 /**
- * Adds a MiddlewareInterface to a pipeline.
+ * Adds a MiddlewareInterface to a pipeline, creates it if not exists.
  *
- * @param MiddlewareInterface $middleware The given middleware.
- * @param string              $name       The pipeline name stored in Siler\Container.
+ * @param MiddlewareInterface|callable $middleware The given middleware.
+ * @param string                       $name       The pipeline name stored in Siler\Container.
  *
  * @return MiddlewarePipe
  */
-function pipe(MiddlewareInterface $middleware, string $name = DEFAULT_STRATIGILITY_PIPELINE): MiddlewarePipe
+function pipe($middleware, string $name = DEFAULT_STRATIGILITY_PIPELINE): MiddlewarePipe
 {
     $pipeline = Container\get($name);
 
     if (is_null($pipeline)) {
-        $pipeline = pipeline($name);
+        $pipeline = new MiddlewarePipe();
+        Container\set($name, $pipeline);
+    }
+
+    if (is_callable($middleware)) {
+        $middleware = middleware($middleware);
     }
 
     $pipeline->pipe($middleware);
