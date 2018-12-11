@@ -1,11 +1,11 @@
-ARG php_version=7.2
+ARG php_version=7.3
 FROM php:${php_version}
 
 RUN apt-get update \
   && apt-get install -y wget unzip libicu-dev \
   && docker-php-ext-configure intl \
   && docker-php-ext-install -j$(nproc) intl \
-  && pecl install xdebug \
+  && pecl install xdebug-2.7.0beta1 \
   && docker-php-ext-enable xdebug
 
 WORKDIR /app
