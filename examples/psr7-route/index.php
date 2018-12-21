@@ -15,6 +15,7 @@ $response = Route\match([
     // /greet/Leo?salute=Hello
     Route\get('/greet/{name}', function ($params) use ($request) {
         $salute = array_get($request->getQueryParams(), 'salute', 'Olá');
+
         return Diactoros\text("{$salute} {$params['name']}");
     }, $request),
 
