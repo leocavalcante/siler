@@ -1,24 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
+chdir(dirname(dirname(__DIR__)));
+require_once 'vendor/autoload.php';
+
 use Siler\Diactoros;
+use Siler\HttpHandlerRunner;
 use Siler\Route;
 use function Siler\array_get;
 
-chdir(dirname(dirname(__DIR__)));
-require 'vendor/autoload.php';
-
 $request = Diactoros\request();
-$response = Diactoros\text('not found', 404);
+$response = Route\match([
+    // /greet/Leo?salute=Hello
+    Route\get('/greet/{name}', function ($params) use ($request) {
+        $salute = array_get($request->getQueryParams(), 'salute', 'Olá');
+        return Diactoros\text("{$salute} {$params['name']}");
+    }, $request),
 
-// /greet/Leo?salute=Hello
-$response = Route\get('/greet/{name}', function ($params) use ($request) {
-    $salute = array_get($request->getQueryParams(), 'salute', 'Olá');
+    Route\get('/', function () {
+        return Diactoros\text('hello world');
+    }, $request),
 
-    return Diactoros\text("{$salute} {$params['name']}");
-}, $request) ?? $response;
+    Diactoros\text('not found', 404),
+]);
 
-$response = Route\get('/', function () {
-    return Diactoros\text('hello world');
-}, $request) ?? $response;
-
-Diactoros\emit($response);
+HttpHandlerRunner\sapi_emit($response);

@@ -29,31 +29,40 @@ $response = Diactoros\response();
 $response->getBody()->write('something');
 ```
 
-To emit a Response, there is no big deal, if you got Siler, already imagined that is also about a function call:
+To emit a Response, there is no big deal, if you got Siler, already imagined that is also about a function call, but this time we get the help from `HttpHandlerRunner`:
 
 ```php
-Diactoros\emit($response);
+HttpHandlerRunner\sapi_emit($response);
 ```
 
-As in `Siler\Http\Response` functions, the `Diactoros\emit` will output headers and text to the buffer, so use carefully.
+As in `Siler\Http\Response` functions, the `HttpHandlerRunner\sapi_emit` will output headers and text to the buffer, so use carefully.
 
-For full example:
+Example:
 
 ```php
-use Siler\Route;
-use Siler\Twig;
+<?php declare(strict_types=1);
+
+require_once 'vendor/autoload.php';
+
 use Siler\Diactoros;
+use Siler\HttpHandlerRunner;
+use Siler\Route;
+use function Siler\array_get;
 
-Twig\init('path/to/templates');
+$request = Diactoros\request();
+$response = Route\match([
+    // /greet/Leo?salute=Hello
+    Route\get('/greet/{name}', function ($params) use ($request) {
+        $salute = array_get($request->getQueryParams(), 'salute', 'Olá');
+        return Diactoros\text("{$salute} {$params['name']}");
+    }, $request),
 
-Route\get('/', function () {
-    $query = Diactoros\request()->getQueryParams();
-    $html = Twig\render('pages/home.twig', compact('query'));
-    $response = Diactoros\html($html);
-    
-    Diactoros\emit($response);
-});
+    Route\get('/', function () {
+        return Diactoros\text('hello world');
+    }, $request),
+
+    Diactoros\text('not found', 404),
+]);
+
+HttpHandlerRunner\sapi_emit($response);
 ```
-
-
-
