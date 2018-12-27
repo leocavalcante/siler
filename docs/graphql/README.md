@@ -67,7 +67,7 @@ $queryType = [
     'rooms' => function () {
         return R::findAll('room');
     },
-    'messages' => function () use ($roomByName) {
+    'messages' => function ($root, $args) use ($roomByName) {
         $roomName = $args['roomName'];
         $room = $roomByName($roomName);
         $messages = R::find('message', 'room_id = ?', [$room['id']]);
