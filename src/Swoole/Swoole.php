@@ -36,6 +36,7 @@ function start(string $host, int $port)
         Container\set('swoole_response', $response);
 
         $handler = Container\get('swoole_handler');
+
         return $handler($request, $response);
     });
     $server->start();
