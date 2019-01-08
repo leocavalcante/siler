@@ -1,21 +1,20 @@
 <?php
 
 declare(strict_types=1);
-require __DIR__.'/../../vendor/autoload.php';
+require_once __DIR__.'/../../vendor/autoload.php';
 
-use Siler\Functional as F;
 use Siler\Route;
 use Siler\Swoole;
+use Siler\Twig;
+
+Twig\init(__DIR__.'/pages');
 
 $handler = function ($req, $res) {
-    $routes = [
-        Route\get('/foo', F\always('foo'), Swoole\cast($req)),
-        Route\get('/bar', F\always('bar'), Swoole\cast($req)),
-        Route\get('/baz', F\always('baz'), Swoole\cast($req)),
-    ];
+    Route\get('/', __DIR__.'/pages/home.php', Swoole\cast($req));
+    Route\get('/todos', __DIR__.'/api/todos.php', Swoole\cast($req));
 
-    $body = Route\match($routes) ?? 'nil';
-    $res->end($body);
+    // None of the above short-circuited the response with Swoole\emit().
+    Swoole\emit('Not found', 404);
 };
 
 Swoole\handle($handler);
