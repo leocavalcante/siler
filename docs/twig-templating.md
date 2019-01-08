@@ -1,6 +1,21 @@
+---
+description: >-
+  Siler doesn't have its own template engine, instead it let you bring your own.
+  But, since Twig is pretty popular among PHP developers, Siler has a tiny
+  helper to handle Twig initialization and render.
+---
+
 # Twig Templating
 
-Siler doesn't have its own template engine, instead it let you bring your own. But, since [Twig ](http://twig.sensiolabs.org/)is pretty popular among PHP developers, Siler has a tiny helper to handle Twig initialization and rendering.
+```
+composer require twig/twig
+```
+
+{% hint style="info" %}
+Siler doesn't have direct dependencies, to stay fit, it favors peer dependencies, which means you have to explicitly declare a `twig` dependency in your project in order to use it.
+{% endhint %}
+
+Siler will internally handle the `Twig_Environment` instance.
 
 ```php
 use Siler\Twig;
@@ -8,13 +23,7 @@ use Siler\Twig;
 Twig\init('path/to/templates');
 ```
 
-A pitfall - that actually is a advantage - is that Siler's helpers dependencies needs explicit declaration, which means that you have to require Twig by yourself in order to use Siler's helpers.
-
-```bash
-$ composer require twig/twig
-```
-
-Siler will internally handle the `Twig_Environment` instance. Actually it is also returned at `init` function call, so you call add Twig plugins, filters and functions, for example, adding `Siler\Http\url` into Twig's Environment to later reference static assets on the public folder:
+Actually it is also returned at `init` function call, so you call add Twig plugins, filters and functions, for example, adding `Siler\Http\url` into Twig's Environment to later reference static assets on the public folder:
 
 ```php
 Twig\init('path/to/templates')
@@ -41,7 +50,7 @@ $data = ['message' => 'Hello World'];
 echo Twig\render('pages/home.twig', $data);
 ```
 
-Something that can be confusing using Siler is that some function does outputs and other doesn't, like `Twig\render`. So remember that `Twig\render` will only return the rendered template within its given data and you should explicit output or let `Response `do it:
+Something that can be confusing using Siler is that some function does outputs and other doesn't, like `Twig\render`. So remember that `Twig\render` will only return the rendered template within its given data and you should explicit output or let `Response` do it:
 
 ```php
 $html = Twig\render('pages/home.twig');
@@ -49,3 +58,4 @@ Response\html($html);
 ```
 
 Also, remember that **you can always bring you own template engine to the playground without any bridging stuff** or use PHP itself on your views.
+
