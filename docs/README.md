@@ -1,9 +1,3 @@
----
-description: >-
-  Siler is a set of general purpose high-level abstractions aiming an API for
-  declarative programming in PHP.
----
-
 # Siler
 
 > Simplicity is the ultimate sophistication. – Leonardo Da Vinci
