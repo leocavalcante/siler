@@ -19,7 +19,7 @@ use Dotenv\Dotenv;
  */
 function init(string $path) : array
 {
-    $dotenv = new Dotenv($path);
+    $dotenv = Dotenv::create($path);
 
     return $dotenv->load();
 }
