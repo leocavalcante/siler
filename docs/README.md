@@ -14,7 +14,7 @@ You can use it within any framework or standalone, as a micro-framework:
 composer require leocavalcante/siler
 ```
 
-### A Hello World example
+## A Hello World example
 
 ```php
 use Siler\Functional as λ;

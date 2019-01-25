@@ -6,5 +6,6 @@
 * [Twig Templating](twig-templating.md)
 * [GraphQL](graphql.md)
 * [Web Servers](web-servers.md)
+* [Siler ❤️ Swoole](swoole.md)
 * [Concepts & Philosophy](concepts-and-philosophy.md)
 

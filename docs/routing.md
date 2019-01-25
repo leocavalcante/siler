@@ -1,9 +1,3 @@
----
-description: >-
-  Siler comes with 5 convenient helpers for common HTTP methods: GET, POST, PUT,
-  DELETE and OPTIONS.
----
-
 # Routing
 
 ```php

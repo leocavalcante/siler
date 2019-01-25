@@ -1,10 +1,3 @@
----
-description: >-
-  Siler doesn't have its own template engine, instead it let you bring your own.
-  But, since Twig is pretty popular among PHP developers, Siler has a tiny
-  helper to handle Twig initialization and render.
----
-
 # Twig Templating
 
 ```

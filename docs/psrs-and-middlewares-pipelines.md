@@ -1,10 +1,3 @@
----
-description: >-
-  Siler supports design decisions provided by the PHP FIG. In addition to style
-  choices like PSR-2 and consistency like PSR-4, you can use PSR-7 for HTTP
-  messages and PSR-15 for middlewares pipelines.
----
-
 # PSRs & Middlewares Pipelines
 
 This interfaces are already \(and amazingly\) implemented by Zend at projects: [Diactoros](https://github.com/zendframework/zend-diactoros) and [Stratigility](https://github.com/zendframework/zend-stratigility). Siler wraps them and exposes a function-friendly API handling state internally while achieving a fully-featured and declarative way for: **Middleware Pipelining**.
