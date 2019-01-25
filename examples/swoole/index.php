@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 require_once __DIR__.'/../../vendor/autoload.php';
 
 use Siler\Route;
@@ -18,4 +16,4 @@ $handler = function ($req, $res) {
 };
 
 Swoole\handle($handler);
-Swoole\start('0.0.0.0', 9502);
+Swoole\start('0.0.0.0', 9501);
