@@ -23,7 +23,8 @@ const MONOLOG_DEFAULT_CHANNEL = 'log';
  * @throws \Exception                If a missing directory is not buildable
  * @throws \InvalidArgumentException If stream is not a resource or string
  */
-function stream($stream, int $level = Logger::DEBUG, bool $bubble = true, ?int $filePermission = null, bool $useLocking = false) {
+function stream($stream, int $level = Logger::DEBUG, bool $bubble = true, ?int $filePermission = null, bool $useLocking = false)
+{
     return new StreamHandler($stream, $level, $bubble, $filePermission, $useLocking);
 }
 
@@ -36,8 +37,10 @@ function stream($stream, int $level = Logger::DEBUG, bool $bubble = true, ?int $
  * @param array  $context The log context.
  * @param string $channel The log channel.
  */
-function log(int $level, string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL) {
+function log(int $level, string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+{
     $logger = Loggers::getLogger($channel);
+
     return $logger->log($level, $message, $context);
 }
 
@@ -49,8 +52,10 @@ function log(int $level, string $message, array $context = [], string $channel =
  *
  * @return Logger Returns the Logger.
  */
-function handler(HandlerInterface $handler, string $channel = MONOLOG_DEFAULT_CHANNEL): Logger {
+function handler(HandlerInterface $handler, string $channel = MONOLOG_DEFAULT_CHANNEL): Logger
+{
     $logger = Loggers::getLogger($channel);
+
     return $logger->pushHandler($handler);
 }
 
@@ -61,7 +66,8 @@ function handler(HandlerInterface $handler, string $channel = MONOLOG_DEFAULT_CH
  * @param array  $context The log context.
  * @param string $channel The log channel.
  */
-function debug(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL) {
+function debug(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+{
     return log(Logger::DEBUG, $message, $context, $channel);
 }
 
@@ -72,7 +78,8 @@ function debug(string $message, array $context = [], string $channel = MONOLOG_D
  * @param array  $context The log context.
  * @param string $channel The log channel.
  */
-function info(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL) {
+function info(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+{
     return log(Logger::INFO, $message, $context, $channel);
 }
 
@@ -83,7 +90,8 @@ function info(string $message, array $context = [], string $channel = MONOLOG_DE
  * @param array  $context The log context.
  * @param string $channel The log channel.
  */
-function notice(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL) {
+function notice(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+{
     return log(Logger::NOTICE, $message, $context, $channel);
 }
 
@@ -94,7 +102,8 @@ function notice(string $message, array $context = [], string $channel = MONOLOG_
  * @param array  $context The log context.
  * @param string $channel The log channel.
  */
-function warning(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL) {
+function warning(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+{
     return log(Logger::WARNING, $message, $context, $channel);
 }
 
@@ -105,7 +114,8 @@ function warning(string $message, array $context = [], string $channel = MONOLOG
  * @param array  $context The log context.
  * @param string $channel The log channel.
  */
-function error(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL) {
+function error(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+{
     return log(Logger::ERROR, $message, $context, $channel);
 }
 
@@ -116,7 +126,8 @@ function error(string $message, array $context = [], string $channel = MONOLOG_D
  * @param array  $context The log context.
  * @param string $channel The log channel.
  */
-function critical(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL) {
+function critical(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+{
     return log(Logger::CRITICAL, $message, $context, $channel);
 }
 
@@ -127,7 +138,8 @@ function critical(string $message, array $context = [], string $channel = MONOLO
  * @param array  $context The log context.
  * @param string $channel The log channel.
  */
-function alert(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL) {
+function alert(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+{
     return log(Logger::ALERT, $message, $context, $channel);
 }
 
@@ -138,7 +150,8 @@ function alert(string $message, array $context = [], string $channel = MONOLOG_D
  * @param array  $context The log context.
  * @param string $channel The log channel.
  */
-function emergency(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL) {
+function emergency(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+{
     return log(Logger::EMERGENCY, $message, $context, $channel);
 }
 
@@ -152,14 +165,14 @@ final class Loggers
     /**
      * @var Logger[]
      */
-    static $loggers = [];
+    public static $loggers = [];
 
     /**
      * Returns the Logger identified by the channel.
      *
      * @param string $channel The log channel.
      */
-    static public function getLogger(string $channel): Logger
+    public static function getLogger(string $channel): Logger
     {
         if (empty(static::$loggers[$channel])) {
             static::$loggers[$channel] = new Logger($channel);
