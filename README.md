@@ -203,5 +203,4 @@ Graphql\init(Graphql\schema($typeDefs, $resolvers));
 ```
 
 ---
-
-MIT 2018
+MIT 2019
