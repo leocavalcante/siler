@@ -111,6 +111,29 @@ Twig\init('path/to/templates', 'path/to/templates/cache', Dotenv\env('TWIG_DEBUG
 Route\get('/', 'pages/home.php');
 ```
 
+#### Monolog
+
+Monolog sends your logs to files, sockets, inboxes, databases and various web services. See the complete list of handlers below. Special handlers allow you to build advanced logging strategies.
+
+```bash
+$ composer require monolog/monolog
+```
+
+```php
+use Siler\Monolog as Log;
+
+Log\handler(Log\stream(__DIR__.'/siler.log'));
+
+Log\debug('debug', ['level' => 'debug']);
+Log\info('info', ['level' => 'info']);
+Log\notice('notice', ['level' => 'notice']);
+Log\warning('warning', ['level' => 'warning']);
+Log\error('error', ['level' => 'error']);
+Log\critical('critical', ['level' => 'critical']);
+Log\alert('alert', ['level' => 'alert']);
+Log\emergency('emergency', ['level' => 'emergency']);
+```
+
 #### Ratchet
 
 Real-time web apps using WebSockets.

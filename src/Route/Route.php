@@ -120,23 +120,36 @@ function route($method, string $path, $callback, $request = null)
         $callback = require_fn($callback);
     }
 
-    if (is_null($request)) {
-        $request = [Request\method(), Http\path()];
-    }
+    $methodPath = method_path($request);
 
-    /** @psalm-suppress PossiblyInvalidArgument */
-    if (is_a($request, 'Psr\Http\Message\ServerRequestInterface')) {
-        $request = [$request->getMethod(), $request->getUri()->getPath()];
-    }
-
-    if (count($request) >= 2 && (Request\method_is($method, $request[0]) || $method == 'any') &&
-        preg_match($path, $request[1], $params)) {
+    if (count($methodPath) >= 2 && (Request\method_is($method, $methodPath[0]) || $method == 'any') &&
+        preg_match($path, $methodPath[1], $params)) {
         Container\set('route_match', true);
 
         return $callback($params);
     }
 
     return null;
+}
+
+/**
+ * @internal Used to guess the given request method and path.
+ *
+ * @param array|ServerRequestInterface|null $request Null, array[method, path] or Psr7 Request Message
+ *
+ * @return array
+ */
+function method_path($request): array
+{
+    if (is_array($request)) {
+        return $request;
+    }
+
+    if ($request instanceof ServerRequestInterface) {
+        return [$request->getMethod(), $request->getUri()->getPath()];
+    }
+
+    return [Request\method(), Http\path()];
 }
 
 /**

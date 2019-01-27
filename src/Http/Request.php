@@ -62,7 +62,7 @@ function json(string $input = 'php://input') : array
 function headers() : array
 {
     $serverKeys = array_keys($_SERVER);
-    $httpHeaders = array_reduce($serverKeys, function (array $headers, string $key) : array {
+    $httpHeaders = array_reduce($serverKeys, function (array $headers, $key) : array {
         if ($key == 'CONTENT_TYPE') {
             $headers[] = $key;
         }
