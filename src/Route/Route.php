@@ -135,7 +135,7 @@ function route($method, string $path, $callback, $request = null)
 /**
  * @internal Used to guess the given request method and path.
  *
- * @param array|ServerRequestInterface|null $request  Null, array[method, path] or Psr7 Request Message
+ * @param array|ServerRequestInterface|null $request Null, array[method, path] or Psr7 Request Message
  *
  * @return array
  */
