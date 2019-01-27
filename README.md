@@ -113,7 +113,7 @@ Route\get('/', 'pages/home.php');
 
 #### Monolog
 
-Monolog sends your logs to files, sockets, inboxes, databases and various web services. See the complete list of handlers below. Special handlers allow you to build advanced logging strategies.
+Monolog sends your logs to files, sockets, inboxes, databases and various web services. See the complete list of handlers [here](https://github.com/Seldaek/monolog/blob/master/doc/02-handlers-formatters-processors.md#handlers). Special handlers allow you to build advanced logging strategies.
 
 ```bash
 $ composer require monolog/monolog
