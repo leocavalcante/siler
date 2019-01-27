@@ -120,17 +120,19 @@ function route($method, string $path, $callback, $request = null)
         $callback = require_fn($callback);
     }
 
+    $methodPath = [];
+
     if (is_null($request)) {
-        $request = [Request\method(), Http\path()];
+        $methodPath = [Request\method(), Http\path()];
     }
 
     /** @psalm-suppress PossiblyInvalidArgument */
     if (is_a($request, 'Psr\Http\Message\ServerRequestInterface')) {
-        $request = [$request->getMethod(), $request->getUri()->getPath()];
+        $methodPath = [$request->getMethod(), $request->getUri()->getPath()];
     }
 
-    if (count($request) >= 2 && (Request\method_is($method, $request[0]) || $method == 'any') &&
-        preg_match($path, $request[1], $params)) {
+    if (count($methodPath) >= 2 && (Request\method_is($method, $methodPath[0]) || $method == 'any') &&
+        preg_match($path, $methodPath[1], $params)) {
         Container\set('route_match', true);
 
         return $callback($params);
