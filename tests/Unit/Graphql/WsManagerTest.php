@@ -9,7 +9,7 @@ use GraphQL\Language\AST\DocumentNode;
 use GraphQL\Type\Schema;
 use GraphQL\Utils\BuildSchema;
 use Ratchet\ConnectionInterface;
-use Siler\Graphql\WsManager;
+use Siler\GraphQL\WsManager;
 
 class WsManagerTest extends \PHPUnit\Framework\TestCase
 {

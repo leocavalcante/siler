@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Siler\Test\Unit\Graphql;
 
 use Ratchet\ConnectionInterface;
-use Siler\Graphql\WsManager;
-use Siler\Graphql\WsServer;
+use Siler\GraphQL\WsManager;
+use Siler\GraphQL\WsServer;
 
 class WsServerTest extends \PHPUnit\Framework\TestCase
 {
