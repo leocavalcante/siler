@@ -32,7 +32,7 @@ class MonologTest extends TestCase
 
     public function testSugar()
     {
-        $handler =  new TestHandler();
+        $handler = new TestHandler();
         Log\handler($handler, 'test');
 
         $levels = array_values(Logger::getLevels());
@@ -56,4 +56,3 @@ class MonologTest extends TestCase
         }
     }
 }
-
