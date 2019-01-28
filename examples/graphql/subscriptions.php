@@ -44,4 +44,4 @@ GraphQL\listen(GraphQL\ON_OPERATION, function (array $subscription, array $rootV
 });
 
 printf("Listening at %s:%s\n", $host, $port);
-GraphQL\ws($schema, $filters, $host, $port)->run();
+GraphQL\subscriptions($schema, $filters, $host, $port)->run();

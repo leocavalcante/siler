@@ -199,7 +199,7 @@ function resolvers(array $resolvers)
  *
  * @return IoServer
  */
-function ws(
+function subscriptions(
     Schema $schema,
     array $filters = [],
     string $host = '0.0.0.0',
@@ -222,9 +222,9 @@ function ws(
  *
  * @return void
  */
-function ws_endpoint(string $url)
+function subscriptions_at(string $url)
 {
-    Container\set('graphql_ws_endpoint', $url);
+    Container\set('graphql_subscriptions_endpoint', $url);
 }
 
 /**
@@ -237,7 +237,7 @@ function ws_endpoint(string $url)
  */
 function publish(string $subscriptionName, $payload = null)
 {
-    $wsEndpoint = Container\get('graphql_ws_endpoint');
+    $wsEndpoint = Container\get('graphql_subscriptions_endpoint');
 
     Client\connect($wsEndpoint, ['graphql-ws'])->then(function (WebSocket $conn) use ($subscriptionName, $payload) {
         $request = [
