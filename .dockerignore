@@ -4,6 +4,7 @@
 !install_composer.sh
 !composer.json
 !composer.lock
+!Dockerfile
 !phpcs.xml
 !psalm.xml
 !phpunit.xml.dist

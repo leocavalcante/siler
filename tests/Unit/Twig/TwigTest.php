@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siler\Test\Unit;
 
 use PHPUnit\Framework\TestCase;
+use Siler\Container;
 use Siler\Twig;
 
 class TwigTest extends TestCase
@@ -15,6 +16,7 @@ class TwigTest extends TestCase
      */
     public function testRenderWithoutInit()
     {
+        Container\set('twig', null);
         Twig\render('template.twig');
     }
 
