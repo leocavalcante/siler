@@ -248,11 +248,14 @@ function files(string $basePath, string $routePrefix = '', $request = null)
     $iterator = new \RecursiveIteratorIterator($directory);
     $regex = new \RegexIterator($iterator, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
 
+    $files = array_keys(iterator_to_array($regex));
+    sort($files);
+
     $cut = strlen($realpath);
     $routePrefix = rtrim($routePrefix, '/');
     $routeResult = null;
 
-    foreach ($regex as $filename => $file) {
+    foreach ($files as $filename) {
         list($method, $path) = routify(substr($filename, $cut));
 
         if ('/' === $path) {

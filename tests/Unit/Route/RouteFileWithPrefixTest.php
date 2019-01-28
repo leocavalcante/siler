@@ -50,12 +50,7 @@ class RouteFileWithPrefixTest extends \PHPUnit\Framework\TestCase
 
     public function testGetWithParam()
     {
-        // NOTE: On Windows @ files comes first
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            $this->expectOutputString('foo.$8.getfoo.@8.getfoo.8.get');
-        } else {
-            $this->expectOutputString('foo.8.getfoo.$8.getfoo.@8.get');
-        }
+        $this->expectOutputString('foo.$8.getfoo.@8.getfoo.8.get');
 
         $_SERVER['SCRIPT_NAME'] = '/index.php';
         $_SERVER['REQUEST_METHOD'] = 'GET';
