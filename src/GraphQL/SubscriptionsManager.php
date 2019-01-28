@@ -266,7 +266,7 @@ class SubscriptionsManager
 
     /**
      * @param string $eventName
-     * @param array $withArgs
+     * @param array  $withArgs
      *
      * @return mixed|null
      */
