@@ -9,9 +9,9 @@ use GraphQL\Language\AST\DocumentNode;
 use GraphQL\Type\Schema;
 use GraphQL\Utils\BuildSchema;
 use Ratchet\ConnectionInterface;
-use Siler\GraphQL\WsManager;
+use Siler\GraphQL\SubscriptionsManager;
 
-class WsManagerTest extends \PHPUnit\Framework\TestCase
+class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
 {
     public function testHandleConnectionInit()
     {
@@ -28,7 +28,7 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
                        ->disableOriginalConstructor()
                        ->getMock();
 
-        $manager = new WsManager($schema);
+        $manager = new SubscriptionsManager($schema);
         $manager->handleConnectionInit($conn);
     }
 
@@ -57,7 +57,7 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
             ],
         ];
 
-        $manager = new WsManager($schema);
+        $manager = new SubscriptionsManager($schema);
         $manager->handleConnectionInit($conn);
 
         $conn->expects($this->exactly(2))
@@ -96,7 +96,7 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
             ],
         ];
 
-        $manager = new WsManager($schema);
+        $manager = new SubscriptionsManager($schema);
         $manager->handleConnectionInit($conn);
 
         $conn->expects($this->exactly(2))
@@ -134,7 +134,7 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
             ],
         ];
 
-        $manager = new WsManager($schema);
+        $manager = new SubscriptionsManager($schema);
         $manager->handleConnectionInit($conn);
 
         $conn->expects($this->once())
@@ -165,7 +165,7 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
             'payload' => [],
         ];
 
-        $manager = new WsManager($schema);
+        $manager = new SubscriptionsManager($schema);
         $manager->handleStart($conn, $data);
     }
 
@@ -207,7 +207,7 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
             ->method('send')
             ->withConsecutive([$startExpected], [$expected]);
 
-        $manager = new WsManager($schema);
+        $manager = new SubscriptionsManager($schema);
         $manager->handleStart($conn, $startData);
         $manager->handleData($data);
     }
@@ -220,7 +220,7 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
 
         $data = ['subscription' => 'doNotExists'];
 
-        $manager = new WsManager($schema);
+        $manager = new SubscriptionsManager($schema);
         $this->assertNull($manager->handleData($data));
     }
 
@@ -270,7 +270,7 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
              ->method('send')
              ->withConsecutive([$expected], [$expected]);
 
-        $manager = new WsManager($schema, $filters);
+        $manager = new SubscriptionsManager($schema, $filters);
         $manager->handleStart($conn, $startData);
         $manager->handleData($data);
 
@@ -298,7 +298,7 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
             ],
         ];
 
-        $manager = new WsManager($schema);
+        $manager = new SubscriptionsManager($schema);
         $manager->handleConnectionInit($conn);
         $manager->handleStart($conn, $data);
         $manager->handleStop($conn, ['id' => 1]);
@@ -331,7 +331,7 @@ class WsManagerTest extends \PHPUnit\Framework\TestCase
 
         $document->definitions = [$definition];
 
-        $manager = new WsManager($schema);
+        $manager = new SubscriptionsManager($schema);
 
         $this->assertSame('test', $manager->getSubscriptionName($document));
     }

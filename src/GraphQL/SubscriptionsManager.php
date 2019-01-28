@@ -11,7 +11,7 @@ use Ratchet\ConnectionInterface;
 use Siler\Container;
 use function Siler\array_get;
 
-class WsManager
+class SubscriptionsManager
 {
     /**
      * @var Schema
@@ -175,7 +175,7 @@ class WsManager
                 $query = array_get($subscription['payload'], 'query');
                 $variables = array_get($subscription['payload'], 'variables');
 
-                if (!is_null($this->filters) && isset($this->filters[$subscription['name']])) {
+                if (isset($this->filters[$subscription['name']])) {
                     if (!$this->filters[$subscription['name']]($payload, $variables, $this->context)) {
                         continue;
                     }

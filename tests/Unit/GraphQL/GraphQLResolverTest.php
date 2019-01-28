@@ -6,7 +6,7 @@ namespace Siler\Test\Unit\Graphql;
 
 use Siler\GraphQL;
 
-class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
+class GraphQLResolverTest extends \PHPUnit\Framework\TestCase
 {
     public function testResolver()
     {
