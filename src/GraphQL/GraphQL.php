@@ -5,7 +5,7 @@ declare(strict_types=1);
  * Helper functions for webonyx/graphql-php GraphQL implementation.
  */
 
-namespace Siler\Graphql;
+namespace Siler\GraphQL;
 
 use GraphQL\Executor\Executor;
 use GraphQL\GraphQL;
@@ -48,6 +48,11 @@ const GQL_DATA = 'data'; // Server -> Client
 const GQL_ERROR = 'error'; // Server -> Client
 const GQL_COMPLETE = 'complete'; // Server -> Client
 const GQL_STOP = 'stop'; // Client -> Server
+
+const ON_OPERATION = 'graphql_on_operation';
+const ON_OPERATION_COMPLETE = 'graphql_on_operation_complete';
+const ON_CONNECT = 'graphql_on_connect';
+const ON_DISCONNECT = 'graphql_on_disconnect';
 
 /**
  * Initializes a new GraphQL endpoint.
@@ -196,11 +201,11 @@ function resolvers(array $resolvers)
  */
 function ws(
     Schema $schema,
-    array $filters = null,
+    ?array $filters = null,
     string $host = '0.0.0.0',
     int $port = 5000,
-    array $rootValue = null,
-    array $context = null
+    array $rootValue = [],
+    array $context = []
 ) : IoServer {
     $manager = new WsManager($schema, $filters, $rootValue, $context);
     $server = new WsServer($manager);
@@ -244,6 +249,11 @@ function publish(string $subscriptionName, $payload = null)
         $conn->send(json_encode($request));
         $conn->close();
     });
+}
+
+function listen(string $eventName, callable $listener)
+{
+    Container\set($eventName, $listener);
 }
 
 /**

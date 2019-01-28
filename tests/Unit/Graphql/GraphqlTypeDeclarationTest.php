@@ -11,37 +11,37 @@ use GraphQL\Type\Definition\IntType;
 use GraphQL\Type\Definition\ListOfType;
 use GraphQL\Type\Definition\StringType;
 use PHPUnit\Framework\TestCase;
-use Siler\Graphql;
+use Siler\GraphQL;
 
 class GraphqlTypeDeclarationTest extends TestCase
 {
     public function testStr()
     {
-        $this->assertInstanceOf(StringType::class, Graphql\str());
+        $this->assertInstanceOf(StringType::class, GraphQL\str());
     }
 
     public function testInt()
     {
-        $this->assertInstanceOf(IntType::class, Graphql\int());
+        $this->assertInstanceOf(IntType::class, GraphQL\int());
     }
 
     public function testFloat()
     {
-        $this->assertInstanceOf(FloatType::class, Graphql\float());
+        $this->assertInstanceOf(FloatType::class, GraphQL\float());
     }
 
     public function testBool()
     {
-        $this->assertInstanceOf(BooleanType::class, Graphql\bool());
+        $this->assertInstanceOf(BooleanType::class, GraphQL\bool());
     }
 
     public function testId()
     {
-        $this->assertInstanceOf(IdType::class, Graphql\id());
+        $this->assertInstanceOf(IdType::class, GraphQL\id());
     }
 
     public function testListOf()
     {
-        $this->assertInstanceOf(ListOfType::class, Graphql\list_of(Graphql\int()));
+        $this->assertInstanceOf(ListOfType::class, GraphQL\list_of(GraphQL\int()));
     }
 }

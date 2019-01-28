@@ -1,11 +1,11 @@
 <?php
 
-namespace Siler\Graphql;
+namespace Siler\GraphQL;
 
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 use Ratchet\WebSocket\WsServerInterface;
-use Siler\Graphql;
+use Siler\GraphQL;
 
 class WsServer implements MessageComponentInterface, WsServerInterface
 {
@@ -34,19 +34,19 @@ class WsServer implements MessageComponentInterface, WsServerInterface
         $data = json_decode($message, true);
 
         switch ($data['type']) {
-            case Graphql\GQL_CONNECTION_INIT:
-                $this->manager->handleConnectionInit($conn);
+            case GraphQL\GQL_CONNECTION_INIT:
+                $this->manager->handleConnectionInit($conn, $data);
                 break;
 
-            case Graphql\GQL_START:
+            case GraphQL\GQL_START:
                 $this->manager->handleStart($conn, $data);
                 break;
 
-            case Graphql\GQL_DATA:
+            case GraphQL\GQL_DATA:
                 $this->manager->handleData($data);
                 break;
 
-            case Graphql\GQL_STOP:
+            case GraphQL\GQL_STOP:
                 $this->manager->handleStop($conn, $data);
                 break;
         }

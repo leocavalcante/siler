@@ -1,7 +1,7 @@
 <?php
 
 use RedBeanPHP\R;
-use Siler\Graphql;
+use Siler\GraphQL;
 
 R::setup('sqlite:'.__DIR__.'/db.sqlite');
 
@@ -53,7 +53,7 @@ $mutationType = [
         R::store($message);
 
         $message['roomName'] = $roomName; // For the inbox filter
-        Graphql\publish('inbox', $message); // <- Exactly what "inbox" will receive
+        GraphQL\publish('inbox', $message); // <- Exactly what "inbox" will receive
 
         return $message;
     },

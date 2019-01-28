@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit\Graphql;
 
-use Siler\Graphql;
+use Siler\GraphQL;
 
 class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
 {
@@ -29,7 +29,7 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
         ];
 
         $query = 'query { message }';
-        $schema = Graphql\schema($typeDefs, $resolvers);
+        $schema = GraphQL\schema($typeDefs, $resolvers);
         $actual = \GraphQL\GraphQL::executeQuery($schema, $query)->toArray();
 
         $this->assertSame($expected, $actual);
@@ -58,7 +58,7 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
         ];
 
         $query = 'query { message }';
-        $schema = Graphql\schema($typeDefs, $resolvers);
+        $schema = GraphQL\schema($typeDefs, $resolvers);
         $actual = \GraphQL\GraphQL::executeQuery($schema, $query)->toArray();
 
         $this->assertSame($expected, $actual);
@@ -91,7 +91,7 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
         ];
 
         $query = 'mutation { sum(a: 2, b: 2) }';
-        $schema = Graphql\schema($typeDefs, $resolvers);
+        $schema = GraphQL\schema($typeDefs, $resolvers);
         $actual = \GraphQL\GraphQL::executeQuery($schema, $query)->toArray();
 
         $this->assertSame($expected, $actual);
@@ -119,7 +119,7 @@ class GraphqlResolverTest extends \PHPUnit\Framework\TestCase
         ];
 
         $query = 'query { message }';
-        $schema = Graphql\schema($typeDefs, $resolvers);
+        $schema = GraphQL\schema($typeDefs, $resolvers);
         $actual = \GraphQL\GraphQL::executeQuery($schema, $query)->toArray();
 
         $this->assertSame($expected, $actual);
