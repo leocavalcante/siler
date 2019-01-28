@@ -22,8 +22,10 @@ const MONOLOG_DEFAULT_CHANNEL = 'log';
  *
  * @throws \Exception                If a missing directory is not buildable
  * @throws \InvalidArgumentException If stream is not a resource or string
+ *
+ * @return StreamHandler
  */
-function stream($stream, int $level = Logger::DEBUG, bool $bubble = true, ?int $filePermission = null, bool $useLocking = false)
+function stream($stream, int $level = Logger::DEBUG, bool $bubble = true, ?int $filePermission = null, bool $useLocking = false): StreamHandler
 {
     return new StreamHandler($stream, $level, $bubble, $filePermission, $useLocking);
 }
@@ -36,6 +38,8 @@ function stream($stream, int $level = Logger::DEBUG, bool $bubble = true, ?int $
  * @param string $message The log message.
  * @param array  $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return bool Whether the record has been processed.
  */
 function log(int $level, string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
 {
@@ -65,6 +69,8 @@ function handler(HandlerInterface $handler, string $channel = MONOLOG_DEFAULT_CH
  * @param string $message The log message.
  * @param array  $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return bool Whether the record has been processed.
  */
 function debug(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
 {
@@ -77,6 +83,8 @@ function debug(string $message, array $context = [], string $channel = MONOLOG_D
  * @param string $message The log message.
  * @param array  $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return bool Whether the record has been processed.
  */
 function info(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
 {
@@ -89,6 +97,8 @@ function info(string $message, array $context = [], string $channel = MONOLOG_DE
  * @param string $message The log message.
  * @param array  $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return bool Whether the record has been processed.
  */
 function notice(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
 {
@@ -101,6 +111,8 @@ function notice(string $message, array $context = [], string $channel = MONOLOG_
  * @param string $message The log message.
  * @param array  $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return bool Whether the record has been processed.
  */
 function warning(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
 {
@@ -113,6 +125,8 @@ function warning(string $message, array $context = [], string $channel = MONOLOG
  * @param string $message The log message.
  * @param array  $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return bool Whether the record has been processed.
  */
 function error(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
 {
@@ -125,6 +139,8 @@ function error(string $message, array $context = [], string $channel = MONOLOG_D
  * @param string $message The log message.
  * @param array  $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return bool Whether the record has been processed.
  */
 function critical(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
 {
@@ -137,6 +153,8 @@ function critical(string $message, array $context = [], string $channel = MONOLO
  * @param string $message The log message.
  * @param array  $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return bool Whether the record has been processed.
  */
 function alert(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
 {
@@ -149,6 +167,8 @@ function alert(string $message, array $context = [], string $channel = MONOLOG_D
  * @param string $message The log message.
  * @param array  $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return bool Whether the record has been processed.
  */
 function emergency(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
 {
@@ -171,6 +191,8 @@ final class Loggers
      * Returns the Logger identified by the channel.
      *
      * @param string $channel The log channel.
+     *
+     * @return Logger
      */
     public static function getLogger(string $channel): Logger
     {
