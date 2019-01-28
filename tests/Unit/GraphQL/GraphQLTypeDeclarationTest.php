@@ -13,7 +13,7 @@ use GraphQL\Type\Definition\StringType;
 use PHPUnit\Framework\TestCase;
 use Siler\GraphQL;
 
-class GraphqlTypeDeclarationTest extends TestCase
+class GraphQLTypeDeclarationTest extends TestCase
 {
     public function testStr()
     {

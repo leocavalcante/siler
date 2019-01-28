@@ -49,7 +49,7 @@
             "src/Dotenv/Dotenv.php",
             "src/Functional/Functional.php",
             "src/Functional/Monad/Monad.php",
-            "src/Graphql/Graphql.php",
+            "src/GraphQL/GraphQL.php",
             "src/Http/Http.php",
             "src/Http/Request.php",
             "src/Http/Response.php",

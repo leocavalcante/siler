@@ -201,14 +201,14 @@ function resolvers(array $resolvers)
  */
 function ws(
     Schema $schema,
-    ?array $filters = null,
+    array $filters = [],
     string $host = '0.0.0.0',
     int $port = 5000,
     array $rootValue = [],
     array $context = []
 ) : IoServer {
-    $manager = new WsManager($schema, $filters, $rootValue, $context);
-    $server = new WsServer($manager);
+    $manager = new SubscriptionsManager($schema, $filters, $rootValue, $context);
+    $server = new SubscriptionsServer($manager);
     $websocket = new \Ratchet\WebSocket\WsServer($server);
     $http = new HttpServer($websocket);
 

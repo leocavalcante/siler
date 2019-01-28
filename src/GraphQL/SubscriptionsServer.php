@@ -7,14 +7,14 @@ use Ratchet\MessageComponentInterface;
 use Ratchet\WebSocket\WsServerInterface;
 use Siler\GraphQL;
 
-class WsServer implements MessageComponentInterface, WsServerInterface
+class SubscriptionsServer implements MessageComponentInterface, WsServerInterface
 {
     /**
-     * @var WsManager
+     * @var SubscriptionsManager
      */
     protected $manager;
 
-    public function __construct(WsManager $manager)
+    public function __construct(SubscriptionsManager $manager)
     {
         $this->manager = $manager;
     }

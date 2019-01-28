@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace Siler\Test\Unit\Graphql;
 
 use Ratchet\ConnectionInterface;
-use Siler\GraphQL\WsManager;
-use Siler\GraphQL\WsServer;
+use Siler\GraphQL\SubscriptionsManager;
+use Siler\GraphQL\SubscriptionsServer;
 
-class WsServerTest extends \PHPUnit\Framework\TestCase
+class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
 {
     public function testOnOpen()
     {
-        $manager = $this->getMockBuilder(WsManager::class)
+        $manager = $this->getMockBuilder(SubscriptionsManager::class)
                         ->disableOriginalConstructor()
                         ->getMock();
 
         $conn = $this->getMockBuilder(ConnectionInterface::class)
                      ->getMock();
 
-        $server = new WsServer($manager);
+        $server = new SubscriptionsServer($manager);
         $server->onOpen($conn);
 
-        $this->assertInstanceOf(WsServer::class, $server);
+        $this->assertInstanceOf(SubscriptionsServer::class, $server);
     }
 
     public function testOnMessage()
@@ -30,11 +30,11 @@ class WsServerTest extends \PHPUnit\Framework\TestCase
         $conn = $this->getMockBuilder(ConnectionInterface::class)
                      ->getMock();
 
-        $manager = $this->getMockBuilder(WsManager::class)
+        $manager = $this->getMockBuilder(SubscriptionsManager::class)
                         ->disableOriginalConstructor()
                         ->getMock();
 
-        $server = new WsServer($manager);
+        $server = new SubscriptionsServer($manager);
 
         $manager->expects($this->once())
                 ->method('handleConnectionInit')
@@ -73,41 +73,41 @@ class WsServerTest extends \PHPUnit\Framework\TestCase
 
     public function testOnClose()
     {
-        $manager = $this->getMockBuilder(WsManager::class)
+        $manager = $this->getMockBuilder(SubscriptionsManager::class)
                         ->disableOriginalConstructor()
                         ->getMock();
 
         $conn = $this->getMockBuilder(ConnectionInterface::class)
                      ->getMock();
 
-        $server = new WsServer($manager);
+        $server = new SubscriptionsServer($manager);
         $server->onClose($conn);
 
-        $this->assertInstanceOf(WsServer::class, $server);
+        $this->assertInstanceOf(SubscriptionsServer::class, $server);
     }
 
     public function testOnError()
     {
-        $manager = $this->getMockBuilder(WsManager::class)
+        $manager = $this->getMockBuilder(SubscriptionsManager::class)
                         ->disableOriginalConstructor()
                         ->getMock();
 
         $conn = $this->getMockBuilder(ConnectionInterface::class)
                      ->getMock();
 
-        $server = new WsServer($manager);
+        $server = new SubscriptionsServer($manager);
         $server->onError($conn, new \Exception());
 
-        $this->assertInstanceOf(WsServer::class, $server);
+        $this->assertInstanceOf(SubscriptionsServer::class, $server);
     }
 
     public function testGetSubProtocols()
     {
-        $manager = $this->getMockBuilder(WsManager::class)
+        $manager = $this->getMockBuilder(SubscriptionsManager::class)
                         ->disableOriginalConstructor()
                         ->getMock();
 
-        $server = new WsServer($manager);
+        $server = new SubscriptionsServer($manager);
 
         $this->assertContains('graphql-ws', $server->getSubProtocols());
     }

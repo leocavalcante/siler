@@ -18,7 +18,7 @@ use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
 use Siler\GraphQL;
 
-class GraphqlTest extends \PHPUnit\Framework\TestCase
+class GraphQLTest extends \PHPUnit\Framework\TestCase
 {
     public function testVal()
     {
