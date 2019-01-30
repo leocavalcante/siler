@@ -380,3 +380,31 @@ function uncons(array $list) : array
 {
     return [$list[0], array_slice($list, 1)];
 }
+
+/**
+ * Filter a list removing null values.
+ *
+ * @param array $list
+ *
+ * @return array
+ */
+function non_null(array $list): array
+{
+    return array_values(array_filter($list, function ($item) {
+       return !is_null($item);
+    }));
+}
+
+/**
+ * Filter a list removing empty values.
+ *
+ * @param array $list
+ *
+ * @return array
+ */
+function non_empty(array $list): array
+{
+    return array_values(array_filter($list, function ($item) {
+        return !empty($item);
+    }));
+}

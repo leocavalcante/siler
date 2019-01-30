@@ -199,4 +199,17 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expected, $actual);
         $this->assertSame([1, 2, 3, 4, 5], $input);
     }
+
+    public function testNonNull()
+    {
+        $input = [0, null, false, '', null];
+        $this->assertSame([0, false, ''], f\non_null($input));
+    }
+
+    public function testNonEmpty()
+    {
+        $input = [0, 1, false, true, '', 'foo', null, [], ['bar']];
+        $this->assertSame([1, true, 'foo', ['bar']], f\non_empty($input));
+    }
+
 }
