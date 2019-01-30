@@ -48,6 +48,7 @@
             "src/Diactoros/Diactoros.php",
             "src/Dotenv/Dotenv.php",
             "src/Functional/Functional.php",
+            "src/Functional/Tuple.php",
             "src/Functional/Monad/Monad.php",
             "src/GraphQL/GraphQL.php",
             "src/Http/Http.php",
