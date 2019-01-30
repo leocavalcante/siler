@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Siler\Functional;
 
 /**
- * Creates a new Tuple
+ * Creates a new Tuple.
  *
  * @param mixed ...$values
  *
@@ -18,8 +18,6 @@ function tuple(...$values)
 
 /**
  * A class representing a Tuple.
- *
- * @package Siler\Functional
  */
 class Tuple implements \ArrayAccess, \Countable
 {
@@ -37,6 +35,7 @@ class Tuple implements \ArrayAccess, \Countable
 
     /**
      * @param mixed $offset
+     *
      * @return bool
      */
     public function offsetExists($offset)
@@ -47,9 +46,9 @@ class Tuple implements \ArrayAccess, \Countable
     /**
      * @param mixed| $offset
      *
-     * @return mixed
-     *
      * @throws \OutOfBoundsException
+     *
+     * @return mixed
      */
     public function offsetGet($offset)
     {
@@ -57,7 +56,7 @@ class Tuple implements \ArrayAccess, \Countable
             return $this->values[$offset];
         }
 
-        throw new \OutOfRangeException("Invalid tuple position");
+        throw new \OutOfRangeException('Invalid tuple position');
     }
 
     /**
@@ -68,7 +67,7 @@ class Tuple implements \ArrayAccess, \Countable
      */
     public function offsetSet($offset, $value)
     {
-        throw new \RuntimeException("Tuples are immutable!");
+        throw new \RuntimeException('Tuples are immutable!');
     }
 
     /**
@@ -78,7 +77,7 @@ class Tuple implements \ArrayAccess, \Countable
      */
     public function offsetUnset($offset)
     {
-        throw new \RuntimeException("Tuples are immutable!");
+        throw new \RuntimeException('Tuples are immutable!');
     }
 
     /**
