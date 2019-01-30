@@ -27,9 +27,10 @@ class Tuple implements \ArrayAccess, \Countable
 
     /**
      * @internal Tuple constructor.
-     * @param $values
+     *
+     * @param array $values Tuple elements.
      */
-    public function __construct($values)
+    public function __construct(array $values)
     {
         $this->values = $values;
     }
