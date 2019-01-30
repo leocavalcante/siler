@@ -18,6 +18,8 @@ class TupleTest extends TestCase
         $this->assertSame('a', $tuple[1]);
         $this->assertSame(true, $tuple[2]);
         $this->assertTrue(isset($tuple[1]));
+        $this->assertIsArray($tuple->values());
+        $this->assertSame([1, 'a', true], $tuple->values());
     }
 
     /**

@@ -19,7 +19,7 @@ function tuple(...$values)
 /**
  * A class representing a Tuple.
  */
-class Tuple implements \ArrayAccess, \Countable
+final class Tuple implements \ArrayAccess, \Countable
 {
     private $values;
 
@@ -31,6 +31,16 @@ class Tuple implements \ArrayAccess, \Countable
     public function __construct(array $values)
     {
         $this->values = $values;
+    }
+
+    /**
+     * Returns Tuple values, useful for `list()`.
+     *
+     * @return array
+     */
+    public function values(): array
+    {
+        return $this->values;
     }
 
     /**
