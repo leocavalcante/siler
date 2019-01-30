@@ -55,7 +55,6 @@ For each Query and Mutation we can define our resolver functions. We'll be using
 <?php
 
 use RedBeanPHP\R;
-use Siler\Graphql;
 
 R::setup('sqlite:'.__DIR__.'/db.sqlite');
 
@@ -126,12 +125,12 @@ Awesome. We have type definitions and resolver functions. Let's put them togethe
 ```php
 <?php
 
-use Siler\Graphql;
+use Siler\GraphQL;
 
 $typeDefs = file_get_contents(__DIR__.'/schema.graphql');
 $resolvers = include __DIR__.'/resolvers.php';
 
-return Graphql\schema($typeDefs, $resolvers);
+return GraphQL\schema($typeDefs, $resolvers);
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
@@ -146,7 +145,7 @@ Now, let's create our HTTP endpoint:
 ```php
 <?php
 
-use Siler\Graphql;
+use Siler\GraphQL;
 use Siler\Http\Request;
 use Siler\Http\Response;
 
@@ -162,7 +161,7 @@ if (Request\method_is('post')) {
     $schema = include __DIR__.'/schema.php';
 
     // Give it to siler
-    Graphql\init($schema);
+    GraphQL\init($schema);
 }
 ```
 {% endcode-tabs-item %}
@@ -380,8 +379,6 @@ And the other is for the client-side:
 $ composer require ratchet/pawl
 ```
 
-We are going to extend our [previous guide](https://github.com/leocavalcante/siler/blob/master/docs/graphql/README.md), so if you didn't read it, [take a look](https://github.com/leocavalcante/siler/blob/master/docs/graphql/README.md) before continue.
-
 First, let's add our **Subscription** type to our Schema:
 
 {% code-tabs %}
@@ -423,7 +420,7 @@ Yeap, it is just resolving to the message that it receives.
 Siler has a function at the `Graphql` namespace to define where your subscriptions are running:
 
 ```php
-Graphql\ws_endpoint('ws://127.0.0.1:5000');
+GraphQL\subscriptions_at('ws://127.0.0.1:3000');
 ```
 
 Here we are assuming that they are running at localhost on port 8080.  
@@ -433,10 +430,10 @@ Here we are assuming that they are running at localhost on port 8080.
 
 This is just a helper that adds the **Subscriptions endpoint** to the Siler container so another function can actually use it when needed. And this function is `publish`!
 
-`Siler\Graphql\publish` will make a WebSocket call to the Subscriptions server notifying that something has happened.
+`Siler\GraphQL\publish` will make a WebSocket call to the Subscriptions server notifying that something has happened.
 
 ```php
-Graphql\publish('inbox', $message);
+GraphQL\publish('inbox', $message);
 ```
 
 It's first argument is the **Subscription** that will be triggered and the second argument is a data payload, in our case, the new message that has been created.
@@ -449,12 +446,12 @@ Our `resolvers.php` will look like this:
 <?php
 
 use RedBeanPHP\R;
-use Siler\Graphql;
+use Siler\GraphQL;
 
 R::setup('sqlite:'.__DIR__.'/db.sqlite');
 
 // Here we set where our subscriptions are running
-Graphql\subscriptions_at('ws://127.0.0.1:8080');
+GraphQL\subscriptions_at('ws://127.0.0.1:3000');
 
 $roomByName = function ($name) {
     return R::findOne('room', 'name = ?', [$name]);
@@ -504,7 +501,7 @@ $mutationType = [
         R::store($message);
 
         // Then we can publish new messages that arrives from the chat mutation
-        Graphql\publish('inbox', $message); // <- Exactly what "inbox" will receive
+        GraphQL\publish('inbox', $message); // <- Exactly what "inbox" will receive
 
         return $message;
     },
@@ -536,12 +533,12 @@ As in `api.php` endpoint we need to setup the Subscriptions server:
 ```php
 <?php
 
-use Siler\Graphql;
+use Siler\GraphQL;
 
 require 'vendor/autoload.php';
 
 $schema = include __DIR__.'/schema.php';
-Graphql\ws($schema)->run();
+GraphQL\subscriptions($schema, [], '0.0.0.0', 3000)->run();
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
@@ -554,7 +551,7 @@ php subscriptions.php
 
 By default, Siler will run the subscriptions at localhost on port 8080.
 
-#### Production-grade
+### Production-grade
 
 To run subscriptions server at a production-grade level, please consider using some long-running process manager like Supervisor. Take a look at [http://socketo.me/docs/deploy\#supervisor](http://socketo.me/docs/deploy#supervisor).
 
@@ -629,7 +626,7 @@ Filters are part of **Siler** and based on Apollo's setup functions. Filter func
 ```php
 <?php
 
-use Siler\Graphql;
+use Siler\GraphQL;
 
 require dirname(dirname(__DIR__)).'/vendor/autoload.php';
 
@@ -640,7 +637,7 @@ $filters = [
 ];
 
 $schema = include __DIR__.'/schema.php';
-Graphql\ws($schema, $filters)->run();
+GraphQL\subscriptions($schema, $filters)->run();
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
@@ -651,7 +648,7 @@ We need just a little thing to get working. Adding this `room_name` field to our
 
 ```php
 $message['roomName'] = $roomName; // For the inbox filter
-Graphql\publish('inbox', $message); // <- Exactly what "inbox" will receive
+GraphQL\publish('inbox', $message); // <- Exactly what "inbox" will receive
 ```
 
 _Note: when a RedBeanObject is encoded to JSON it automatically converts camel case properties to underscore ones. That is why we give `roomName`, but receives as `room_name`._
