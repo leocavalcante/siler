@@ -49,7 +49,6 @@
             "src/Diactoros/Diactoros.php",
             "src/Dotenv/Dotenv.php",
             "src/Functional/Functional.php",
-            "src/Functional/Tuple.php",
             "src/Functional/Monad/Monad.php",
             "src/GraphQL/GraphQL.php",
             "src/Http/Http.php",
@@ -58,12 +57,14 @@
             "src/HttpHandlerRunner/HttpHandlerRunner.php",
             "src/Jwt/Jwt.php",
             "src/Monolog/Monolog.php",
+            "src/Prelude/Str.php",
+            "src/Prelude/Tuple.php",
             "src/Ratchet/Ratchet.php",
             "src/Route/Route.php",
-            "src/Siler.php",
             "src/Stratigility/Stratigility.php",
             "src/Swoole/Swoole.php",
-            "src/Twig/Twig.php"
+            "src/Twig/Twig.php",
+            "src/Siler.php"
         ]
     },
     "autoload-dev": {

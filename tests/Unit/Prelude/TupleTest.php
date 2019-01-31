@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Siler\Test\Unit;
 
 use PHPUnit\Framework\TestCase;
-use function Siler\Functional\tuple;
+use Siler\Tuple as T;
 
 class TupleTest extends TestCase
 {
     public function testTuple()
     {
-        $tuple = tuple(1, 'a', true);
+        $tuple = T\tuple(1, 'a', true);
 
         $this->assertFalse(is_array($tuple));
         $this->assertSame(1, $tuple[0]);
@@ -27,7 +27,7 @@ class TupleTest extends TestCase
      */
     public function testOutOfRangeGet()
     {
-        $tuple = tuple(1);
+        $tuple = T\tuple(1);
         $tuple[1];
     }
 
@@ -36,7 +36,7 @@ class TupleTest extends TestCase
      */
     public function testImmutableSet()
     {
-        $tuple = tuple(1);
+        $tuple = T\tuple(1);
         $tuple[1] = 2;
     }
 
@@ -45,7 +45,7 @@ class TupleTest extends TestCase
      */
     public function testImmutableUnset()
     {
-        $tuple = tuple(1);
+        $tuple = T\tuple(1);
         unset($tuple[0]);
     }
 }

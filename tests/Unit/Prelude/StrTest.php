@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Siler\Test\Unit\Str;
+namespace Siler\Test\Unit\Prelude;
 
 use PHPUnit\Framework\TestCase;
 use Siler\Str;
@@ -15,4 +15,3 @@ class StrTest extends TestCase
         $this->assertSame('foo_bar_baz', Str\slugify(' *&# FoO, Bar - Baz!!! ', ['separator' => '_']));
     }
 }
-

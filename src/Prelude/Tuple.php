@@ -1,8 +1,11 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * Tuple module.
+ */
 
-namespace Siler\Functional;
+namespace Siler\Tuple;
 
 /**
  * Creates a new Tuple.
