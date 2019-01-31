@@ -211,5 +211,4 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $input = [0, 1, false, true, '', 'foo', null, [], ['bar']];
         $this->assertSame([1, true, 'foo', ['bar']], f\non_empty($input));
     }
-
 }
