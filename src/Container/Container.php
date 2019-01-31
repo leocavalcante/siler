@@ -20,6 +20,7 @@ use function Siler\array_get;
 function get(string $key, $default = null)
 {
     $container = Container::getInstance();
+
     return array_get($container->values, $key, $default);
 }
 
@@ -47,6 +48,7 @@ function set(string $key, $value)
 function has(string $key) : bool
 {
     $container = Container::getInstance();
+
     return array_key_exists($key, $container->values);
 }
 

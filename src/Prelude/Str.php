@@ -4,15 +4,16 @@ declare(strict_types=1);
 /**
  * String module. Functions to operate on strings.
  */
+
 namespace Siler\Str;
 
 use Cocur\Slugify\Slugify;
 use Siler\Container;
 
 /**
- * Slugify a string
+ * Slugify a string.
  *
- * @param string $input
+ * @param string     $input
  * @param array|null $opts
  *
  * @return string
