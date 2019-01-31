@@ -412,12 +412,12 @@ function non_empty(array $list): array
 /**
  * Partial application.
  *
- * @param callable|string $callable
- * @param mixed           ...$partial
+ * @param callable $callable
+ * @param mixed    ...$partial
  *
  * @return \Closure
  */
-function partial($callable, ...$partial): \Closure
+function partial(callable $callable, ...$partial): \Closure
 {
     return function (...$args) use ($callable, $partial) {
         return call_user_func_array($callable, array_merge($partial, $args));
