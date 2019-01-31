@@ -408,3 +408,18 @@ function non_empty(array $list): array
         return !empty($item);
     }));
 }
+
+/**
+ * Partial application.
+ *
+ * @param callable|string $callable
+ * @param mixed           ...$partial
+ *
+ * @return \Closure
+ */
+function partial($callable, ...$partial): \Closure
+{
+    return function (...$args) use ($callable, $partial) {
+        return call_user_func_array($callable, array_merge($partial, $args));
+    };
+}
