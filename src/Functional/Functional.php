@@ -391,7 +391,7 @@ function uncons(array $list) : array
 function non_null(array $list): array
 {
     return array_values(array_filter($list, function ($item) {
-       return !is_null($item);
+        return !is_null($item);
     }));
 }
 

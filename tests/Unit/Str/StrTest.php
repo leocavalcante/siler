@@ -15,4 +15,3 @@ class StrTest extends TestCase
         $this->assertSame('foo_bar_baz', Str\slugify(' *&# FoO, Bar - Baz!!! ', ['separator' => '_']));
     }
 }
-
