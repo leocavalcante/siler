@@ -26,3 +26,17 @@ function slugify(string $input, ?array $opts = null): string
 
     return Container\get('slugify')->slugify($input, $opts);
 }
+
+/**
+ *  Breaks a string into lines.
+ *
+ * @param string $input
+ *
+ * @return array
+ */
+function lines(string $input): array
+{
+    return array_map(function (string $row): string {
+        return trim($row);
+    }, preg_split('/\n/', $input));
+}
