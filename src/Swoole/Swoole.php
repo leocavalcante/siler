@@ -93,3 +93,18 @@ function emit(string $content, int $status = 200, array $headers = [])
 
     return response()->end($content);
 }
+
+/**
+ * Sugar to emit() JSON encoded data.
+ *
+ * @param mixed $data
+ * @param int   $status
+ * @param array $headers
+ */
+function json($data, int $status = 200, array $headers = [])
+{
+    $content = json_encode($data);
+    $headers = array_merge(['Content-Type' => 'application/json'], $headers);
+
+    return emit($content, $status, $headers);
+}
