@@ -19,7 +19,7 @@ function connect($uri = 'mongodb://127.0.0.1/', array $uriOptions = [], array $d
 function database(string $databaseName, array $options = [], string $clientName = MONGODB_DEFAULT_NAME): \MongoDB\Database
 {
     if (!Container\has($clientName)) {
-        return null;
+        throw new \OutOfRangeException("$clientName not found");
     }
 
     return Container\get($clientName)->selectDatabase($databaseName, $options);
@@ -28,7 +28,7 @@ function database(string $databaseName, array $options = [], string $clientName 
 function collection(string $databaseName, $collectionName, array $options = [], string $clientName = MONGODB_DEFAULT_NAME): \MongoDB\Collection
 {
     if (!Container\has($clientName)) {
-        return null;
+        throw new \OutOfRangeException("$clientName not found");
     }
 
     return Container\get($clientName)->selectCollection($databaseName, $collectionName, $options);
