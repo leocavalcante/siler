@@ -46,7 +46,7 @@ function array_get(?array $array, $key = null, $default = null, bool $caseInsens
  */
 function require_fn(string $filename) : \Closure
 {
-    return function (...$args) use ($filename) {
+    return function (array $params) use ($filename) {
         if (!file_exists($filename)) {
             return null;
         }
@@ -59,7 +59,7 @@ function require_fn(string $filename) : \Closure
         $value = Container\get($filename);
 
         if (is_callable($value)) {
-            return call_user_func_array($value, $args);
+            return call_user_func_array($value, $params);
         }
 
         return $value;
