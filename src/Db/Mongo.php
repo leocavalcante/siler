@@ -12,6 +12,7 @@ function connect($uri = 'mongodb://127.0.0.1/', array $uriOptions = [], array $d
 {
     $client = new \MongoDB\Client($uri, $uriOptions, $driverOptions);
     Container\set($clientName, $client);
+
     return $client;
 }
 
