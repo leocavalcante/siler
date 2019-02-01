@@ -7,8 +7,6 @@ declare(strict_types=1);
 
 namespace Siler;
 
-use Siler\Container;
-
 /**
  * Get a value from an array checking if the key exists and returning a default value if not.
  *
