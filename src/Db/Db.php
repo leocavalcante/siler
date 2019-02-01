@@ -12,6 +12,7 @@ function connect(string $dsn, string $username = 'root', string $passwd = '', ar
 {
     $pdo = new \PDO($dsn, $username, $passwd, $options);
     Container\set(DB_DEFAULT_NAME, $pdo);
+
     return $pdo;
 }
 
