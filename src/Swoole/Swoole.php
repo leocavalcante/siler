@@ -27,7 +27,7 @@ function handle(callable $handler)
  * @param string $host The host that the server should bind
  * @param int    $port The port that the server should bind
  */
-function start(string $host, int $port)
+function start(int $port = 80, string $host = '0.0.0.0')
 {
     $server = new Server($host, $port);
     $server->on('request', function ($request, $response) {
