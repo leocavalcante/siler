@@ -14,7 +14,7 @@ const DB_DEFAULT_NAME = 'db';
  * @param string $dsn
  * @param string $username
  * @param string $passwd
- * @param array $options
+ * @param array  $options
  *
  * @return \PDO
  */
@@ -47,7 +47,7 @@ function query(string $statement, string $pdoName = DB_DEFAULT_NAME): \PDOStatem
  * Prepare a statement.
  *
  * @param string $statement
- * @param array $driverOpts
+ * @param array  $driverOpts
  * @param string $pdoName
  *
  * @return \PDOStatement|null
