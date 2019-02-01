@@ -1,6 +1,9 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * Module to work with MongoDB operations.
+ */
 
 namespace Siler\Mongo;
 
@@ -8,7 +11,17 @@ use Siler\Container;
 
 const MONGODB_DEFAULT_NAME = 'mongodb';
 
-function connect($uri = 'mongodb://127.0.0.1/', array $uriOptions = [], array $driverOptions = [], string $clientName = MONGODB_DEFAULT_NAME): \MongoDB\Client
+/**
+ * Creates a new MongoDB\Client instance.
+ *
+ * @param string $uri
+ * @param array $uriOptions
+ * @param array $driverOptions
+ * @param string $clientName
+ *
+ * @return \MongoDB\Client
+ */
+function connect(string $uri = 'mongodb://127.0.0.1/', array $uriOptions = [], array $driverOptions = [], string $clientName = MONGODB_DEFAULT_NAME): \MongoDB\Client
 {
     $client = new \MongoDB\Client($uri, $uriOptions, $driverOptions);
     Container\set($clientName, $client);
@@ -16,6 +29,15 @@ function connect($uri = 'mongodb://127.0.0.1/', array $uriOptions = [], array $d
     return $client;
 }
 
+/**
+ * Selects a database from a MongoDB client.
+ *
+ * @param string $databaseName
+ * @param array $options
+ * @param string $clientName
+ *
+ * @return \MongoDB\Database
+ */
 function database(string $databaseName, array $options = [], string $clientName = MONGODB_DEFAULT_NAME): \MongoDB\Database
 {
     if (!Container\has($clientName)) {
@@ -25,6 +47,16 @@ function database(string $databaseName, array $options = [], string $clientName 
     return Container\get($clientName)->selectDatabase($databaseName, $options);
 }
 
+/**
+ * Selects a collection from a database and client.
+ *
+ * @param string $databaseName
+ * @param $collectionName
+ * @param array $options
+ * @param string $clientName
+ *
+ * @return \MongoDB\Collection
+ */
 function collection(string $databaseName, $collectionName, array $options = [], string $clientName = MONGODB_DEFAULT_NAME): \MongoDB\Collection
 {
     if (!Container\has($clientName)) {
