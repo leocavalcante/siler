@@ -46,6 +46,7 @@
         },
         "files": [
             "src/Container/Container.php",
+            "src/Db/Mongo.php",
             "src/Diactoros/Diactoros.php",
             "src/Dotenv/Dotenv.php",
             "src/Functional/Functional.php",
