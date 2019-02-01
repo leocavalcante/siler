@@ -8,6 +8,10 @@ use Siler\Route;
 
 class RouteFileTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testGetIndex()
     {
         $this->expectOutputString('index.get');
@@ -18,6 +22,10 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
         Route\files(__DIR__.'/../../fixtures/route_files/');
     }
 
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testGetContact()
     {
         $this->expectOutputString('contact.get');
@@ -28,6 +36,10 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
         Route\files(__DIR__.'/../../fixtures/route_files/');
     }
 
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testPostContact()
     {
         $this->expectOutputString('contact.post');
@@ -38,6 +50,10 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
         Route\files(__DIR__.'/../../fixtures/route_files/');
     }
 
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testGetAbout()
     {
         $this->expectOutputString('about.index.get');
@@ -48,6 +64,10 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
         Route\files(__DIR__.'/../../fixtures/route_files/');
     }
 
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testGetWithParam()
     {
         $this->expectOutputString('foo.$8.getfoo.@8.getfoo.8.get');
@@ -59,6 +79,10 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
         Route\files(__DIR__.'/../../fixtures/route_files/');
     }
 
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function testNotExists()
     {
         $this->expectException(\InvalidArgumentException::class);
