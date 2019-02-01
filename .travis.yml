@@ -5,6 +5,9 @@ php:
   - '7.2'
   - '7.3'
 
+before_install:
+  - pecl install mongodb
+
 install:
   - composer install
 
