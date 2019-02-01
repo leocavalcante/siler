@@ -8,6 +8,16 @@ use Siler\Container;
 
 const DB_DEFAULT_NAME = 'db';
 
+/**
+ * Creates a new PDO instance.
+ *
+ * @param string $dsn
+ * @param string $username
+ * @param string $passwd
+ * @param array $options
+ *
+ * @return \PDO
+ */
 function connect(string $dsn, string $username = 'root', string $passwd = '', array $options = []): \PDO
 {
     $pdo = new \PDO($dsn, $username, $passwd, $options);
@@ -16,6 +26,14 @@ function connect(string $dsn, string $username = 'root', string $passwd = '', ar
     return $pdo;
 }
 
+/**
+ * Query through a PDO instance.
+ *
+ * @param string $statement
+ * @param string $pdoName
+ *
+ * @return \PDOStatement
+ */
 function query(string $statement, string $pdoName = DB_DEFAULT_NAME): \PDOStatement
 {
     if (!Container\has($pdoName)) {
@@ -25,6 +43,15 @@ function query(string $statement, string $pdoName = DB_DEFAULT_NAME): \PDOStatem
     return Container\get($pdoName)->query($statement);
 }
 
+/**
+ * Prepare a statement.
+ *
+ * @param string $statement
+ * @param array $driverOpts
+ * @param string $pdoName
+ *
+ * @return \PDOStatement|null
+ */
 function prepare(string $statement, array $driverOpts = [], string $pdoName = DB_DEFAULT_NAME): ?\PDOStatement
 {
     if (!Container\has($pdoName)) {
@@ -40,6 +67,13 @@ function prepare(string $statement, array $driverOpts = [], string $pdoName = DB
     return $stmt;
 }
 
+/**
+ * Gets error info about a PDO instance.
+ *
+ * @param string $pdoName
+ *
+ * @return array
+ */
 function error(string $pdoName = DB_DEFAULT_NAME): array
 {
     if (!Container\has($pdoName)) {
