@@ -7,6 +7,8 @@ declare(strict_types=1);
 
 namespace Siler;
 
+use Siler\Container;
+
 /**
  * Get a value from an array checking if the key exists and returning a default value if not.
  *
@@ -44,8 +46,22 @@ function array_get(?array $array, $key = null, $default = null, bool $caseInsens
  */
 function require_fn(string $filename) : \Closure
 {
-    return function ($params = null) use ($filename) {
-        /** @psalm-suppress UnresolvableInclude */
-        return require $filename;
+    return function (...$args) use ($filename) {
+        if (!file_exists($filename)) {
+            return null;
+        }
+
+        if (!Container\has($filename)) {
+            /** @psalm-suppress UnresolvableInclude */
+            Container\set($filename, require_once $filename);
+        }
+
+        $value = Container\get($filename);
+
+        if (is_callable($value)) {
+            return call_user_func_array($value, $args);
+        }
+
+        return $value;
     };
 }
