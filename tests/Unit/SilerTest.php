@@ -39,5 +39,11 @@ class SilerTest extends TestCase
     {
         $cb = \Siler\require_fn(__DIR__.'/../fixtures/foo.php');
         $this->assertSame('baz', $cb(['bar' => 'baz']));
+
+        $cb = \Siler\require_fn('dont exists');
+        $this->assertNull($cb());
+
+        $cb = \Siler\require_fn(__DIR__.'/../fixtures/callable_require.php');
+        $this->assertSame('bar', $cb(['foo' => 'bar']));
     }
 }
