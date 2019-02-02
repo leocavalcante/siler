@@ -7,5 +7,6 @@
 * [GraphQL](graphql.md)
 * [Web Servers](web-servers.md)
 * [Siler ❤️ Swoole](swoole.md)
+* [λ Functional](functional.md)
 * [Concepts & Philosophy](concepts-and-philosophy.md)
 
