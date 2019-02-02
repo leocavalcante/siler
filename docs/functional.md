@@ -85,6 +85,24 @@ print_r($explodeCommas('foo,bar,baz'));
  */
 ```
 
+#### `match(array $matches)`
+
+A pattern-match attempt. Truthy Closure evaluations on the left calls and short-circuits evaluations on the right.
+
+```php
+use Siler\Functional as λ;
+
+$nameOf = λ\match([
+    [λ\equal(1), λ\always('one')],
+    [λ\equal(2), λ\always('two')],
+    [λ\equal(3), λ\always('three')],
+]);
+
+echo $nameOf(1); // one
+echo $nameOf(2); // two
+echo $nameOf(3); // three
+```
+
 {% hint style="info" %}
 There are a lot more of them. A good place it check it out are [the tests](https://github.com/leocavalcante/siler/blob/master/tests/Unit/Functional/FunctionalTest.php).
 {% endhint %}
