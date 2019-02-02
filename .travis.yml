@@ -5,9 +5,6 @@ php:
   - '7.2'
   - '7.3'
 
-before_install:
-  - pecl install mongodb
-
 install:
   - composer install
 
@@ -19,3 +16,14 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover ./coverage-clover.xml
+
+matrix:
+  include:
+    - php: '7.1'
+      before_install:
+        - pecl install mongodb
+
+branches:
+  only:
+  - master
+  - dev
