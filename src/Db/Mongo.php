@@ -15,8 +15,8 @@ const MONGODB_DEFAULT_NAME = 'mongodb';
  * Creates a new MongoDB\Client instance.
  *
  * @param string $uri
- * @param array  $uriOptions
- * @param array  $driverOptions
+ * @param array $uriOptions
+ * @param array $driverOptions
  * @param string $clientName
  *
  * @return \MongoDB\Client
@@ -33,7 +33,7 @@ function connect(string $uri = 'mongodb://127.0.0.1/', array $uriOptions = [], a
  * Selects a database from a MongoDB client.
  *
  * @param string $databaseName
- * @param array  $options
+ * @param array $options
  * @param string $clientName
  *
  * @return \MongoDB\Database
@@ -52,7 +52,7 @@ function database(string $databaseName, array $options = [], string $clientName 
  *
  * @param string $databaseName
  * @param string $collectionName
- * @param array  $options
+ * @param array $options
  * @param string $clientName
  *
  * @return \MongoDB\Collection
