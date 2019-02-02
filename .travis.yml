@@ -6,7 +6,7 @@ php:
   - '7.3'
 
 install:
-  - pecl install mongodb
+  - pecl install -f mongodb-1.5.3
   - composer install
 
 script:
