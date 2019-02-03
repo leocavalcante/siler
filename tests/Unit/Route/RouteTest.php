@@ -5,7 +5,12 @@ declare(strict_types=1);
 namespace Siler\Test\Unit;
 
 use PHPUnit\Framework\TestCase;
+use Siler\Container;
 use Siler\Route;
+use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
+use Siler\Test\Unit\Route\SwooleHttpRequestMock;
+use Zend\Diactoros\ServerRequest;
+use Zend\Diactoros\ServerRequestFactory;
 
 class RouteTest extends TestCase
 {
@@ -222,5 +227,29 @@ class RouteTest extends TestCase
     {
         $routes = [null, false];
         $this->assertFalse(Route\match($routes));
+
+        $routes = [null, null];
+        $this->assertNull(Route\match($routes));
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testMethodPath()
+    {
+        $methodPath = Route\method_path(['OPTIONS', '/baz']);
+        $this->assertSame(['OPTIONS', '/baz'], $methodPath);
+
+        $serverRequest = new ServerRequest([], [], '/foo', 'PUT');
+        $methodPath = Route\method_path($serverRequest);
+        $this->assertSame(['PUT', '/foo'], $methodPath);
+
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $methodPath = Route\method_path(null);
+        $this->assertSame(['POST', '/bar/baz'], $methodPath);
+
+        Container\set(SWOOLE_HTTP_REQUEST, new SwooleHttpRequestMock('DELETE', '/qux'));
+        $methodPath = Route\method_path(null);
+        $this->assertSame(['DELETE', '/qux'], $methodPath);
     }
 }
