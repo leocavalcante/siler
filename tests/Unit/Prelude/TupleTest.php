@@ -48,4 +48,10 @@ class TupleTest extends TestCase
         $tuple = T\tuple(1);
         unset($tuple[0]);
     }
+
+    public function testCount()
+    {
+        $tuple = T\tuple(1, 2, 3);
+        $this->assertCount(3, $tuple);
+    }
 }
