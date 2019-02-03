@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Swoole Chat</title>
+</head>
+<body>
+    <textarea rows="10" cols="60"></textarea>
+
+    <form>
+        <input type="text">
+        <input type="submit">
+    </form>
+
+    <script>
+        const ws = new WebSocket('ws://localhost:9502');
+
+        ws.onopen = function () {
+            document.querySelector('textarea').textContent += ':: connected' + '\n';
+        };
+
+        ws.onmessage = function (event) {
+            document.querySelector('textarea').textContent += event.data + '\n';
+        };
+
+        document.querySelector('form').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const input = document.querySelector('input[type=text');
+            const msg = input.value.trim();
+
+            ws.send(msg);
+            input.value = '';
+        });
+    </script>
+</body>
+</html>
