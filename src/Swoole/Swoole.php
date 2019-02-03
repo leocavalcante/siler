@@ -10,54 +10,34 @@ namespace Siler\Swoole;
 
 use Siler\Container;
 
-const SWOOLE_HTTP_HANDLER = 'swoole_http_handler';
-const SWOOLE_HTTP_SERVER = 'swoole_http_server';
 const SWOOLE_HTTP_REQUEST = 'swoole_http_request';
 const SWOOLE_HTTP_REQUEST_ENDED = 'swoole_http_request_ended';
 const SWOOLE_HTTP_RESPONSE = 'swoole_http_response';
 const SWOOLE_WEBSOCKET_SERVER = 'swoole_websocket_server';
 
 /**
- * Sets the HTTP server handle.
- *
- * @param callable $handler The handler function which receives $request and $response objects
- */
-function handle(callable $handler)
-{
-    Container\set(SWOOLE_HTTP_HANDLER, $handler);
-}
-
-/**
  * Starts a Swoole HTTP server.
  *
  * @param string $host The host that the server should bind
  * @param int    $port The port that the server should bind
+ *
+ * @return \Closure
  */
-function start(int $port = 80, string $host = '0.0.0.0')
+function start(int $port = 80, string $host = '0.0.0.0'): \Closure
 {
     $server = new \Swoole\Http\Server($host, $port);
-    $server->on('request', function ($request, $response) {
-        Container\set(SWOOLE_HTTP_REQUEST_ENDED, false);
-        Container\set(SWOOLE_HTTP_REQUEST, $request);
-        Container\set(SWOOLE_HTTP_RESPONSE, $response);
 
-        $handler = Container\get(SWOOLE_HTTP_HANDLER);
+    return function ($handler) use ($server) {
+        $server->on('request', function ($request, $response) use ($handler) {
+            Container\set(SWOOLE_HTTP_REQUEST_ENDED, false);
+            Container\set(SWOOLE_HTTP_REQUEST, $request);
+            Container\set(SWOOLE_HTTP_RESPONSE, $response);
 
-        return $handler($request, $response);
-    });
-    $server->start();
-}
+            return $handler($request, $response);
+        });
 
-/**
- * Casts a regular Swoole\Http\Request to Siler's tuple-mimic request;.
- *
- * @param mixed $request The request to be casted
- *
- * @return array
- */
-function cast($request)
-{
-    return [$request->server['request_method'], $request->server['request_uri']];
+        $server->start();
+    };
 }
 
 /**

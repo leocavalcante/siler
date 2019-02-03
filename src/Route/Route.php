@@ -13,6 +13,7 @@ use Siler\Container;
 use Siler\Http;
 use Siler\Http\Request;
 use function Siler\require_fn;
+use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 /**
  * Define a new route using the GET HTTP method.
@@ -135,7 +136,7 @@ function route($method, string $path, $callback, $request = null)
 /**
  * @internal Used to guess the given request method and path.
  *
- * @param array|ServerRequestInterface|null $request Null, array[method, path] or Psr7 Request Message
+ * @param mixed $request null, array[method, path], PSR-7 Request Message or Swoole HTTP request.
  *
  * @return array
  */
@@ -147,6 +148,11 @@ function method_path($request): array
 
     if ($request instanceof ServerRequestInterface) {
         return [$request->getMethod(), $request->getUri()->getPath()];
+    }
+
+    if (Container\has(SWOOLE_HTTP_REQUEST)) {
+        $request = Container\get(SWOOLE_HTTP_REQUEST);
+        return [$request->server['request_method'], $request->server['request_uri']];
     }
 
     return [Request\method(), Http\path()];
