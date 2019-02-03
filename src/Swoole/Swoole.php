@@ -118,7 +118,7 @@ function json($data, int $status = 200, array $headers = [])
 /**
  * Returns a Closure that starts a websocket server.
  *
- * @param int $port
+ * @param int    $port
  * @param string $host
  *
  * @return \Closure
@@ -153,7 +153,7 @@ function websocket(int $port = 9502, string $host = '0.0.0.0'): \Closure
  * Pushes a message to a specific websocket client.
  *
  * @param string $message
- * @param int $fd
+ * @param int    $fd
  *
  * @return mixed
  */
