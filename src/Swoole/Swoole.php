@@ -3,13 +3,19 @@
 declare(strict_types=1);
 
 /**
- * Siler helpers to work with Swoole.
+ * Siler module to work with Swoole.
  */
 
 namespace Siler\Swoole;
 
 use Siler\Container;
-use Swoole\Http\Server;
+
+const SWOOLE_HTTP_HANDLER = 'swoole_http_handler';
+const SWOOLE_HTTP_SERVER = 'swoole_http_server';
+const SWOOLE_HTTP_REQUEST = 'swoole_http_request';
+const SWOOLE_HTTP_REQUEST_ENDED = 'swoole_http_request_ended';
+const SWOOLE_HTTP_RESPONSE = 'swoole_http_response';
+const SWOOLE_WEBSOCKET_SERVER = 'swoole_websocket_server';
 
 /**
  * Sets the HTTP server handle.
@@ -18,7 +24,7 @@ use Swoole\Http\Server;
  */
 function handle(callable $handler)
 {
-    Container\set('swoole_handler', $handler);
+    Container\set(SWOOLE_HTTP_HANDLER, $handler);
 }
 
 /**
@@ -29,13 +35,13 @@ function handle(callable $handler)
  */
 function start(int $port = 80, string $host = '0.0.0.0')
 {
-    $server = new Server($host, $port);
+    $server = new \Swoole\Http\Server($host, $port);
     $server->on('request', function ($request, $response) {
-        Container\set('swoole_request_ended', false);
-        Container\set('swoole_request', $request);
-        Container\set('swoole_response', $response);
+        Container\set(SWOOLE_HTTP_REQUEST_ENDED, false);
+        Container\set(SWOOLE_HTTP_REQUEST, $request);
+        Container\set(SWOOLE_HTTP_RESPONSE, $response);
 
-        $handler = Container\get('swoole_handler');
+        $handler = Container\get(SWOOLE_HTTP_HANDLER);
 
         return $handler($request, $response);
     });
@@ -59,7 +65,7 @@ function cast($request)
  */
 function request()
 {
-    return Container\get('swoole_request');
+    return Container\get(SWOOLE_HTTP_REQUEST);
 }
 
 /**
@@ -67,7 +73,7 @@ function request()
  */
 function response()
 {
-    return Container\get('swoole_response');
+    return Container\get(SWOOLE_HTTP_RESPONSE);
 }
 
 /**
@@ -79,7 +85,7 @@ function response()
  */
 function emit(string $content, int $status = 200, array $headers = [])
 {
-    if (Container\get('swoole_request_ended') === true) {
+    if (Container\get(SWOOLE_HTTP_REQUEST_ENDED) === true) {
         return null;
     }
 
@@ -89,7 +95,7 @@ function emit(string $content, int $status = 200, array $headers = [])
         response()->header($key, $value);
     }
 
-    Container\set('swoole_request_ended', true);
+    Container\set(SWOOLE_HTTP_REQUEST_ENDED, true);
 
     return response()->end($content);
 }
@@ -107,4 +113,74 @@ function json($data, int $status = 200, array $headers = [])
     $headers = array_merge(['Content-Type' => 'application/json'], $headers);
 
     return emit($content, $status, $headers);
+}
+
+/**
+ * Returns a Closure that starts a websocket server.
+ *
+ * @param int $port
+ * @param string $host
+ *
+ * @return \Closure
+ */
+function websocket(int $port = 9502, string $host = '0.0.0.0'): \Closure
+{
+    $server = new \Swoole\WebSocket\Server($host, $port);
+    Container\set(SWOOLE_WEBSOCKET_SERVER, $server);
+
+    return function (callable $handler, ?callable $onOpen = null, ?callable $onClose = null) use ($server) {
+        $server->on('open', function ($server, $request) use ($onOpen) {
+            if (!is_null($onOpen)) {
+                $onOpen($request, $server);
+            }
+        });
+
+        $server->on('message', function ($server, $frame) use ($handler) {
+            return $handler($frame, $server);
+        });
+
+        $server->on('close', function ($server, $fd) use ($onClose) {
+            if (!is_null($onClose)) {
+                $onClose($fd, $server);
+            }
+        });
+
+        return $server->start();
+    };
+}
+
+/**
+ * Pushes a message to a specific websocket client.
+ *
+ * @param string $message
+ * @param int $fd
+ *
+ * @return mixed
+ */
+function push(string $message, int $fd)
+{
+    if (!Container\has(SWOOLE_WEBSOCKET_SERVER)) {
+        throw new \OutOfBoundsException('There is no server to push.');
+    }
+
+    $server = Container\get(SWOOLE_WEBSOCKET_SERVER);
+    return $server->push($fd, $message);
+}
+
+/**
+ * Broadcasts a message to every websocket client.
+ *
+ * @param string $message
+ */
+function broadcast(string $message)
+{
+    if (!Container\has(SWOOLE_WEBSOCKET_SERVER)) {
+        throw new \OutOfBoundsException('There is no server to broadcast.');
+    }
+
+    $server = Container\get(SWOOLE_WEBSOCKET_SERVER);
+
+    foreach ($server->connections as $fd) {
+        push($message, $fd);
+    }
 }

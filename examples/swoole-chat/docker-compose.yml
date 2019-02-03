@@ -1,0 +1,9 @@
+version: '3'
+services:
+  swoole:
+    container_name: siler_swoole_chat
+    build: .
+    ports:
+      - '9502:9502'
+    volumes:
+      - ../../:/app
