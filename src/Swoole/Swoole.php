@@ -164,6 +164,7 @@ function push(string $message, int $fd)
     }
 
     $server = Container\get(SWOOLE_WEBSOCKET_SERVER);
+
     return $server->push($fd, $message);
 }
 
