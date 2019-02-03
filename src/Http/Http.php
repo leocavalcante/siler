@@ -135,37 +135,3 @@ function uri(string $protocol = null) : string
 
     return $protocol.'://'.$httpHost.path();
 }
-
-/**
- * Event-driven, non-blocking I/O with PHP.
- *
- * @param callable $handler Callable to execute for requests
- * @param callable $err     Callable to execute for exceptions
- *
- * @return \Closure Address to listen, default 0.0.0.0:8080 -> \React\EventLoop\LoopInterface
- */
-function server(callable $handler, callable $err = null) : \Closure
-{
-    return function (string $addr = '0.0.0.0:8080') use ($handler, $err) : \React\EventLoop\LoopInterface {
-        $loop = \React\EventLoop\Factory::create();
-
-        $server = new \React\Http\Server(function (ServerRequestInterface $request) use ($handler, $err) {
-            return new \React\Promise\Promise(function (callable $resolve, callable $reject) use ($handler, $err, $request) {
-                try {
-                    $resolve($handler($request));
-                } catch (\Throwable $e) {
-                    if (is_null($err)) {
-                        return $reject($e);
-                    }
-
-                    $resolve($err($e));
-                }
-            });
-        });
-
-        $socket = new \React\Socket\Server($addr, $loop);
-        $server->listen($socket);
-
-        return $loop;
-    };
-}
