@@ -90,6 +90,12 @@ function emit(string $content, int $status = 200, array $headers = [])
 function json($data, int $status = 200, array $headers = [])
 {
     $content = json_encode($data);
+
+    if (false === $content) {
+        $error = json_last_error_msg();
+        throw new \UnexpectedValueException($error);
+    }
+
     $headers = array_merge(['Content-Type' => 'application/json'], $headers);
 
     return emit($content, $status, $headers);
