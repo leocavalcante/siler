@@ -179,7 +179,7 @@ function broadcast(string $message)
  * @param array $methods
  * @param array $headers
  */
-function cors(array $origin, array $methods = [], array $headers = [])
+function cors(array $origin = ['*'], array $methods = [], array $headers = [])
 {
     $response = Container\get(SWOOLE_HTTP_RESPONSE);
     $response->header('Access-Control-Allow-Origin', implode(',', $origin));
