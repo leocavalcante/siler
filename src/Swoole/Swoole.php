@@ -175,23 +175,17 @@ function broadcast(string $message)
 /**
  * Enable CORS in a Swoole Response.
  *
- * @param string $origin
- * @param string $methods
- * @param string $headers
+ * @param string $origin  Comma-separated list of allowed origins, defaults to "*".
+ * @param string $headers Comma-separated list of allowed headers, defaults to "Content-Type".
+ * @param string $methods Comma-separated list of allowed methods, defaults to "GET, POST, PUT, DELETE".
  */
-function cors(string $origin = '*', string $methods = '', string $headers = '')
+function cors(string $origin = '*', string $headers = 'Content-Type', string $methods = 'GET, POST, PUT, DELETE')
 {
     $response = Container\get(SWOOLE_HTTP_RESPONSE);
 
     $response->header('Access-Control-Allow-Origin', $origin);
-
-    if (!empty($methods)) {
-        $response->header('Access-Control-Allow-Methods', $methods);
-    }
-
-    if (!empty($headers)) {
-        $response->header('Access-Control-Allow-Headers', $headers);
-    }
+    $response->header('Access-Control-Allow-Headers', $headers);
+    $response->header('Access-Control-Allow-Methods', $methods);
 
     $request = Container\get(SWOOLE_HTTP_REQUEST);
 
