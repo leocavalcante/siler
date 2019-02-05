@@ -193,3 +193,13 @@ function cors(string $origin = '*', string $headers = 'Content-Type', string $me
         emit('');
     }
 }
+
+/**
+ * Sugar to Swoole`s Http Request rawContent().
+ *
+ * @return string
+ */
+function raw(): string
+{
+    return Container\get(SWOOLE_HTTP_REQUEST)->rawContent();
+}
