@@ -191,4 +191,10 @@ function cors(array $origin = ['*'], array $methods = [], array $headers = [])
     if (!empty($headers)) {
         $response->header('Access-Control-Allow-Headers', implode(',', $headers));
     }
+
+    $request = Container\get(SWOOLE_HTTP_REQUEST);
+
+    if ('OPTIONS' === $request->server['request_method']) {
+        $response->end('');
+    }
 }
