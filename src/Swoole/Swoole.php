@@ -171,3 +171,24 @@ function broadcast(string $message)
         push($message, $fd);
     }
 }
+
+/**
+ * Enable CORS in a Swoole Response.
+ *
+ * @param array $origin
+ * @param array $methods
+ * @param array $headers
+ */
+function cors(array $origin, array $methods = [], array $headers = [])
+{
+    $response = Container\get(SWOOLE_HTTP_RESPONSE);
+    $response->header('Access-Control-Allow-Origin', implode(',', $origin));
+
+    if (!empty($methods)) {
+        $response->header('Access-Control-Allow-Methods', implode(',', $methods));
+    }
+
+    if (!empty($headers)) {
+        $response->header('Access-Control-Allow-Headers', implode(',', $headers));
+    }
+}
