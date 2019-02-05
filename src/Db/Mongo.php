@@ -65,3 +65,15 @@ function collection(string $databaseName, string $collectionName, array $options
 
     return Container\get($clientName)->selectCollection($databaseName, $collectionName, $options);
 }
+
+/**
+ * Sugar to create a new ObjectId.
+ *
+ * @param string $oid
+ *
+ * @return \MongoDB\BSON\ObjectId
+ */
+function oid(string $oid): \MongoDB\BSON\ObjectId
+{
+    return new \MongoDB\BSON\ObjectId($oid);
+}
