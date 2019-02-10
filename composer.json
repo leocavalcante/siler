@@ -40,7 +40,8 @@
         "webonyx/graphql-php": "^0.13",
         "zendframework/zend-diactoros": "^2.0",
         "zendframework/zend-httphandlerrunner": "^1.0",
-        "zendframework/zend-stratigility": "^3.0"
+        "zendframework/zend-stratigility": "^3.0",
+        "swiftmailer/swiftmailer": "^6.1"
     },
     "autoload": {
         "psr-4": {
@@ -60,6 +61,7 @@
             "src/Http/Response.php",
             "src/HttpHandlerRunner/HttpHandlerRunner.php",
             "src/Jwt/Jwt.php",
+            "src/Mail/SwiftMailer.php",
             "src/Monolog/Monolog.php",
             "src/Prelude/Str.php",
             "src/Prelude/Tuple.php",
