@@ -152,6 +152,7 @@ function method_path($request): array
 
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
         $request = Container\get(SWOOLE_HTTP_REQUEST);
+
         return [$request->server['request_method'], $request->server['request_uri']];
     }
 

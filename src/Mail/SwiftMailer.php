@@ -4,6 +4,7 @@ declare(strict_types=1);
 /**
  * Module to work with SwiftMailer.
  */
+
 namespace Siler\SwiftMailer;
 
 use Siler\Container;
@@ -24,6 +25,7 @@ function send(\Swift_Message $message)
     }
 
     $mailer = Container\get(SWIFT_MAILER);
+
     return $mailer->send($message);
 }
 
@@ -83,5 +85,6 @@ function mailer(\Swift_Transport $transport): \Swift_Mailer
 {
     $mailer = new \Swift_Mailer($transport);
     Container\set(SWIFT_MAILER, $mailer);
+
     return $mailer;
 }
