@@ -93,6 +93,7 @@ function json($data, int $status = 200, array $headers = [])
 
     if (false === $content) {
         $error = json_last_error_msg();
+
         throw new \UnexpectedValueException($error);
     }
 

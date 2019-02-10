@@ -30,10 +30,10 @@ function send(\Swift_Message $message)
 /**
  * Sugar to create a new SwiftMailer Message.
  *
- * @param string $subject
- * @param array $from
- * @param array $to
- * @param string $body
+ * @param string      $subject
+ * @param array       $from
+ * @param array       $to
+ * @param string      $body
  * @param string|null $contentType
  *
  * @return \Swift_Message
@@ -50,8 +50,8 @@ function message(string $subject, array $from, array $to, string $body, ?string 
 /**
  * Sugar to create a new SwiftMailer SMTP transport.
  *
- * @param string $host
- * @param int $port
+ * @param string      $host
+ * @param int         $port
  * @param string|null $username
  * @param string|null $password
  *
