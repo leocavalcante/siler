@@ -12,8 +12,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Siler\Container;
 use Siler\Http;
 use Siler\Http\Request;
-use function Siler\require_fn;
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
+use function Siler\require_fn;
 
 /**
  * Define a new route using the GET HTTP method.

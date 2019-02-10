@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace Siler\Http;
 
-use Psr\Http\Message\ServerRequestInterface;
 use function Siler\array_get;
 
 /**

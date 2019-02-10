@@ -93,8 +93,8 @@ function using(string $databaseName)
  * Find operation on the default database and in the given collection.
  *
  * @param string $collectionName
- * @param array $filter
- * @param array $options
+ * @param array  $filter
+ * @param array  $options
  *
  * @return \MongoDB\Driver\Cursor
  */
@@ -107,8 +107,8 @@ function find(string $collectionName, array $filter = [], array $options = []): 
  * Find one operation on the default database and in the given collection.
  *
  * @param string $collectionName
- * @param array $filter
- * @param array $options
+ * @param array  $filter
+ * @param array  $options
  *
  * @return array|object|null
  */
@@ -121,8 +121,8 @@ function find_one(string $collectionName, array $filter = [], array $options = [
  * Insert many operation on the default database and in the given collection.
  *
  * @param string $collectionName
- * @param array $documents
- * @param array $options
+ * @param array  $documents
+ * @param array  $options
  *
  * @return \MongoDB\InsertManyResult
  */
@@ -135,8 +135,8 @@ function insert_many(string $collectionName, array $documents, array $options = 
  * Insert one operation on the default database and in the given collection.
  *
  * @param string $collectionName
- * @param $document
- * @param array $options
+ * @param mixed  $document
+ * @param array  $options
  *
  * @return \MongoDB\InsertOneResult
  */
@@ -149,9 +149,9 @@ function insert_one(string $collectionName, $document, array $options = []): \Mo
  * Update one operation on the default database and in the given colleciton.
  *
  * @param string $collectionName
- * @param array $filter
- * @param $update
- * @param array $options
+ * @param array  $filter
+ * @param mixed  $update
+ * @param array  $options
  *
  * @return \MongoDB\UpdateResult
  */
@@ -164,9 +164,9 @@ function update_one(string $collectionName, array $filter, $update, array $optio
  * Update many operation on the default database and in the given collection.
  *
  * @param string $collectionName
- * @param array $filter
- * @param $update
- * @param array $options
+ * @param array  $filter
+ * @param mixed  $update
+ * @param array  $options
  *
  * @return \MongoDB\UpdateResult
  */
@@ -179,8 +179,8 @@ function update_many(string $collectionName, array $filter, $update, array $opti
  * Delete one operation on the default database and on the given collection.
  *
  * @param string $collectionName
- * @param array $filter
- * @param array $options
+ * @param array  $filter
+ * @param array  $options
  *
  * @return \MongoDB\DeleteResult
  */
@@ -193,8 +193,8 @@ function delete_one(string $collectionName, array $filter, array $options = []):
  * Delete many operation on the default database and on the given collection.
  *
  * @param string $collectionName
- * @param array $filter
- * @param array $options
+ * @param array  $filter
+ * @param array  $options
  *
  * @return \MongoDB\DeleteResult
  */

@@ -7,10 +7,9 @@ namespace Siler\Test\Unit;
 use PHPUnit\Framework\TestCase;
 use Siler\Container;
 use Siler\Route;
-use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 use Siler\Test\Unit\Route\SwooleHttpRequestMock;
 use Zend\Diactoros\ServerRequest;
-use Zend\Diactoros\ServerRequestFactory;
+use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 class RouteTest extends TestCase
 {
