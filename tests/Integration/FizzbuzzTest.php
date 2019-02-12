@@ -60,4 +60,4 @@ class FizzbuzzTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame($expected, $actual);
     }
-}//end class
+}

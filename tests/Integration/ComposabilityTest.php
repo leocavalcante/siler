@@ -48,4 +48,4 @@ class ComposabilityTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($isDivisibleBy3And5(5));
         $this->assertTrue($isDivisibleBy3And5(15));
     }
-}//end class
+}

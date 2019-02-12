@@ -84,4 +84,4 @@ class RouteFileWithPrefixTest extends \PHPUnit\Framework\TestCase
 
         Route\files(__DIR__ . '/../../fixtures/route_files/', '/foo');
     }
-}//end class
+}

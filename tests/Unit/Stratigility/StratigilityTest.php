@@ -103,4 +103,4 @@ class StratigilityTest extends TestCase
 
         $this->assertSame($payload, $response->getPayload());
     }
-}//end class
+}

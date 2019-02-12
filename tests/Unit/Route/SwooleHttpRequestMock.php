@@ -16,4 +16,4 @@ class SwooleHttpRequestMock
             'request_uri'    => $uri,
         ];
     }
-}//end class
+}

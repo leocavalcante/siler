@@ -106,4 +106,4 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
     {
         return ['graphql-ws'];
     }
-}//end class
+}

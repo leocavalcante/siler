@@ -77,4 +77,4 @@ class MessageComponent implements MessageComponentInterface
 
         call_user_func_array($callback, $params);
     }
-}//end class
+}

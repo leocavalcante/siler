@@ -33,4 +33,4 @@ class RequestHandlerDecoratorTest extends TestCase
 
         $this->assertSame($response, $_response);
     }
-}//end class
+}

@@ -59,4 +59,4 @@ class MonologTest extends TestCase
             $this->assertSame('test', $record['channel']);
         }
     }
-}//end class
+}

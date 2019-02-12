@@ -361,4 +361,4 @@ class RouteTest extends TestCase
         $methodPath = Route\method_path(null);
         $this->assertSame(['DELETE', '/qux'], $methodPath);
     }
-}//end class
+}

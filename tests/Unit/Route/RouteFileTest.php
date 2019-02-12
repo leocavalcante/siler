@@ -95,4 +95,4 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\InvalidArgumentException::class);
         Route\files('path/does/not/exists');
     }
-}//end class
+}

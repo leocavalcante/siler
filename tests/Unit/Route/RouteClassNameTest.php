@@ -67,4 +67,4 @@ class RouteClassNameTest extends TestCase
     {
         Route\resume();
     }
-}//end class
+}

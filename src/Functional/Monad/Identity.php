@@ -29,4 +29,4 @@ class Identity
 
         return new self($function($this->value));
     }
-}//end class
+}

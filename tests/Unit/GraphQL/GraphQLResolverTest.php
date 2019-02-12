@@ -117,4 +117,4 @@ class GraphQLResolverTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame($expected, $actual);
     }
-}//end class
+}

@@ -66,4 +66,4 @@ class MonadTest extends \PHPUnit\Framework\TestCase
         $grandparent = Monad\maybe($foo)($parent)($parent);
         $this->assertNull($grandparent());
     }
-}//end class
+}

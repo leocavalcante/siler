@@ -122,4 +122,4 @@ class RouteFacadeTest extends TestCase
             }
         );
     }
-}//end class
+}

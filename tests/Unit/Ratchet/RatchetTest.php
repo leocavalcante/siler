@@ -104,4 +104,4 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
 
         Ratchet\broadcast($message, $mock);
     }
-}//end class
+}

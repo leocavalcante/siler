@@ -60,4 +60,4 @@ class RoutingTest extends \PHPUnit\Framework\TestCase
 
         Route\files('tests/fixtures/route_files/');
     }
-}//end class
+}

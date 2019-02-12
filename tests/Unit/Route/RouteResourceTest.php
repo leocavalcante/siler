@@ -105,4 +105,4 @@ class RouteResourceTest extends TestCase
 
         Route\resource('/resources', __DIR__ . '/../../fixtures/resources/slug', 'slug');
     }
-}//end class
+}

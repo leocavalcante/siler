@@ -210,4 +210,4 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
         $schema   = GraphQL\schema($typeDefs);
         $this->assertInstanceOf(Schema::class, $schema);
     }
-}//end class
+}

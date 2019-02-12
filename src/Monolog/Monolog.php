@@ -215,4 +215,4 @@ final class Loggers
 
         return static::$loggers[$channel];
     }
-}//end class
+}

@@ -36,4 +36,4 @@ class DbTest extends TestCase
     {
         Db\error();
     }
-}//end class
+}
