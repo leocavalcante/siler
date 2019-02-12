@@ -5,7 +5,7 @@
 </p>
 
 [![Build Status](https://travis-ci.org/leocavalcante/siler.svg?branch=master)](https://travis-ci.org/leocavalcante/siler)
-[![Phan](https://img.shields.io/badge/phan-level%201-lightgrey.svg)](https://github.com/phan/phan)
+[![Phan](https://img.shields.io/badge/phan-level%201-9cf.svg)](https://github.com/phan/phan)
 [![codecov](https://codecov.io/gh/leocavalcante/siler/branch/master/graph/badge.svg)](https://codecov.io/gh/leocavalcante/siler)
 [![Latest Stable Version](https://poser.pugx.org/leocavalcante/siler/v/stable)](https://packagist.org/packages/leocavalcante/siler)
 [![Total Downloads](https://poser.pugx.org/leocavalcante/siler/downloads)](https://packagist.org/packages/leocavalcante/siler)
