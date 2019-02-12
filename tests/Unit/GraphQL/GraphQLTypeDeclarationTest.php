@@ -51,4 +51,4 @@ class GraphQLTypeDeclarationTest extends TestCase
     {
         $this->assertInstanceOf(ListOfType::class, GraphQL\list_of(GraphQL\int()));
     }
-}//end class
+}

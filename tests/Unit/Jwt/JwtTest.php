@@ -102,4 +102,4 @@ class JwtTest extends \PHPUnit\Framework\TestCase
         $config = Jwt\conf(self::ISS, self::AUD, self::JTI, self::IAT, self::NBF, self::EXP);
         $this->assertSame($this->config, $config);
     }
-}//end class
+}

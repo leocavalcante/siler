@@ -198,4 +198,4 @@ class RequestTest extends TestCase
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '';
         $this->assertSame(\locale_get_default(), Request\recommended_locale());
     }
-}//end class
+}

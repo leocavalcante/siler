@@ -52,4 +52,4 @@ class SilerTest extends TestCase
         $cb = \Siler\require_fn(__DIR__ . '/../fixtures/callable_require.php');
         $this->assertSame('bar', $cb(['foo' => 'bar']));
     }
-}//end class
+}

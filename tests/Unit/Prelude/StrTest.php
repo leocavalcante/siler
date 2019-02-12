@@ -23,4 +23,4 @@ class StrTest extends TestCase
         $this->assertSame(['foo', 'bar', 'baz'], Str\lines("foo\nbar\nbaz"));
         $this->assertSame(['foo', 'bar', 'baz'], Str\lines("foo\r\nbar\r\nbaz"));
     }
-}//end class
+}

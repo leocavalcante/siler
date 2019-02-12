@@ -25,4 +25,4 @@ class HttpHandlerRunnerTest extends TestCase
 
         $this->assertTrue($result);
     }
-}//end class
+}

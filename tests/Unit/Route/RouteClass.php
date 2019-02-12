@@ -34,4 +34,4 @@ class RouteClass
         echo "className.$baz.$qux";
         Route\stop_propagation();
     }
-}//end class
+}

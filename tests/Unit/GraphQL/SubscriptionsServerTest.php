@@ -117,4 +117,4 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
 
         $this->assertContains('graphql-ws', $server->getSubProtocols());
     }
-}//end class
+}

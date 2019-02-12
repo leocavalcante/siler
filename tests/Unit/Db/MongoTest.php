@@ -27,4 +27,4 @@ class MongoTest extends TestCase
     {
         Mongo\collection('', '');
     }
-}//end class
+}

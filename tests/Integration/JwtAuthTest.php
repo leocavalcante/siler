@@ -50,4 +50,4 @@ class JwtAuthTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame(1, $token->getClaim('uid'));
     }
-}//end class
+}

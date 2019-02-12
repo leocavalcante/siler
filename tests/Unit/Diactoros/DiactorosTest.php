@@ -57,4 +57,4 @@ class DiactorosTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertInstanceOf(RedirectResponse::class, Diactoros\redirect('test'));
     }
-}//end class
+}

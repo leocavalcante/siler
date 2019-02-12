@@ -60,4 +60,4 @@ class TupleTest extends TestCase
         $tuple = T\tuple(1, 2, 3);
         $this->assertCount(3, $tuple);
     }
-}//end class
+}

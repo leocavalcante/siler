@@ -132,4 +132,4 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame($expectedException, $actualException);
     }
-}//end class
+}

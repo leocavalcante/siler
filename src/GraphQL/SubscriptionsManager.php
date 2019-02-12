@@ -346,4 +346,4 @@ class SubscriptionsManager
 
         return null;
     }
-}//end class
+}

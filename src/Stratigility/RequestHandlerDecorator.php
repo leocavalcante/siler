@@ -36,4 +36,4 @@ class RequestHandlerDecorator implements RequestHandlerInterface
 
         return $handler($request, $this->pathParams);
     }
-}//end class
+}

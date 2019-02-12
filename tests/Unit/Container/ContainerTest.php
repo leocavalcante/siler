@@ -30,4 +30,4 @@ class ContainerTest extends TestCase
         $this->assertTrue(Container\has('test_has'));
         $this->assertFalse(Container\has('test_hasnt'));
     }
-}//end class
+}

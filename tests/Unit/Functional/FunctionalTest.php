@@ -356,4 +356,4 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $commaExplode = f\partial('explode', ',');
         $this->assertSame(['foo', 'bar'], $commaExplode('foo,bar'));
     }
-}//end class
+}

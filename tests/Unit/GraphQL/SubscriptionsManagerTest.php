@@ -354,4 +354,4 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame('test', $manager->getSubscriptionName($document));
     }
-}//end class
+}

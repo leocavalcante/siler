@@ -99,4 +99,4 @@ class HttpTest extends TestCase
 
         $this->assertContains('Location: test://siler', $headers);
     }
-}//end class
+}

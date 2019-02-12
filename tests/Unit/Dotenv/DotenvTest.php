@@ -22,4 +22,4 @@ class DotenvTest extends TestCase
         $this->assertSame('baz', env('BAR', 'baz'));
         $this->assertNull(env('BAR'));
     }
-}//end class
+}

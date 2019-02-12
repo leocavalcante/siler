@@ -92,4 +92,4 @@ class ResponseTest extends TestCase
 
         $this->assertContains('Location: /foo/bar', $headers);
     }
-}//end class
+}

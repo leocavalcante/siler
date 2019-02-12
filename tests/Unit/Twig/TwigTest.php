@@ -35,4 +35,4 @@ class TwigTest extends TestCase
         Twig\init(__DIR__ . '/../../fixtures');
         $this->assertSame('<p>bar</p>', Twig\render('template.twig', ['foo' => 'bar']));
     }
-}//end class
+}
