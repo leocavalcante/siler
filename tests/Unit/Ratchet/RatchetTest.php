@@ -11,6 +11,8 @@ use Siler\Ratchet;
 
 class RatchetTest extends \PHPUnit\Framework\TestCase
 {
+
+
     public function testInit()
     {
         $server = Ratchet\init(8888);
@@ -18,6 +20,7 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(\SplObjectStorage::class, Container\get(Ratchet\RATCHET_CONNECTIONS));
         $this->assertInstanceOf(IoServer::class, $server);
     }
+
 
     public function testConnected()
     {
@@ -30,6 +33,7 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expected, $actual);
     }
 
+
     public function testInbox()
     {
         $expected = function () {
@@ -40,6 +44,7 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame($expected, $actual);
     }
+
 
     public function testClosed()
     {
@@ -52,6 +57,7 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expected, $actual);
     }
 
+
     public function testError()
     {
         $expected = function () {
@@ -63,37 +69,39 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expected, $actual);
     }
 
+
     public function testBroadcast()
     {
         $message = 'test';
 
         $mock = $this->getMockBuilder(ConnectionInterface::class)
-                     ->setMethods(['send', 'close'])
-                     ->getMock();
+            ->setMethods(['send', 'close'])
+            ->getMock();
 
         $mock->expects($this->once())
-             ->method('send')
-             ->with($this->equalTo($message));
+            ->method('send')
+            ->with($this->equalTo($message));
 
         Container\set(Ratchet\RATCHET_CONNECTIONS, [$mock]);
 
         Ratchet\broadcast($message);
     }
 
+
     public function testBroadcastIgnoreSender()
     {
         $message = 'test';
 
         $mock = $this->getMockBuilder(ConnectionInterface::class)
-                     ->setMethods(['send', 'close'])
-                     ->getMock();
+            ->setMethods(['send', 'close'])
+            ->getMock();
 
         $mock->expects($this->never())
-             ->method('send')
-             ->with($this->equalTo($message));
+            ->method('send')
+            ->with($this->equalTo($message));
 
         Container\set(Ratchet\RATCHET_CONNECTIONS, [$mock]);
 
         Ratchet\broadcast($message, $mock);
     }
-}
+}//end class

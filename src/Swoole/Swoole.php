@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Siler module to work with Swoole.
  */
 
@@ -10,16 +10,17 @@ namespace Siler\Swoole;
 
 use Siler\Container;
 
-const SWOOLE_HTTP_REQUEST = 'swoole_http_request';
+const SWOOLE_HTTP_REQUEST       = 'swoole_http_request';
 const SWOOLE_HTTP_REQUEST_ENDED = 'swoole_http_request_ended';
-const SWOOLE_HTTP_RESPONSE = 'swoole_http_response';
-const SWOOLE_WEBSOCKET_SERVER = 'swoole_websocket_server';
+const SWOOLE_HTTP_RESPONSE      = 'swoole_http_response';
+const SWOOLE_WEBSOCKET_SERVER   = 'swoole_websocket_server';
+
 
 /**
  * Starts a Swoole HTTP server.
  *
- * @param string $host The host that the server should bind
  * @param int    $port The port that the server should bind
+ * @param string $host The host that the server should bind
  *
  * @return \Closure
  */
@@ -28,17 +29,21 @@ function start(int $port = 80, string $host = '0.0.0.0'): \Closure
     $server = new \Swoole\Http\Server($host, $port);
 
     return function ($handler) use ($server) {
-        $server->on('request', function ($request, $response) use ($handler) {
-            Container\set(SWOOLE_HTTP_REQUEST_ENDED, false);
-            Container\set(SWOOLE_HTTP_REQUEST, $request);
-            Container\set(SWOOLE_HTTP_RESPONSE, $response);
+        $server->on(
+            'request',
+            function ($request, $response) use ($handler) {
+                Container\set(SWOOLE_HTTP_REQUEST_ENDED, false);
+                Container\set(SWOOLE_HTTP_REQUEST, $request);
+                Container\set(SWOOLE_HTTP_RESPONSE, $response);
 
-            return $handler($request, $response);
-        });
+                return $handler($request, $response);
+            }
+        );
 
         $server->start();
     };
 }
+
 
 /**
  * Gets the current Swoole HTTP request.
@@ -48,6 +53,7 @@ function request()
     return Container\get(SWOOLE_HTTP_REQUEST);
 }
 
+
 /**
  * Gets the current Swoole HTTP response.
  */
@@ -55,6 +61,7 @@ function response()
 {
     return Container\get(SWOOLE_HTTP_RESPONSE);
 }
+
 
 /**
  * Controls Swoole halting avoiding calling end() more than once.
@@ -80,6 +87,7 @@ function emit(string $content, int $status = 200, array $headers = [])
     return response()->end($content);
 }
 
+
 /**
  * Sugar to emit() JSON encoded data.
  *
@@ -102,6 +110,7 @@ function json($data, int $status = 200, array $headers = [])
     return emit($content, $status, $headers);
 }
 
+
 /**
  * Returns a Closure that starts a websocket server.
  *
@@ -116,25 +125,35 @@ function websocket(int $port = 9502, string $host = '0.0.0.0'): \Closure
     Container\set(SWOOLE_WEBSOCKET_SERVER, $server);
 
     return function (callable $handler, ?callable $onOpen = null, ?callable $onClose = null) use ($server) {
-        $server->on('open', function ($server, $request) use ($onOpen) {
-            if (!is_null($onOpen)) {
-                $onOpen($request, $server);
+        $server->on(
+            'open',
+            function ($server, $request) use ($onOpen) {
+                if (!is_null($onOpen)) {
+                    $onOpen($request, $server);
+                }
             }
-        });
+        );
 
-        $server->on('message', function ($server, $frame) use ($handler) {
-            return $handler($frame, $server);
-        });
-
-        $server->on('close', function ($server, $fd) use ($onClose) {
-            if (!is_null($onClose)) {
-                $onClose($fd, $server);
+        $server->on(
+            'message',
+            function ($server, $frame) use ($handler) {
+                return $handler($frame, $server);
             }
-        });
+        );
+
+        $server->on(
+            'close',
+            function ($server, $fd) use ($onClose) {
+                if (!is_null($onClose)) {
+                    $onClose($fd, $server);
+                }
+            }
+        );
 
         return $server->start();
     };
 }
+
 
 /**
  * Pushes a message to a specific websocket client.
@@ -155,6 +174,7 @@ function push(string $message, int $fd)
     return $server->push($fd, $message);
 }
 
+
 /**
  * Broadcasts a message to every websocket client.
  *
@@ -172,6 +192,7 @@ function broadcast(string $message)
         push($message, $fd);
     }
 }
+
 
 /**
  * Enable CORS in a Swoole Response.
@@ -194,6 +215,7 @@ function cors(string $origin = '*', string $headers = 'Content-Type', string $me
         emit('');
     }
 }
+
 
 /**
  * Sugar to Swoole`s Http Request rawContent().

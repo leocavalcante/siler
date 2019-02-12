@@ -9,6 +9,8 @@ use Siler\Tuple as T;
 
 class TupleTest extends TestCase
 {
+
+
     public function testTuple()
     {
         $tuple = T\tuple(1, 'a', true);
@@ -22,6 +24,7 @@ class TupleTest extends TestCase
         $this->assertSame([1, 'a', true], $tuple->values());
     }
 
+
     /**
      * @expectedException \OutOfRangeException
      */
@@ -31,14 +34,16 @@ class TupleTest extends TestCase
         $tuple[1];
     }
 
+
     /**
      * @expectedException \RuntimeException
      */
     public function testImmutableSet()
     {
-        $tuple = T\tuple(1);
+        $tuple    = T\tuple(1);
         $tuple[1] = 2;
     }
+
 
     /**
      * @expectedException \RuntimeException
@@ -49,9 +54,10 @@ class TupleTest extends TestCase
         unset($tuple[0]);
     }
 
+
     public function testCount()
     {
         $tuple = T\tuple(1, 2, 3);
         $this->assertCount(3, $tuple);
     }
-}
+}//end class

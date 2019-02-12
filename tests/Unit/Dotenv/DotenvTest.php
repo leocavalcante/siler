@@ -9,9 +9,11 @@ use function Siler\Dotenv\env as env;
 
 class DotenvTest extends TestCase
 {
+
+
     public function testEnv()
     {
-        $entries = \Siler\Dotenv\init(__DIR__.'/../../fixtures');
+        $entries = \Siler\Dotenv\init(__DIR__ . '/../../fixtures');
 
         $this->assertCount(4, $entries);
         $this->assertArraySubset(['FOO' => 'bar'], $entries);
@@ -20,4 +22,4 @@ class DotenvTest extends TestCase
         $this->assertSame('baz', env('BAR', 'baz'));
         $this->assertNull(env('BAR'));
     }
-}
+}//end class

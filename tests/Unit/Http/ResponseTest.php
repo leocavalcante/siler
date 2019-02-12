@@ -12,6 +12,8 @@ use Siler\Http\Response;
  */
 class ResponseTest extends TestCase
 {
+
+
     public function testDefaultOutput()
     {
         $this->expectOutputString('');
@@ -21,6 +23,7 @@ class ResponseTest extends TestCase
         $this->assertSame(204, http_response_code());
         $this->assertContains('Content-Type: text/plain;charset=utf-8', xdebug_get_headers());
     }
+
 
     public function testText()
     {
@@ -32,6 +35,7 @@ class ResponseTest extends TestCase
         $this->assertContains('Content-Type: text/plain;charset=utf-8', xdebug_get_headers());
     }
 
+
     public function testHtml()
     {
         $this->expectOutputString('<a href="#"></a>');
@@ -41,6 +45,7 @@ class ResponseTest extends TestCase
         $this->assertSame(200, http_response_code());
         $this->assertContains('Content-Type: text/html;charset=utf-8', xdebug_get_headers());
     }
+
 
     public function testJson()
     {
@@ -52,6 +57,7 @@ class ResponseTest extends TestCase
         $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
     }
 
+
     public function testStatusCode()
     {
         $this->expectOutputString('{"error":true,"message":"test"}');
@@ -60,6 +66,7 @@ class ResponseTest extends TestCase
 
         $this->assertSame(400, http_response_code());
     }
+
 
     public function testHeader()
     {
@@ -74,6 +81,7 @@ class ResponseTest extends TestCase
         $this->assertContains('X-Bar: baz', $headers);
     }
 
+
     public function testRedirect()
     {
         $_SERVER['SCRIPT_NAME'] = '/foo/index.php';
@@ -84,4 +92,4 @@ class ResponseTest extends TestCase
 
         $this->assertContains('Location: /foo/bar', $headers);
     }
-}
+}//end class

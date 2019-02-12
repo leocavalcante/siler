@@ -8,6 +8,7 @@ use Siler\Container;
 
 const DB_DEFAULT_NAME = 'db';
 
+
 /**
  * Creates a new PDO instance.
  *
@@ -26,6 +27,7 @@ function connect(string $dsn, string $username = 'root', string $passwd = '', ar
     return $pdo;
 }
 
+
 /**
  * Query through a PDO instance.
  *
@@ -42,6 +44,7 @@ function query(string $statement, string $pdoName = DB_DEFAULT_NAME): \PDOStatem
 
     return Container\get($pdoName)->query($statement);
 }
+
 
 /**
  * Prepare a statement.
@@ -66,6 +69,7 @@ function prepare(string $statement, array $driverOpts = [], string $pdoName = DB
 
     return $stmt;
 }
+
 
 /**
  * Gets error info about a PDO instance.

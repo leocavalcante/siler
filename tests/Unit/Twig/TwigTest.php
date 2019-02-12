@@ -10,6 +10,8 @@ use Siler\Twig;
 
 class TwigTest extends TestCase
 {
+
+
     /**
      * @expectedException        \RuntimeException
      * @expectedExceptionMessage Twig should be initialized first
@@ -20,15 +22,17 @@ class TwigTest extends TestCase
         Twig\render('template.twig');
     }
 
+
     public function testCreateTwigEnv()
     {
-        $twigEnv = Twig\init(__DIR__.'/../../fixtures');
+        $twigEnv = Twig\init(__DIR__ . '/../../fixtures');
         $this->assertInstanceOf(\Twig_Environment::class, $twigEnv);
     }
 
+
     public function testRender()
     {
-        Twig\init(__DIR__.'/../../fixtures');
+        Twig\init(__DIR__ . '/../../fixtures');
         $this->assertSame('<p>bar</p>', Twig\render('template.twig', ['foo' => 'bar']));
     }
-}
+}//end class

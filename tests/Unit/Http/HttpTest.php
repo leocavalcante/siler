@@ -9,14 +9,17 @@ use Siler\Http;
 
 class HttpTest extends TestCase
 {
+
+
     protected function setUp()
     {
         $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = ['foo' => 'bar'];
 
-        $_SERVER['HTTP_HOST'] = 'test:8000';
+        $_SERVER['HTTP_HOST']   = 'test:8000';
         $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
         $_SERVER['REQUEST_URI'] = '/bar/baz';
     }
+
 
     public function testCookie()
     {
@@ -26,6 +29,7 @@ class HttpTest extends TestCase
         $this->assertNull(Http\cookie('baz'));
     }
 
+
     public function testSession()
     {
         $this->assertSame($_SESSION, Http\session());
@@ -33,6 +37,7 @@ class HttpTest extends TestCase
         $this->assertSame('qux', Http\session('baz', 'qux'));
         $this->assertNull(Http\session('baz'));
     }
+
 
     public function testSetsession()
     {
@@ -42,6 +47,7 @@ class HttpTest extends TestCase
         $this->assertArraySubset(['baz' => 'qux'], $_SESSION);
     }
 
+
     public function testFlash()
     {
         $actual = Http\flash('foo');
@@ -50,16 +56,19 @@ class HttpTest extends TestCase
         $this->assertNull(Http\session('foo'));
     }
 
+
     public function testUrl()
     {
         $this->assertSame('/foo/qux', Http\url('/qux'));
         $this->assertSame('/foo/', Http\url());
     }
 
+
     public function testPath()
     {
         $this->assertSame('/bar/baz', Http\path());
     }
+
 
     /**
      * @runInSeparateProcess
@@ -72,10 +81,12 @@ class HttpTest extends TestCase
         $this->assertSame('/foo/bar', Http\path());
     }
 
+
     public function testUri()
     {
         $this->assertSame('http://test:8000/bar/baz', Http\uri());
     }
+
 
     /**
      * @runInSeparateProcess
@@ -88,4 +99,4 @@ class HttpTest extends TestCase
 
         $this->assertContains('Location: test://siler', $headers);
     }
-}
+}//end class

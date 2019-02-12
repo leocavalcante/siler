@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Helpers functions to work with vlucas/phpdotenv.
  */
 
 namespace Siler\Dotenv;
 
 use Dotenv\Dotenv;
+
 
 /**
  * Load the .env file contents into the environment.
@@ -24,15 +25,16 @@ function init(string $path) : array
     return $dotenv->load();
 }
 
+
 /**
  * Get an environment value or fallback to the given default.
  *
- * @param string $key     The key to be searched on the environment
- * @param mixed  $default A default when the key do not exists
+ * @param ?string $key     The key to be searched on the environment
+ * @param mixed   $default A default when the key do not exists
  *
  * @return mixed
  */
-function env(string $key = null, $default = null)
+function env(?string $key = null, $default = null)
 {
     return \Siler\array_get($_SERVER, $key, $default);
 }

@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-/**
+/*
  * Siler's internal MessageComponent.
  */
 
@@ -19,11 +19,13 @@ class RequestHandlerDecorator implements RequestHandlerInterface
     private $handler;
     private $pathParams;
 
+
     public function __construct(callable $handler, array $pathParams = [])
     {
-        $this->handler = $handler;
+        $this->handler    = $handler;
         $this->pathParams = $pathParams;
     }
+
 
     /**
      * {@inheritdoc}.
@@ -34,4 +36,4 @@ class RequestHandlerDecorator implements RequestHandlerInterface
 
         return $handler($request, $this->pathParams);
     }
-}
+}//end class

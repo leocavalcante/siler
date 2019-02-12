@@ -9,6 +9,9 @@ require 'vendor/autoload.php';
 
 Twig\init('examples/twig/');
 
-Route\get('/{name}', function ($params) {
-    Response\html(Twig\render('home.twig', $params));
-});
+Route\get(
+    '/{name}',
+    function ($params) {
+        Response\html(Twig\render('home.twig', $params));
+    }
+);

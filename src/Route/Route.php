@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Siler routing facilities.
  */
 
@@ -14,6 +14,7 @@ use Siler\Http;
 use Siler\Http\Request;
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 use function Siler\require_fn;
+
 
 /**
  * Define a new route using the GET HTTP method.
@@ -29,6 +30,7 @@ function get(string $path, $callback, $request = null)
     return route('get', $path, $callback, $request);
 }
 
+
 /**
  * Define a new route using the POST HTTP method.
  *
@@ -42,6 +44,7 @@ function post(string $path, $callback, $request = null)
 {
     return route('post', $path, $callback, $request);
 }
+
 
 /**
  * Define a new route using the PUT HTTP method.
@@ -57,6 +60,7 @@ function put(string $path, $callback, $request = null)
     return route('put', $path, $callback, $request);
 }
 
+
 /**
  * Define a new route using the DELETE HTTP method.
  *
@@ -70,6 +74,7 @@ function delete(string $path, $callback, $request = null)
 {
     return route('delete', $path, $callback, $request);
 }
+
 
 /**
  * Define a new route using the OPTIONS HTTP method.
@@ -85,6 +90,7 @@ function options(string $path, $callback, $request = null)
     return route('options', $path, $callback, $request);
 }
 
+
 /**
  * Define a new route using the any HTTP method.
  *
@@ -98,6 +104,7 @@ function any(string $path, $callback, $request = null)
 {
     return route('any', $path, $callback, $request);
 }
+
 
 /**
  * Define a new route.
@@ -123,8 +130,9 @@ function route($method, string $path, $callback, $request = null)
 
     $methodPath = method_path($request);
 
-    if (count($methodPath) >= 2 && (Request\method_is($method, $methodPath[0]) || $method == 'any') &&
-        preg_match($path, $methodPath[1], $params)) {
+    if (count($methodPath) >= 2 && (Request\method_is($method, $methodPath[0]) || $method == 'any')
+        && preg_match($path, $methodPath[1], $params)
+    ) {
         Container\set('route_match', true);
 
         return $callback($params);
@@ -132,6 +140,7 @@ function route($method, string $path, $callback, $request = null)
 
     return null;
 }
+
 
 /**
  * @internal Used to guess the given request method and path.
@@ -147,17 +156,27 @@ function method_path($request): array
     }
 
     if ($request instanceof ServerRequestInterface) {
-        return [$request->getMethod(), $request->getUri()->getPath()];
+        return [
+            $request->getMethod(),
+            $request->getUri()->getPath(),
+        ];
     }
 
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
         $request = Container\get(SWOOLE_HTTP_REQUEST);
 
-        return [$request->server['request_method'], $request->server['request_uri']];
+        return [
+            $request->server['request_method'],
+            $request->server['request_uri'],
+        ];
     }
 
-    return [Request\method(), Http\path()];
+    return [
+        Request\method(),
+        Http\path(),
+    ];
 }
+
 
 /**
  * Turns a URL route path into a Regexp.
@@ -174,32 +193,34 @@ function regexify(string $path) : string
     return $path;
 }
 
+
 /**
  * Creates a resource route path mapping.
  *
  * @param string                            $basePath      The base for the resource
  * @param string                            $resourcesPath The base path name for the corresponding PHP files
- * @param string                            $identityParam The param to be used as identity in the URL
+ * @param string|null                       $identityParam
  * @param array|ServerRequestInterface|null $request       null, array[method, path] or Psr7 Request Message
  */
-function resource(string $basePath, string $resourcesPath, string $identityParam = null, $request = null)
+function resource(string $basePath, string $resourcesPath, ?string $identityParam = null, $request = null)
 {
-    $basePath = '/'.trim($basePath, '/');
+    $basePath      = '/' . trim($basePath, '/');
     $resourcesPath = rtrim($resourcesPath, '/');
 
     if (is_null($identityParam)) {
         $identityParam = 'id';
     }
 
-    get($basePath, $resourcesPath.'/index.php', $request);
-    get($basePath.'/create', $resourcesPath.'/create.php', $request);
-    get($basePath.'/{'.$identityParam.'}/edit', $resourcesPath.'/edit.php', $request);
-    get($basePath.'/{'.$identityParam.'}', $resourcesPath.'/show.php', $request);
+    get($basePath, $resourcesPath . '/index.php', $request);
+    get($basePath . '/create', $resourcesPath . '/create.php', $request);
+    get($basePath . '/{' . $identityParam . '}/edit', $resourcesPath . '/edit.php', $request);
+    get($basePath . '/{' . $identityParam . '}', $resourcesPath . '/show.php', $request);
 
-    post($basePath, $resourcesPath.'/store.php', $request);
-    put($basePath.'/{'.$identityParam.'}', $resourcesPath.'/update.php', $request);
-    delete($basePath.'/{'.$identityParam.'}', $resourcesPath.'/destroy.php', $request);
+    post($basePath, $resourcesPath . '/store.php', $request);
+    put($basePath . '/{' . $identityParam . '}', $resourcesPath . '/update.php', $request);
+    delete($basePath . '/{' . $identityParam . '}', $resourcesPath . '/destroy.php', $request);
 }
+
 
 /**
  * Maps a filename to a route method-path pair.
@@ -215,24 +236,31 @@ function routify(string $filename) : array
     $filename = str_replace('/', '.', $filename);
 
     $tokens = array_slice(explode('.', $filename), 0, -1);
-    $tokens = array_map(function ($token) {
-        if ($token[0] == '$') {
-            $token = '{'.substr($token, 1).'}';
-        }
+    $tokens = array_map(
+        function ($token) {
+            if ($token[0] == '$') {
+                $token = '{' . substr($token, 1) . '}';
+            }
 
-        if ($token[0] == '@') {
-            $token = '?{'.substr($token, 1).'}?';
-        }
+            if ($token[0] == '@') {
+                $token = '?{' . substr($token, 1) . '}?';
+            }
 
-        return $token;
-    }, $tokens);
+            return $token;
+        },
+        $tokens
+    );
 
     $method = array_pop($tokens);
-    $path = implode('/', $tokens);
-    $path = '/'.trim(str_replace('index', '', $path), '/');
+    $path   = implode('/', $tokens);
+    $path   = '/' . trim(str_replace('index', '', $path), '/');
 
-    return [$method, $path];
+    return [
+        $method,
+        $path,
+    ];
 }
+
 
 /**
  * Iterates over the given $basePath listening for matching routified files.
@@ -252,32 +280,40 @@ function files(string $basePath, string $routePrefix = '', $request = null)
     }
 
     $directory = new \RecursiveDirectoryIterator($realpath);
-    $iterator = new \RecursiveIteratorIterator($directory);
-    $regex = new \RegexIterator($iterator, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
+    $iterator  = new \RecursiveIteratorIterator($directory);
+    $regex     = new \RegexIterator($iterator, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
 
     $files = array_keys(iterator_to_array($regex));
+
     sort($files);
 
-    $cut = strlen($realpath);
+    $cut         = strlen($realpath);
     $routePrefix = rtrim($routePrefix, '/');
     $routeResult = null;
 
     foreach ($files as $filename) {
-        list($method, $path) = routify(substr($filename, $cut));
+        $cutFilename = substr((string) $filename, $cut);
+
+        if (false === $cutFilename) {
+            continue;
+        }
+
+        list($method, $path) = routify($cutFilename);
 
         if ('/' === $path) {
             if ($routePrefix) {
                 $path = $routePrefix;
             }
         } else {
-            $path = $routePrefix.$path;
+            $path = $routePrefix . $path;
         }
 
-        $routeResult = route($method, $path, $filename, $request) ?? $routeResult;
+        $routeResult = (route($method, $path, (string) $filename, $request) ?? $routeResult);
     }
 
     return $routeResult;
 }
+
 
 /**
  * Uses a class name to create routes based on its public methods.
@@ -285,11 +321,13 @@ function files(string $basePath, string $routePrefix = '', $request = null)
  * @param string                            $basePath  The prefix for all routes
  * @param string                            $className The qualified class name
  * @param array|ServerRequestInterface|null $request   null, array[method, path] or Psr7 Request Message
+ *
+ * @throws \ReflectionException
  */
 function class_name(string $basePath, string $className, $request = null)
 {
     $reflection = new \ReflectionClass($className);
-    $object = $reflection->newInstance();
+    $object     = $reflection->newInstance();
 
     $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
 
@@ -298,30 +336,42 @@ function class_name(string $basePath, string $className, $request = null)
 
         $pathSegments = array_map('strtolower', array_slice($specs, 1));
 
-        $pathSegments = array_filter($pathSegments, function (string $segment) : bool {
-            return $segment != 'index';
-        });
+        $pathSegments = array_filter(
+            $pathSegments,
+            function (string $segment) : bool {
+                return $segment != 'index';
+            }
+        );
 
-        $pathParams = array_map(function (\ReflectionParameter $param) {
-            return "{{$param->name}}";
-        }, $method->getParameters());
+        $pathParams = array_map(
+            function (\ReflectionParameter $param) {
+                return "{{$param->name}}";
+            },
+            $method->getParameters()
+        );
 
         $pathSegments = array_merge($pathSegments, $pathParams);
 
         array_unshift($pathSegments, $basePath);
 
-        route($specs[0], join('/', $pathSegments), function (array $params) use ($method, $object) {
-            foreach ($params as $key => $val) {
-                if (!is_int($key)) {
-                    unset($params[$key]);
+        route(
+            $specs[0],
+            join('/', $pathSegments),
+            function (array $params) use ($method, $object) {
+                foreach (array_keys($params) as $key) {
+                    if (!is_int($key)) {
+                        unset($params[$key]);
+                    }
                 }
-            }
 
-            $args = array_slice($params, 1);
-            $method->invokeArgs($object, $args);
-        }, $request);
-    }
+                $args = array_slice($params, 1);
+                $method->invokeArgs($object, $args);
+            },
+            $request
+        );
+    }//end foreach
 }
+
 
 /**
  * Avoids routes to be called after the first match.
@@ -331,6 +381,7 @@ function stop_propagation()
     Container\set('route_stop_propagation', true);
 }
 
+
 /**
  * Resets default routing behaviour.
  */
@@ -338,6 +389,7 @@ function resume()
 {
     Container\set('route_stop_propagation', false);
 }
+
 
 /**
  * Returns the first non-null route result.

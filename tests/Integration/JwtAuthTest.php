@@ -13,16 +13,18 @@ class JwtAuthTest extends \PHPUnit\Framework\TestCase
 {
     protected static $cookies;
 
+
     public static function setUpBeforeClass()
     {
         self::$cookies = [];
     }
 
+
     public function testSignUp()
     {
-        Dotenv\init(__DIR__.'/../fixtures');
+        Dotenv\init(__DIR__ . '/../fixtures');
 
-        $jwtConfig = Jwt\conf(env('JWT_ISS'), env('JWT_AUD'), uniqid(), strval(time()), strval(time()), strval(time() + 3600));
+        $jwtConfig  = Jwt\conf(env('JWT_ISS'), env('JWT_AUD'), uniqid(), strval(time()), strval(time()), strval(time() + 3600));
         $jwtBuilder = Jwt\builder($jwtConfig, new Sha256(), env('APP_KEY'));
 
         $token = $jwtBuilder(['uid' => 1]);
@@ -32,6 +34,7 @@ class JwtAuthTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(env('JWT_ISS'), $token->getClaim('iss'));
         $this->assertSame(1, $token->getClaim('uid'));
     }
+
 
     /**
      * @depends testSignUp
@@ -47,4 +50,4 @@ class JwtAuthTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame(1, $token->getClaim('uid'));
     }
-}
+}//end class

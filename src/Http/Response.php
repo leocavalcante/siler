@@ -1,13 +1,14 @@
 <?php
 
 declare(strict_types=1);
-/**
+/*
  * Helper functions to handle HTTP responses.
  */
 
 namespace Siler\Http\Response;
 
 use Siler\Http;
+
 
 /**
  * Outputs the given parameters based on a HTTP response.
@@ -27,6 +28,7 @@ function output(string $content = '', int $code = 204, string $mimeType = 'text/
     return print $content;
 }
 
+
 /**
  * Outputs a HTTP response as simple text.
  *
@@ -40,6 +42,7 @@ function text(string $content, int $code = 200, string $charset = 'utf-8') : int
 {
     return output(strval($content), $code, 'text/plain', $charset);
 }
+
 
 /**
  * Outputs a HTML HTTP response.
@@ -55,6 +58,7 @@ function html(string $content, int $code = 200, string $charset = 'utf-8') : int
     return output($content, $code, 'text/html', $charset);
 }
 
+
 /**
  * Outputs the given content as JSON mime type.
  *
@@ -69,6 +73,7 @@ function jsonstr(string $content, int $code = 200, string $charset = 'utf-8') : 
     return output(strval($content), $code, 'application/json', $charset);
 }
 
+
 /**
  * Outputs the given content encoded as JSON string.
  *
@@ -80,8 +85,15 @@ function jsonstr(string $content, int $code = 200, string $charset = 'utf-8') : 
  */
 function json($content, int $code = 200, string $charset = 'utf-8') : int
 {
-    return jsonstr(json_encode($content), $code, $charset);
+    $body = json_encode($content);
+
+    if (false === $body) {
+        throw new \UnexpectedValueException('Could not encode content');
+    }
+
+    return jsonstr($body, $code, $charset);
 }
+
 
 /**
  * Helper method to setup a header item as key-value parts.
@@ -92,8 +104,9 @@ function json($content, int $code = 200, string $charset = 'utf-8') : int
  */
 function header(string $key, string $val, bool $replace = true)
 {
-    \header($key.': '.$val, $replace);
+    \header($key . ': ' . $val, $replace);
 }
+
 
 /**
  * Composes a default HTTP redirect response with the current base url.

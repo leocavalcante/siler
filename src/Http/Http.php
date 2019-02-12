@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Helpers for the HTTP abstraction.
  */
 
@@ -10,31 +10,34 @@ namespace Siler\Http;
 
 use function Siler\array_get;
 
+
 /**
  * Get a value from the $_COOKIE global.
  *
- * @param string $key     The key to be searched
- * @param mixed  $default The default value to be returned when the key don't exists
+ * @param ?string $key     The key to be searched
+ * @param mixed   $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
-function cookie(string $key = null, $default = null)
+function cookie(?string $key = null, $default = null)
 {
     return array_get($_COOKIE, $key, $default);
 }
 
+
 /**
  * Get a value from the $_SESSION global.
  *
- * @param string $key     The key to be searched
- * @param mixed  $default The default value to be returned when the key don't exists
+ * @param ?string $key     The key to be searched
+ * @param mixed   $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
-function session(string $key = null, $default = null)
+function session(?string $key = null, $default = null)
 {
     return array_get($_SESSION, $key, $default);
 }
+
 
 /**
  * Set a value in the $_SESSION global.
@@ -47,15 +50,16 @@ function setsession(string $key, $value)
     $_SESSION[$key] = $value;
 }
 
+
 /**
  * Get a value from the $_SESSION global and remove it.
  *
- * @param string $key     The key to be searched
- * @param mixed  $default The default value to be returned when the key don't exists
+ * @param ?string $key     The key to be searched
+ * @param mixed   $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
-function flash(string $key = null, $default = null)
+function flash(?string $key = null, $default = null)
 {
     $value = session($key, $default);
 
@@ -65,6 +69,7 @@ function flash(string $key = null, $default = null)
 
     return $value;
 }
+
 
 /**
  * Redirects using the HTTP Location header.
@@ -76,14 +81,15 @@ function redirect(string $url)
     Response\header('Location', $url);
 }
 
+
 /**
  * Returns a path based on the projects base url.
  *
- * @param string $path Concat some URI
+ * @param ?string $path Concat some URI
  *
  * @return string
  */
-function url(string $path = null) : string
+function url(?string $path = null) : string
 {
     if (is_null($path)) {
         $path = '/';
@@ -91,8 +97,9 @@ function url(string $path = null) : string
 
     $scriptName = array_get($_SERVER, 'SCRIPT_NAME', '');
 
-    return rtrim(str_replace('\\', '/', dirname($scriptName)), '/').'/'.ltrim($path, '/');
+    return rtrim(str_replace('\\', '/', dirname($scriptName)), '/') . '/' . ltrim($path, '/');
 }
+
 
 /**
  * Get the current HTTP path info.
@@ -101,28 +108,29 @@ function url(string $path = null) : string
  */
 function path() : string
 {
-    $scriptName = array_get($_SERVER, 'SCRIPT_NAME', '');
+    $scriptName  = array_get($_SERVER, 'SCRIPT_NAME', '');
     $queryString = array_get($_SERVER, 'QUERY_STRING', '');
-    $requestUri = array_get($_SERVER, 'REQUEST_URI', '');
+    $requestUri  = array_get($_SERVER, 'REQUEST_URI', '');
 
-    $requestUri = str_replace('?'.$queryString, '', $requestUri);
+    $requestUri = str_replace('?' . $queryString, '', $requestUri);
     $scriptPath = str_replace('\\', '/', dirname($scriptName));
 
     if (!strlen(str_replace('/', '', $scriptPath))) {
-        return '/'.ltrim($requestUri, '/');
+        return '/' . ltrim($requestUri, '/');
     } else {
-        return '/'.ltrim(str_replace($scriptPath, '', $requestUri), '/');
+        return '/' . ltrim(str_replace($scriptPath, '', $requestUri), '/');
     }
 }
+
 
 /**
  * Get the absolute project's URI.
  *
- * @param string $protocol Pass a protocol, defaults to http or https
+ * @param ?string $protocol Pass a protocol, defaults to http or https
  *
  * @return string
  */
-function uri(string $protocol = null) : string
+function uri(?string $protocol = null) : string
 {
     $https = array_get($_SERVER, 'HTTPS', '');
 
@@ -132,5 +140,5 @@ function uri(string $protocol = null) : string
 
     $httpHost = array_get($_SERVER, 'HTTP_HOST', '');
 
-    return $protocol.'://'.$httpHost.path();
+    return $protocol . '://' . $httpHost . path();
 }

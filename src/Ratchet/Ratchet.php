@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * Helper functions to work with Ratchet.
  */
 
@@ -14,11 +14,12 @@ use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
 use Siler\Container;
 
-const RATCHET_CONNECTIONS = 'ratchet_connections';
-const RATCHET_EVENT_OPEN = 'ratchet_event_open';
+const RATCHET_CONNECTIONS   = 'ratchet_connections';
+const RATCHET_EVENT_OPEN    = 'ratchet_event_open';
 const RATCHET_EVENT_MESSAGE = 'ratchet_event_message';
-const RATCHET_EVENT_CLOSE = 'ratchet_event_close';
-const RATCHET_EVENT_ERROR = 'ratchet_event_error';
+const RATCHET_EVENT_CLOSE   = 'ratchet_event_close';
+const RATCHET_EVENT_ERROR   = 'ratchet_event_error';
+
 
 /**
  * Initialize the Ratchet server. Note: this blocks the reset of code execution.
@@ -28,13 +29,14 @@ const RATCHET_EVENT_ERROR = 'ratchet_event_error';
 function init(int $port = 8080) : IoServer
 {
     $messageComponent = new MessageComponent();
-    $webSocketServer = new WsServer($messageComponent);
-    $server = IoServer::factory(new HttpServer($webSocketServer), $port);
+    $webSocketServer  = new WsServer($messageComponent);
+    $server           = IoServer::factory(new HttpServer($webSocketServer), $port);
 
     Container\set(RATCHET_CONNECTIONS, new \SplObjectStorage());
 
     return $server;
 }
+
 
 /**
  * Sets a callback for connected clients.
@@ -46,6 +48,7 @@ function connected(callable $callback)
     Container\set(RATCHET_EVENT_OPEN, $callback);
 }
 
+
 /**
  * Sets a callback for incoming web socket messages.
  *
@@ -55,6 +58,7 @@ function inbox(callable $callback)
 {
     Container\set(RATCHET_EVENT_MESSAGE, $callback);
 }
+
 
 /**
  * Sets a callback for closed connections.
@@ -66,6 +70,7 @@ function closed(callable $callback)
     Container\set(RATCHET_EVENT_CLOSE, $callback);
 }
 
+
 /**
  * Sets a callback to handle errors.
  *
@@ -75,6 +80,7 @@ function error(callable $callback)
 {
     Container\set(RATCHET_EVENT_ERROR, $callback);
 }
+
 
 /**
  * Broadcast a message for the connected clients.
@@ -86,7 +92,9 @@ function broadcast(string $message, ConnectionInterface $from = null)
 {
     $clients = Container\get(RATCHET_CONNECTIONS);
 
-    /** @var ConnectionInterface $client */
+    /*
+     * @var ConnectionInterface $client
+     */
     foreach ($clients as $client) {
         if (!is_null($from) && $client === $from) {
             continue;

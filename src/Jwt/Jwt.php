@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-/**
+/*
  * Helper functions for lcobucci/jwt library.
  */
 
@@ -13,16 +13,17 @@ use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\ValidationData;
 
+
 /**
  * Returns a factory function to build new tokens based on the given $config.
  *
- * @param array       $config
- * @param Signer|null $signer
- * @param string      $key
+ * @param array   $config
+ * @param ?Signer $signer
+ * @param ?string $key
  *
  * @return \Closure
  */
-function builder(array $config, Signer $signer = null, string $key = null) : \Closure
+function builder(array $config, ?Signer $signer = null, ?string $key = null) : \Closure
 {
     $builder = new Builder();
 
@@ -63,6 +64,7 @@ function builder(array $config, Signer $signer = null, string $key = null) : \Cl
     };
 }
 
+
 /**
  * Returns a validation function based on the given $config and $time.
  *
@@ -93,6 +95,7 @@ function validator(array $config, string $time) : \Closure
     };
 }
 
+
 /**
  * Parser helper.
  *
@@ -105,25 +108,33 @@ function parse(string $token) : Token
     return (new Parser())->parse($token);
 }
 
+
 /**
  * Configuration helper.
  *
- * @param string $iss configures the issuer (iss claim)
- * @param string $aud configures the audience (aud claim)
- * @param string $jti configures the id (jti claim), replicating as a header item
- * @param string $iat configures the time at which the token was issued (iat claim)
- * @param string $nbf configures the time at which the token can be used (nbf claim)
- * @param string $exp configures the expiration time of the token (nbf claim)
+ * @param ?string $iss configures the issuer (iss claim)
+ * @param ?string $aud configures the audience (aud claim)
+ * @param ?string $jti configures the id (jti claim), replicating as a header item
+ * @param ?string $iat configures the time at which the token was issued (iat claim)
+ * @param ?string $nbf configures the time at which the token can be used (nbf claim)
+ * @param ?string $exp configures the expiration time of the token (nbf claim)
  *
  * @return array
  */
 function conf(
-    string $iss = null,
-    string $aud = null,
-    string $jti = null,
-    string $iat = null,
-    string $nbf = null,
-    string $exp = null
+    ?string $iss = null,
+    ?string $aud = null,
+    ?string $jti = null,
+    ?string $iat = null,
+    ?string $nbf = null,
+    ?string $exp = null
 ) : array {
-    return compact('iss', 'aud', 'jti', 'iat', 'nbf', 'exp');
+    return [
+        'iss' => $iss,
+        'aud' => $aud,
+        'jti' => $jti,
+        'iat' => $iat,
+        'nbf' => $nbf,
+        'exp' => $exp,
+    ];
 }

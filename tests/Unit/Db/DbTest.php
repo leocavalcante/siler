@@ -9,6 +9,8 @@ use Siler\Db;
 
 class DbTest extends TestCase
 {
+
+
     /**
      * @expectedException \OutOfRangeException
      */
@@ -16,6 +18,7 @@ class DbTest extends TestCase
     {
         Db\query('');
     }
+
 
     /**
      * @expectedException \OutOfRangeException
@@ -25,6 +28,7 @@ class DbTest extends TestCase
         Db\prepare('');
     }
 
+
     /**
      * @expectedException \OutOfRangeException
      */
@@ -32,4 +36,4 @@ class DbTest extends TestCase
     {
         Db\error();
     }
-}
+}//end class

@@ -9,6 +9,8 @@ use Siler\Mongo;
 
 class MongoTest extends TestCase
 {
+
+
     /**
      * @expectedException \OutOfRangeException
      */
@@ -17,6 +19,7 @@ class MongoTest extends TestCase
         Mongo\database('');
     }
 
+
     /**
      * @expectedException \OutOfRangeException
      */
@@ -24,4 +27,4 @@ class MongoTest extends TestCase
     {
         Mongo\collection('', '');
     }
-}
+}//end class

@@ -8,6 +8,8 @@ use PHPUnit\Framework\TestCase;
 
 class SilerTest extends TestCase
 {
+
+
     public function testArrayGet()
     {
         $fixture = ['foo' => 'bar'];
@@ -16,6 +18,7 @@ class SilerTest extends TestCase
         $this->assertNull(\Siler\array_get($fixture, 'foobar'));
     }
 
+
     public function testArrayGetNullArray()
     {
         $fixture = null;
@@ -23,11 +26,13 @@ class SilerTest extends TestCase
         $this->assertSame('qux', \Siler\array_get($fixture, 'baz', 'qux'));
     }
 
+
     public function testArrayGetCaseSensitive()
     {
         $fixture = ['Foo' => 'bar'];
         $this->assertNull(\Siler\array_get($fixture, 'foo'));
     }
+
 
     public function testArrayGetCaseInsensitive()
     {
@@ -35,15 +40,16 @@ class SilerTest extends TestCase
         $this->assertSame('bar', \Siler\array_get($fixture, 'foo', null, true));
     }
 
+
     public function testRequireFn()
     {
-        $cb = \Siler\require_fn(__DIR__.'/../fixtures/foo.php');
+        $cb = \Siler\require_fn(__DIR__ . '/../fixtures/foo.php');
         $this->assertSame('baz', $cb(['bar' => 'baz']));
 
         $cb = \Siler\require_fn('dont exists');
         $this->assertNull($cb());
 
-        $cb = \Siler\require_fn(__DIR__.'/../fixtures/callable_require.php');
+        $cb = \Siler\require_fn(__DIR__ . '/../fixtures/callable_require.php');
         $this->assertSame('bar', $cb(['foo' => 'bar']));
     }
-}
+}//end class

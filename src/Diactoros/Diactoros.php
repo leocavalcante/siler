@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-/**
+/*
  * Adds a layer of helper functions to work with Zend Diactoros.
  */
 
@@ -16,6 +16,7 @@ use Zend\Diactoros\Response\TextResponse;
 use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\ServerRequestFactory;
 
+
 /**
  * Returns a new ServerRequest from globals.
  *
@@ -25,6 +26,7 @@ function request() : ServerRequest
 {
     return ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
 }
+
 
 /**
  * Returns a new response.
@@ -40,6 +42,7 @@ function response(string $body = 'php://memory', int $status = 200, array $heade
     return new Response($body, $status, $headers);
 }
 
+
 /**
  * Returns a new HTML response.
  *
@@ -53,6 +56,7 @@ function html(string $html, int $status = 200, array $headers = []) : HtmlRespon
 {
     return new HtmlResponse($html, $status, $headers);
 }
+
 
 /**
  * Returns a new JSON encoded response.
@@ -69,6 +73,7 @@ function json($data, int $status = 200, array $headers = [], int $encodingOption
     return new JsonResponse($data, $status, $headers, $encodingOptions);
 }
 
+
 /**
  * Returns a new text response.
  *
@@ -83,6 +88,7 @@ function text(string $text, int $status = 200, array $headers = []) : TextRespon
     return new TextResponse($text, $status, $headers);
 }
 
+
 /**
  * Returns a new redirect response.
  *
@@ -96,6 +102,7 @@ function redirect(string $uri, int $status = 302, array $headers = []) : Redirec
 {
     return new RedirectResponse($uri, $status, $headers);
 }
+
 
 /**
  * Returns a new empty response.

@@ -2,4 +2,4 @@
 
 declare(strict_types=1);
 
-echo 'foo.@'.$params['id'].'.get';
+echo 'foo.@' . $params['id'] . '.get';

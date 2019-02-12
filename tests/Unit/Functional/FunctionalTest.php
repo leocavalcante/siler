@@ -8,16 +8,20 @@ use Siler\Functional as f;
 
 class FunctionalTest extends \PHPUnit\Framework\TestCase
 {
+
+
     public function testId()
     {
         $this->assertSame('foo', f\identity()('foo'));
     }
+
 
     public function testAlways()
     {
         $this->assertSame('foo', f\always('foo')());
         $this->assertSame('foo', f\always('foo')('bar'));
     }
+
 
     public function testEq()
     {
@@ -27,12 +31,14 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse(f\equal(1)(true));
     }
 
+
     public function testLt()
     {
         $this->assertTrue(f\less_than(2)(1));
         $this->assertFalse(f\less_than(2)(2));
         $this->assertFalse(f\less_than(2)(3));
     }
+
 
     public function testGt()
     {
@@ -41,25 +47,39 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(f\greater_than(2)(3));
     }
 
+
     public function testIfe()
     {
         $foo = f\if_else(f\identity())(f\always('foo'))(f\always('bar'));
         $this->assertSame('foo', $foo(true));
     }
 
+
     public function testMatch()
     {
-        $test = f\match([
-            [f\equal('foo'), f\always('bar')],
-            [f\equal('bar'), f\always('baz')],
-            [f\equal('baz'), f\always('qux')],
-        ]);
+        $test = f\match(
+            [
+                [
+                    f\equal('foo'),
+                    f\always('bar'),
+                ],
+                [
+                    f\equal('bar'),
+                    f\always('baz'),
+                ],
+                [
+                    f\equal('baz'),
+                    f\always('qux'),
+                ],
+            ]
+        );
 
         $this->assertSame('bar', $test('foo'));
         $this->assertSame('baz', $test('bar'));
         $this->assertSame('qux', $test('baz'));
         $this->assertNull($test('qux'));
     }
+
 
     public function testAny()
     {
@@ -70,17 +90,20 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($test(3));
     }
 
+
     public function testAll()
     {
         $this->assertTrue(f\all([f\less_than(2), f\less_than(3)])(1));
         $this->assertFalse(f\all([f\equal(1), f\greater_than(1)])(1));
     }
 
+
     public function testNot()
     {
         $this->assertTrue(f\not(f\equal(2))(3));
         $this->assertFalse(f\not(f\equal(2))(2));
     }
+
 
     public function testMath()
     {
@@ -96,6 +119,7 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(-2, f\mod(-3)(-5));
     }
 
+
     public function testCompose()
     {
         $test = f\compose([f\add(2), f\mul(2)]);
@@ -104,6 +128,7 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $test = f\compose([f\div(2), f\sub(1)]);
         $this->assertSame(0.5, $test(2));
     }
+
 
     public function testBool()
     {
@@ -116,11 +141,13 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse(f\bool()(0));
     }
 
+
     public function testNoop()
     {
         f\noop()();
         $this->assertTrue(true);
     }
+
 
     public function testHold()
     {
@@ -133,89 +160,194 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         f\if_else(f\bool())(f\hold($echoFoo))(f\noop())('foo');
     }
 
+
     public function testPuts()
     {
         $this->expectOutputString('foo');
         f\puts('foo')();
     }
 
+
     public function testFlatten()
     {
-        $input = [0, 1, [2, 3], [4, 5], [6, [7, 8, [9]]]];
-        $expected = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-        $actual = f\flatten($input);
+        $input    = [
+            0,
+            1,
+            [
+                2,
+                3,
+            ], [
+                4,
+                5,
+            ], [
+                6,
+                [
+                    7,
+                    8,
+                    [9],
+                ],
+            ],
+        ];
+        $expected = [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+        ];
+        $actual   = f\flatten($input);
 
         $this->assertSame($expected, $actual);
     }
+
 
     public function testHead()
     {
-        $input = [1, 2, 3, 4, 5];
+        $input    = [
+            1,
+            2,
+            3,
+            4,
+            5,
+        ];
         $expected = 1;
-        $actual = f\head($input);
+        $actual   = f\head($input);
 
         $this->assertSame($expected, $actual);
         $this->assertSame([1, 2, 3, 4, 5], $input);
     }
+
 
     public function testLast()
     {
-        $input = [1, 2, 3, 4, 5];
+        $input    = [
+            1,
+            2,
+            3,
+            4,
+            5,
+        ];
         $expected = 5;
-        $actual = f\last($input);
+        $actual   = f\last($input);
 
         $this->assertSame($expected, $actual);
         $this->assertSame([1, 2, 3, 4, 5], $input);
     }
+
 
     public function testTail()
     {
-        $input = [1, 2, 3, 4, 5];
-        $expected = [2, 3, 4, 5];
-        $actual = f\tail($input);
+        $input    = [
+            1,
+            2,
+            3,
+            4,
+            5,
+        ];
+        $expected = [
+            2,
+            3,
+            4,
+            5,
+        ];
+        $actual   = f\tail($input);
 
         $this->assertSame($expected, $actual);
         $this->assertSame([1, 2, 3, 4, 5], $input);
     }
+
 
     public function testInit()
     {
-        $input = [1, 2, 3, 4, 5];
-        $expected = [1, 2, 3, 4];
-        $actual = f\init($input);
+        $input    = [
+            1,
+            2,
+            3,
+            4,
+            5,
+        ];
+        $expected = [
+            1,
+            2,
+            3,
+            4,
+        ];
+        $actual   = f\init($input);
 
         $this->assertSame($expected, $actual);
         $this->assertSame([1, 2, 3, 4, 5], $input);
     }
+
 
     public function testUncons()
     {
-        $input = [1, 2, 3, 4, 5];
-        $expected = [1, [2, 3, 4, 5]];
+        $input    = [
+            1,
+            2,
+            3,
+            4,
+            5,
+        ];
+        $expected = [
+            1,
+            [
+                2,
+                3,
+                4,
+                5,
+            ],
+        ];
 
         list($head, $tail) = f\uncons($input);
-        $actual = [$head, $tail];
+        $actual            = [
+            $head,
+            $tail,
+        ];
 
         $this->assertSame($expected, $actual);
         $this->assertSame([1, 2, 3, 4, 5], $input);
     }
 
+
     public function testNonNull()
     {
-        $input = [0, null, false, '', null];
+        $input = [
+            0,
+            null,
+            false,
+            '',
+            null,
+        ];
         $this->assertSame([0, false, ''], f\non_null($input));
     }
 
+
     public function testNonEmpty()
     {
-        $input = [0, 1, false, true, '', 'foo', null, [], ['bar']];
+        $input = [
+            0,
+            1,
+            false,
+            true,
+            '',
+            'foo',
+            null,
+            [],
+            ['bar'],
+        ];
         $this->assertSame([1, true, 'foo', ['bar']], f\non_empty($input));
     }
+
 
     public function testPartial()
     {
         $add = function (int $a, int $b) {
-            return $a + $b;
+            return ($a + $b);
         };
 
         $add1 = f\partial($add, 1);
@@ -224,4 +356,4 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $commaExplode = f\partial('explode', ',');
         $this->assertSame(['foo', 'bar'], $commaExplode('foo,bar'));
     }
-}
+}//end class

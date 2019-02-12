@@ -8,6 +8,7 @@ class SwooleHttpRequestMock
 {
     public $server;
 
+
     public function __construct(string $method, string $uri)
     {
         $this->server = [
@@ -15,4 +16,4 @@ class SwooleHttpRequestMock
             'request_uri'    => $uri,
         ];
     }
-}
+}//end class
