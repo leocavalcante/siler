@@ -13,15 +13,18 @@ use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 class RouteTest extends TestCase
 {
+
+
     protected function setUp()
     {
         $_GET = $_POST = $_REQUEST = ['foo' => 'bar'];
 
-        $_SERVER['HTTP_HOST'] = 'test:8000';
-        $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
-        $_SERVER['REQUEST_URI'] = '/bar/baz';
+        $_SERVER['HTTP_HOST']      = 'test:8000';
+        $_SERVER['SCRIPT_NAME']    = '/foo/test.php';
+        $_SERVER['REQUEST_URI']    = '/bar/baz';
         $_SERVER['REQUEST_METHOD'] = 'GET';
     }
+
 
     /**
      * Test route with request parameter as an array.
@@ -30,54 +33,91 @@ class RouteTest extends TestCase
     {
         $this->expectOutputString('bar');
 
-        Route\route('get', '/foo', function () {
-            echo 'bar';
-        }, ['get', '/foo']);
+        Route\route(
+            'get',
+            '/foo',
+            function () {
+                echo 'bar';
+            },
+            [
+                'get',
+                '/foo',
+            ]
+        );
     }
+
 
     public function testRouteMatching()
     {
         $this->expectOutputString('baz');
 
-        Route\route('get', '/foo', function ($params) {
-            echo 'foo';
-        });
+        Route\route(
+            'get',
+            '/foo',
+            function ($params) {
+                echo 'foo';
+            }
+        );
 
-        Route\route('get', '/bar', function ($params) {
-            echo 'bar';
-        });
+        Route\route(
+            'get',
+            '/bar',
+            function ($params) {
+                echo 'bar';
+            }
+        );
 
-        Route\route('get', '/bar/baz', function ($params) {
-            echo 'baz';
-        });
+        Route\route(
+            'get',
+            '/bar/baz',
+            function ($params) {
+                echo 'baz';
+            }
+        );
     }
+
 
     public function testRouteRegexp()
     {
         $this->expectOutputString('baz');
 
-        Route\route('get', '/bar/([a-z]+)', function ($params) {
-            echo $params[1];
-        });
+        Route\route(
+            'get',
+            '/bar/([a-z]+)',
+            function ($params) {
+                echo $params[1];
+            }
+        );
     }
+
 
     public function testRouteNamedGroup()
     {
         $this->expectOutputString('baz');
 
-        Route\route('get', '/bar/{baz}', function ($params) {
-            echo $params['baz'];
-        });
+        Route\route(
+            'get',
+            '/bar/{baz}',
+            function ($params) {
+                echo $params['baz'];
+            }
+        );
     }
+
 
     public function testOptionalParam()
     {
         $this->expectOutputString('qux');
 
-        Route\route('get', '/bar/baz/?{qux}?', function ($params) {
-            echo array_key_exists('qux', $params) ? 'foobar' : 'qux';
-        });
+        Route\route(
+            'get',
+            '/bar/baz/?{qux}?',
+            function ($params) {
+                echo array_key_exists('qux', $params) ? 'foobar' : 'qux';
+            }
+        );
     }
+
 
     public function testOptionalParamMatch()
     {
@@ -85,10 +125,15 @@ class RouteTest extends TestCase
 
         $_SERVER['REQUEST_URI'] = '/bar/baz/biz';
 
-        Route\route('get', '/bar/baz/?{qux}?', function ($params) {
-            echo array_key_exists('qux', $params) ? $params['qux'] : 'qux';
-        });
+        Route\route(
+            'get',
+            '/bar/baz/?{qux}?',
+            function ($params) {
+                echo array_key_exists('qux', $params) ? $params['qux'] : 'qux';
+            }
+        );
     }
+
 
     public function testRouteWrappedNamedGroup()
     {
@@ -96,14 +141,23 @@ class RouteTest extends TestCase
 
         $_SERVER['REQUEST_URI'] = '/bar/baz/qux';
 
-        Route\route('get', '/bar/{baz}', function ($params) {
-            echo 'foo';
-        });
+        Route\route(
+            'get',
+            '/bar/{baz}',
+            function ($params) {
+                echo 'foo';
+            }
+        );
 
-        Route\route('get', '/bar/{baz}/qux', function ($params) {
-            echo $params['baz'];
-        });
+        Route\route(
+            'get',
+            '/bar/{baz}/qux',
+            function ($params) {
+                echo $params['baz'];
+            }
+        );
     }
+
 
     public function testRouteNamedGroupWithDash()
     {
@@ -111,10 +165,15 @@ class RouteTest extends TestCase
 
         $_SERVER['REQUEST_URI'] = '/bar/baz-qux';
 
-        Route\route('get', '/bar/{baz}', function ($params) {
-            echo 'baz-qux';
-        });
+        Route\route(
+            'get',
+            '/bar/{baz}',
+            function ($params) {
+                echo 'baz-qux';
+            }
+        );
     }
+
 
     public function testRouteNamedGroupWithNumber()
     {
@@ -122,10 +181,15 @@ class RouteTest extends TestCase
 
         $_SERVER['REQUEST_URI'] = '/bar/baz-2017';
 
-        Route\route('get', '/bar/{baz}', function ($params) {
-            echo $params['baz'];
-        });
+        Route\route(
+            'get',
+            '/bar/{baz}',
+            function ($params) {
+                echo $params['baz'];
+            }
+        );
     }
+
 
     public function testRouteNamedGroupWithUnderscore()
     {
@@ -133,10 +197,15 @@ class RouteTest extends TestCase
 
         $_SERVER['REQUEST_URI'] = '/bar/baz_qux';
 
-        Route\route('get', '/bar/{baz}', function ($params) {
-            echo $params['baz'];
-        });
+        Route\route(
+            'get',
+            '/bar/{baz}',
+            function ($params) {
+                echo $params['baz'];
+            }
+        );
     }
+
 
     public function testRouteDefaultPathInfo()
     {
@@ -144,16 +213,22 @@ class RouteTest extends TestCase
 
         unset($_SERVER['REQUEST_URI']);
 
-        Route\route('get', '/', function ($params) {
-            echo 'foo';
-        });
+        Route\route(
+            'get',
+            '/',
+            function ($params) {
+                echo 'foo';
+            }
+        );
     }
+
 
     public function testRouteWithString()
     {
         $this->expectOutputString('foo');
-        Route\route('get', '/bar/{bar}', __DIR__.'/../../fixtures/to_be_required.php');
+        Route\route('get', '/bar/{bar}', __DIR__ . '/../../fixtures/to_be_required.php');
     }
+
 
     public function testRouteMethod()
     {
@@ -161,14 +236,23 @@ class RouteTest extends TestCase
 
         $_SERVER['REQUEST_METHOD'] = 'POST';
 
-        Route\route('get', '/bar/baz', function ($params) {
-            echo 'foo';
-        });
+        Route\route(
+            'get',
+            '/bar/baz',
+            function ($params) {
+                echo 'foo';
+            }
+        );
 
-        Route\route('post', '/bar/baz', function ($params) {
-            echo 'bar';
-        });
+        Route\route(
+            'post',
+            '/bar/baz',
+            function ($params) {
+                echo 'bar';
+            }
+        );
     }
+
 
     public function testRouteMultiMethods()
     {
@@ -176,23 +260,40 @@ class RouteTest extends TestCase
 
         $_SERVER['REQUEST_METHOD'] = 'POST';
 
-        Route\route(['get', 'post'], '/bar/baz', function ($params) {
-            echo 'foo';
-        });
+        Route\route(
+            [
+                'get',
+                'post',
+            ],
+            '/bar/baz',
+            function ($params) {
+                echo 'foo';
+            }
+        );
 
-        Route\route('post', '/bar/baz', function ($params) {
-            echo 'bar';
-        });
+        Route\route(
+            'post',
+            '/bar/baz',
+            function ($params) {
+                echo 'bar';
+            }
+        );
     }
+
 
     public function testRouteReturn()
     {
-        $actual = Route\route('get', '/bar/baz', function () {
-            return 'foo';
-        });
+        $actual = Route\route(
+            'get',
+            '/bar/baz',
+            function () {
+                return 'foo';
+            }
+        );
 
         $this->assertSame('foo', $actual);
     }
+
 
     public function testRegexify()
     {
@@ -205,6 +306,7 @@ class RouteTest extends TestCase
         $this->assertSame('#^/foo/(?<baz>[A-z0-9_-]+)/qux/?$#', Route\regexify('/foo/{baz}/qux'));
         $this->assertSame('#^/foo/(?<baz>[A-z0-9_-]+)?/?$#', Route\regexify('/foo/{baz}?'));
     }
+
 
     public function testRoutify()
     {
@@ -222,14 +324,22 @@ class RouteTest extends TestCase
         $this->assertSame(['get', '/foo/?{id}?'], Route\routify('/foo.@id.get.php'));
     }
 
+
     public function testMatch()
     {
-        $routes = [null, false];
+        $routes = [
+            null,
+            false,
+        ];
         $this->assertFalse(Route\match($routes));
 
-        $routes = [null, null];
+        $routes = [
+            null,
+            null,
+        ];
         $this->assertNull(Route\match($routes));
     }
+
 
     /**
      * @runInSeparateProcess
@@ -240,7 +350,7 @@ class RouteTest extends TestCase
         $this->assertSame(['OPTIONS', '/baz'], $methodPath);
 
         $serverRequest = new ServerRequest([], [], '/foo', 'PUT');
-        $methodPath = Route\method_path($serverRequest);
+        $methodPath    = Route\method_path($serverRequest);
         $this->assertSame(['PUT', '/foo'], $methodPath);
 
         $_SERVER['REQUEST_METHOD'] = 'POST';
@@ -251,4 +361,4 @@ class RouteTest extends TestCase
         $methodPath = Route\method_path(null);
         $this->assertSame(['DELETE', '/qux'], $methodPath);
     }
-}
+}//end class

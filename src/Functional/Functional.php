@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-/**
+/*
  * In computer science, functional programming is a programming paradigm
  * a style of building the structure and elements of computer programs
  * that treats computation as the evaluation of mathematical functions
@@ -10,6 +10,7 @@ declare(strict_types=1);
  */
 
 namespace Siler\Functional;
+
 
 /**
  * Identity function.
@@ -22,6 +23,7 @@ function identity() : \Closure
         return $value;
     };
 }
+
 
 /**
  * Is a unary function which evaluates to $value for all inputs.
@@ -37,6 +39,7 @@ function always($value) : \Closure
     };
 }
 
+
 /**
  * Returns TRUE if $left is equal to $right and they are of the same type.
  *
@@ -50,6 +53,7 @@ function equal($right) : \Closure
         return $left === $right;
     };
 }
+
 
 /**
  * Returns TRUE if $left is strictly less than $right.
@@ -65,6 +69,7 @@ function less_than($right) : \Closure
     };
 }
 
+
 /**
  * Returns TRUE if $left is strictly greater than $right.
  *
@@ -78,6 +83,7 @@ function greater_than($right) : \Closure
         return $left > $right;
     };
 }
+
 
 /**
  * It allows for conditional execution of code fragments.
@@ -96,6 +102,7 @@ function if_else(callable $cond) : \Closure
         };
     };
 }
+
 
 /**
  * Pattern-Matching Semantics.
@@ -117,6 +124,7 @@ function match(array $matches) : \Closure
     };
 }
 
+
 /**
  * Determines whether any returns of $functions is TRUE.
  *
@@ -127,11 +135,16 @@ function match(array $matches) : \Closure
 function any(array $functions) : \Closure
 {
     return function ($value) use ($functions) {
-        return array_reduce($functions, function ($current, $function) use ($value) {
-            return $current || $function($value);
-        }, false);
+        return array_reduce(
+            $functions,
+            function ($current, $function) use ($value) {
+                return $current || $function($value);
+            },
+            false
+        );
     };
 }
+
 
 /**
  * Determines whether all returns of $functions are TRUE.
@@ -143,11 +156,16 @@ function any(array $functions) : \Closure
 function all(array $functions) : \Closure
 {
     return function ($value) use ($functions) {
-        return array_reduce($functions, function ($current, $function) use ($value) {
-            return $current && $function($value);
-        }, true);
+        return array_reduce(
+            $functions,
+            function ($current, $function) use ($value) {
+                return $current && $function($value);
+            },
+            true
+        );
     };
 }
+
 
 /**
  * Boolean "not".
@@ -163,6 +181,7 @@ function not(callable $function) : \Closure
     };
 }
 
+
 /**
  * Sum of $left and $right.
  *
@@ -173,9 +192,10 @@ function not(callable $function) : \Closure
 function add($right) : \Closure
 {
     return function ($left) use ($right) {
-        return $left + $right;
+        return ($left + $right);
     };
 }
+
 
 /**
  * Product of $left and $right.
@@ -187,9 +207,10 @@ function add($right) : \Closure
 function mul($right) : \Closure
 {
     return function ($left) use ($right) {
-        return $left * $right;
+        return ($left * $right);
     };
 }
+
 
 /**
  * Difference of $left and $right.
@@ -201,9 +222,10 @@ function mul($right) : \Closure
 function sub($right) : \Closure
 {
     return function ($left) use ($right) {
-        return $left - $right;
+        return ($left - $right);
     };
 }
+
 
 /**
  * Quotient of $left and $right.
@@ -215,9 +237,10 @@ function sub($right) : \Closure
 function div($right) : \Closure
 {
     return function ($left) use ($right) {
-        return $left / $right;
+        return ($left / $right);
     };
 }
+
 
 /**
  * Remainder of $left divided by $right.
@@ -229,9 +252,10 @@ function div($right) : \Closure
 function mod($right) : \Closure
 {
     return function ($left) use ($right) {
-        return $left % $right;
+        return ($left % $right);
     };
 }
+
 
 /**
  * Function composition is the act of pipelining the result of one function,
@@ -244,11 +268,16 @@ function mod($right) : \Closure
 function compose(array $functions) : \Closure
 {
     return function ($value) use ($functions) {
-        return array_reduce(array_reverse($functions), function ($value, $function) {
-            return $function($value);
-        }, $value);
+        return array_reduce(
+            array_reverse($functions),
+            function ($value, $function) {
+                return $function($value);
+            },
+            $value
+        );
     };
 }
+
 
 /**
  * Converts the given $value to a boolean.
@@ -262,6 +291,7 @@ function bool() : \Closure
     };
 }
 
+
 /**
  * In computer science, a NOP or NOOP (short for No Operation) is an assembly language instruction,
  * programming language statement, or computer protocol command that does nothing.
@@ -273,6 +303,7 @@ function noop() : \Closure
     return function () {
     };
 }
+
 
 /**
  * Holds a function for lazily call.
@@ -288,6 +319,7 @@ function hold(callable $function) : \Closure
     };
 }
 
+
 /**
  * Lazy echo.
  *
@@ -301,6 +333,7 @@ function puts($value) : \Closure
         echo $value;
     };
 }
+
 
 /**
  * Flats a multi-dimensional array.
@@ -316,10 +349,14 @@ function flatten(array $list, array $flat = []) : array
         return $flat;
     }
 
-    list($head, $tail) = [$list[0], array_slice($list, 1)];
+    list($head, $tail) = [
+        $list[0],
+        array_slice($list, 1),
+    ];
 
     return flatten($tail, is_array($head) ? flatten($head, $flat) : array_merge($flat, [$head]));
 }
+
 
 /**
  * Extract the first element of a list, which must be non-empty.
@@ -333,6 +370,7 @@ function head(array $list)
     return array_shift($list);
 }
 
+
 /**
  * Extract the last element of a list, which must be finite and non-empty.
  *
@@ -344,6 +382,7 @@ function last(array $list)
 {
     return array_pop($list);
 }
+
 
 /**
  * Extract the elements after the head of a list, which must be non-empty.
@@ -357,6 +396,7 @@ function tail(array $list)
     return array_slice($list, 1);
 }
 
+
 /**
  * Return all the elements of a list except the last one. The list must be non-empty.
  *
@@ -369,6 +409,7 @@ function init(array $list) : array
     return array_slice($list, 0, -1);
 }
 
+
 /**
  * Decompose a list into its head and tail.
  *
@@ -378,8 +419,12 @@ function init(array $list) : array
  */
 function uncons(array $list) : array
 {
-    return [$list[0], array_slice($list, 1)];
+    return [
+        $list[0],
+        array_slice($list, 1),
+    ];
 }
+
 
 /**
  * Filter a list removing null values.
@@ -390,10 +435,16 @@ function uncons(array $list) : array
  */
 function non_null(array $list): array
 {
-    return array_values(array_filter($list, function ($item) {
-        return !is_null($item);
-    }));
+    return array_values(
+        array_filter(
+            $list,
+            function ($item) {
+                return !is_null($item);
+            }
+        )
+    );
 }
+
 
 /**
  * Filter a list removing empty values.
@@ -404,10 +455,16 @@ function non_null(array $list): array
  */
 function non_empty(array $list): array
 {
-    return array_values(array_filter($list, function ($item) {
-        return !empty($item);
-    }));
+    return array_values(
+        array_filter(
+            $list,
+            function ($item) {
+                return !empty($item);
+            }
+        )
+    );
 }
+
 
 /**
  * Partial application.

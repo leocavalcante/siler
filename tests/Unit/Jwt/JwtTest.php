@@ -21,6 +21,7 @@ class JwtTest extends \PHPUnit\Framework\TestCase
     protected $data;
     protected $signer;
 
+
     protected function setUp()
     {
         $this->config = [
@@ -32,12 +33,11 @@ class JwtTest extends \PHPUnit\Framework\TestCase
             'exp' => self::EXP,
         ];
 
-        $this->data = [
-            'uid' => 1,
-        ];
+        $this->data = ['uid' => 1];
 
         $this->signer = new Sha256();
     }
+
 
     public function testBuilder()
     {
@@ -53,8 +53,9 @@ class JwtTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame(1, $token->getClaim('uid'));
 
-        $this->assertStringEqualsFile(__DIR__.'/../../fixtures/jwt_unsigned.txt', (string) $token);
+        $this->assertStringEqualsFile(__DIR__ . '/../../fixtures/jwt_unsigned.txt', (string) $token);
     }
+
 
     public function testValidate()
     {
@@ -66,19 +67,21 @@ class JwtTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse(Jwt\validator($this->config, strval(self::EXP + 1))($token));
     }
 
+
     public function testBuilderWithSigner()
     {
         $token = Jwt\builder($this->config, $this->signer, self::KEY)($this->data);
 
-        $this->assertStringEqualsFile(__DIR__.'/../../fixtures/jwt_signed.txt', (string) $token);
+        $this->assertStringEqualsFile(__DIR__ . '/../../fixtures/jwt_signed.txt', (string) $token);
 
         $this->assertTrue($token->verify($this->signer, self::KEY));
         $this->assertFalse($token->verify($this->signer, 'wrong key'));
     }
 
+
     public function testParse()
     {
-        $token = Jwt\parse(file_get_contents(__DIR__.'/../../fixtures/jwt_signed.txt'));
+        $token = Jwt\parse(file_get_contents(__DIR__ . '/../../fixtures/jwt_signed.txt'));
 
         $this->assertSame(self::JTI, $token->getHeader('jti'));
 
@@ -93,9 +96,10 @@ class JwtTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($token->verify($this->signer, self::KEY));
     }
 
+
     public function testConf()
     {
         $config = Jwt\conf(self::ISS, self::AUD, self::JTI, self::IAT, self::NBF, self::EXP);
         $this->assertSame($this->config, $config);
     }
-}
+}//end class

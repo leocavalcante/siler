@@ -15,21 +15,30 @@ use function Siler\Twig\init as twig;
 use function Siler\Twig\render;
 
 // call like: /to-json?foo=bar
-get('/to-json', function () {
-    // output: {"foo":"bar"}
-    sapi_emit(json(request()->getQueryParams()));
-});
+get(
+    '/to-json',
+    function () {
+        // output: {"foo":"bar"}
+        sapi_emit(json(request()->getQueryParams()));
+    }
+);
 
 twig('examples/psr7-diactoros');
 
 // call like: /to-html?foo=bar
-get('/to-html', function () {
-    // outputs a table with foo bar, see: template.twig
-    sapi_emit(html(render('template.twig', ['query' => request()->getQueryParams()])));
-});
+get(
+    '/to-html',
+    function () {
+        // outputs a table with foo bar, see: template.twig
+        sapi_emit(html(render('template.twig', ['query' => request()->getQueryParams()])));
+    }
+);
 
 // call like: /to-text?foo=bar
-get('/to-text', function () {
-    // output: foo=bar
-    sapi_emit(text(http_build_query(request()->getQueryParams())));
-});
+get(
+    '/to-text',
+    function () {
+        // output: foo=bar
+        sapi_emit(text(http_build_query(request()->getQueryParams())));
+    }
+);

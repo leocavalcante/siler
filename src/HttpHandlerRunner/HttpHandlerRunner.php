@@ -7,6 +7,7 @@ namespace Siler\HttpHandlerRunner;
 use Psr\Http\Message\ResponseInterface;
 use Zend\HttpHandlerRunner\Emitter\SapiEmitter;
 
+
 /**
  * Creates a SapiEmitter and immediatly calls its emit method.
  *

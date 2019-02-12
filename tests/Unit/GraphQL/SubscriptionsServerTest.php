@@ -10,14 +10,16 @@ use Siler\GraphQL\SubscriptionsServer;
 
 class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
 {
+
+
     public function testOnOpen()
     {
         $manager = $this->getMockBuilder(SubscriptionsManager::class)
-                        ->disableOriginalConstructor()
-                        ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $conn = $this->getMockBuilder(ConnectionInterface::class)
-                     ->getMock();
+            ->getMock();
 
         $server = new SubscriptionsServer($manager);
         $server->onOpen($conn);
@@ -25,44 +27,45 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SubscriptionsServer::class, $server);
     }
 
+
     public function testOnMessage()
     {
         $conn = $this->getMockBuilder(ConnectionInterface::class)
-                     ->getMock();
+            ->getMock();
 
         $manager = $this->getMockBuilder(SubscriptionsManager::class)
-                        ->disableOriginalConstructor()
-                        ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $server = new SubscriptionsServer($manager);
 
         $manager->expects($this->once())
-                ->method('handleConnectionInit')
-                ->with($conn);
+            ->method('handleConnectionInit')
+            ->with($conn);
 
         $message = '{"type": "connection_init"}';
         $server->onMessage($conn, $message);
 
         $data = ['type' => 'start'];
         $manager->expects($this->once())
-                ->method('handleStart')
-                ->with($conn, $data);
+            ->method('handleStart')
+            ->with($conn, $data);
 
         $message = '{"type": "start"}';
         $server->onMessage($conn, $message);
 
         $data = ['type' => 'data'];
         $manager->expects($this->once())
-                ->method('handleData')
-                ->with($data);
+            ->method('handleData')
+            ->with($data);
 
         $message = '{"type": "data"}';
         $server->onMessage($conn, $message);
 
         $data = ['type' => 'stop'];
         $manager->expects($this->once())
-                ->method('handleStop')
-                ->with($conn, $data);
+            ->method('handleStop')
+            ->with($conn, $data);
 
         $message = '{"type": "stop"}';
         $server->onMessage($conn, $message);
@@ -71,14 +74,15 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
         $server->onMessage($conn, $message);
     }
 
+
     public function testOnClose()
     {
         $manager = $this->getMockBuilder(SubscriptionsManager::class)
-                        ->disableOriginalConstructor()
-                        ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $conn = $this->getMockBuilder(ConnectionInterface::class)
-                     ->getMock();
+            ->getMock();
 
         $server = new SubscriptionsServer($manager);
         $server->onClose($conn);
@@ -86,14 +90,15 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SubscriptionsServer::class, $server);
     }
 
+
     public function testOnError()
     {
         $manager = $this->getMockBuilder(SubscriptionsManager::class)
-                        ->disableOriginalConstructor()
-                        ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $conn = $this->getMockBuilder(ConnectionInterface::class)
-                     ->getMock();
+            ->getMock();
 
         $server = new SubscriptionsServer($manager);
         $server->onError($conn, new \Exception());
@@ -101,14 +106,15 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SubscriptionsServer::class, $server);
     }
 
+
     public function testGetSubProtocols()
     {
         $manager = $this->getMockBuilder(SubscriptionsManager::class)
-                        ->disableOriginalConstructor()
-                        ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $server = new SubscriptionsServer($manager);
 
         $this->assertContains('graphql-ws', $server->getSubProtocols());
     }
-}
+}//end class

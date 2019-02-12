@@ -1,11 +1,12 @@
 <?php
 
 declare(strict_types=1);
-/**
+/*
  * Tuple module.
  */
 
 namespace Siler\Tuple;
+
 
 /**
  * Creates a new Tuple.
@@ -19,12 +20,14 @@ function tuple(...$values)
     return new Tuple($values);
 }
 
+
 /**
  * A class representing a Tuple.
  */
 final class Tuple implements \ArrayAccess, \Countable
 {
     private $values;
+
 
     /**
      * @internal Tuple constructor.
@@ -36,6 +39,7 @@ final class Tuple implements \ArrayAccess, \Countable
         $this->values = $values;
     }
 
+
     /**
      * Returns Tuple values, useful for `list()`.
      *
@@ -46,7 +50,10 @@ final class Tuple implements \ArrayAccess, \Countable
         return $this->values;
     }
 
+
     /**
+     * @override
+     *
      * @param mixed $offset
      *
      * @return bool
@@ -56,8 +63,11 @@ final class Tuple implements \ArrayAccess, \Countable
         return isset($this->values[$offset]);
     }
 
+
     /**
-     * @param mixed| $offset
+     * @override
+     *
+     * @param mixed $offset
      *
      * @throws \OutOfBoundsException
      *
@@ -72,26 +82,37 @@ final class Tuple implements \ArrayAccess, \Countable
         throw new \OutOfRangeException('Invalid tuple position');
     }
 
+
     /**
+     * @override
+     *
      * @param mixed $offset
      * @param mixed $value
      *
      * @throws \RuntimeException
+     *
+     * @suppress PhanUnusedPublicFinalMethodParameter
      */
     public function offsetSet($offset, $value)
     {
         throw new \RuntimeException('Tuples are immutable!');
     }
 
+
     /**
-     * @param mixed| $offset
+     * @override
+     *
+     * @param mixed $offset
      *
      * @throws \RuntimeException
+     *
+     * @suppress PhanUnusedPublicFinalMethodParameter
      */
     public function offsetUnset($offset)
     {
         throw new \RuntimeException('Tuples are immutable!');
     }
+
 
     /**
      * @internal Count elements of the Tuple.
@@ -102,4 +123,4 @@ final class Tuple implements \ArrayAccess, \Countable
     {
         return count($this->values);
     }
-}
+}//end class

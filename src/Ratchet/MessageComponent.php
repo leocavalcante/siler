@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-/**
+/*
  * Siler's internal MessageComponent.
  */
 
@@ -16,6 +16,8 @@ use Siler\Container;
  */
 class MessageComponent implements MessageComponentInterface
 {
+
+
     /**
      * {@inheritdoc}.
      */
@@ -25,6 +27,7 @@ class MessageComponent implements MessageComponentInterface
         $this->callback(RATCHET_EVENT_OPEN, [$conn]);
     }
 
+
     /**
      * {@inheritdoc}.
      */
@@ -32,6 +35,7 @@ class MessageComponent implements MessageComponentInterface
     {
         $this->callback(RATCHET_EVENT_MESSAGE, [$from, $message]);
     }
+
 
     /**
      * {@inheritdoc}.
@@ -42,6 +46,7 @@ class MessageComponent implements MessageComponentInterface
         $this->callback(RATCHET_EVENT_CLOSE, [$conn]);
     }
 
+
     /**
      * {@inheritdoc}.
      */
@@ -50,6 +55,7 @@ class MessageComponent implements MessageComponentInterface
         $this->callback(RATCHET_EVENT_ERROR, [$conn, $exception]);
         $conn->close();
     }
+
 
     /**
      * Helper function to call event callbacks checking for its existence.
@@ -71,4 +77,4 @@ class MessageComponent implements MessageComponentInterface
 
         call_user_func_array($callback, $params);
     }
-}
+}//end class

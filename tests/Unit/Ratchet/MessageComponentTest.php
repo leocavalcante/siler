@@ -14,13 +14,15 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
     protected $conn;
     protected $storage;
 
+
     public function setUp()
     {
-        $this->conn = $this->createMock(ConnectionInterface::class);
+        $this->conn    = $this->createMock(ConnectionInterface::class);
         $this->storage = $this->createMock(\SplObjectStorage::class);
 
         Container\set(Ratchet\RATCHET_CONNECTIONS, $this->storage);
     }
+
 
     public function testCallbackIsNull()
     {
@@ -32,10 +34,11 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($onOpenCalled);
     }
 
+
     public function testCallbackIsntCallable()
     {
         $onOpenCalled = false;
-        $onOpen = 'not callable';
+        $onOpen       = 'not callable';
 
         Container\set(Ratchet\RATCHET_EVENT_OPEN, $onOpen);
 
@@ -45,11 +48,12 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($onOpenCalled);
     }
 
+
     public function testOnOpen()
     {
         $this->storage->expects($this->once())
-                ->method('attach')
-                ->with($this->equalTo($this->conn));
+            ->method('attach')
+            ->with($this->equalTo($this->conn));
 
         $onOpenCalled = false;
 
@@ -65,15 +69,16 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($onOpenCalled);
     }
 
+
     public function testOnMessage()
     {
         $message = 'test';
 
-        $onMessageFrom = null;
+        $onMessageFrom    = null;
         $onMessageMessage = null;
 
         $onMessage = function ($from, $message) use (&$onMessageFrom, &$onMessageMessage) {
-            $onMessageFrom = $from;
+            $onMessageFrom    = $from;
             $onMessageMessage = $message;
         };
 
@@ -86,11 +91,12 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($message, $onMessageMessage);
     }
 
+
     public function testOnClose()
     {
         $this->storage->expects($this->once())
-                ->method('detach')
-                ->with($this->equalTo($this->conn));
+            ->method('detach')
+            ->with($this->equalTo($this->conn));
 
         $onCloseCalled = false;
 
@@ -106,13 +112,14 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($onCloseCalled);
     }
 
+
     public function testOnError()
     {
         $expectedException = new \Exception();
-        $actualException = null;
+        $actualException   = null;
 
         $this->conn->expects($this->once())
-                   ->method('close');
+            ->method('close');
 
         $onError = function ($conn, $e) use (&$actualException) {
             $actualException = $e;
@@ -125,4 +132,4 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame($expectedException, $actualException);
     }
-}
+}//end class

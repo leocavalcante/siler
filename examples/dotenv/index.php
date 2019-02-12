@@ -8,6 +8,9 @@ require 'vendor/autoload.php';
 
 Dotenv\init('examples/dotenv/');
 
-Route\get('/', function () {
-    echo Dotenv\env('MESSAGE');
-});
+Route\get(
+    '/',
+    function () {
+        echo Dotenv\env('MESSAGE');
+    }
+);

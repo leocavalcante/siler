@@ -9,16 +9,20 @@ use Siler\Container;
 
 class ContainerTest extends TestCase
 {
+
+
     public function testSet()
     {
         Container\set('test', 'test');
         $this->assertContains('test', Container\Container::getInstance()->values);
     }
 
+
     public function testGet()
     {
         $this->assertSame('test', Container\get('test'));
     }
+
 
     public function testHas()
     {
@@ -26,4 +30,4 @@ class ContainerTest extends TestCase
         $this->assertTrue(Container\has('test_has'));
         $this->assertFalse(Container\has('test_hasnt'));
     }
-}
+}//end class

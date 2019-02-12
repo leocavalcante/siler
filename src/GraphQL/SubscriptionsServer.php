@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Siler\GraphQL;
 
 use Ratchet\ConnectionInterface;
@@ -14,24 +16,43 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
      */
     protected $manager;
 
+
+    /**
+     * SubscriptionsServer constructor.
+     *
+     * @param SubscriptionsManager $manager
+     */
     public function __construct(SubscriptionsManager $manager)
     {
         $this->manager = $manager;
     }
 
+
     /**
-     * @return void
+     * @override
+     *
+     * @param ConnectionInterface $conn
+     *
+     * @suppress PhanUnusedPublicMethodParameter
      */
     public function onOpen(ConnectionInterface $conn)
     {
     }
 
+
     /**
-     * @return void
+     * @override
+     *
+     * @param ConnectionInterface $conn
+     * @param string              $message
      */
     public function onMessage(ConnectionInterface $conn, $message)
     {
         $data = json_decode($message, true);
+
+        if (!is_array($data)) {
+            throw new \UnexpectedValueException('GraphQL message should be a JSON object');
+        }
 
         switch ($data['type']) {
             case GraphQL\GQL_CONNECTION_INIT:
@@ -52,22 +73,37 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
         }
     }
 
+
     /**
-     * @return void
+     * @override
+     *
+     * @param ConnectionInterface $conn
+     *
+     * @suppress PhanUnusedPublicMethodParameter
      */
     public function onClose(ConnectionInterface $conn)
     {
     }
 
+
     /**
-     * @return void
+     * @override
+     *
+     * @param ConnectionInterface $conn
+     * @param \Exception          $exception
+     *
+     * @suppress PhanUnusedPublicMethodParameter
      */
     public function onError(ConnectionInterface $conn, \Exception $exception)
     {
     }
 
+
+    /**
+     * @return array
+     */
     public function getSubProtocols() : array
     {
         return ['graphql-ws'];
     }
-}
+}//end class

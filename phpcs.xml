@@ -1,17 +1,11 @@
 <?xml version="1.0"?>
-<ruleset name="Slim coding standard">
-    <description>Slim coding standard</description>
+<ruleset>
+    <description>Siler's Code Style</description>
 
-    <!-- inherit rules from: -->
-    <rule ref="PSR2"/>
-    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
-    <rule ref="Generic.Files.LineLength">
-        <properties>
-            <property name="lineLimit" value="180"/>
-        </properties>
+    <rule ref="PSR12">
+        <exclude name="Generic.Files.LineLength"/>
     </rule>
 
-    <!-- Paths to check -->
     <file>src</file>
     <file>tests</file>
 </ruleset>

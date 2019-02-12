@@ -1,9 +1,6 @@
 <?php
 
 declare(strict_types=1);
-/**
- * IoC container.
- */
 
 namespace Siler\Container;
 
@@ -24,6 +21,7 @@ function get(string $key, $default = null)
     return array_get($container->values, $key, $default);
 }
 
+
 /**
  * Set a value in the container.
  *
@@ -38,10 +36,11 @@ function set(string $key, $value)
     $container->values[$key] = $value;
 }
 
+
 /**
  * Checks if there is some value in the given $key.
  *
- * @param string $key
+ * @param string $key Key to search in the Container.
  *
  * @return bool
  */
@@ -52,10 +51,11 @@ function has(string $key) : bool
     return array_key_exists($key, $container->values);
 }
 
+
 /**
- * Internal DIC.
  *
- * @ignore Not part of the API
+ * @internal DIC.
+ * @ignore   Not part of the API
  */
 final class Container
 {
@@ -73,6 +73,7 @@ final class Container
         return $instance;
     }
 
+
     /**
      *  The actual holder.
      *
@@ -80,10 +81,11 @@ final class Container
      */
     public $values = [];
 
+
     /**
      * Constructor.
      */
     private function __construct()
     {
     }
-}
+}//end class

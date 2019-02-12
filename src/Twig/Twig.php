@@ -1,13 +1,14 @@
 <?php
 
 declare(strict_types=1);
-/**
+/*
  * Helper functions to work with the Twig template engine.
  */
 
 namespace Siler\Twig;
 
 use Siler\Container;
+
 
 /**
  * Initialize the Twig environment.
@@ -20,15 +21,19 @@ use Siler\Container;
  */
 function init(string $templatesPath, $templatesCachePath = false, bool $debug = false) : \Twig_Environment
 {
-    $twig = new \Twig_Environment(new \Twig_Loader_Filesystem($templatesPath), [
-        'debug' => $debug,
-        'cache' => $templatesCachePath,
-    ]);
+    $twig = new \Twig_Environment(
+        new \Twig_Loader_Filesystem($templatesPath),
+        [
+            'debug' => $debug,
+            'cache' => $templatesCachePath,
+        ]
+    );
 
     Container\set('twig', $twig);
 
     return $twig;
 }
+
 
 /**
  * Renders the given template within the given data.

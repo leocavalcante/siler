@@ -29,19 +29,18 @@
         "lcobucci/jwt": "^3.2",
         "mongodb/mongodb": "^1.4",
         "monolog/monolog": "^1.24",
-        "phpstan/phpstan": "^0.10",
+        "phan/phan": "^1.2",
         "phpunit/phpunit": "^7.4",
         "ratchet/pawl": "^0.3",
         "react/http": "^0.8",
-        "squizlabs/php_codesniffer": "^3.3",
+        "squizlabs/php_codesniffer": "^3.4",
+        "swiftmailer/swiftmailer": "^6.1",
         "twig/twig": "^2.5",
-        "vimeo/psalm": "^3.0",
         "vlucas/phpdotenv": "^3.1",
         "webonyx/graphql-php": "^0.13",
         "zendframework/zend-diactoros": "^2.0",
         "zendframework/zend-httphandlerrunner": "^1.0",
-        "zendframework/zend-stratigility": "^3.0",
-        "swiftmailer/swiftmailer": "^6.1"
+        "zendframework/zend-stratigility": "^3.0"
     },
     "autoload": {
         "psr-4": {
@@ -79,14 +78,12 @@
         }
     },
     "scripts": {
-        "fix": "phpcbf",
         "lint": "phpcs",
-        "analyze": "psalm --show-info=false",
+        "phan": "phan",
         "unit": "phpunit",
         "test": [
-            "@composer fix",
             "@composer lint",
-            "@composer analyze",
+            "@composer phan",
             "@composer unit"
         ]
     },

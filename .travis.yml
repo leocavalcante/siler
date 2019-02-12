@@ -6,12 +6,11 @@ php:
   - '7.3'
 
 install:
-  - pecl install -f mongodb-1.5.3
+  - pecl install -f mongodb-1.5.3 ast-1.0.1
   - composer install
 
 script:
-  - ./vendor/bin/phpunit
-  - ./vendor/bin/psalm --show-info=false
+  - composer test
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

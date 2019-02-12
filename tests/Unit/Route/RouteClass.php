@@ -8,15 +8,19 @@ use Siler\Route;
 
 class RouteClass
 {
+
+
     public function getIndex()
     {
         echo 'className.index';
     }
 
+
     public function postFoo()
     {
         echo 'className.postFoo';
     }
+
 
     public function putFooBar()
     {
@@ -24,9 +28,10 @@ class RouteClass
         Route\stop_propagation();
     }
 
+
     public function anyIndex(string $baz, string $qux)
     {
         echo "className.$baz.$qux";
         Route\stop_propagation();
     }
-}
+}//end class

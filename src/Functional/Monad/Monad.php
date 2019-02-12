@@ -2,6 +2,7 @@
 
 namespace Siler\Functional\Monad;
 
+
 /**
  * @param mixed $value
  *
@@ -11,6 +12,7 @@ function identity($value) : Identity
 {
     return new Identity($value);
 }
+
 
 /**
  * @param mixed $value

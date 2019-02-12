@@ -1,19 +1,20 @@
 <?php
 
 declare(strict_types=1);
-/**
+/*
  * Siler core file.
  */
 
 namespace Siler;
 
+
 /**
  * Get a value from an array checking if the key exists and returning a default value if not.
  *
- * @param array $array           The array to be searched on
- * @param mixed $key             The key to be searched
- * @param mixed $default         The default value to be returned when the key don't exists
- * @param bool  $caseInsensitive Ignore key case, default false
+ * @param array|null $array
+ * @param mixed      $key             The key to be searched
+ * @param mixed      $default         The default value to be returned when the key don't exists
+ * @param bool       $caseInsensitive Ignore key case, default false
  *
  * @return mixed
  */
@@ -29,11 +30,12 @@ function array_get(?array $array, $key = null, $default = null, bool $caseInsens
 
     if ($caseInsensitive) {
         $array = array_change_key_case($array);
-        $key = strtolower($key);
+        $key   = strtolower($key);
     }
 
     return array_key_exists($key, $array) ? $array[$key] : $default;
 }
+
 
 /**
  * Returns a function that requires the given filename.
@@ -50,8 +52,7 @@ function require_fn(string $filename) : \Closure
         }
 
         if (!Container\has($filename)) {
-            /** @psalm-suppress UnresolvableInclude */
-            Container\set($filename, require_once $filename);
+            Container\set($filename, include_once $filename);
         }
 
         $value = Container\get($filename);

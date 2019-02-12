@@ -13,10 +13,12 @@ use Zend\Diactoros\ServerRequest;
 
 class RequestHandlerDecoratorTest extends TestCase
 {
+
+
     public function testHandle()
     {
-        $request = new ServerRequest();
-        $response = Diactoros\response();
+        $request    = new ServerRequest();
+        $response   = Diactoros\response();
         $pathParams = ['foo' => 'bar'];
 
         $handler = function (ServerRequestInterface $_request, array $_pathParams) use ($request, $response, $pathParams): ResponseInterface {
@@ -31,4 +33,4 @@ class RequestHandlerDecoratorTest extends TestCase
 
         $this->assertSame($response, $_response);
     }
-}
+}//end class

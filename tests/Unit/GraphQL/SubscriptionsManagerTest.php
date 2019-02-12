@@ -13,69 +13,76 @@ use Siler\GraphQL\SubscriptionsManager;
 
 class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
 {
+
+
     public function testHandleConnectionInit()
     {
         $conn = $this->getMockBuilder(ConnectionInterface::class)
-                     ->getMock();
+            ->getMock();
 
         $message = '{"type":"connection_ack","payload":[]}';
 
         $conn->expects($this->once())
-             ->method('send')
-             ->with($message);
+            ->method('send')
+            ->with($message);
 
         $schema = $this->getMockBuilder(Schema::class)
-                       ->disableOriginalConstructor()
-                       ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $manager = new SubscriptionsManager($schema);
         $manager->handleConnectionInit($conn);
     }
 
+
     public function testHandleStartQuery()
     {
         $conn = $this->getMockBuilder(ConnectionInterface::class)
-                     ->getMock();
+            ->getMock();
 
-        $dataResponse = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
+        $dataResponse     = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
         $completeResponse = '{"type":"complete","id":1}';
 
-        $schema = BuildSchema::build('
+        $schema = BuildSchema::build(
+            '
             type Query {
                 dummy: String
             }
-        ');
+        '
+        );
 
-        Executor::setDefaultFieldResolver(function ($root) {
-            return 'test';
-        });
+        Executor::setDefaultFieldResolver(
+            function ($root) {
+                return 'test';
+            }
+        );
 
         $data = [
             'id'      => 1,
-            'payload' => [
-                'query' => 'query { dummy }',
-            ],
+            'payload' => ['query' => 'query { dummy }'],
         ];
 
         $manager = new SubscriptionsManager($schema);
         $manager->handleConnectionInit($conn);
 
         $conn->expects($this->exactly(2))
-             ->method('send')
-             ->withConsecutive([$dataResponse], [$completeResponse]);
+            ->method('send')
+            ->withConsecutive([$dataResponse], [$completeResponse]);
 
         $manager->handleStart($conn, $data);
     }
 
+
     public function testHandleStartMutation()
     {
         $conn = $this->getMockBuilder(ConnectionInterface::class)
-                     ->getMock();
+            ->getMock();
 
-        $dataResponse = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
+        $dataResponse     = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
         $completeResponse = '{"type":"complete","id":1}';
 
-        $schema = BuildSchema::build('
+        $schema = BuildSchema::build(
+            '
             type Query {
                 dummy: String
             }
@@ -83,37 +90,40 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
             type Mutation {
                 dummy: String
             }
-        ');
+        '
+        );
 
-        Executor::setDefaultFieldResolver(function ($root) {
-            return 'test';
-        });
+        Executor::setDefaultFieldResolver(
+            function ($root) {
+                return 'test';
+            }
+        );
 
         $data = [
             'id'      => 1,
-            'payload' => [
-                'query' => 'mutation { dummy }',
-            ],
+            'payload' => ['query' => 'mutation { dummy }'],
         ];
 
         $manager = new SubscriptionsManager($schema);
         $manager->handleConnectionInit($conn);
 
         $conn->expects($this->exactly(2))
-             ->method('send')
-             ->withConsecutive([$dataResponse], [$completeResponse]);
+            ->method('send')
+            ->withConsecutive([$dataResponse], [$completeResponse]);
 
         $manager->handleStart($conn, $data);
     }
 
+
     public function testHandleStartSubscription()
     {
         $conn = $this->getMockBuilder(ConnectionInterface::class)
-                     ->getMock();
+            ->getMock();
 
         $dataResponse = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
 
-        $schema = BuildSchema::build('
+        $schema = BuildSchema::build(
+            '
             type Query {
                 dummy: String
             }
@@ -121,44 +131,46 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
             type Subscription {
                 dummy: String
             }
-        ');
+        '
+        );
 
-        Executor::setDefaultFieldResolver(function ($root) {
-            return 'test';
-        });
+        Executor::setDefaultFieldResolver(
+            function ($root) {
+                return 'test';
+            }
+        );
 
         $data = [
             'id'      => 1,
-            'payload' => [
-                'query' => 'subscription { dummy }',
-            ],
+            'payload' => ['query' => 'subscription { dummy }'],
         ];
 
         $manager = new SubscriptionsManager($schema);
         $manager->handleConnectionInit($conn);
 
         $conn->expects($this->once())
-             ->method('send')
-             ->with($dataResponse);
+            ->method('send')
+            ->with($dataResponse);
 
         $manager->handleStart($conn, $data);
     }
 
+
     public function testHandleStartFail()
     {
         $conn = $this->getMockBuilder(ConnectionInterface::class)
-                     ->getMock();
+            ->getMock();
 
         $response = '{"type":"error","id":1,"payload":"Missing query parameter from payload"}';
         $complete = '{"type":"complete","id":1}';
 
         $conn->expects($this->exactly(2))
-             ->method('send')
-             ->withConsecutive([$response], [$complete]);
+            ->method('send')
+            ->withConsecutive([$response], [$complete]);
 
         $schema = $this->getMockBuilder(Schema::class)
-                       ->disableOriginalConstructor()
-                       ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $data = [
             'id'      => 1,
@@ -169,12 +181,14 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         $manager->handleStart($conn, $data);
     }
 
+
     public function testHandleData()
     {
         $conn = $this->getMockBuilder(ConnectionInterface::class)
-                     ->getMock();
+            ->getMock();
 
-        $schema = BuildSchema::build('
+        $schema = BuildSchema::build(
+            '
             type Query {
                 dummy: String
             }
@@ -182,17 +196,18 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
             type Subscription {
                 dummy: String
             }
-        ');
+        '
+        );
 
-        Executor::setDefaultFieldResolver(function ($root) {
-            return 'test';
-        });
+        Executor::setDefaultFieldResolver(
+            function ($root) {
+                return 'test';
+            }
+        );
 
         $startData = [
             'id'      => 1,
-            'payload' => [
-                'query' => 'subscription { dummy }',
-            ],
+            'payload' => ['query' => 'subscription { dummy }'],
         ];
 
         $data = [
@@ -201,7 +216,7 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         ];
 
         $startExpected = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
-        $expected = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
+        $expected      = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
 
         $conn->expects($this->exactly(2))
             ->method('send')
@@ -212,11 +227,12 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         $manager->handleData($data);
     }
 
+
     public function testHandleNullData()
     {
         $schema = $this->getMockBuilder(Schema::class)
-                       ->disableOriginalConstructor()
-                       ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $data = ['subscription' => 'doNotExists'];
 
@@ -224,12 +240,14 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($manager->handleData($data));
     }
 
+
     public function testHandleDataWithFilters()
     {
         $conn = $this->getMockBuilder(ConnectionInterface::class)
-                     ->getMock();
+            ->getMock();
 
-        $schema = BuildSchema::build('
+        $schema = BuildSchema::build(
+            '
             type Query {
                 dummy: String
             }
@@ -237,19 +255,20 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
             type Subscription {
                 dummy: String
             }
-        ');
+        '
+        );
 
-        Executor::setDefaultFieldResolver(function ($root) {
-            return 'test';
-        });
+        Executor::setDefaultFieldResolver(
+            function ($root) {
+                return 'test';
+            }
+        );
 
         $startData = [
             'id'      => 1,
             'payload' => [
                 'query'     => 'subscription { dummy }',
-                'variables' => [
-                    'pass' => 'bar',
-                ],
+                'variables' => ['pass' => 'bar'],
             ],
         ];
 
@@ -267,8 +286,8 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         ];
 
         $conn->expects($this->exactly(2))
-             ->method('send')
-             ->withConsecutive([$expected], [$expected]);
+            ->method('send')
+            ->withConsecutive([$expected], [$expected]);
 
         $manager = new SubscriptionsManager($schema, $filters);
         $manager->handleStart($conn, $startData);
@@ -282,20 +301,19 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         $manager->handleData($data);
     }
 
+
     public function testHandleStop()
     {
         $conn = $this->getMockBuilder(ConnectionInterface::class)
-                     ->getMock();
+            ->getMock();
 
         $schema = $this->getMockBuilder(Schema::class)
-                       ->disableOriginalConstructor()
-                       ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $data = [
             'id'      => 1,
-            'payload' => [
-                'query' => 'subscription { test }',
-            ],
+            'payload' => ['query' => 'subscription { test }'],
         ];
 
         $manager = new SubscriptionsManager($schema);
@@ -307,20 +325,21 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(empty($manager->getSubscriptions()['test']));
     }
 
+
     public function testGetSubscriptionName()
     {
         $document = $this->getMockBuilder(DocumentNode::class)
-                         ->disableOriginalConstructor()
-                         ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $schema = $this->getMockBuilder(Schema::class)
-                       ->disableOriginalConstructor()
-                       ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $nameNode = new \stdClass();
+        $nameNode        = new \stdClass();
         $nameNode->value = 'test';
 
-        $selection = new \stdClass();
+        $selection       = new \stdClass();
         $selection->name = $nameNode;
 
         $selectionSet = new \stdClass();
@@ -335,4 +354,4 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame('test', $manager->getSubscriptionName($document));
     }
-}
+}//end class
