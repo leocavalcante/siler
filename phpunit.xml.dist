@@ -13,6 +13,11 @@
   <filter>
     <whitelist processUncoveredFilesFromWhitelist="true">
       <directory>src</directory>
+      <exclude>
+        <file>src/Swoole/Swoole.php</file>
+        <file>src/Db/Db.php</file>
+        <file>src/Db/Mongo.php</file>
+      </exclude>
     </whitelist>
   </filter>
 
