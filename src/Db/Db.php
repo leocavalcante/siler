@@ -86,3 +86,44 @@ function error(string $pdoName = DB_DEFAULT_NAME): array
 
     return Container\get($pdoName)->errorInfo();
 }
+
+/**
+ * Calls `query()` and `fetchAll()` on the given `\PDOStatement` in a single function.
+ *
+ * @param string $statement The SQL statement.
+ * @param int $fetchStyle The PDO fetch style to use, defaults to FETCH_ASSOC.
+ * @param string $pdoName The PDO name on the `Siler\Container` to be used, defaults to the DB_DEFAULT_NAME.
+ *
+ * @return array|null Returns the resulting array (maybe empty) or null in case of error.
+ */
+function fetch_all(string $statement, int $fetchStyle = \PDO::FETCH_ASSOC, string $pdoName = DB_DEFAULT_NAME): ?array
+{
+    $results = query($statement, $pdoName)->fetchAll($fetchStyle);
+
+    if ($results === false) {
+        return null;
+    }
+
+    return $results;
+}
+
+/**
+ * Gets a MySQL Data Source Name (DSN) composed by the given $opts.
+ *
+ * @param array $opts
+ *
+ * @return string
+ */
+function mysql_dsn(array $opts): string
+{
+    $defaults = [
+        'host' => 'localhost',
+        'port' => 3306,
+        'dbname' => '',
+        'charset' => 'utf8',
+    ];
+
+    $opts = array_merge($defaults, $opts);
+
+    return "mysql:host={$opts['host']};port={$opts['port']};dbname={$opts['dbname']};charset={$opts['charset']}";
+}
