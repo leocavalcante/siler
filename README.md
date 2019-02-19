@@ -18,17 +18,17 @@ Siler is a set of general purpose high-level abstractions aiming an API for decl
 * 🔋 **Zero dependency**, everything is on top of PHP built-in functions
 * ⚡ **Blazing fast**, no additional overhead - [*benchmark*](https://github.com/kenjis/php-framework-benchmark#results)
 
-### Use with [Swoole](https://www.swoole.co.uk/)
+## Use with [Swoole](https://www.swoole.co.uk/)
 
 Flat files and plain-old PHP functions rocking on a production-grade, high-performance, scalable, concurrent and non-blocking HTTP server.
 
 [Read the tutorial.](https://siler.leocavalcante.com/swoole)
 
-### Getting Started
+## Getting Started
 
 [![Join the chat at https://gitter.im/leocavalcante/siler](https://badges.gitter.im/leocavalcante/siler.svg)](https://gitter.im/leocavalcante/siler?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-#### Installation
+### Installation
 
 ```bash
 $ composer require leocavalcante/siler
@@ -36,7 +36,7 @@ $ composer require leocavalcante/siler
 
 That is it. Actually, Siler is a library, not a framework (maybe a micro-framework), the overall program flow of control is dictated by you. So, no hidden configs or predefined directory structures.
 
-##### Or you can start by bootstrapping
+#### Or you can start by bootstrapping
 
 ```bash
 $ composer create-project siler/project hello-siler
@@ -47,7 +47,7 @@ $ cd hello-siler/
 $ composer serve
 ```
 
-#### Hello World
+### Hello World
 
 ```php
 use Siler\Functional as λ;
