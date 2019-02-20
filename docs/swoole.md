@@ -106,7 +106,7 @@ $handler = function () {
     Swoole\emit('Hello World');
 };
 
-Swoole\start('0.0.0.0', 9501)($handler);
+Swoole\start(9501, '0.0.0.0')($handler);
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
@@ -133,7 +133,7 @@ $handler = function ($req) {
     Swoole\emit('Not found', 404);
 };
 
-Swoole\start(9501)($handler);
+Swoole\start(9501)($handler); // Host defaults to 0.0.0.0
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
@@ -190,7 +190,7 @@ $handler = function ($req) {
     Swoole\emit('Not found', 404);
 };
 
-Swoole\start(9501)($handler);
+Swoole\start()($handler); // Port defaults to 9501
 ```
 {% endcode-tabs-item %}
 
@@ -287,7 +287,7 @@ $handler = function ($req, $res) {
     Swoole\emit('Not found', 404);
 };
 
-Swoole\start(9501)($handler);
+Swoole\start()($handler);
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
@@ -320,23 +320,26 @@ A **Siler** ❤️ **Swoole** powered API.
 
 All functions on `Siler\Swoole` namespace.
 
-`function handle(callable $handler)`  
+`handle(callable $handler)`  
 Attach a handler for the HTTP server. The `$handler` can have two parameters, first is a `Swoole\Http\Request` and second is a `Swoole\Http\Response`.
 
-`function start(string $host, int $port)`  
+`start(string $host, int $port)`  
 Starts the HTTP server binding it to the specified `$host` and `$post`.
 
-`function cast(\Swoole\Http\Request $request)`  
+`cast(Swoole\Http\Request $request)`  
 Casts a Swoole Request object to the Siler's request notation.
 
-`function request(): \Swoole\Http\Request`  
+`request(): Swoole\Http\Request`  
 Returns the current HTTP Request.
 
-`function response(): \Swoole\Http\Response`  
+`response(): Swoole\Http\Response`  
 Returns the current HTTP Response.
 
-`function emit(string $content, int $status = 200, array $headers = [])`  
+`emit(string $content, int $status = 200, array $headers = [])`  
 Emits a HTTP response using Swoole's Response object and Siler's halting strategy.
+
+`json($data, int $status = 200, array $headers = [])`  
+Sugar to emit a JSON encoded response
 
 {% hint style="info" %}
 You can still use any other Swoole module. More abstractions to come.
