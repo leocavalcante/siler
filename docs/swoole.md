@@ -106,8 +106,7 @@ $handler = function () {
     Swoole\emit('Hello World');
 };
 
-Swoole\handle($handler);
-Swoole\start('0.0.0.0', 9501);
+Swoole\start('0.0.0.0', 9501)($handler);
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
@@ -134,8 +133,7 @@ $handler = function ($req) {
     Swoole\emit('Not found', 404);
 };
 
-Swoole\handle($handler);
-Swoole\start('0.0.0.0', 9501);
+Swoole\start(9501)($handler);
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
@@ -154,7 +152,7 @@ Swoole\emit('Hello World');
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-You may ask: **"What about `Swoole\emit('Not found', 404)` on the end?"**.
+You may ask: **"What about** `Swoole\emit('Not found', 404)` **on the end?"**.
 
 Nice question! `Siler\Swoole\emit()` function will **short-circuit** further emit attempts, so it will work exactly like you have imagined, when a route matches a path like `/` it will emit the proper response, but when no route matches and this means: no route will emit something, then `Swoole\emit('Not found', 404)` will emit a **404 Not found** response.
 
@@ -192,8 +190,7 @@ $handler = function ($req) {
     Swoole\emit('Not found', 404);
 };
 
-Swoole\handle($handler);
-Swoole\start('0.0.0.0', 9501);
+Swoole\start(9501)($handler);
 ```
 {% endcode-tabs-item %}
 
@@ -290,13 +287,12 @@ $handler = function ($req, $res) {
     Swoole\emit('Not found', 404);
 };
 
-Swoole\handle($handler);
-Swoole\start('0.0.0.0', 9501);
+Swoole\start(9501)($handler);
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
 
-Then you can return your JSON and within `emit()` specify a proper **Status Code** and **Content-Type**:
+Then you can return your JSON and within `json()`, Siler will automatically add the Content-type: application/json response header. Also you can enable CORS.
 
 {% code-tabs %}
 {% code-tabs-item title="api/todos.php" %}
@@ -311,7 +307,8 @@ $todos = [
     ['id' => 3, 'text' => 'baz'],
 ];
 
-Swoole\emit(json_encode($todos), 200, ['Content-Type' => 'application/json']);
+Swoole\cors();
+Swoole\json($todos);
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
