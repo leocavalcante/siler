@@ -38,7 +38,7 @@ function http(callable $handler, int $port = 9501, string $host = '0.0.0.0')
         return $handler($request, $response);
     });
 
-    $server;
+    return $server;
 }
 
 /**
