@@ -9,9 +9,7 @@ use Siler\Http\Request;
 
 class RequestTest extends TestCase
 {
-
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = $_FILES = ['foo' => 'bar'];
 
@@ -23,13 +21,11 @@ class RequestTest extends TestCase
         $_SERVER['CONTENT_LENGTH'] = '123';
     }
 
-
     public function testRaw()
     {
         $rawContent = Request\raw(__DIR__ . '/../../fixtures/php_input.txt');
         $this->assertSame('foo=bar', $rawContent);
     }
-
 
     public function testParams()
     {
@@ -38,9 +34,9 @@ class RequestTest extends TestCase
         $this->assertArrayHasKey('foo', $params);
         $this->assertContains('bar', $params);
         $this->assertCount(1, $params);
-        $this->assertArraySubset(['foo' => 'bar'], $params);
+        $this->assertArrayHasKey('foo', $params);
+        $this->assertSame('bar', $params['foo']);
     }
-
 
     public function testJson()
     {
@@ -49,12 +45,12 @@ class RequestTest extends TestCase
         $this->assertArrayHasKey('foo', $params);
         $this->assertContains('bar', $params);
         $this->assertCount(1, $params);
-        $this->assertArraySubset(['foo' => 'bar'], $params);
+        $this->assertArrayHasKey('foo', $params);
+        $this->assertSame('bar', $params['foo']);
 
         $params = Request\json();
         $this->assertEmpty($params);
     }
-
 
     public function testHeaders()
     {
@@ -66,23 +62,24 @@ class RequestTest extends TestCase
         $this->assertContains('phpunit/test', $headers);
         $this->assertContains('test:8000', $headers);
         $this->assertCount(3, $headers);
-        $this->assertArraySubset(
-            [
-                'Content-Type'   => 'phpunit/test',
-                'Content-Length' => '123',
-                'Host'           => 'test:8000',
-            ],
-            $headers
-        );
-    }
 
+        $expectedHeaders = [
+            'Content-Type'   => 'phpunit/test',
+            'Content-Length' => '123',
+            'Host'           => 'test:8000',
+        ];
+
+        foreach ($expectedHeaders as $key => $value) {
+            $this->assertArrayHasKey($key, $headers);
+            $this->assertSame($value, $headers[$key]);
+        }
+    }
 
     public function testHeader()
     {
         $contentType = Request\header('Content-Type');
         $this->assertSame('phpunit/test', $contentType);
     }
-
 
     public function testGet()
     {
@@ -92,7 +89,6 @@ class RequestTest extends TestCase
         $this->assertNull(Request\get('baz'));
     }
 
-
     public function testPost()
     {
         $this->assertSame($_POST, Request\post());
@@ -100,7 +96,6 @@ class RequestTest extends TestCase
         $this->assertSame('qux', Request\post('baz', 'qux'));
         $this->assertNull(Request\post('baz'));
     }
-
 
     public function testInput()
     {
@@ -110,7 +105,6 @@ class RequestTest extends TestCase
         $this->assertNull(Request\input('baz'));
     }
 
-
     public function testFile()
     {
         $this->assertSame($_FILES, Request\file());
@@ -118,7 +112,6 @@ class RequestTest extends TestCase
         $this->assertSame('qux', Request\file('baz', 'qux'));
         $this->assertNull(Request\file('baz'));
     }
-
 
     public function testMethod()
     {
@@ -135,7 +128,6 @@ class RequestTest extends TestCase
         unset($_POST['_method']);
         unset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
     }
-
 
     public function testRequestMethodIs()
     {
@@ -167,7 +159,6 @@ class RequestTest extends TestCase
         $this->assertFalse(Request\method_is(['get', 'post']));
     }
 
-
     public function testAcceptedLocales()
     {
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = 'en-US,en;q=0.5';
@@ -176,7 +167,6 @@ class RequestTest extends TestCase
         $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '';
         $this->assertEmpty(Request\accepted_locales());
     }
-
 
     public function testRecommendedLocale()
     {

@@ -14,15 +14,13 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
     protected $conn;
     protected $storage;
 
-
-    public function setUp()
+    public function setUp(): void
     {
         $this->conn    = $this->createMock(ConnectionInterface::class);
         $this->storage = $this->createMock(\SplObjectStorage::class);
 
         Container\set(Ratchet\RATCHET_CONNECTIONS, $this->storage);
     }
-
 
     public function testCallbackIsNull()
     {
@@ -33,7 +31,6 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
 
         $this->assertFalse($onOpenCalled);
     }
-
 
     public function testCallbackIsntCallable()
     {
@@ -47,7 +44,6 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
 
         $this->assertFalse($onOpenCalled);
     }
-
 
     public function testOnOpen()
     {
@@ -68,7 +64,6 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue($onOpenCalled);
     }
-
 
     public function testOnMessage()
     {
@@ -91,7 +86,6 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($message, $onMessageMessage);
     }
 
-
     public function testOnClose()
     {
         $this->storage->expects($this->once())
@@ -111,7 +105,6 @@ class MessageComponentTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue($onCloseCalled);
     }
-
 
     public function testOnError()
     {

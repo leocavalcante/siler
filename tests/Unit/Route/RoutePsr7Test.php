@@ -9,8 +9,6 @@ use Zend\Diactoros\ServerRequestFactory;
 
 class RoutePsr7Test extends \PHPUnit\Framework\TestCase
 {
-
-
     /**
      * @runInSeparateProcess
      * @preserveGlobalState  disabled
@@ -30,7 +28,6 @@ class RoutePsr7Test extends \PHPUnit\Framework\TestCase
 
         $this->assertSame('foo', $actual);
     }
-
 
     /**
      * @runInSeparateProcess

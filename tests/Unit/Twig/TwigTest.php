@@ -10,25 +10,20 @@ use Siler\Twig;
 
 class TwigTest extends TestCase
 {
-
-
-    /**
-     * @expectedException        \RuntimeException
-     * @expectedExceptionMessage Twig should be initialized first
-     */
     public function testRenderWithoutInit()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Twig should be initialized first');
+
         Container\set('twig', null);
         Twig\render('template.twig');
     }
-
 
     public function testCreateTwigEnv()
     {
         $twigEnv = Twig\init(__DIR__ . '/../../fixtures');
         $this->assertInstanceOf(\Twig_Environment::class, $twigEnv);
     }
-
 
     public function testRender()
     {

@@ -13,9 +13,7 @@ use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 class RouteTest extends TestCase
 {
-
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $_GET = $_POST = $_REQUEST = ['foo' => 'bar'];
 
@@ -24,7 +22,6 @@ class RouteTest extends TestCase
         $_SERVER['REQUEST_URI']    = '/bar/baz';
         $_SERVER['REQUEST_METHOD'] = 'GET';
     }
-
 
     /**
      * Test route with request parameter as an array.
@@ -45,7 +42,6 @@ class RouteTest extends TestCase
             ]
         );
     }
-
 
     public function testRouteMatching()
     {
@@ -76,7 +72,6 @@ class RouteTest extends TestCase
         );
     }
 
-
     public function testRouteRegexp()
     {
         $this->expectOutputString('baz');
@@ -89,7 +84,6 @@ class RouteTest extends TestCase
             }
         );
     }
-
 
     public function testRouteNamedGroup()
     {
@@ -104,7 +98,6 @@ class RouteTest extends TestCase
         );
     }
 
-
     public function testOptionalParam()
     {
         $this->expectOutputString('qux');
@@ -117,7 +110,6 @@ class RouteTest extends TestCase
             }
         );
     }
-
 
     public function testOptionalParamMatch()
     {
@@ -133,7 +125,6 @@ class RouteTest extends TestCase
             }
         );
     }
-
 
     public function testRouteWrappedNamedGroup()
     {
@@ -158,7 +149,6 @@ class RouteTest extends TestCase
         );
     }
 
-
     public function testRouteNamedGroupWithDash()
     {
         $this->expectOutputString('baz-qux');
@@ -173,7 +163,6 @@ class RouteTest extends TestCase
             }
         );
     }
-
 
     public function testRouteNamedGroupWithNumber()
     {
@@ -190,7 +179,6 @@ class RouteTest extends TestCase
         );
     }
 
-
     public function testRouteNamedGroupWithUnderscore()
     {
         $this->expectOutputString('baz_qux');
@@ -205,7 +193,6 @@ class RouteTest extends TestCase
             }
         );
     }
-
 
     public function testRouteDefaultPathInfo()
     {
@@ -222,13 +209,11 @@ class RouteTest extends TestCase
         );
     }
 
-
     public function testRouteWithString()
     {
         $this->expectOutputString('foo');
         Route\route('get', '/bar/{bar}', __DIR__ . '/../../fixtures/to_be_required.php');
     }
-
 
     public function testRouteMethod()
     {
@@ -252,7 +237,6 @@ class RouteTest extends TestCase
             }
         );
     }
-
 
     public function testRouteMultiMethods()
     {
@@ -280,7 +264,6 @@ class RouteTest extends TestCase
         );
     }
 
-
     public function testRouteReturn()
     {
         $actual = Route\route(
@@ -294,7 +277,6 @@ class RouteTest extends TestCase
         $this->assertSame('foo', $actual);
     }
 
-
     public function testRegexify()
     {
         $this->assertSame('#^//?$#', Route\regexify('/'));
@@ -306,7 +288,6 @@ class RouteTest extends TestCase
         $this->assertSame('#^/foo/(?<baz>[A-z0-9_-]+)/qux/?$#', Route\regexify('/foo/{baz}/qux'));
         $this->assertSame('#^/foo/(?<baz>[A-z0-9_-]+)?/?$#', Route\regexify('/foo/{baz}?'));
     }
-
 
     public function testRoutify()
     {
@@ -324,7 +305,6 @@ class RouteTest extends TestCase
         $this->assertSame(['get', '/foo/?{id}?'], Route\routify('/foo.@id.get.php'));
     }
 
-
     public function testMatch()
     {
         $routes = [
@@ -339,7 +319,6 @@ class RouteTest extends TestCase
         ];
         $this->assertNull(Route\match($routes));
     }
-
 
     /**
      * @runInSeparateProcess

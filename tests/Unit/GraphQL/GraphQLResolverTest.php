@@ -8,8 +8,6 @@ use Siler\GraphQL;
 
 class GraphQLResolverTest extends \PHPUnit\Framework\TestCase
 {
-
-
     public function testResolver()
     {
         $typeDefs = '
@@ -32,7 +30,6 @@ class GraphQLResolverTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame($expected, $actual);
     }
-
 
     public function testCallableResolver()
     {
@@ -60,7 +57,6 @@ class GraphQLResolverTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame($expected, $actual);
     }
-
 
     public function testMutation()
     {
@@ -92,7 +88,6 @@ class GraphQLResolverTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame($expected, $actual);
     }
-
 
     public function testObjectResolve()
     {

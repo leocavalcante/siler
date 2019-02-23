@@ -10,22 +10,15 @@ use Siler\Container;
 
 class MongoTest extends TestCase
 {
-
-
-    /**
-     * @expectedException \OutOfRangeException
-     */
     public function testDatabaseOutOfRange()
     {
+        $this->expectException(\OutOfRangeException::class);
         Mongo\database('');
     }
 
-
-    /**
-     * @expectedException \OutOfRangeException
-     */
     public function testCollectionOutOfRange()
     {
+        $this->expectException(\OutOfRangeException::class);
         Mongo\collection('', '');
     }
 

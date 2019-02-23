@@ -8,8 +8,6 @@ use PHPUnit\Framework\TestCase;
 
 class SilerTest extends TestCase
 {
-
-
     public function testArrayGet()
     {
         $fixture = ['foo' => 'bar'];
@@ -18,7 +16,6 @@ class SilerTest extends TestCase
         $this->assertNull(\Siler\array_get($fixture, 'foobar'));
     }
 
-
     public function testArrayGetNullArray()
     {
         $fixture = null;
@@ -26,20 +23,17 @@ class SilerTest extends TestCase
         $this->assertSame('qux', \Siler\array_get($fixture, 'baz', 'qux'));
     }
 
-
     public function testArrayGetCaseSensitive()
     {
         $fixture = ['Foo' => 'bar'];
         $this->assertNull(\Siler\array_get($fixture, 'foo'));
     }
 
-
     public function testArrayGetCaseInsensitive()
     {
         $fixture = ['Foo' => 'bar'];
         $this->assertSame('bar', \Siler\array_get($fixture, 'foo', null, true));
     }
-
 
     public function testRequireFn()
     {

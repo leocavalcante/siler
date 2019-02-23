@@ -9,31 +9,21 @@ use Siler\Db;
 
 class DbTest extends TestCase
 {
-
-
-    /**
-     * @expectedException \OutOfRangeException
-     */
     public function testQueryOutOfRange()
     {
+        $this->expectException(\OutOfRangeException::class);
         Db\query('');
     }
 
-
-    /**
-     * @expectedException \OutOfRangeException
-     */
     public function testPrepareOutOfRange()
     {
+        $this->expectException(\OutOfRangeException::class);
         Db\prepare('');
     }
 
-
-    /**
-     * @expectedException \OutOfRangeException
-     */
     public function testErrorOutOfRange()
     {
+        $this->expectException(\OutOfRangeException::class);
         Db\error();
     }
 }

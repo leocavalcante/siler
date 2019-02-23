@@ -24,23 +24,23 @@
     "require-dev": {
         "ext-mongodb": "^1.5",
         "cboden/ratchet": "^0.4",
-        "cocur/slugify": "^3.1",
+        "cocur/slugify": "^3.2",
         "gabordemooij/redbean": "^5.2",
         "lcobucci/jwt": "^3.2",
         "mongodb/mongodb": "^1.4",
         "monolog/monolog": "^1.24",
         "phan/phan": "^1.2",
-        "phpunit/phpunit": "^7.4",
+        "phpunit/phpunit": "^8.0",
         "ratchet/pawl": "^0.3",
         "react/http": "^0.8",
         "squizlabs/php_codesniffer": "^3.4",
         "swiftmailer/swiftmailer": "^6.1",
-        "twig/twig": "^2.5",
-        "vlucas/phpdotenv": "^3.1",
+        "twig/twig": "^2.6",
+        "vlucas/phpdotenv": "^3.3",
         "webonyx/graphql-php": "^0.13",
-        "zendframework/zend-diactoros": "^2.0",
-        "zendframework/zend-httphandlerrunner": "^1.0",
-        "zendframework/zend-stratigility": "^3.0"
+        "zendframework/zend-diactoros": "^2.1",
+        "zendframework/zend-httphandlerrunner": "^1.1",
+        "zendframework/zend-stratigility": "^3.1"
     },
     "autoload": {
         "psr-4": {

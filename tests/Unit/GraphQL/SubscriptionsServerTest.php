@@ -10,8 +10,6 @@ use Siler\GraphQL\SubscriptionsServer;
 
 class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
 {
-
-
     public function testOnOpen()
     {
         $manager = $this->getMockBuilder(SubscriptionsManager::class)
@@ -26,7 +24,6 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
 
         $this->assertInstanceOf(SubscriptionsServer::class, $server);
     }
-
 
     public function testOnMessage()
     {
@@ -74,7 +71,6 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
         $server->onMessage($conn, $message);
     }
 
-
     public function testOnClose()
     {
         $manager = $this->getMockBuilder(SubscriptionsManager::class)
@@ -90,7 +86,6 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(SubscriptionsServer::class, $server);
     }
 
-
     public function testOnError()
     {
         $manager = $this->getMockBuilder(SubscriptionsManager::class)
@@ -105,7 +100,6 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
 
         $this->assertInstanceOf(SubscriptionsServer::class, $server);
     }
-
 
     public function testGetSubProtocols()
     {

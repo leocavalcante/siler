@@ -11,8 +11,6 @@ use Siler\Ratchet;
 
 class RatchetTest extends \PHPUnit\Framework\TestCase
 {
-
-
     public function testInit()
     {
         $server = Ratchet\init(8888);
@@ -20,7 +18,6 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(\SplObjectStorage::class, Container\get(Ratchet\RATCHET_CONNECTIONS));
         $this->assertInstanceOf(IoServer::class, $server);
     }
-
 
     public function testConnected()
     {
@@ -33,7 +30,6 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expected, $actual);
     }
 
-
     public function testInbox()
     {
         $expected = function () {
@@ -44,7 +40,6 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame($expected, $actual);
     }
-
 
     public function testClosed()
     {
@@ -57,7 +52,6 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expected, $actual);
     }
 
-
     public function testError()
     {
         $expected = function () {
@@ -68,7 +62,6 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
 
         $this->assertSame($expected, $actual);
     }
-
 
     public function testBroadcast()
     {
@@ -86,7 +79,6 @@ class RatchetTest extends \PHPUnit\Framework\TestCase
 
         Ratchet\broadcast($message);
     }
-
 
     public function testBroadcastIgnoreSender()
     {

@@ -13,8 +13,6 @@ use Zend\Diactoros\ServerRequest;
 
 class RequestHandlerDecoratorTest extends TestCase
 {
-
-
     public function testHandle()
     {
         $request    = new ServerRequest();

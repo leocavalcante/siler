@@ -12,8 +12,6 @@ use function Siler\Functional\mod;
 
 class ComposabilityTest extends \PHPUnit\Framework\TestCase
 {
-
-
     public function testCompose()
     {
         $isDivisibleBy3 = compose([equal(0), mod(3)]);
@@ -21,7 +19,6 @@ class ComposabilityTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($isDivisibleBy3(3));
         $this->assertFalse($isDivisibleBy3(2));
     }
-
 
     public function testAny()
     {
@@ -34,7 +31,6 @@ class ComposabilityTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($isDivisibleBy3Or5(4));
         $this->assertTrue($isDivisibleBy3Or5(5));
     }
-
 
     public function testAll()
     {

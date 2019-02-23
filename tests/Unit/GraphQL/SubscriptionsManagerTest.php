@@ -13,8 +13,6 @@ use Siler\GraphQL\SubscriptionsManager;
 
 class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
 {
-
-
     public function testHandleConnectionInit()
     {
         $conn = $this->getMockBuilder(ConnectionInterface::class)
@@ -33,7 +31,6 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         $manager = new SubscriptionsManager($schema);
         $manager->handleConnectionInit($conn);
     }
-
 
     public function testHandleStartQuery()
     {
@@ -71,7 +68,6 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
 
         $manager->handleStart($conn, $data);
     }
-
 
     public function testHandleStartMutation()
     {
@@ -114,7 +110,6 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         $manager->handleStart($conn, $data);
     }
 
-
     public function testHandleStartSubscription()
     {
         $conn = $this->getMockBuilder(ConnectionInterface::class)
@@ -155,7 +150,6 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         $manager->handleStart($conn, $data);
     }
 
-
     public function testHandleStartFail()
     {
         $conn = $this->getMockBuilder(ConnectionInterface::class)
@@ -180,7 +174,6 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         $manager = new SubscriptionsManager($schema);
         $manager->handleStart($conn, $data);
     }
-
 
     public function testHandleData()
     {
@@ -227,7 +220,6 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         $manager->handleData($data);
     }
 
-
     public function testHandleNullData()
     {
         $schema = $this->getMockBuilder(Schema::class)
@@ -239,7 +231,6 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         $manager = new SubscriptionsManager($schema);
         $this->assertNull($manager->handleData($data));
     }
-
 
     public function testHandleDataWithFilters()
     {
@@ -301,7 +292,6 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         $manager->handleData($data);
     }
 
-
     public function testHandleStop()
     {
         $conn = $this->getMockBuilder(ConnectionInterface::class)
@@ -324,7 +314,6 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         $this->assertEmpty($manager->getConnStorage()->offsetGet($conn));
         $this->assertTrue(empty($manager->getSubscriptions()['test']));
     }
-
 
     public function testGetSubscriptionName()
     {

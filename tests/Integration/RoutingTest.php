@@ -10,20 +10,16 @@ use Siler\Twig;
 
 class RoutingTest extends \PHPUnit\Framework\TestCase
 {
-
-
-    public function setUp()
+    public function setUp(): void
     {
         $_SERVER['REQUEST_URI'] = '/';
     }
-
 
     public function testHelloWorld()
     {
         $this->expectOutputString('Hello World');
         Route\get('/', F\puts('Hello World'));
     }
-
 
     public function testStaticPages()
     {
@@ -33,7 +29,6 @@ class RoutingTest extends \PHPUnit\Framework\TestCase
 
         Route\get('/', F\puts(Twig\render('static.twig')));
     }
-
 
     public function testDynamicPages()
     {
@@ -50,7 +45,6 @@ class RoutingTest extends \PHPUnit\Framework\TestCase
             }
         );
     }
-
 
     public function testFiles()
     {

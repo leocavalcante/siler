@@ -13,26 +13,19 @@ use Zend\Stratigility\MiddlewarePipe;
 
 class StratigilityTest extends TestCase
 {
-
-
-    /**
-     * @expectedException UnexpectedValueException
-     */
     public function testProcessThrowsWhenNull()
     {
+        $this->expectException(\UnexpectedValueException::class);
         Stratigility\process(new ServerRequest(), 'null_process_test');
     }
 
-
-    /**
-     * @expectedException UnexpectedValueException
-     */
     public function testProcessThrowsWhenNotMiddlewarePipe()
     {
+        $this->expectException(\UnexpectedValueException::class);
+
         Container\set('not_middlewarepipe', 1);
         Stratigility\process(new ServerRequest(), 'not_middlewarepipe');
     }
-
 
     public function testProcess()
     {
@@ -55,7 +48,6 @@ class StratigilityTest extends TestCase
         Stratigility\process((new ServerRequest())->withAttribute('step', 1))($handler)(['foo' => 'bar']);
     }
 
-
     public function testPipe()
     {
         $middleware = function ($request, $handler) {
@@ -69,25 +61,19 @@ class StratigilityTest extends TestCase
         $this->assertSame($pipeline, Container\get('pipe_test'));
     }
 
-
-    /**
-     * @expectedException UnexpectedValueException
-     */
     public function testHandleThrowsWhenNull()
     {
+        $this->expectException(\UnexpectedValueException::class);
         Stratigility\handle(new ServerRequest(), 'null_handle_test');
     }
 
-
-    /**
-     * @expectedException UnexpectedValueException
-     */
     public function testHandleThrowsWhenNotMiddlewarePipe()
     {
+        $this->expectException(\UnexpectedValueException::class);
+
         Container\set('not_middlewarepipe', 1);
         Stratigility\handle(new ServerRequest(), 'not_middlewarepipe');
     }
-
 
     public function testHandle()
     {

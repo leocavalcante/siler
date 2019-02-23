@@ -10,8 +10,6 @@ use Siler\HttpHandlerRunner;
 
 class HttpHandlerRunnerTest extends TestCase
 {
-
-
     /**
      * @runInSeparateProcess
      */

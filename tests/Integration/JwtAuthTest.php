@@ -13,12 +13,10 @@ class JwtAuthTest extends \PHPUnit\Framework\TestCase
 {
     protected static $cookies;
 
-
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$cookies = [];
     }
-
 
     public function testSignUp()
     {
@@ -34,7 +32,6 @@ class JwtAuthTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(env('JWT_ISS'), $token->getClaim('iss'));
         $this->assertSame(1, $token->getClaim('uid'));
     }
-
 
     /**
      * @depends testSignUp

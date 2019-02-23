@@ -15,43 +15,35 @@ use Zend\Diactoros\Response\TextResponse;
 
 class DiactorosTest extends \PHPUnit\Framework\TestCase
 {
-
-
     public function testRequest()
     {
         $this->assertInstanceOf(RequestInterface::class, Diactoros\request());
     }
-
 
     public function testResponse()
     {
         $this->assertInstanceOf(ResponseInterface::class, Diactoros\response());
     }
 
-
     public function testHtml()
     {
         $this->assertInstanceOf(HtmlResponse::class, Diactoros\html('test'));
     }
-
 
     public function testJson()
     {
         $this->assertInstanceOf(JsonResponse::class, Diactoros\json('test'));
     }
 
-
     public function testText()
     {
         $this->assertInstanceOf(TextResponse::class, Diactoros\text('test'));
     }
 
-
     public function testNone()
     {
         $this->assertInstanceOf(EmptyResponse::class, Diactoros\none());
     }
-
 
     public function testRedirect()
     {

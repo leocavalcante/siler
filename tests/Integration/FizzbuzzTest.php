@@ -12,8 +12,6 @@ use function Siler\Functional\not;
 
 class FizzbuzzTest extends \PHPUnit\Framework\TestCase
 {
-
-
     public function testFizzbuzz()
     {
         $input    = range(1, 15);

@@ -9,8 +9,6 @@ use Siler\Functional\Monad;
 
 class MonadTest extends \PHPUnit\Framework\TestCase
 {
-
-
     public function testIdentity()
     {
         $monad = Monad\identity(1);
@@ -21,7 +19,6 @@ class MonadTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Monad\Identity::class, $monad);
         $this->assertSame(2, $monad());
     }
-
 
     public function testMaybe()
     {
@@ -39,7 +36,6 @@ class MonadTest extends \PHPUnit\Framework\TestCase
         $maybe = $maybe(f\mul(2));
         $this->assertNull($maybe());
     }
-
 
     public function testMaybeTree()
     {

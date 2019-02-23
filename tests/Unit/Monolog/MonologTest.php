@@ -12,14 +12,11 @@ use Siler\Monolog as Log;
 
 class MonologTest extends TestCase
 {
-
-
     public function testStream()
     {
         $handler = Log\stream('php://output');
         $this->assertInstanceOf(StreamHandler::class, $handler);
     }
-
 
     public function testLog()
     {
@@ -32,7 +29,6 @@ class MonologTest extends TestCase
 
         $this->assertSame(Log\MONOLOG_DEFAULT_CHANNEL, $record['channel']);
     }
-
 
     public function testSugar()
     {
@@ -55,7 +51,8 @@ class MonologTest extends TestCase
             $this->assertSame(strtolower($levelName), $record['message']);
             $this->assertSame($level, $record['level']);
             $this->assertSame($levelName, $record['level_name']);
-            $this->assertArraySubset(['context' => strtolower($levelName)], $record['context']);
+            $this->assertArrayHasKey('context', $record['context']);
+            $this->assertSame(strtolower($levelName), $record['context']['context']);
             $this->assertSame('test', $record['channel']);
         }
     }

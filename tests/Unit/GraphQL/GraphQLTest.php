@@ -20,14 +20,11 @@ use Siler\GraphQL;
 
 class GraphQLTest extends \PHPUnit\Framework\TestCase
 {
-
-
     public function testVal()
     {
         $fooVal = GraphQL\val('FOO')(4);
         $this->assertSame(4, $fooVal['value']);
     }
-
 
     public function testEnum()
     {
@@ -42,13 +39,11 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(EnumType::class, $enumType);
     }
 
-
     public function testStr()
     {
         $field = GraphQL\str('test')();
         $this->assertInstanceOf(StringType::class, $field['type']);
     }
-
 
     public function testInt()
     {
@@ -56,13 +51,11 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(IntType::class, $field['type']);
     }
 
-
     public function testFloat()
     {
         $field = GraphQL\float('test')();
         $this->assertInstanceOf(FloatType::class, $field['type']);
     }
-
 
     public function testBool()
     {
@@ -70,20 +63,17 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(BooleanType::class, $field['type']);
     }
 
-
     public function testId()
     {
         $field = GraphQL\id('test')();
         $this->assertInstanceOf(IDType::class, $field['type']);
     }
 
-
     public function testListOf()
     {
         $field = GraphQL\list_of(Type::int(), 'test')();
         $this->assertInstanceOf(ListOfType::class, $field['type']);
     }
-
 
     public function testInterface()
     {
@@ -101,7 +91,6 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(InterfaceType::class, $interfaceType);
     }
 
-
     public function testObjectType()
     {
         $objectType = GraphQL\type('Human', 'A humanoid creature in the Star Wars universe.')(
@@ -112,7 +101,6 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
 
         $this->assertInstanceOf(ObjectType::class, $objectType);
     }
-
 
     /**
      * @runInSeparateProcess
@@ -140,7 +128,6 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
         $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
     }
 
-
     /**
      * @runInSeparateProcess
      */
@@ -166,7 +153,6 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
 
         $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
     }
-
 
     /**
      * @runInSeparateProcess
@@ -194,7 +180,6 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
         $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
     }
 
-
     public function testFieldResolveString()
     {
         $field    = GraphQL\field(new ObjectType(['name' => 'test']), 'test')('stdClass');
@@ -202,7 +187,6 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
 
         $this->assertInstanceOf(\stdClass::class, $computed);
     }
-
 
     public function testSchema()
     {

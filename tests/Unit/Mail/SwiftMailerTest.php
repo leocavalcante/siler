@@ -10,11 +10,9 @@ use Siler\Container;
 
 class SwiftMailerTest extends TestCase
 {
-    /**
-     * @expectedException \UnderflowException
-     */
     public function testSendWithoutMailer()
     {
+        $this->expectException(\UnderflowException::class);
         Mail\send(new \Swift_Message());
     }
 

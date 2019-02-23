@@ -9,8 +9,6 @@ use Siler\Route;
 
 class RouteResourceTest extends TestCase
 {
-
-
     public function testIndexResource()
     {
         $this->expectOutputString('resources.index');
@@ -20,7 +18,6 @@ class RouteResourceTest extends TestCase
 
         Route\resource('/resources', __DIR__ . '/../../fixtures/resources');
     }
-
 
     /**
      * @runInSeparateProcess
@@ -35,7 +32,6 @@ class RouteResourceTest extends TestCase
         Route\resource('/resources', __DIR__ . '/../../fixtures/resources');
     }
 
-
     public function testStoreResource()
     {
         $this->expectOutputString('resources.store bar');
@@ -47,7 +43,6 @@ class RouteResourceTest extends TestCase
         Route\resource('/resources', __DIR__ . '/../../fixtures/resources');
     }
 
-
     public function testShowResource()
     {
         $this->expectOutputString('resources.show 8');
@@ -57,7 +52,6 @@ class RouteResourceTest extends TestCase
 
         Route\resource('/resources', __DIR__ . '/../../fixtures/resources');
     }
-
 
     public function testEditResource()
     {
@@ -69,7 +63,6 @@ class RouteResourceTest extends TestCase
         Route\resource('/resources', __DIR__ . '/../../fixtures/resources');
     }
 
-
     public function testUpdateResource()
     {
         $this->expectOutputString('resources.update 8');
@@ -80,7 +73,6 @@ class RouteResourceTest extends TestCase
         Route\resource('/resources', __DIR__ . '/../../fixtures/resources');
     }
 
-
     public function testDestroyResource()
     {
         $this->expectOutputString('resources.destroy 8');
@@ -90,7 +82,6 @@ class RouteResourceTest extends TestCase
 
         Route\resource('/resources', __DIR__ . '/../../fixtures/resources');
     }
-
 
     /**
      * @runInSeparateProcess

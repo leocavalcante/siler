@@ -8,8 +8,6 @@ use Siler\Route;
 
 class RouteFileWithPrefixTest extends \PHPUnit\Framework\TestCase
 {
-
-
     /**
      * @runInSeparateProcess
      * @preserveGlobalState  disabled
@@ -23,7 +21,6 @@ class RouteFileWithPrefixTest extends \PHPUnit\Framework\TestCase
 
         Route\files(__DIR__ . '/../../fixtures/route_files/', '/foo');
     }
-
 
     /**
      * @runInSeparateProcess
@@ -39,7 +36,6 @@ class RouteFileWithPrefixTest extends \PHPUnit\Framework\TestCase
         Route\files(__DIR__ . '/../../fixtures/route_files/', '/foo');
     }
 
-
     /**
      * @runInSeparateProcess
      * @preserveGlobalState  disabled
@@ -54,7 +50,6 @@ class RouteFileWithPrefixTest extends \PHPUnit\Framework\TestCase
         Route\files(__DIR__ . '/../../fixtures/route_files/', '/foo');
     }
 
-
     /**
      * @runInSeparateProcess
      * @preserveGlobalState  disabled
@@ -68,7 +63,6 @@ class RouteFileWithPrefixTest extends \PHPUnit\Framework\TestCase
 
         Route\files(__DIR__ . '/../../fixtures/route_files/', '/foo');
     }
-
 
     /**
      * @runInSeparateProcess

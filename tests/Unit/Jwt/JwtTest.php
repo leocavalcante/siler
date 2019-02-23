@@ -21,8 +21,7 @@ class JwtTest extends \PHPUnit\Framework\TestCase
     protected $data;
     protected $signer;
 
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->config = [
             'iss' => self::ISS,
@@ -37,7 +36,6 @@ class JwtTest extends \PHPUnit\Framework\TestCase
 
         $this->signer = new Sha256();
     }
-
 
     public function testBuilder()
     {
@@ -56,7 +54,6 @@ class JwtTest extends \PHPUnit\Framework\TestCase
         $this->assertStringEqualsFile(__DIR__ . '/../../fixtures/jwt_unsigned.txt', (string) $token);
     }
 
-
     public function testValidate()
     {
         $token = Jwt\builder($this->config)($this->data);
@@ -67,7 +64,6 @@ class JwtTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse(Jwt\validator($this->config, strval(self::EXP + 1))($token));
     }
 
-
     public function testBuilderWithSigner()
     {
         $token = Jwt\builder($this->config, $this->signer, self::KEY)($this->data);
@@ -77,7 +73,6 @@ class JwtTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($token->verify($this->signer, self::KEY));
         $this->assertFalse($token->verify($this->signer, 'wrong key'));
     }
-
 
     public function testParse()
     {
@@ -95,7 +90,6 @@ class JwtTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue($token->verify($this->signer, self::KEY));
     }
-
 
     public function testConf()
     {
