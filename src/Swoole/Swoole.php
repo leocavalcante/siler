@@ -14,36 +14,32 @@ const SWOOLE_HTTP_REQUEST       = 'swoole_http_request';
 const SWOOLE_HTTP_REQUEST_ENDED = 'swoole_http_request_ended';
 const SWOOLE_HTTP_RESPONSE      = 'swoole_http_response';
 const SWOOLE_WEBSOCKET_SERVER   = 'swoole_websocket_server';
-
+const SWOOLE_WEBSOCKET_ONOPEN   = 'swoole_websocket_onopen';
+const SWOOLE_WEBSOCKET_ONCLOSE  = 'swoole_websocket_onclose';
 
 /**
- * Starts a Swoole HTTP server.
+ * Returns a Swoole HTTP server.
  *
- * @param int    $port The port that the server should bind
- * @param string $host The host that the server should bind
+ * @param callable $handler The callable to call on each request.
+ * @param int      $port    The port binding (defaults to 9501).
+ * @param string   $host    The host binding (defaults to 0.0.0.0).
  *
- * @return \Closure
+ * @return \Swoole\Http\Server
  */
-function start(int $port = 80, string $host = '0.0.0.0'): \Closure
+function http(callable $handler, int $port = 9501, string $host = '0.0.0.0')
 {
     $server = new \Swoole\Http\Server($host, $port);
 
-    return function ($handler) use ($server) {
-        $server->on(
-            'request',
-            function ($request, $response) use ($handler) {
-                Container\set(SWOOLE_HTTP_REQUEST_ENDED, false);
-                Container\set(SWOOLE_HTTP_REQUEST, $request);
-                Container\set(SWOOLE_HTTP_RESPONSE, $response);
+    $server->on('request', function ($request, $response) use ($handler) {
+        Container\set(SWOOLE_HTTP_REQUEST_ENDED, false);
+        Container\set(SWOOLE_HTTP_REQUEST, $request);
+        Container\set(SWOOLE_HTTP_RESPONSE, $response);
 
-                return $handler($request, $response);
-            }
-        );
+        return $handler($request, $response);
+    });
 
-        $server->start();
-    };
+    $server;
 }
-
 
 /**
  * Gets the current Swoole HTTP request.
@@ -53,7 +49,6 @@ function request()
     return Container\get(SWOOLE_HTTP_REQUEST);
 }
 
-
 /**
  * Gets the current Swoole HTTP response.
  */
@@ -61,7 +56,6 @@ function response()
 {
     return Container\get(SWOOLE_HTTP_RESPONSE);
 }
-
 
 /**
  * Controls Swoole halting avoiding calling end() more than once.
@@ -87,7 +81,6 @@ function emit(string $content, int $status = 200, array $headers = [])
     return response()->end($content);
 }
 
-
 /**
  * Sugar to emit() JSON encoded data.
  *
@@ -110,50 +103,58 @@ function json($data, int $status = 200, array $headers = [])
     return emit($content, $status, $headers);
 }
 
+/**
+ * Attach hooks for Swoole WebSocket server events.
+ * `open` => Called when a client connects to the server.
+ * `close` => Called when a client disconnects from the server.
+ *
+ * @param array $hooks The hooks to be attached.
+ */
+function websocket_hooks(array $hooks)
+{
+    if (array_key_exists('open', $hooks)) {
+        Container\set(SWOOLE_WEBSOCKET_ONOPEN, $hooks['open']);
+    }
+
+    if (array_key_exists('close', $hooks)) {
+        Container\set(SWOOLE_WEBSOCKET_ONCLOSE, $hooks['close']);
+    }
+}
 
 /**
- * Returns a Closure that starts a websocket server.
+ * Returns a Swoole\WebSocket\Server.
  *
- * @param int    $port
- * @param string $host
- *
- * @return \Closure
+ * @param callable $handler The handler to call on each message.
+ * @param int      $port    The port binding (defaults to 9502).
+ * @param string   $host    The host binding (defaults to 0.0.0.0).
  */
-function websocket(int $port = 9502, string $host = '0.0.0.0'): \Closure
+function websocket(callable $handler, int $port = 9502, string $host = '0.0.0.0'): \Swoole\WebSocket\Server
 {
     $server = new \Swoole\WebSocket\Server($host, $port);
     Container\set(SWOOLE_WEBSOCKET_SERVER, $server);
 
-    return function (callable $handler, ?callable $onOpen = null, ?callable $onClose = null) use ($server) {
-        $server->on(
-            'open',
-            function ($server, $request) use ($onOpen) {
-                if (!is_null($onOpen)) {
-                    $onOpen($request, $server);
-                }
-            }
-        );
+    $server->on('open', function ($server, $request) {
+        $onOpen = Container\get(SWOOLE_WEBSOCKET_ONOPEN);
 
-        $server->on(
-            'message',
-            function ($server, $frame) use ($handler) {
-                return $handler($frame, $server);
-            }
-        );
+        if (!is_null($onOpen)) {
+            $onOpen($request, $server);
+        }
+    });
 
-        $server->on(
-            'close',
-            function ($server, $fd) use ($onClose) {
-                if (!is_null($onClose)) {
-                    $onClose($fd, $server);
-                }
-            }
-        );
+    $server->on('message', function ($server, $frame) use ($handler) {
+        return $handler($frame, $server);
+    });
 
-        return $server->start();
-    };
+    $server->on('close', function ($server, $fd) {
+        $onClose = Container\get(SWOOLE_WEBSOCKET_ONCLOSE);
+
+        if (!is_null($onClose)) {
+            $onClose($fd, $server);
+        }
+    });
+
+    return $server;
 }
-
 
 /**
  * Pushes a message to a specific websocket client.
@@ -174,7 +175,6 @@ function push(string $message, int $fd)
     return $server->push($fd, $message);
 }
 
-
 /**
  * Broadcasts a message to every websocket client.
  *
@@ -192,7 +192,6 @@ function broadcast(string $message)
         push($message, $fd);
     }
 }
-
 
 /**
  * Enable CORS in a Swoole Response.
@@ -215,7 +214,6 @@ function cors(string $origin = '*', string $headers = 'Content-Type', string $me
         emit('');
     }
 }
-
 
 /**
  * Sugar to Swoole`s Http Request rawContent().
