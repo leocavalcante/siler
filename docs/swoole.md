@@ -46,25 +46,7 @@ The differences between Swoole with PHP-FPM the traditional PHP model are:
 
 ### Docker
 
-Swoole prerequisites operation system are: Linux, FreeBSD or MacOS, but **don't worry Windows-people**, _we_ have [Docker](https://www.docker.com)! Building an image is very simple, you can start from [the official PHP image](https://hub.docker.com/_/php/) and just install Swoole from pecl:
-
-{% code-tabs %}
-{% code-tabs-item title="Dockerfile" %}
-```text
-FROM php:7.3-cli
-
-RUN pecl install swoole
-RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
-RUN echo "extension=swoole.so" >> "$PHP_INI_DIR/php.ini"
-
-WORKDIR /app
-
-CMD [ "php", "index.php" ]
-```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
-
-Then we just mount our project on the `/app` directory:
+Swoole prerequisites operation system are: Linux, FreeBSD or MacOS, but **don't worry Windows-people**, _we_ have [Docker](https://www.docker.com)! And I got us covered with [Dwoole](https://github.com/leocavalcante/dwoole):
 
 {% code-tabs %}
 {% code-tabs-item title="docker-compose.yml" %}
@@ -73,7 +55,7 @@ version: '3'
 services:
   swoole:
     container_name: siler_swoole
-    build: .
+    image: leocavalcante/dwoole:1.0-development
     ports:
       - '9501:9501'
     volumes:
@@ -83,7 +65,7 @@ services:
 {% endcode-tabs %}
 
 {% hint style="info" %}
-There is also [WSL](https://docs.microsoft.com/en-us/windows/wsl/about) and Unix-people can [skip this step](https://www.swoole.co.uk/#get-started).
+Beyond being cross-platform, Dwoole helps with others features like Composer and hot-restart that Unix people would also like.
 {% endhint %}
 
 ## Siler
@@ -102,11 +84,11 @@ require_once 'vendor/autoload.php';
 
 use Siler\Swoole;
 
-$handler = function () {
+$server = function () {
     Swoole\emit('Hello World');
 };
 
-Swoole\start(9501, '0.0.0.0')($handler);
+Swoole\http($server)->start();
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
@@ -129,11 +111,11 @@ use Siler\Swoole;
 use Siler\Route;
 
 $handler = function ($req) {
-    Route\get('/', 'pages/home.php', Swoole\cast($req));
+    Route\get('/', 'pages/home.php');
     Swoole\emit('Not found', 404);
 };
 
-Swoole\start(9501)($handler); // Host defaults to 0.0.0.0
+Swoole\http($handler)->start();
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
@@ -186,11 +168,11 @@ use Siler\Twig;
 Twig\init('pages');
 
 $handler = function ($req) {
-    Route\get('/', 'pages/home.php', Swoole\cast($req));
+    Route\get('/', 'pages/home.php');
     Swoole\emit('Not found', 404);
 };
 
-Swoole\start()($handler); // Port defaults to 9501
+Swoole\http($handler)->start();
 ```
 {% endcode-tabs-item %}
 
@@ -280,14 +262,14 @@ use Siler\Twig;
 Twig\init('pages');
 
 $handler = function ($req, $res) {
-    Route\get('/', 'pages/home.php', Swoole\cast($req));
-    Route\get('/todos', 'api/todos.php', Swoole\cast($req));
+    Route\get('/', 'pages/home.php');
+    Route\get('/todos', 'api/todos.php');
 
     // None of the above short-circuited the response with Swoole\emit().
     Swoole\emit('Not found', 404);
 };
 
-Swoole\start()($handler);
+Swoole\http($handler)->start();
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
@@ -320,14 +302,8 @@ A **Siler** ❤️ **Swoole** powered API.
 
 All functions on `Siler\Swoole` namespace.
 
-`handle(callable $handler)`  
-Attach a handler for the HTTP server. The `$handler` can have two parameters, first is a `Swoole\Http\Request` and second is a `Swoole\Http\Response`.
-
-`start(string $host, int $port)`  
-Starts the HTTP server binding it to the specified `$host` and `$post`.
-
-`cast(Swoole\Http\Request $request)`  
-Casts a Swoole Request object to the Siler's request notation.
+`http(callback $handler, int $port = 9501, string $host = '0.0.0.0'): Swoole\Http\Server`  
+Starts the HTTP server binding it to the specified `$host` and `$post` using the `$handler` on each request.
 
 `request(): Swoole\Http\Request`  
 Returns the current HTTP Request.
