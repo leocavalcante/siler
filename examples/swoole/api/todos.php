@@ -22,4 +22,6 @@ $todos = [
     ],
 ];
 
-Swoole\emit(json_encode($todos), 200, ['Content-Type' => 'application/json']);
+return function () use ($todos) {
+    Swoole\json($todos);
+};

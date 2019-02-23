@@ -1,20 +1,16 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Siler\Swoole;
+use function Siler\Functional\puts;
 
 $echo = function ($frame) {
     Swoole\broadcast($frame->data);
 };
 
-$onOpen = function () {
-    echo "Connection stabilised\n";
-};
+Swoole\websocket_hooks([
+    'open' => puts("New connection\n"),
+    'close' => puts("Someone leaves\n"),
+]);
 
-$onClose = function () {
-    echo "Connection closed\n";
-};
-
-Swoole\websocket(9502)($echo, $onOpen, $onClose);
+Swoole\websocket($echo)->start();

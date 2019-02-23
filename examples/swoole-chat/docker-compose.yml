@@ -2,8 +2,10 @@ version: '3'
 services:
   swoole:
     container_name: siler_swoole_chat
-    build: .
+    image: leocavalcante/dwoole:1.0-development
     ports:
       - '9502:9502'
     volumes:
       - ../../:/app
+    environment:
+      ENTRY_POINT_FILE: /app/examples/swoole-chat/server.php

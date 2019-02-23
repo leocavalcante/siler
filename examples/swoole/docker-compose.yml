@@ -6,4 +6,6 @@ services:
     ports:
       - '9501:9501'
     volumes:
-      - ./:/app
+      - ../../:/app
+    environment:
+      ENTRY_POINT_FILE: /app/examples/swoole/index.php
