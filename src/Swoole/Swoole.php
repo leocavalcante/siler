@@ -222,5 +222,11 @@ function cors(string $origin = '*', string $headers = 'Content-Type', string $me
  */
 function raw(): string
 {
-    return Container\get(SWOOLE_HTTP_REQUEST)->rawContent();
+    $content = Container\get(SWOOLE_HTTP_REQUEST)->rawContent();
+
+    if (empty($content)) {
+        return '';
+    }
+
+    return $content;
 }
