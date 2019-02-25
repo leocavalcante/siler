@@ -230,3 +230,11 @@ function raw(): string
 
     return $content;
 }
+
+/**
+ * Sugar for HTTP 204 No Content.
+ */
+function no_content()
+{
+    emit('', 204);
+}
