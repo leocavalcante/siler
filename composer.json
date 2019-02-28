@@ -62,6 +62,7 @@
             "src/Jwt/Jwt.php",
             "src/Mail/SwiftMailer.php",
             "src/Monolog/Monolog.php",
+            "src/Prelude/Mistake.php",
             "src/Prelude/Str.php",
             "src/Prelude/Tuple.php",
             "src/Ratchet/Ratchet.php",
