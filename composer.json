@@ -59,7 +59,6 @@
             "src/Http/Request.php",
             "src/Http/Response.php",
             "src/HttpHandlerRunner/HttpHandlerRunner.php",
-            "src/Jwt/Jwt.php",
             "src/Mail/SwiftMailer.php",
             "src/Monolog/Monolog.php",
             "src/Prelude/Mistake.php",
