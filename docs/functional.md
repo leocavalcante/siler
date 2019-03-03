@@ -21,7 +21,7 @@ array_map(λ\identity(), [1, 2, 3]);
 ```
 
 {% hint style="info" %}
-Doesn't seam useful at first, but working with the functional paradigm, you'll find the reason shortly.
+Doesn't seem useful at first, but working with the functional paradigm, you'll find the reason shortly.
 {% endhint %}
 
 #### `always($value)`
