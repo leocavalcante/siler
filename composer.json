@@ -43,9 +43,6 @@
         "zendframework/zend-stratigility": "^3.1"
     },
     "autoload": {
-        "psr-4": {
-            "Siler\\": "src/"
-        },
         "files": [
             "src/Container/Container.php",
             "src/Db/Db.php",
@@ -53,8 +50,12 @@
             "src/Diactoros/Diactoros.php",
             "src/Dotenv/Dotenv.php",
             "src/Functional/Functional.php",
+            "src/Functional/Monad/Identity.php",
+            "src/Functional/Monad/Maybe.php",
             "src/Functional/Monad/Monad.php",
             "src/GraphQL/GraphQL.php",
+            "src/GraphQL/SubscriptionsManager.php",
+            "src/GraphQL/SubscriptionsServer.php",
             "src/Http/Http.php",
             "src/Http/Request.php",
             "src/Http/Response.php",
@@ -66,6 +67,7 @@
             "src/Prelude/Success.php",
             "src/Prelude/Tuple.php",
             "src/Route/Route.php",
+            "src/Stratigility/RequestHandlerDecorator.php",
             "src/Stratigility/Stratigility.php",
             "src/Swoole/Swoole.php",
             "src/Twig/Twig.php",
