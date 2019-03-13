@@ -19,10 +19,10 @@ use Siler\Container;
  *
  * @return \Twig_Environment
  */
-function init(string $templatesPath, $templatesCachePath = false, bool $debug = false) : \Twig_Environment
+function init(string $templatesPath, $templatesCachePath = false, bool $debug = false) : \Twig\Environment
 {
-    $twig = new \Twig_Environment(
-        new \Twig_Loader_Filesystem($templatesPath),
+    $twig = new \Twig\Environment(
+        new \Twig\Loader\Filesystem($templatesPath),
         [
             'debug' => $debug,
             'cache' => $templatesCachePath,
