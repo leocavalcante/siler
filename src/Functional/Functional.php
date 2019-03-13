@@ -480,3 +480,47 @@ function partial(callable $callable, ...$partial): \Closure
         return call_user_func_array($callable, array_merge($partial, $args));
     };
 }
+
+/**
+ *  Calls a function if the predicate is true.
+ *
+ * @param callable $predicate
+ *
+ * @return \Closure
+ */
+function if_then(callable $predicate): \Closure
+{
+    return function (callable $then) use ($predicate) {
+        if ($predicate()) {
+            $then();
+        }
+    };
+}
+
+/**
+ * A lazy empty evaluation.
+ *
+ * @param $var
+ *
+ * @return \Closure
+ */
+function is_empty($var): \Closure
+{
+    return function () use ($var): bool {
+        return empty($var);
+    };
+}
+
+/**
+ * A lazy is_null evaluation.
+ *
+ * @param $var
+ *
+ * @return \Closure
+ */
+function isnull($var): \Closure
+{
+    return function () use ($var): bool {
+        return is_null($var);
+    };
+}

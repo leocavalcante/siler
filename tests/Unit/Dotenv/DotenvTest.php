@@ -13,7 +13,7 @@ class DotenvTest extends TestCase
     {
         $entries = \Siler\Dotenv\init(__DIR__ . '/../../fixtures');
 
-        $this->assertCount(4, $entries);
+        $this->assertCount(2, $entries);
         $this->assertArrayHasKey('FOO', $entries);
         $this->assertSame('bar', $entries['FOO']);
         $this->assertSame($_SERVER, env());

@@ -330,4 +330,10 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $commaExplode = f\partial('explode', ',');
         $this->assertSame(['foo', 'bar'], $commaExplode('foo,bar'));
     }
+
+    public function testIfThen()
+    {
+        $this->expectOutputString('if_then');
+        f\if_then(f\always(true))(f\puts('if_then'));
+    }
 }
