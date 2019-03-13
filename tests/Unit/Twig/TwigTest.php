@@ -22,7 +22,7 @@ class TwigTest extends TestCase
     public function testCreateTwigEnv()
     {
         $twigEnv = Twig\init(__DIR__ . '/../../fixtures');
-        $this->assertInstanceOf(\Twig_Environment::class, $twigEnv);
+        $this->assertInstanceOf(\Twig\Environment::class, $twigEnv);
     }
 
     public function testRender()

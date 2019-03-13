@@ -22,7 +22,8 @@ use Siler\Container;
 function init(string $templatesPath, $templatesCachePath = false, bool $debug = false) : \Twig\Environment
 {
     $twig = new \Twig\Environment(
-        new \Twig\Loader\Filesystem($templatesPath),
+        /* @phan-suppress-next-line PhanDeprecatedInterface */
+        new \Twig\Loader\FilesystemLoader($templatesPath),
         [
             'debug' => $debug,
             'cache' => $templatesCachePath,
