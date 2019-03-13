@@ -12,9 +12,9 @@ class FailureTest extends TestCase
     public function testConstructor()
     {
         $failure = new Failure(42);
-        $this->assertNotEmpty($failure->getId());
-        $this->assertSame(42, $failure->getCode());
-        $this->assertNull($failure->getData());
+        $this->assertNotEmpty($failure->id());
+        $this->assertSame(42, $failure->code());
+        $this->assertNull($failure->unwrap());
     }
 
     public function testIsSuccess()

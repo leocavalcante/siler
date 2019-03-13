@@ -12,9 +12,9 @@ class SuccessTest extends TestCase
     public function testConstructor()
     {
         $success = new Success(42);
-        $this->assertNotEmpty($success->getId());
-        $this->assertSame(42, $success->getCode());
-        $this->assertNull($success->getData());
+        $this->assertNotEmpty($success->id());
+        $this->assertSame(42, $success->code());
+        $this->assertNull($success->unwrap());
     }
 
     public function testIsSuccess()

@@ -17,17 +17,17 @@ abstract class Result implements \JsonSerializable
         $this->data = $data;
     }
 
-    public function getId(): string
+    public function id(): string
     {
         return $this->id;
     }
 
-    public function getCode(): int
+    public function code(): int
     {
         return $this->code;
     }
 
-    public function getData()
+    public function unwrap()
     {
         return $this->data;
     }
