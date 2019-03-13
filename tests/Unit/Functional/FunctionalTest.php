@@ -336,4 +336,16 @@ class FunctionalTest extends \PHPUnit\Framework\TestCase
         $this->expectOutputString('if_then');
         f\if_then(f\always(true))(f\puts('if_then'));
     }
+
+    public function testIsEmpty()
+    {
+        $this->assertTrue(f\is_empty([])());
+        $this->assertFalse(f\is_empty('[]')());
+    }
+
+    public function testIsNull()
+    {
+        $this->assertTrue(f\isnull(null)());
+        $this->assertFalse(f\isnull([])());
+    }
 }
