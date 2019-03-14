@@ -6,9 +6,9 @@ use Siler\Container;
 
 const DEFAULT_INSTANCE = 'redis_default_instance';
 
-function connect(string $host = '127.0.0.1', int $port = 6379, string $redisInstance = DEFAULT_INSTANCE): Redis
+function connect(string $host = '127.0.0.1', int $port = 6379, string $redisInstance = DEFAULT_INSTANCE): \Redis
 {
-    $redis = new Redis();
+    $redis = new \Redis();
     $redis->connect($host, $port);
 
     Container\set($redisInstance, $redis);
