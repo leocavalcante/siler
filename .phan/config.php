@@ -300,6 +300,7 @@ return [
     //       to `exclude_analysis_directory_list`.
     'exclude_analysis_directory_list' => [
         'src/Swoole/Swoole.php',
+        'src/Db/Redis.php',
         'vendor/',
     ],
 
