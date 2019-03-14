@@ -28,3 +28,9 @@ function set(string $key, string $val, string $redisInstance = DEFAULT_INSTANCE)
     $redis = Container\get(DEFAULT_INSTANCE);
     return $redis->set($key, $val);
 }
+
+function has(string $key): bool
+{
+    $redis = Container\get(DEFAULT_INSTANCE);
+    return $redis->exists($key) > 0;
+}
