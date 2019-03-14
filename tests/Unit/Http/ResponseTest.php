@@ -54,7 +54,7 @@ class ResponseTest extends TestCase
 
     public function testJsonError()
     {
-        $this->expectException(\UnexpectedValueException::class );
+        $this->expectException(\UnexpectedValueException::class);
 
         Response\json(fopen('php://input', 'r'));
     }
