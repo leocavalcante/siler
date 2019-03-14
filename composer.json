@@ -50,6 +50,7 @@
             "src/Container/Container.php",
             "src/Db/Db.php",
             "src/Db/Mongo.php",
+            "src/Db/Redis.php",
             "src/Diactoros/Diactoros.php",
             "src/Dotenv/Dotenv.php",
             "src/Functional/Functional.php",
