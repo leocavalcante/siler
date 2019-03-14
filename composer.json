@@ -23,7 +23,6 @@
     "minimum-stability": "stable",
     "require-dev": {
         "ext-mongodb": "^1.5",
-        "ext-redis": "^4.3",
         "cboden/ratchet": "^0.4",
         "cocur/slugify": "^3.2",
         "gabordemooij/redbean": "^5.2",
