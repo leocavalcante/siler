@@ -11,31 +11,31 @@ class FailureTest extends TestCase
 {
     public function testConstructor()
     {
-        $failure = new Failure(42);
+        $failure = new Failure();
         $this->assertNotEmpty($failure->id());
-        $this->assertSame(42, $failure->code());
         $this->assertNull($failure->unwrap());
+        $this->assertSame(1, $failure->code());
     }
 
-    public function testIsSuccess()
+    public function testIsFailure()
     {
-        $failure = new Failure(42);
+        $failure = new Failure();
         $this->assertTrue($failure->isFailure());
         $this->assertFalse($failure->isSuccess());
     }
 
     public function testJson()
     {
-        $failure = new Failure(42, null, 'test');
+        $failure = new Failure(null, 1, 'test');
         $this->assertSame('{"error":true,"id":"test"}', json_encode($failure));
 
-        $failure = new Failure(43, 'foo', 'test');
+        $failure = new Failure('foo', 1, 'test');
         $this->assertSame('{"error":true,"id":"test","message":"foo"}', json_encode($failure));
 
-        $failure = new Failure(43, ['foo' => 'bar'], 'test');
+        $failure = new Failure(['foo' => 'bar'], 1, 'test');
         $this->assertSame('{"error":true,"id":"test","foo":"bar"}', json_encode($failure));
 
-        $failure = new Failure(43, true, 'test');
+        $failure = new Failure(true, 1, 'test');
         $this->assertSame('{"error":true,"id":"test","data":true}', json_encode($failure));
     }
 }

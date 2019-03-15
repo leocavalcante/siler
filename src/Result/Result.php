@@ -7,14 +7,14 @@ namespace Siler\Result;
 abstract class Result implements \JsonSerializable
 {
     private $id;
-    private $code;
     private $data;
+    private $code;
 
-    public function __construct(int $code, $data = null, string $id = null)
+    public function __construct($data = null, int $code = 0, string $id = null)
     {
         $this->id = is_null($id) ? base64_encode(uniqid()) : $id;
-        $this->code = $code;
         $this->data = $data;
+        $this->code = $code;
     }
 
     public function id(): string
@@ -60,12 +60,12 @@ abstract class Result implements \JsonSerializable
     }
 }
 
-function success(int $code, $data = null): Success
+function success($data = null, int $code = 0, string $id = null): Success
 {
-    return new Success($code, $data);
+    return new Success($data, $code, $id);
 }
 
-function failure(int $code, $data = null): Failure
+function failure($data = null, int $code = 1, string $id = null): Failure
 {
-    return new Failure($code, $data);
+    return new Failure($data, $code, $id);
 }

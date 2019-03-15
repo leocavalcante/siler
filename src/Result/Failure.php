@@ -6,9 +6,9 @@ namespace Siler\Result;
 
 final class Failure extends Result
 {
-    public function __construct(int $code, $data = null, string $id = null)
+    public function __construct($data = null, int $code = 1, string $id = null)
     {
-        parent::__construct($code, $data, $id);
+        parent::__construct($data, $code, $id);
     }
 
     public function isSuccess(): bool

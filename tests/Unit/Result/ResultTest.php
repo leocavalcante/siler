@@ -14,13 +14,13 @@ class ResultTest extends TestCase
 {
     public function testSuccess()
     {
-        $success = success(0);
+        $success = success();
         $this->assertInstanceOf(Success::class, $success);
     }
 
     public function testFailure()
     {
-        $failure = failure(0);
+        $failure = failure();
         $this->assertInstanceOf(Failure::class, $failure);
     }
 }

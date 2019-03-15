@@ -11,31 +11,31 @@ class SuccessTest extends TestCase
 {
     public function testConstructor()
     {
-        $success = new Success(42);
+        $success = new Success();
         $this->assertNotEmpty($success->id());
-        $this->assertSame(42, $success->code());
         $this->assertNull($success->unwrap());
+        $this->assertSame(0, $success->code());
     }
 
     public function testIsSuccess()
     {
-        $success = new Success(42);
+        $success = new Success();
         $this->assertTrue($success->isSuccess());
         $this->assertFalse($success->isFailure());
     }
 
     public function testJson()
     {
-        $success = new Success(42, null, 'test');
+        $success = new Success(null, 0, 'test');
         $this->assertSame('{"error":false,"id":"test"}', json_encode($success));
 
-        $success = new Success(43, 'foo', 'test');
+        $success = new Success('foo', 0, 'test');
         $this->assertSame('{"error":false,"id":"test","message":"foo"}', json_encode($success));
 
-        $success = new Success(43, ['foo' => 'bar'], 'test');
+        $success = new Success(['foo' => 'bar'], 0, 'test');
         $this->assertSame('{"error":false,"id":"test","foo":"bar"}', json_encode($success));
 
-        $success = new Success(43, true, 'test');
+        $success = new Success(true, 0, 'test');
         $this->assertSame('{"error":false,"id":"test","data":true}', json_encode($success));
     }
 }
