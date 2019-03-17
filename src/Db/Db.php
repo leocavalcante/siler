@@ -22,6 +22,8 @@ const DB_DEFAULT_NAME = 'db';
 function connect(string $dsn, string $username = 'root', string $passwd = '', array $options = []): \PDO
 {
     $pdo = new \PDO($dsn, $username, $passwd, $options);
+    $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+
     Container\set(DB_DEFAULT_NAME, $pdo);
 
     return $pdo;
@@ -105,6 +107,26 @@ function fetch_all(string $statement, int $fetchStyle = \PDO::FETCH_ASSOC, strin
     }
 
     return $results;
+}
+
+/**
+ * Calls `query()` and `fetch()` on the given `\PDOStatement` in a single function.
+ *
+ * @param string $statement The SQL statement.
+ * @param int $fetchStyle The PDO fetch style to use, defaults to FETCH_ASSOC.
+ * @param string $pdoName The PDO name on the `Siler\Container` to be used, defaults to the DB_DEFAULT_NAME.
+ *
+ * @return array|null Returns the resulting array (maybe empty) or null in case of error.
+ */
+function fetch(string $statement, int $fetchStyle = \PDO::FETCH_ASSOC, string $pdoName = DB_DEFAULT_NAME): ?array
+{
+    $result = query($statement, $pdoName)->fetch($fetchStyle);
+
+    if ($result === false) {
+        return null;
+    }
+
+    return $result;
 }
 
 /**

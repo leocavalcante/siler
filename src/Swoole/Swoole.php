@@ -222,5 +222,19 @@ function cors(string $origin = '*', string $headers = 'Content-Type', string $me
  */
 function raw(): string
 {
-    return Container\get(SWOOLE_HTTP_REQUEST)->rawContent();
+    $content = Container\get(SWOOLE_HTTP_REQUEST)->rawContent();
+
+    if (empty($content)) {
+        return '';
+    }
+
+    return $content;
+}
+
+/**
+ * Sugar for HTTP 204 No Content.
+ */
+function no_content()
+{
+    emit('', 204);
 }

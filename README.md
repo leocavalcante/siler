@@ -139,29 +139,6 @@ Log\alert('alert', ['level' => 'alert']);
 Log\emergency('emergency', ['level' => 'emergency']);
 ```
 
-#### Ratchet
-
-Real-time web apps using WebSockets.
-
-```bash
-$ composer require cboden/ratchet
-```
-
-```php
-use Siler\Ratchet;
-
-Ratchet\connected(function ($conn) {
-    print("New connection\n");
-});
-
-Ratchet\inbox(function ($from, $message) {
-    printf("New message: %s\n", $message);
-});
-
-print("Listen on 3333\n");
-Ratchet\init(3333);
-```
-
 #### GraphQL
 
 [A query language for your API](http://graphql.org/). Thanks to webonyx/graphql-php you can build you Schema from a

@@ -1,11 +1,11 @@
 language: php
 
 php:
-  - '7.2'
-  - '7.3'
+  - "7.2"
+  - "7.3"
 
 install:
-  - pecl install -f mongodb-1.5.3 ast-1.0.1
+  - pecl install -f mongodb ast
   - composer install
 
 script:
@@ -18,4 +18,4 @@ after_success:
 
 branches:
   only:
-  - master
+    - master

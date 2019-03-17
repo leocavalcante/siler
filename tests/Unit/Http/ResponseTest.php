@@ -52,6 +52,14 @@ class ResponseTest extends TestCase
         $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
     }
 
+    public function testJsonError()
+    {
+        $this->expectException(\UnexpectedValueException::class);
+
+        Response\json(fopen('php://input', 'r'));
+    }
+
+
     public function testStatusCode()
     {
         $this->expectOutputString('{"error":true,"message":"test"}');
