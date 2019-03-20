@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace Siler\Test\Unit;
 
 use PHPUnit\Framework\TestCase;
+use Siler\Container;
 use Siler\Http\Request;
+use Zend\Diactoros\ServerRequest;
+use Siler\Test\Unit\Route\SwooleHttpRequestMock;
+use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 class RequestTest extends TestCase
 {
@@ -13,11 +17,11 @@ class RequestTest extends TestCase
     {
         $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = $_FILES = ['foo' => 'bar'];
 
-        $_SERVER['HTTP_HOST']      = 'test:8000';
-        $_SERVER['SCRIPT_NAME']    = '/foo/test.php';
-        $_SERVER['PATH_INFO']      = '/bar/baz';
-        $_SERVER['NON_HTTP']       = 'Ignore me';
-        $_SERVER['CONTENT_TYPE']   = 'phpunit/test';
+        $_SERVER['HTTP_HOST'] = 'test:8000';
+        $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
+        $_SERVER['PATH_INFO'] = '/bar/baz';
+        $_SERVER['NON_HTTP'] = 'Ignore me';
+        $_SERVER['CONTENT_TYPE'] = 'phpunit/test';
         $_SERVER['CONTENT_LENGTH'] = '123';
     }
 
@@ -64,9 +68,9 @@ class RequestTest extends TestCase
         $this->assertCount(3, $headers);
 
         $expectedHeaders = [
-            'Content-Type'   => 'phpunit/test',
+            'Content-Type' => 'phpunit/test',
             'Content-Length' => '123',
-            'Host'           => 'test:8000',
+            'Host' => 'test:8000',
         ];
 
         foreach ($expectedHeaders as $key => $value) {
@@ -189,5 +193,40 @@ class RequestTest extends TestCase
             $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '';
             $this->assertSame(\locale_get_default(), Request\recommended_locale());
         }
+    }
+
+    public function testAuthorizationHeader()
+    {
+        $this->assertNull(Request\authorization_header());
+
+        $_SERVER['HTTP_AUTHORIZATION'] = 'Basic foo';
+        $this->assertSame('Basic foo', Request\authorization_header());
+
+        $request = new ServerRequest([], [], null, null, 'php://input', ['Authorization' => 'Basic foo']);
+        $this->assertSame('Basic foo', Request\authorization_header($request));
+
+        $request = new SwooleHttpRequestMock('GET', '/', ['authorization' => 'Basic foo']);
+        Container\set(SWOOLE_HTTP_REQUEST, $request);
+        $this->assertSame('Basic foo', Request\authorization_header($request));
+        Container\clear(SWOOLE_HTTP_REQUEST);
+    }
+
+    public function testBearer()
+    {
+        $this->assertNull(Request\bearer());
+
+        $_SERVER['HTTP_AUTHORIZATION'] = 'Basic foo';
+        $this->assertNull(Request\bearer());
+
+        $_SERVER['HTTP_AUTHORIZATION'] = 'Bearer foo';
+        $this->assertSame('foo', Request\bearer());
+
+        $request = new ServerRequest([], [], null, null, 'php://input', ['Authorization' => 'Bearer foo']);
+        $this->assertSame('foo', Request\bearer($request));
+
+        $request = new SwooleHttpRequestMock('GET', '/', ['authorization' => 'Bearer foo']);
+        Container\set(SWOOLE_HTTP_REQUEST, $request);
+        $this->assertSame('foo', Request\bearer($request));
+        Container\clear(SWOOLE_HTTP_REQUEST);
     }
 }

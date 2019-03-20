@@ -26,4 +26,13 @@ class ContainerTest extends TestCase
         $this->assertTrue(Container\has('test_has'));
         $this->assertFalse(Container\has('test_hasnt'));
     }
+
+    public function testClear()
+    {
+        Container\Container::getInstance()->values['test_clear'] = new \stdClass();
+        $this->assertTrue(Container\has('test_clear'));
+        Container\clear('test_clear');
+        $this->assertFalse(Container\has('test_clear'));
+    }
+
 }

@@ -1,0 +1,1 @@
+C:37:"PHPUnit\Runner\DefaultTestResultCache":167:{a:2:{s:7:"defects";a:0:{}s:5:"times";a:2:{s:39:"Siler\Test\Unit\RequestTest::testBearer";d:0.053;s:52:"Siler\Test\Unit\RequestTest::testAuthorizationHeader";d:0.051;}}}
