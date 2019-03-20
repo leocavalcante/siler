@@ -7,7 +7,8 @@
         "framework",
         "functional",
         "micro",
-        "router"
+        "router",
+        "swoole"
     ],
     "license": "MIT",
     "authors": [
