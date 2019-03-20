@@ -78,10 +78,12 @@
         }
     },
     "scripts": {
+        "fix": "phpcbf",
         "lint": "phpcs",
         "phan": "phan",
         "unit": "phpunit",
         "test": [
+            "@composer fix",
             "@composer lint",
             "@composer phan",
             "@composer unit"
