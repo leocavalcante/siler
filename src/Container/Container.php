@@ -51,6 +51,17 @@ function has(string $key) : bool
     return array_key_exists($key, $container->values);
 }
 
+/**
+ * Clears the value on the container.
+ *
+ * @param string $key
+ */
+function clear(string $key): void
+{
+    $container = Container::getInstance();
+
+    unset($container->values[$key]);
+}
 
 /**
  *

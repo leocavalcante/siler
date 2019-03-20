@@ -7,8 +7,10 @@ declare(strict_types=1);
 
 namespace Siler\Http\Request;
 
+use Psr\Http\Message\ServerRequestInterface;
+use Siler\Container;
+use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 use function Siler\array_get;
-
 
 /**
  * Returns the raw HTTP body request.
@@ -17,11 +19,10 @@ use function Siler\array_get;
  *
  * @return string
  */
-function raw(string $input = 'php://input') : string
+function raw(string $input = 'php://input'): string
 {
     return (string) file_get_contents($input);
 }
-
 
 /**
  * Returns URL decoded raw request body.
@@ -30,14 +31,13 @@ function raw(string $input = 'php://input') : string
  *
  * @return array
  */
-function params(string $input = 'php://input') : array
+function params(string $input = 'php://input'): array
 {
     $params = [];
     parse_str(raw($input), $params);
 
     return $params;
 }
-
 
 /**
  * Returns JSON decoded raw request body.
@@ -57,18 +57,17 @@ function json(string $input = 'php://input')
     return $params;
 }
 
-
 /**
  * Returns all the HTTP headers.
  *
  * @return string[]
  */
-function headers() : array
+function headers(): array
 {
-    $serverKeys  = array_keys($_SERVER);
+    $serverKeys = array_keys($_SERVER);
     $httpHeaders = array_reduce(
         $serverKeys,
-        function (array $headers, $key) : array {
+        function (array $headers, $key): array {
             if ($key == 'CONTENT_TYPE') {
                 $headers[] = $key;
             }
@@ -86,31 +85,24 @@ function headers() : array
         []
     );
 
-    $values = array_map(
-        function (string $header) {
-            return $_SERVER[$header];
-        },
-        $httpHeaders
-    );
+    $values = array_map(function (string $header) {
+        return $_SERVER[$header];
+    }, $httpHeaders);
 
-    $headers = array_map(
-        function (string $header) {
-            if (substr($header, 0, 5) == 'HTTP_') {
-                $header = substr($header, 5);
+    $headers = array_map(function (string $header) {
+        if (substr($header, 0, 5) == 'HTTP_') {
+            $header = substr($header, 5);
 
-                if (false === $header) {
-                    $header = 'HTTP_';
-                }
+            if (false === $header) {
+                $header = 'HTTP_';
             }
+        }
 
-            return str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', $header))));
-        },
-        $httpHeaders
-    );
+        return str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', $header))));
+    }, $httpHeaders);
 
     return array_combine($headers, $values);
 }
-
 
 /**
  * Returns the request header or the given default.
@@ -125,7 +117,6 @@ function header(string $key, $default = null)
     return array_get(headers(), $key, $default, true);
 }
 
-
 /**
  * Get a value from the $_GET global.
  *
@@ -138,7 +129,6 @@ function get(?string $key = null, $default = null)
 {
     return array_get($_GET, $key, $default);
 }
-
 
 /**
  * Get a value from the $_POST global.
@@ -153,7 +143,6 @@ function post(?string $key = null, $default = null)
     return array_get($_POST, $key, $default);
 }
 
-
 /**
  * Get a value from the $_REQUEST global.
  *
@@ -166,7 +155,6 @@ function input(?string $key = null, $default = null)
 {
     return array_get($_REQUEST, $key, $default);
 }
-
 
 /**
  * Get a value from the $_FILES global.
@@ -181,14 +169,13 @@ function file(?string $key = null, $default = null)
     return array_get($_FILES, $key, $default);
 }
 
-
 /**
  * Returns the current HTTP request method.
  * Override with X-Http-Method-Override header or _method on body.
  *
  * @return string
  */
-function method() : string
+function method(): string
 {
     if ($method = \Siler\Http\Request\header('X-Http-Method-Override')) {
         return $method;
@@ -205,7 +192,6 @@ function method() : string
     return 'GET';
 }
 
-
 /**
  * Checks for the current HTTP request method.
  *
@@ -214,7 +200,7 @@ function method() : string
  *
  * @return bool
  */
-function method_is($method, ?string $requestMethod = null) : bool
+function method_is($method, ?string $requestMethod = null): bool
 {
     if (is_null($requestMethod)) {
         $requestMethod = method();
@@ -229,14 +215,13 @@ function method_is($method, ?string $requestMethod = null) : bool
     return strtolower($method) == strtolower($requestMethod);
 }
 
-
 /**
  * Returns the list of accepted languages,
  * sorted by priority, taken from the HTTP_ACCEPT_LANGUAGE superglobal.
  *
  * @return array Languages by [language => priority], or empty if none could be found.
  */
-function accepted_locales() : array
+function accepted_locales(): array
 {
     $langs = [];
 
@@ -259,13 +244,12 @@ function accepted_locales() : array
                 }
             }
 
-            arsort($langs, (SORT_NUMERIC | SORT_DESC));
+            arsort($langs, SORT_NUMERIC | SORT_DESC);
         }
-    }//end if
+    } //end if
 
     return $langs;
 }
-
 
 /**
  * Get locale asked in request, or system default if none found.
@@ -282,7 +266,7 @@ function accepted_locales() : array
  *
  * @return string selected locale.
  */
-function recommended_locale(string $default = '') : string
+function recommended_locale(string $default = ''): string
 {
     $locale = array_get($_GET, 'lang', '');
 
@@ -292,7 +276,7 @@ function recommended_locale(string $default = '') : string
 
     if (empty($locale)) {
         $locales = accepted_locales();
-        $locale  = empty($locales) ? '' : (string) array_keys($locales)[0];
+        $locale = empty($locales) ? '' : (string) array_keys($locales)[0];
     }
 
     if (empty($locale)) {
@@ -305,4 +289,53 @@ function recommended_locale(string $default = '') : string
     }
 
     return $locale;
+}
+
+/**
+ * Look up for Bearer Authorization token.
+ *
+ * @param null $request
+ *
+ * @return string|null
+ */
+function bearer($request = null): ?string
+{
+    $header = authorization_header($request);
+
+    if (is_null($header)) {
+        return null;
+    }
+
+    if (!preg_match('/^Bearer/', $header)) {
+        return null;
+    }
+
+    $bearer = substr($header, 7);
+
+    if (false === $bearer) {
+        return null;
+    }
+
+    return $bearer;
+}
+
+/**
+ * Returns the Authorization HTTP header.
+ *
+ * @param null $request
+ *
+ * @return string|null
+ */
+function authorization_header($request = null): ?string
+{
+    if (Container\has(SWOOLE_HTTP_REQUEST)) {
+        $request = Container\get(SWOOLE_HTTP_REQUEST);
+        return $request->header['authorization'] ?? null;
+    }
+
+    if ($request instanceof ServerRequestInterface) {
+        return $request->getHeaderLine('Authorization') ?? null;
+    }
+
+    return header('Authorization') ?? null;
 }
