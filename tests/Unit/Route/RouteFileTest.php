@@ -17,7 +17,7 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
         $this->expectOutputString('index.get');
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_SERVER['REQUEST_URI']    = '/';
+        $_SERVER['REQUEST_URI'] = '/';
 
         Route\files(__DIR__ . '/../../fixtures/route_files/');
     }
@@ -31,7 +31,7 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
         $this->expectOutputString('contact.get');
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_SERVER['REQUEST_URI']    = '/contact';
+        $_SERVER['REQUEST_URI'] = '/contact';
 
         Route\files(__DIR__ . '/../../fixtures/route_files/');
     }
@@ -45,7 +45,7 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
         $this->expectOutputString('contact.post');
 
         $_SERVER['REQUEST_METHOD'] = 'POST';
-        $_SERVER['REQUEST_URI']    = '/contact';
+        $_SERVER['REQUEST_URI'] = '/contact';
 
         Route\files(__DIR__ . '/../../fixtures/route_files/');
     }
@@ -59,7 +59,7 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
         $this->expectOutputString('about.index.get');
 
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_SERVER['REQUEST_URI']    = '/about';
+        $_SERVER['REQUEST_URI'] = '/about';
 
         Route\files(__DIR__ . '/../../fixtures/route_files/');
     }
@@ -72,9 +72,9 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectOutputString('foo.$8.getfoo.@8.getfoo.8.get');
 
-        $_SERVER['SCRIPT_NAME']    = '/index.php';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
         $_SERVER['REQUEST_METHOD'] = 'GET';
-        $_SERVER['REQUEST_URI']    = '/foo/8';
+        $_SERVER['REQUEST_URI'] = '/foo/8';
 
         Route\files(__DIR__ . '/../../fixtures/route_files/');
     }

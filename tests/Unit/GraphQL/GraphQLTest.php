@@ -28,13 +28,11 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
 
     public function testEnum()
     {
-        $enumType = GraphQL\enum('Episode')(
-            [
-                GraphQL\val('NEWHOPE', 'Released in 1977.')(4),
-                GraphQL\val('EMPIRE', 'Released in 1980.')(5),
-                GraphQL\val('JEDI', 'Released in 1983.')(6),
-            ]
-        );
+        $enumType = GraphQL\enum('Episode')([
+            GraphQL\val('NEWHOPE', 'Released in 1977.')(4),
+            GraphQL\val('EMPIRE', 'Released in 1980.')(5),
+            GraphQL\val('JEDI', 'Released in 1983.')(6)
+        ]);
 
         $this->assertInstanceOf(EnumType::class, $enumType);
     }
@@ -77,27 +75,21 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
 
     public function testInterface()
     {
-        $interfaceType = GraphQL\itype('Character', 'A character in the Star Wars Trilogy')(
-            [
-                GraphQL\str('id', 'The id of the character.')(),
-                GraphQL\str('name', 'The name of the character.')(),
-            ]
-        )(
-            function ($obj) {
-                    return null;
-            }
-        );
+        $interfaceType = GraphQL\itype('Character', 'A character in the Star Wars Trilogy')([
+            GraphQL\str('id', 'The id of the character.')(),
+            GraphQL\str('name', 'The name of the character.')()
+        ])(function ($obj) {
+            return null;
+        });
 
         $this->assertInstanceOf(InterfaceType::class, $interfaceType);
     }
 
     public function testObjectType()
     {
-        $objectType = GraphQL\type('Human', 'A humanoid creature in the Star Wars universe.')(
-            [
-                GraphQL\str('id', 'The id of the human.'),
-            ]
-        )();
+        $objectType = GraphQL\type('Human', 'A humanoid creature in the Star Wars universe.')([
+            GraphQL\str('id', 'The id of the human.')
+        ])();
 
         $this->assertInstanceOf(ObjectType::class, $objectType);
     }
@@ -111,15 +103,11 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
 
         $_POST = ['query' => '{ foo }'];
 
-        $root = GraphQL\type('Root')(
-            [
-                GraphQL\str('foo')(
-                    function ($root, $args) {
-                        return 'bar';
-                    }
-                ),
-            ]
-        );
+        $root = GraphQL\type('Root')([
+            GraphQL\str('foo')(function ($root, $args) {
+                return 'bar';
+            })
+        ]);
 
         $schema = new Schema(['query' => $root()]);
 
@@ -137,15 +125,11 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
 
         $_SERVER['HTTP_CONTENT_TYPE'] = 'application/json';
 
-        $root = GraphQL\type('Root')(
-            [
-                GraphQL\str('foo')(
-                    function ($root, $args) {
-                        return 'bar';
-                    }
-                ),
-            ]
-        );
+        $root = GraphQL\type('Root')([
+            GraphQL\str('foo')(function ($root, $args) {
+                return 'bar';
+            })
+        ]);
 
         $schema = new Schema(['query' => $root()]);
 
@@ -163,15 +147,11 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
 
         $_POST = ['query' => '{ foo }'];
 
-        $root = GraphQL\type('Root')(
-            [
-                GraphQL\str('foo')(
-                    function ($root, $args) {
-                        throw new Error('error_message');
-                    }
-                ),
-            ]
-        );
+        $root = GraphQL\type('Root')([
+            GraphQL\str('foo')(function ($root, $args) {
+                throw new Error('error_message');
+            })
+        ]);
 
         $schema = new Schema(['query' => $root()]);
 
@@ -182,7 +162,7 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
 
     public function testFieldResolveString()
     {
-        $field    = GraphQL\field(new ObjectType(['name' => 'test']), 'test')('stdClass');
+        $field = GraphQL\field(new ObjectType(['name' => 'test']), 'test')('stdClass');
         $computed = $field['resolve']();
 
         $this->assertInstanceOf(\stdClass::class, $computed);
@@ -191,7 +171,7 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
     public function testSchema()
     {
         $typeDefs = file_get_contents(__DIR__ . '/../../fixtures/schema.graphql');
-        $schema   = GraphQL\schema($typeDefs);
+        $schema = GraphQL\schema($typeDefs);
         $this->assertInstanceOf(Schema::class, $schema);
     }
 }

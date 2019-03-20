@@ -32,7 +32,7 @@ class TupleTest extends TestCase
     public function testImmutableSet()
     {
         $this->expectException(\RuntimeException::class);
-        $tuple    = T\tuple(1);
+        $tuple = T\tuple(1);
         $tuple[1] = 2;
     }
 

@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace Siler;
 
-
 /**
  * Get a value from an array checking if the key exists and returning a default value if not.
  *
@@ -30,12 +29,11 @@ function array_get(?array $array, $key = null, $default = null, bool $caseInsens
 
     if ($caseInsensitive) {
         $array = array_change_key_case($array);
-        $key   = strtolower($key);
+        $key = strtolower($key);
     }
 
     return array_key_exists($key, $array) ? $array[$key] : $default;
 }
-
 
 /**
  * Returns a function that requires the given filename.
@@ -44,7 +42,7 @@ function array_get(?array $array, $key = null, $default = null, bool $caseInsens
  *
  * @return \Closure
  */
-function require_fn(string $filename) : \Closure
+function require_fn(string $filename): \Closure
 {
     return function (array $params = []) use ($filename) {
         if (!file_exists($filename)) {

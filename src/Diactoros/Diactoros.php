@@ -16,17 +16,15 @@ use Zend\Diactoros\Response\TextResponse;
 use Zend\Diactoros\ServerRequest;
 use Zend\Diactoros\ServerRequestFactory;
 
-
 /**
  * Returns a new ServerRequest from globals.
  *
  * @return ServerRequest
  */
-function request() : ServerRequest
+function request(): ServerRequest
 {
     return ServerRequestFactory::fromGlobals($_SERVER, $_GET, $_POST, $_COOKIE, $_FILES);
 }
-
 
 /**
  * Returns a new response.
@@ -37,11 +35,10 @@ function request() : ServerRequest
  *
  * @return Response
  */
-function response(string $body = 'php://memory', int $status = 200, array $headers = []) : Response
+function response(string $body = 'php://memory', int $status = 200, array $headers = []): Response
 {
     return new Response($body, $status, $headers);
 }
-
 
 /**
  * Returns a new HTML response.
@@ -52,11 +49,10 @@ function response(string $body = 'php://memory', int $status = 200, array $heade
  *
  * @return HtmlResponse
  */
-function html(string $html, int $status = 200, array $headers = []) : HtmlResponse
+function html(string $html, int $status = 200, array $headers = []): HtmlResponse
 {
     return new HtmlResponse($html, $status, $headers);
 }
-
 
 /**
  * Returns a new JSON encoded response.
@@ -68,11 +64,14 @@ function html(string $html, int $status = 200, array $headers = []) : HtmlRespon
  *
  * @return JsonResponse
  */
-function json($data, int $status = 200, array $headers = [], int $encodingOptions = JsonResponse::DEFAULT_JSON_FLAGS) : JsonResponse
-{
+function json(
+    $data,
+    int $status = 200,
+    array $headers = [],
+    int $encodingOptions = JsonResponse::DEFAULT_JSON_FLAGS
+): JsonResponse {
     return new JsonResponse($data, $status, $headers, $encodingOptions);
 }
-
 
 /**
  * Returns a new text response.
@@ -83,11 +82,10 @@ function json($data, int $status = 200, array $headers = [], int $encodingOption
  *
  * @return TextResponse
  */
-function text(string $text, int $status = 200, array $headers = []) : TextResponse
+function text(string $text, int $status = 200, array $headers = []): TextResponse
 {
     return new TextResponse($text, $status, $headers);
 }
-
 
 /**
  * Returns a new redirect response.
@@ -98,11 +96,10 @@ function text(string $text, int $status = 200, array $headers = []) : TextRespon
  *
  * @return RedirectResponse
  */
-function redirect(string $uri, int $status = 302, array $headers = []) : RedirectResponse
+function redirect(string $uri, int $status = 302, array $headers = []): RedirectResponse
 {
     return new RedirectResponse($uri, $status, $headers);
 }
-
 
 /**
  * Returns a new empty response.
@@ -112,7 +109,7 @@ function redirect(string $uri, int $status = 302, array $headers = []) : Redirec
  *
  * @return EmptyResponse
  */
-function none(int $status = 204, array $headers = []) : EmptyResponse
+function none(int $status = 204, array $headers = []): EmptyResponse
 {
     return new EmptyResponse($status, $headers);
 }

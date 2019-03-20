@@ -13,9 +13,9 @@ class RouteFacadeTest extends TestCase
     {
         $_GET = $_POST = $_REQUEST = ['foo' => 'bar'];
 
-        $_SERVER['HTTP_HOST']   = 'test:8000';
+        $_SERVER['HTTP_HOST'] = 'test:8000';
         $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
-        $_SERVER['PATH_INFO']   = '/bar/baz';
+        $_SERVER['PATH_INFO'] = '/bar/baz';
         $_SERVER['REQUEST_URI'] = '/bar/baz';
     }
 

@@ -10,7 +10,6 @@ use Monolog\Logger;
 
 const MONOLOG_DEFAULT_CHANNEL = 'log';
 
-
 /**
  * Stores to any stream resource
  * Can be used to store into php://stderr, remote and local files, etc.
@@ -26,11 +25,15 @@ const MONOLOG_DEFAULT_CHANNEL = 'log';
  *
  * @return StreamHandler
  */
-function stream($stream, int $level = Logger::DEBUG, bool $bubble = true, ?int $filePermission = null, bool $useLocking = false): StreamHandler
-{
+function stream(
+    $stream,
+    int $level = Logger::DEBUG,
+    bool $bubble = true,
+    ?int $filePermission = null,
+    bool $useLocking = false
+): StreamHandler {
     return new StreamHandler($stream, $level, $bubble, $filePermission, $useLocking);
 }
-
 
 /**
  * Adds a log record at an arbitrary level.
@@ -50,7 +53,6 @@ function log(int $level, string $message, array $context = [], string $channel =
     return $logger->log($level, $message, $context);
 }
 
-
 /**
  * Pushes a handler on to the stack.
  *
@@ -66,7 +68,6 @@ function handler(HandlerInterface $handler, string $channel = MONOLOG_DEFAULT_CH
     return $logger->pushHandler($handler);
 }
 
-
 /**
  * Detailed debug information.
  *
@@ -80,7 +81,6 @@ function debug(string $message, array $context = [], string $channel = MONOLOG_D
 {
     return log(Logger::DEBUG, $message, $context, $channel);
 }
-
 
 /**
  * Interesting events. Examples: User logs in, SQL logs.
@@ -96,7 +96,6 @@ function info(string $message, array $context = [], string $channel = MONOLOG_DE
     return log(Logger::INFO, $message, $context, $channel);
 }
 
-
 /**
  * Normal but significant events.
  *
@@ -110,7 +109,6 @@ function notice(string $message, array $context = [], string $channel = MONOLOG_
 {
     return log(Logger::NOTICE, $message, $context, $channel);
 }
-
 
 /**
  * Exceptional occurrences that are not errors. Examples: Use of deprecated APIs, poor use of an API, undesirable things that are not necessarily wrong.
@@ -126,7 +124,6 @@ function warning(string $message, array $context = [], string $channel = MONOLOG
     return log(Logger::WARNING, $message, $context, $channel);
 }
 
-
 /**
  * Runtime errors that do not require immediate action but should typically be logged and monitored.
  *
@@ -140,7 +137,6 @@ function error(string $message, array $context = [], string $channel = MONOLOG_D
 {
     return log(Logger::ERROR, $message, $context, $channel);
 }
-
 
 /**
  * Critical conditions. Example: Application component unavailable, unexpected exception.
@@ -156,7 +152,6 @@ function critical(string $message, array $context = [], string $channel = MONOLO
     return log(Logger::CRITICAL, $message, $context, $channel);
 }
 
-
 /**
  * Action must be taken immediately. Example: Entire website down, database unavailable, etc. This should trigger the SMS alerts and wake you up.
  *
@@ -170,7 +165,6 @@ function alert(string $message, array $context = [], string $channel = MONOLOG_D
 {
     return log(Logger::ALERT, $message, $context, $channel);
 }
-
 
 /**
  * Emergency: system is unusable.
@@ -186,7 +180,6 @@ function emergency(string $message, array $context = [], string $channel = MONOL
     return log(Logger::EMERGENCY, $message, $context, $channel);
 }
 
-
 /**
  * Internal DIC.
  *
@@ -198,7 +191,6 @@ final class Loggers
      * @var Logger[]
      */
     public static $loggers = [];
-
 
     /**
      * Returns the Logger identified by the channel.

@@ -10,30 +10,28 @@ use Siler\HttpHandlerRunner;
 use Siler\Route;
 use function Siler\array_get;
 
-$request  = Diactoros\request();
-$response = Route\match(
-    [
+$request = Diactoros\request();
+$response = Route\match([
     // /greet/Leo?salute=Hello
-        Route\get(
-            '/greet/{name}',
-            function ($params) use ($request) {
-                $salute = array_get($request->getQueryParams(), 'salute', 'Olá');
+    Route\get(
+        '/greet/{name}',
+        function ($params) use ($request) {
+            $salute = array_get($request->getQueryParams(), 'salute', 'Olá');
 
-                return Diactoros\text("{$salute} {$params['name']}");
-            },
-            $request
-        ),
+            return Diactoros\text("{$salute} {$params['name']}");
+        },
+        $request
+    ),
 
-        Route\get(
-            '/',
-            function () {
-                return Diactoros\text('hello world');
-            },
-            $request
-        ),
+    Route\get(
+        '/',
+        function () {
+            return Diactoros\text('hello world');
+        },
+        $request
+    ),
 
-        Diactoros\text('not found', 404),
-    ]
-);
+    Diactoros\text('not found', 404)
+]);
 
 HttpHandlerRunner\sapi_emit($response);

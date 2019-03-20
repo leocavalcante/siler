@@ -12,7 +12,6 @@ use Siler\Container;
 const MONGODB_DEFAULT_NAME = 'mongodb';
 const MONGODB_USING_DBNAME = 'mongodb_dbname';
 
-
 /**
  * Creates a new MongoDB\Client instance.
  *
@@ -23,14 +22,17 @@ const MONGODB_USING_DBNAME = 'mongodb_dbname';
  *
  * @return \MongoDB\Client
  */
-function connect(string $uri = 'mongodb://127.0.0.1/', array $uriOptions = [], array $driverOptions = [], string $clientName = MONGODB_DEFAULT_NAME): \MongoDB\Client
-{
+function connect(
+    string $uri = 'mongodb://127.0.0.1/',
+    array $uriOptions = [],
+    array $driverOptions = [],
+    string $clientName = MONGODB_DEFAULT_NAME
+): \MongoDB\Client {
     $client = new \MongoDB\Client($uri, $uriOptions, $driverOptions);
     Container\set($clientName, $client);
 
     return $client;
 }
-
 
 /**
  * Selects a database from a MongoDB client.
@@ -41,15 +43,17 @@ function connect(string $uri = 'mongodb://127.0.0.1/', array $uriOptions = [], a
  *
  * @return \MongoDB\Database
  */
-function database(string $databaseName, array $options = [], string $clientName = MONGODB_DEFAULT_NAME): \MongoDB\Database
-{
+function database(
+    string $databaseName,
+    array $options = [],
+    string $clientName = MONGODB_DEFAULT_NAME
+): \MongoDB\Database {
     if (!Container\has($clientName)) {
         throw new \OutOfRangeException("$clientName not found");
     }
 
     return Container\get($clientName)->selectDatabase($databaseName, $options);
 }
-
 
 /**
  * Selects a collection from a database and client.
@@ -61,15 +65,18 @@ function database(string $databaseName, array $options = [], string $clientName 
  *
  * @return \MongoDB\Collection
  */
-function collection(string $databaseName, string $collectionName, array $options = [], string $clientName = MONGODB_DEFAULT_NAME): \MongoDB\Collection
-{
+function collection(
+    string $databaseName,
+    string $collectionName,
+    array $options = [],
+    string $clientName = MONGODB_DEFAULT_NAME
+): \MongoDB\Collection {
     if (!Container\has($clientName)) {
         throw new \OutOfRangeException("$clientName not found");
     }
 
     return Container\get($clientName)->selectCollection($databaseName, $collectionName, $options);
 }
-
 
 /**
  * Sugar to create a new ObjectId.
@@ -83,7 +90,6 @@ function oid(string $oid): \MongoDB\BSON\ObjectId
     return new \MongoDB\BSON\ObjectId($oid);
 }
 
-
 /**
  * Sets a default database name.
  *
@@ -93,7 +99,6 @@ function using(string $databaseName)
 {
     Container\set(MONGODB_USING_DBNAME, $databaseName);
 }
-
 
 /**
  * Find operation on the default database and in the given collection.
@@ -109,7 +114,6 @@ function find(string $collectionName, array $filter = [], array $options = []): 
     return collection(__get_dbname_or_throw(), $collectionName)->find($filter, $options);
 }
 
-
 /**
  * Find one operation on the default database and in the given collection.
  *
@@ -123,7 +127,6 @@ function find_one(string $collectionName, array $filter = [], array $options = [
 {
     return collection(__get_dbname_or_throw(), $collectionName)->findOne($filter, $options);
 }
-
 
 /**
  * Insert many operation on the default database and in the given collection.
@@ -139,7 +142,6 @@ function insert_many(string $collectionName, array $documents, array $options = 
     return collection(__get_dbname_or_throw(), $collectionName)->insertMany($documents, $options);
 }
 
-
 /**
  * Insert one operation on the default database and in the given collection.
  *
@@ -153,7 +155,6 @@ function insert_one(string $collectionName, $document, array $options = []): \Mo
 {
     return collection(__get_dbname_or_throw(), $collectionName)->insertOne($document, $options);
 }
-
 
 /**
  * Update one operation on the default database and in the given colleciton.
@@ -170,7 +171,6 @@ function update_one(string $collectionName, array $filter, $update, array $optio
     return collection(__get_dbname_or_throw(), $collectionName)->updateOne($filter, $update, $options);
 }
 
-
 /**
  * Update many operation on the default database and in the given collection.
  *
@@ -186,7 +186,6 @@ function update_many(string $collectionName, array $filter, $update, array $opti
     return collection(__get_dbname_or_throw(), $collectionName)->updateMany($filter, $update, $options);
 }
 
-
 /**
  * Delete one operation on the default database and on the given collection.
  *
@@ -201,7 +200,6 @@ function delete_one(string $collectionName, array $filter, array $options = []):
     return collection(__get_dbname_or_throw(), $collectionName)->deleteOne($filter, $options);
 }
 
-
 /**
  * Delete many operation on the default database and on the given collection.
  *
@@ -215,7 +213,6 @@ function delete_many(string $collectionName, array $filter, array $options = [])
 {
     return collection(__get_dbname_or_throw(), $collectionName)->deleteMany($filter, $options);
 }
-
 
 /**
  * @internal Gets the default database name or throws an Exception.

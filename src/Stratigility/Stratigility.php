@@ -13,7 +13,6 @@ use function Zend\Stratigility\middleware;
 
 const DEFAULT_STRATIGILITY_PIPELINE = 'default_stratigility_pipeline';
 
-
 /**
  * Process a pipeline wrapped on a Siler's route.
  *
@@ -34,7 +33,6 @@ function process(ServerRequestInterface $request, string $name = DEFAULT_STRATIG
         };
     };
 }
-
 
 /**
  * Adds a MiddlewareInterface to a pipeline, creates it if not exists.
@@ -62,7 +60,6 @@ function pipe($middleware, string $name = DEFAULT_STRATIGILITY_PIPELINE): Middle
     return $pipeline;
 }
 
-
 /**
  * Calls handle on the given MiddlewarePipe.
  *
@@ -71,7 +68,7 @@ function pipe($middleware, string $name = DEFAULT_STRATIGILITY_PIPELINE): Middle
  *
  * @return ResponseInterface
  */
-function handle(ServerRequestInterface $request, string $name = DEFAULT_STRATIGILITY_PIPELINE) : ResponseInterface
+function handle(ServerRequestInterface $request, string $name = DEFAULT_STRATIGILITY_PIPELINE): ResponseInterface
 {
     $pipeline = Container\get($name);
 

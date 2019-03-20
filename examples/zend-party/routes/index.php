@@ -16,7 +16,7 @@ $userMiddleware = function ($request, $handler) {
         return Diactoros\json('no user', 401);
     }
 
-    $user    = "get_user_by_token:$token";
+    $user = "get_user_by_token:$token";
     $request = $request->withAttribute('user', $user);
 
     return $handler->handle($request);
@@ -36,14 +36,12 @@ $secretHandler = function ($request) {
 
 Stratigility\pipe($userMiddleware, 'auth');
 
-$request  = Diactoros\request();
-$response = Route\match(
-    [
-        Route\get('/', $homeHandler, $request),
-        Route\get('/admin', Stratigility\process($request, 'auth')($adminHandler), $request),
-        Route\get('/secret', Stratigility\process($request, 'auth')($secretHandler), $request),
-        Diactoros\json('not found', 404),
-    ]
-);
+$request = Diactoros\request();
+$response = Route\match([
+    Route\get('/', $homeHandler, $request),
+    Route\get('/admin', Stratigility\process($request, 'auth')($adminHandler), $request),
+    Route\get('/secret', Stratigility\process($request, 'auth')($secretHandler), $request),
+    Diactoros\json('not found', 404)
+]);
 
 HttpHandlerRunner\sapi_emit($response);

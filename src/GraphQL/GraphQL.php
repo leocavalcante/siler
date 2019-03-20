@@ -58,11 +58,10 @@ const GQL_COMPLETE = 'complete';
 // Server -> Client
 const GQL_STOP = 'stop';
 // Client -> Server
-const ON_OPERATION          = 'graphql_on_operation';
+const ON_OPERATION = 'graphql_on_operation';
 const ON_OPERATION_COMPLETE = 'graphql_on_operation_complete';
-const ON_CONNECT            = 'graphql_on_connect';
-const ON_DISCONNECT         = 'graphql_on_disconnect';
-
+const ON_CONNECT = 'graphql_on_connect';
+const ON_DISCONNECT = 'graphql_on_disconnect';
 
 /**
  * Initializes a new GraphQL endpoint.
@@ -91,7 +90,6 @@ function init(Schema $schema, $rootValue = null, $context = null, string $input 
     Response\json($result);
 }
 
-
 /**
  * Executes a GraphQL query over a schema.
  *
@@ -104,20 +102,12 @@ function init(Schema $schema, $rootValue = null, $context = null, string $input 
  */
 function execute(Schema $schema, array $input, $rootValue = null, $context = null)
 {
-    $query     = array_get($input, 'query');
+    $query = array_get($input, 'query');
     $operation = array_get($input, 'operationName');
     $variables = array_get($input, 'variables');
 
-    return GraphQL::executeQuery(
-        $schema,
-        $query,
-        $rootValue,
-        $context,
-        $variables,
-        $operation
-    )->toArray();
+    return GraphQL::executeQuery($schema, $query, $rootValue, $context, $variables, $operation)->toArray();
 }
-
 
 /**
  * Returns a PSR-7 complaint ServerRequestInterface handler.
@@ -126,7 +116,7 @@ function execute(Schema $schema, array $input, $rootValue = null, $context = nul
  *
  * @return \Closure ServerRequestInterface -> IO
  */
-function psr7(Schema $schema) : \Closure
+function psr7(Schema $schema): \Closure
 {
     return function (ServerRequestInterface $request) use ($schema) {
         $input = json_decode((string) $request->getBody(), true);
@@ -141,7 +131,6 @@ function psr7(Schema $schema) : \Closure
     };
 }
 
-
 /**
  * Returns a new GraphQL\Schema from a file containing GraphQL language.
  * Also sets a Siler's default field resolver based on $resolvers array.
@@ -151,7 +140,7 @@ function psr7(Schema $schema) : \Closure
  *
  * @return Schema
  */
-function schema(string $typeDefs, array $resolvers = []) : Schema
+function schema(string $typeDefs, array $resolvers = []): Schema
 {
     if (!empty($resolvers)) {
         resolvers($resolvers);
@@ -159,7 +148,6 @@ function schema(string $typeDefs, array $resolvers = []) : Schema
 
     return BuildSchema::build($typeDefs);
 }
-
 
 /**
  * Sets a Siler's default field resolver based on the given $resolvers array.
@@ -170,45 +158,42 @@ function schema(string $typeDefs, array $resolvers = []) : Schema
  */
 function resolvers(array $resolvers)
 {
-    Executor::setDefaultFieldResolver(
-        function ($source, $args, $context, ResolveInfo $info) use ($resolvers) {
-            $fieldName = $info->fieldName;
+    Executor::setDefaultFieldResolver(function ($source, $args, $context, ResolveInfo $info) use ($resolvers) {
+        $fieldName = $info->fieldName;
 
-            if (is_null($fieldName)) {
-                throw new \UnexpectedValueException('Could not get $fieldName from ResolveInfo');
-            }
-
-            if (is_null($info->parentType)) {
-                throw new \UnexpectedValueException('Could not get $parentType from ResolveInfo');
-            }
-
-            $parentTypeName = $info->parentType->name;
-
-            if (isset($resolvers[$parentTypeName])) {
-                $resolver = $resolvers[$parentTypeName];
-
-                if (is_array($resolver)) {
-                    if (array_key_exists($fieldName, $resolver)) {
-                        $value = $resolver[$fieldName];
-
-                        return is_callable($value) ? $value($source, $args, $context, $info) : $value;
-                    }
-                }
-
-                if (is_object($resolver)) {
-                    if (isset($resolver->{$fieldName})) {
-                        $value = $resolver->{$fieldName};
-
-                        return is_callable($value) ? $value($source, $args, $context, $info) : $value;
-                    }
-                }
-            }
-
-            return Executor::defaultFieldResolver($source, $args, $context, $info);
+        if (is_null($fieldName)) {
+            throw new \UnexpectedValueException('Could not get $fieldName from ResolveInfo');
         }
-    );
-}
 
+        if (is_null($info->parentType)) {
+            throw new \UnexpectedValueException('Could not get $parentType from ResolveInfo');
+        }
+
+        $parentTypeName = $info->parentType->name;
+
+        if (isset($resolvers[$parentTypeName])) {
+            $resolver = $resolvers[$parentTypeName];
+
+            if (is_array($resolver)) {
+                if (array_key_exists($fieldName, $resolver)) {
+                    $value = $resolver[$fieldName];
+
+                    return is_callable($value) ? $value($source, $args, $context, $info) : $value;
+                }
+            }
+
+            if (is_object($resolver)) {
+                if (isset($resolver->{$fieldName})) {
+                    $value = $resolver->{$fieldName};
+
+                    return is_callable($value) ? $value($source, $args, $context, $info) : $value;
+                }
+            }
+        }
+
+        return Executor::defaultFieldResolver($source, $args, $context, $info);
+    });
+}
 
 /**
  * Returns a new websocket server bootstraped for GraphQL.
@@ -229,15 +214,14 @@ function subscriptions(
     int $port = 5000,
     array $rootValue = [],
     array $context = []
-) : IoServer {
-    $manager   = new SubscriptionsManager($schema, $filters, $rootValue, $context);
-    $server    = new SubscriptionsServer($manager);
+): IoServer {
+    $manager = new SubscriptionsManager($schema, $filters, $rootValue, $context);
+    $server = new SubscriptionsServer($manager);
     $websocket = new \Ratchet\WebSocket\WsServer($server);
-    $http      = new HttpServer($websocket);
+    $http = new HttpServer($websocket);
 
     return IoServer::factory($http, $port, $host);
 }
-
 
 /**
  * Sets the GraphQL server endpoint where publish should connect to.
@@ -251,7 +235,6 @@ function subscriptions_at(string $url)
     Container\set('graphql_subscriptions_endpoint', $url);
 }
 
-
 /**
  * Publishes the given $payload to the $subscribeName.
  *
@@ -264,26 +247,22 @@ function publish(string $subscriptionName, $payload = null)
 {
     $wsEndpoint = Container\get('graphql_subscriptions_endpoint');
 
-    Client\connect($wsEndpoint, ['graphql-ws'])->then(
-        function (WebSocket $conn) use ($subscriptionName, $payload) {
-            $request = [
-                'type'         => GQL_DATA,
-                'subscription' => $subscriptionName,
-                'payload'      => $payload,
-            ];
+    Client\connect($wsEndpoint, ['graphql-ws'])->then(function (WebSocket $conn) use ($subscriptionName, $payload) {
+        $request = [
+            'type' => GQL_DATA,
+            'subscription' => $subscriptionName,
+            'payload' => $payload
+        ];
 
-            $conn->send(json_encode($request));
-            $conn->close();
-        }
-    );
+        $conn->send(json_encode($request));
+        $conn->close();
+    });
 }
-
 
 function listen(string $eventName, callable $listener)
 {
     Container\set($eventName, $listener);
 }
-
 
 /**
  * Returns a GraphQL value definition.
@@ -293,17 +272,16 @@ function listen(string $eventName, callable $listener)
  *
  * @return \Closure -> value -> array
  */
-function val(string $name, ?string $description = null) : \Closure
+function val(string $name, ?string $description = null): \Closure
 {
-    return function ($value) use ($name, $description) : array {
+    return function ($value) use ($name, $description): array {
         return [
-            'name'        => $name,
+            'name' => $name,
             'description' => $description,
-            'value'       => $value,
+            'value' => $value
         ];
     };
 }
-
 
 /**
  *  Returns a GraphQL Enum type.
@@ -313,13 +291,12 @@ function val(string $name, ?string $description = null) : \Closure
  *
  * @return \Closure -> values -> EnumType
  */
-function enum(string $name, ?string $description = null) : \Closure
+function enum(string $name, ?string $description = null): \Closure
 {
-    return function (array $values) use ($name, $description) : EnumType {
+    return function (array $values) use ($name, $description): EnumType {
         return new EnumType(['name' => $name, 'description' => $description, 'values' => $values]);
     };
 }
-
 
 /**
  * Returns an evaluable field definition.
@@ -330,7 +307,7 @@ function enum(string $name, ?string $description = null) : \Closure
  *
  * @return \Closure -> (resolve, args) -> array
  */
-function field(Type $type, string $name, ?string $description = null) : \Closure
+function field(Type $type, string $name, ?string $description = null): \Closure
 {
     return function ($resolve = null, array $args = null) use ($type, $name, $description) {
         if (is_string($resolve)) {
@@ -340,15 +317,14 @@ function field(Type $type, string $name, ?string $description = null) : \Closure
         }
 
         return [
-            'type'        => $type,
-            'name'        => $name,
+            'type' => $type,
+            'name' => $name,
             'description' => $description,
-            'resolve'     => $resolve,
-            'args'        => $args,
+            'resolve' => $resolve,
+            'args' => $args
         ];
     };
 }
-
 
 /**
  * Returns an evaluable String field definition.
@@ -367,7 +343,6 @@ function str(?string $name = null, ?string $description = null)
     return field(Type::string(), $name, $description);
 }
 
-
 /**
  * Returns an evaluable Integer field definition.
  *
@@ -384,7 +359,6 @@ function int(?string $name = null, ?string $description = null)
 
     return field(Type::int(), $name, $description);
 }
-
 
 /**
  * Returns an evaluable Float field definition.
@@ -403,7 +377,6 @@ function float(?string $name = null, ?string $description = null)
     return field(Type::float(), $name, $description);
 }
 
-
 /**
  * Returns an evaluable Boolean field definition.
  *
@@ -421,7 +394,6 @@ function bool(?string $name = null, ?string $description = null)
     return field(Type::boolean(), $name, $description);
 }
 
-
 /**
  * @param Type    $type
  * @param ?string $name
@@ -437,7 +409,6 @@ function list_of(Type $type, ?string $name = null, ?string $description = null)
 
     return field(Type::listOf($type), $name, $description);
 }
-
 
 /**
  * Returns an evaluable Id field definition.
@@ -456,7 +427,6 @@ function id(?string $name = null, ?string $description = null)
     return field(Type::id(), $name, $description);
 }
 
-
 /**
  * Returns an InterfaceType factory function.
  *
@@ -469,11 +439,15 @@ function itype(string $name, ?string $description = null)
 {
     return function (array $fields = []) use ($name, $description) {
         return function (callable $resolveType) use ($name, $description, $fields) {
-            return new InterfaceType(['name' => $name, 'description' => $description, 'fields' => $fields, 'resolveType' => $resolveType]);
+            return new InterfaceType([
+                'name' => $name,
+                'description' => $description,
+                'fields' => $fields,
+                'resolveType' => $resolveType
+            ]);
         };
     };
 }
-
 
 /**
  * Returns an ObjectType factory function.
@@ -483,11 +457,16 @@ function itype(string $name, ?string $description = null)
  *
  * @return \Closure -> fields -> resolve -> ObjectType
  */
-function type(string $name, ?string $description = null) : \Closure
+function type(string $name, ?string $description = null): \Closure
 {
-    return function (array $fields = []) use ($name, $description) : \Closure {
-        return function (callable $resolve = null) use ($name, $description, $fields) : ObjectType {
-            return new ObjectType(['name' => $name, 'description' => $description, 'fields' => $fields, 'resolve' => $resolve]);
+    return function (array $fields = []) use ($name, $description): \Closure {
+        return function (callable $resolve = null) use ($name, $description, $fields): ObjectType {
+            return new ObjectType([
+                'name' => $name,
+                'description' => $description,
+                'fields' => $fields,
+                'resolve' => $resolve
+            ]);
         };
     };
 }

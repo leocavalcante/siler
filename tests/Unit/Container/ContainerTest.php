@@ -34,5 +34,4 @@ class ContainerTest extends TestCase
         Container\clear('test_clear');
         $this->assertFalse(Container\has('test_clear'));
     }
-
 }

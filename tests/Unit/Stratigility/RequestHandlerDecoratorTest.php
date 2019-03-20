@@ -15,11 +15,18 @@ class RequestHandlerDecoratorTest extends TestCase
 {
     public function testHandle()
     {
-        $request    = new ServerRequest();
-        $response   = Diactoros\response();
+        $request = new ServerRequest();
+        $response = Diactoros\response();
         $pathParams = ['foo' => 'bar'];
 
-        $handler = function (ServerRequestInterface $_request, array $_pathParams) use ($request, $response, $pathParams): ResponseInterface {
+        $handler = function (
+            ServerRequestInterface $_request,
+            array $_pathParams
+        ) use (
+            $request,
+            $response,
+            $pathParams
+        ): ResponseInterface {
             $this->assertSame($request, $_request);
             $this->assertSame($pathParams, $_pathParams);
 

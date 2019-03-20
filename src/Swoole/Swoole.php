@@ -10,12 +10,12 @@ namespace Siler\Swoole;
 
 use Siler\Container;
 
-const SWOOLE_HTTP_REQUEST       = 'swoole_http_request';
+const SWOOLE_HTTP_REQUEST = 'swoole_http_request';
 const SWOOLE_HTTP_REQUEST_ENDED = 'swoole_http_request_ended';
-const SWOOLE_HTTP_RESPONSE      = 'swoole_http_response';
-const SWOOLE_WEBSOCKET_SERVER   = 'swoole_websocket_server';
-const SWOOLE_WEBSOCKET_ONOPEN   = 'swoole_websocket_onopen';
-const SWOOLE_WEBSOCKET_ONCLOSE  = 'swoole_websocket_onclose';
+const SWOOLE_HTTP_RESPONSE = 'swoole_http_response';
+const SWOOLE_WEBSOCKET_SERVER = 'swoole_websocket_server';
+const SWOOLE_WEBSOCKET_ONOPEN = 'swoole_websocket_onopen';
+const SWOOLE_WEBSOCKET_ONCLOSE = 'swoole_websocket_onclose';
 
 /**
  * Returns a Swoole HTTP server.

@@ -40,16 +40,16 @@ class MonadTest extends \PHPUnit\Framework\TestCase
     public function testMaybeTree()
     {
         $foo = [
-            'name'   => 'foo',
-            'parent' => null,
+            'name' => 'foo',
+            'parent' => null
         ];
         $bar = [
-            'name'   => 'bar',
-            'parent' => $foo,
+            'name' => 'bar',
+            'parent' => $foo
         ];
         $baz = [
-            'name'   => 'baz',
-            'parent' => $bar,
+            'name' => 'baz',
+            'parent' => $bar
         ];
 
         $parent = function ($value) {

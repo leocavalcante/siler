@@ -10,7 +10,6 @@ namespace Siler\Dotenv;
 
 use Dotenv\Dotenv;
 
-
 /**
  * Load the .env file contents into the environment.
  *
@@ -18,13 +17,12 @@ use Dotenv\Dotenv;
  *
  * @return array
  */
-function init(string $path) : array
+function init(string $path): array
 {
     $dotenv = Dotenv::create($path);
 
     return $dotenv->load();
 }
-
 
 /**
  * Get an environment value or fallback to the given default.

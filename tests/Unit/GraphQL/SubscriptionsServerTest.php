@@ -16,8 +16,7 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $conn = $this->getMockBuilder(ConnectionInterface::class)
-            ->getMock();
+        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
 
         $server = new SubscriptionsServer($manager);
         $server->onOpen($conn);
@@ -27,8 +26,7 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
 
     public function testOnMessage()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)
-            ->getMock();
+        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
 
         $manager = $this->getMockBuilder(SubscriptionsManager::class)
             ->disableOriginalConstructor()
@@ -36,7 +34,8 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
 
         $server = new SubscriptionsServer($manager);
 
-        $manager->expects($this->once())
+        $manager
+            ->expects($this->once())
             ->method('handleConnectionInit')
             ->with($conn);
 
@@ -44,7 +43,8 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
         $server->onMessage($conn, $message);
 
         $data = ['type' => 'start'];
-        $manager->expects($this->once())
+        $manager
+            ->expects($this->once())
             ->method('handleStart')
             ->with($conn, $data);
 
@@ -52,7 +52,8 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
         $server->onMessage($conn, $message);
 
         $data = ['type' => 'data'];
-        $manager->expects($this->once())
+        $manager
+            ->expects($this->once())
             ->method('handleData')
             ->with($data);
 
@@ -60,7 +61,8 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
         $server->onMessage($conn, $message);
 
         $data = ['type' => 'stop'];
-        $manager->expects($this->once())
+        $manager
+            ->expects($this->once())
             ->method('handleStop')
             ->with($conn, $data);
 
@@ -77,8 +79,7 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $conn = $this->getMockBuilder(ConnectionInterface::class)
-            ->getMock();
+        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
 
         $server = new SubscriptionsServer($manager);
         $server->onClose($conn);
@@ -92,8 +93,7 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $conn = $this->getMockBuilder(ConnectionInterface::class)
-            ->getMock();
+        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
 
         $server = new SubscriptionsServer($manager);
         $server->onError($conn, new \Exception());

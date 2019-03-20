@@ -9,7 +9,6 @@ namespace Siler\Http\Response;
 
 use Siler\Http;
 
-
 /**
  * Outputs the given parameters based on a HTTP response.
  *
@@ -20,14 +19,13 @@ use Siler\Http;
  *
  * @return int Returns 1, always
  */
-function output(string $content = '', int $code = 204, string $mimeType = 'text/plain', string $charset = 'utf-8') : int
+function output(string $content = '', int $code = 204, string $mimeType = 'text/plain', string $charset = 'utf-8'): int
 {
     http_response_code($code);
     \header(sprintf('Content-Type: %s;charset=%s', $mimeType, $charset));
 
     return print $content;
 }
-
 
 /**
  * Outputs a HTTP response as simple text.
@@ -38,11 +36,10 @@ function output(string $content = '', int $code = 204, string $mimeType = 'text/
  *
  * @return int Returns 1, always
  */
-function text(string $content, int $code = 200, string $charset = 'utf-8') : int
+function text(string $content, int $code = 200, string $charset = 'utf-8'): int
 {
     return output(strval($content), $code, 'text/plain', $charset);
 }
-
 
 /**
  * Outputs a HTML HTTP response.
@@ -53,11 +50,10 @@ function text(string $content, int $code = 200, string $charset = 'utf-8') : int
  *
  * @return int Returns 1, always
  */
-function html(string $content, int $code = 200, string $charset = 'utf-8') : int
+function html(string $content, int $code = 200, string $charset = 'utf-8'): int
 {
     return output($content, $code, 'text/html', $charset);
 }
-
 
 /**
  * Outputs the given content as JSON mime type.
@@ -68,11 +64,10 @@ function html(string $content, int $code = 200, string $charset = 'utf-8') : int
  *
  * @return int Returns 1, always
  */
-function jsonstr(string $content, int $code = 200, string $charset = 'utf-8') : int
+function jsonstr(string $content, int $code = 200, string $charset = 'utf-8'): int
 {
     return output(strval($content), $code, 'application/json', $charset);
 }
-
 
 /**
  * Outputs the given content encoded as JSON string.
@@ -83,7 +78,7 @@ function jsonstr(string $content, int $code = 200, string $charset = 'utf-8') : 
  *
  * @return int Returns 1, always
  */
-function json($content, int $code = 200, string $charset = 'utf-8') : int
+function json($content, int $code = 200, string $charset = 'utf-8'): int
 {
     $body = json_encode($content);
 
@@ -93,7 +88,6 @@ function json($content, int $code = 200, string $charset = 'utf-8') : int
 
     return jsonstr($body, $code, $charset);
 }
-
 
 /**
  * Helper method to setup a header item as key-value parts.
@@ -106,7 +100,6 @@ function header(string $key, string $val, bool $replace = true)
 {
     \header($key . ': ' . $val, $replace);
 }
-
 
 /**
  * Composes a default HTTP redirect response with the current base url.

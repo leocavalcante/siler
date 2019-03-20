@@ -33,13 +33,13 @@ abstract class Result implements \JsonSerializable
     }
 
     abstract public function isSuccess(): bool;
-    abstract  public function isFailure(): bool;
+    abstract public function isFailure(): bool;
 
     public function jsonSerialize()
     {
         $json = [
             'error' => $this->isFailure() && !$this->isSuccess(),
-            'id' => $this->id,
+            'id' => $this->id
         ];
 
         if (is_null($this->data)) {

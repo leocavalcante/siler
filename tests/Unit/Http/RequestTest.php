@@ -70,7 +70,7 @@ class RequestTest extends TestCase
         $expectedHeaders = [
             'Content-Type' => 'phpunit/test',
             'Content-Length' => '123',
-            'Host' => 'test:8000',
+            'Host' => 'test:8000'
         ];
 
         foreach ($expectedHeaders as $key => $value) {

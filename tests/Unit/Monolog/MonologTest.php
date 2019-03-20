@@ -46,7 +46,7 @@ class MonologTest extends TestCase
 
         foreach ($levels as $i => $level) {
             $levelName = Logger::getLevelName($level);
-            $record    = $records[$i];
+            $record = $records[$i];
 
             $this->assertSame(strtolower($levelName), $record['message']);
             $this->assertSame($level, $record['level']);

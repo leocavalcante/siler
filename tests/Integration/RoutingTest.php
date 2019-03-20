@@ -38,12 +38,9 @@ class RoutingTest extends \PHPUnit\Framework\TestCase
 
         $_SERVER['REQUEST_URI'] = '/hello-world';
 
-        Route\get(
-            '/{foo}',
-            function ($params) {
-                echo Twig\render('template.twig', $params);
-            }
-        );
+        Route\get('/{foo}', function ($params) {
+            echo Twig\render('template.twig', $params);
+        });
     }
 
     public function testFiles()

@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace Siler\Tuple;
 
-
 /**
  * Creates a new Tuple.
  *
@@ -20,14 +19,12 @@ function tuple(...$values)
     return new Tuple($values);
 }
 
-
 /**
  * A class representing a Tuple.
  */
 final class Tuple implements \ArrayAccess, \Countable
 {
     private $values;
-
 
     /**
      * @internal Tuple constructor.
@@ -39,7 +36,6 @@ final class Tuple implements \ArrayAccess, \Countable
         $this->values = $values;
     }
 
-
     /**
      * Returns Tuple values, useful for `list()`.
      *
@@ -49,7 +45,6 @@ final class Tuple implements \ArrayAccess, \Countable
     {
         return $this->values;
     }
-
 
     /**
      * @override
@@ -62,7 +57,6 @@ final class Tuple implements \ArrayAccess, \Countable
     {
         return isset($this->values[$offset]);
     }
-
 
     /**
      * @override
@@ -82,7 +76,6 @@ final class Tuple implements \ArrayAccess, \Countable
         throw new \OutOfRangeException('Invalid tuple position');
     }
 
-
     /**
      * @override
      *
@@ -98,7 +91,6 @@ final class Tuple implements \ArrayAccess, \Countable
         throw new \RuntimeException('Tuples are immutable!');
     }
 
-
     /**
      * @override
      *
@@ -112,7 +104,6 @@ final class Tuple implements \ArrayAccess, \Countable
     {
         throw new \RuntimeException('Tuples are immutable!');
     }
-
 
     /**
      * @internal Count elements of the Tuple.

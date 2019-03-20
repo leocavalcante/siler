@@ -59,7 +59,6 @@ class ResponseTest extends TestCase
         Response\json(fopen('php://input', 'r'));
     }
 
-
     public function testStatusCode()
     {
         $this->expectOutputString('{"error":true,"message":"test"}');

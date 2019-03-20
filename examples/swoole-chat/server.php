@@ -10,7 +10,7 @@ $echo = function ($frame) {
 
 Swoole\websocket_hooks([
     'open' => puts("New connection\n"),
-    'close' => puts("Someone leaves\n"),
+    'close' => puts("Someone leaves\n")
 ]);
 
 Swoole\websocket($echo)->start();

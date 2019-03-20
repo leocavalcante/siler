@@ -11,19 +11,17 @@ declare(strict_types=1);
 
 namespace Siler\Functional;
 
-
 /**
  * Identity function.
  *
  * @return \Closure $value -> $value
  */
-function identity() : \Closure
+function identity(): \Closure
 {
     return function ($value) {
         return $value;
     };
 }
-
 
 /**
  * Is a unary function which evaluates to $value for all inputs.
@@ -32,13 +30,12 @@ function identity() : \Closure
  *
  * @return \Closure a -> $value
  */
-function always($value) : \Closure
+function always($value): \Closure
 {
     return function () use ($value) {
         return $value;
     };
 }
-
 
 /**
  * Returns TRUE if $left is equal to $right and they are of the same type.
@@ -47,13 +44,12 @@ function always($value) : \Closure
  *
  * @return \Closure $left -> bool
  */
-function equal($right) : \Closure
+function equal($right): \Closure
 {
     return function ($left) use ($right) {
         return $left === $right;
     };
 }
-
 
 /**
  * Returns TRUE if $left is strictly less than $right.
@@ -62,13 +58,12 @@ function equal($right) : \Closure
  *
  * @return \Closure $left -> bool
  */
-function less_than($right) : \Closure
+function less_than($right): \Closure
 {
     return function ($left) use ($right) {
         return $left < $right;
     };
 }
-
 
 /**
  * Returns TRUE if $left is strictly greater than $right.
@@ -77,13 +72,12 @@ function less_than($right) : \Closure
  *
  * @return \Closure $left -> bool
  */
-function greater_than($right) : \Closure
+function greater_than($right): \Closure
 {
     return function ($left) use ($right) {
         return $left > $right;
     };
 }
-
 
 /**
  * It allows for conditional execution of code fragments.
@@ -92,7 +86,7 @@ function greater_than($right) : \Closure
  *
  * @return \Closure $then -> $else -> $value -> mixed
  */
-function if_else(callable $cond) : \Closure
+function if_else(callable $cond): \Closure
 {
     return function (callable $then) use ($cond) {
         return function (callable $else) use ($cond, $then) {
@@ -103,7 +97,6 @@ function if_else(callable $cond) : \Closure
     };
 }
 
-
 /**
  * Pattern-Matching Semantics.
  *
@@ -111,7 +104,7 @@ function if_else(callable $cond) : \Closure
  *
  * @return \Closure $value -> mixed|null
  */
-function match(array $matches) : \Closure
+function match(array $matches): \Closure
 {
     return function ($value) use ($matches) {
         if (empty($matches)) {
@@ -124,7 +117,6 @@ function match(array $matches) : \Closure
     };
 }
 
-
 /**
  * Determines whether any returns of $functions is TRUE.
  *
@@ -132,7 +124,7 @@ function match(array $matches) : \Closure
  *
  * @return \Closure $value -> bool
  */
-function any(array $functions) : \Closure
+function any(array $functions): \Closure
 {
     return function ($value) use ($functions) {
         return array_reduce(
@@ -145,7 +137,6 @@ function any(array $functions) : \Closure
     };
 }
 
-
 /**
  * Determines whether all returns of $functions are TRUE.
  *
@@ -153,7 +144,7 @@ function any(array $functions) : \Closure
  *
  * @return \Closure $value -> bool
  */
-function all(array $functions) : \Closure
+function all(array $functions): \Closure
 {
     return function ($value) use ($functions) {
         return array_reduce(
@@ -166,7 +157,6 @@ function all(array $functions) : \Closure
     };
 }
 
-
 /**
  * Boolean "not".
  *
@@ -174,13 +164,12 @@ function all(array $functions) : \Closure
  *
  * @return \Closure $value -> ! $function $value
  */
-function not(callable $function) : \Closure
+function not(callable $function): \Closure
 {
     return function ($value) use ($function) {
         return !$function($value);
     };
 }
-
 
 /**
  * Sum of $left and $right.
@@ -189,13 +178,12 @@ function not(callable $function) : \Closure
  *
  * @return \Closure $left -> $left + $right
  */
-function add($right) : \Closure
+function add($right): \Closure
 {
     return function ($left) use ($right) {
-        return ($left + $right);
+        return $left + $right;
     };
 }
-
 
 /**
  * Product of $left and $right.
@@ -204,13 +192,12 @@ function add($right) : \Closure
  *
  * @return \Closure $left -> $left * $right
  */
-function mul($right) : \Closure
+function mul($right): \Closure
 {
     return function ($left) use ($right) {
-        return ($left * $right);
+        return $left * $right;
     };
 }
-
 
 /**
  * Difference of $left and $right.
@@ -219,13 +206,12 @@ function mul($right) : \Closure
  *
  * @return \Closure $left -> $left - $right
  */
-function sub($right) : \Closure
+function sub($right): \Closure
 {
     return function ($left) use ($right) {
-        return ($left - $right);
+        return $left - $right;
     };
 }
-
 
 /**
  * Quotient of $left and $right.
@@ -234,13 +220,12 @@ function sub($right) : \Closure
  *
  * @return \Closure $left -> $left / $right
  */
-function div($right) : \Closure
+function div($right): \Closure
 {
     return function ($left) use ($right) {
-        return ($left / $right);
+        return $left / $right;
     };
 }
-
 
 /**
  * Remainder of $left divided by $right.
@@ -249,13 +234,12 @@ function div($right) : \Closure
  *
  * @return \Closure $right -> $left % $right
  */
-function mod($right) : \Closure
+function mod($right): \Closure
 {
     return function ($left) use ($right) {
-        return ($left % $right);
+        return $left % $right;
     };
 }
-
 
 /**
  * Function composition is the act of pipelining the result of one function,
@@ -265,7 +249,7 @@ function mod($right) : \Closure
  *
  * @return \Closure $value -> mixed
  */
-function compose(array $functions) : \Closure
+function compose(array $functions): \Closure
 {
     return function ($value) use ($functions) {
         return array_reduce(
@@ -278,19 +262,17 @@ function compose(array $functions) : \Closure
     };
 }
 
-
 /**
  * Converts the given $value to a boolean.
  *
  * @return \Closure $value -> bool
  */
-function bool() : \Closure
+function bool(): \Closure
 {
-    return function ($value) : bool {
+    return function ($value): bool {
         return (bool) $value;
     };
 }
-
 
 /**
  * In computer science, a NOP or NOOP (short for No Operation) is an assembly language instruction,
@@ -298,12 +280,11 @@ function bool() : \Closure
  *
  * @return \Closure a ->
  */
-function noop() : \Closure
+function noop(): \Closure
 {
     return function () {
     };
 }
-
 
 /**
  * Holds a function for lazily call.
@@ -312,13 +293,12 @@ function noop() : \Closure
  *
  * @return \Closure a -> $function(a)
  */
-function hold(callable $function) : \Closure
+function hold(callable $function): \Closure
 {
     return function () use ($function) {
         return call_user_func_array($function, func_get_args());
     };
 }
-
 
 /**
  * Lazy echo.
@@ -327,13 +307,12 @@ function hold(callable $function) : \Closure
  *
  * @return \Closure a -> echo $value
  */
-function puts($value) : \Closure
+function puts($value): \Closure
 {
     return function () use ($value) {
         echo $value;
     };
 }
-
 
 /**
  * Flats a multi-dimensional array.
@@ -343,20 +322,16 @@ function puts($value) : \Closure
  *
  * @return array
  */
-function flatten(array $list, array $flat = []) : array
+function flatten(array $list, array $flat = []): array
 {
     if (empty($list)) {
         return $flat;
     }
 
-    list($head, $tail) = [
-        $list[0],
-        array_slice($list, 1),
-    ];
+    list($head, $tail) = [$list[0], array_slice($list, 1)];
 
     return flatten($tail, is_array($head) ? flatten($head, $flat) : array_merge($flat, [$head]));
 }
-
 
 /**
  * Extract the first element of a list, which must be non-empty.
@@ -370,7 +345,6 @@ function head(array $list)
     return array_shift($list);
 }
 
-
 /**
  * Extract the last element of a list, which must be finite and non-empty.
  *
@@ -382,7 +356,6 @@ function last(array $list)
 {
     return array_pop($list);
 }
-
 
 /**
  * Extract the elements after the head of a list, which must be non-empty.
@@ -396,7 +369,6 @@ function tail(array $list)
     return array_slice($list, 1);
 }
 
-
 /**
  * Return all the elements of a list except the last one. The list must be non-empty.
  *
@@ -404,11 +376,10 @@ function tail(array $list)
  *
  * @return array
  */
-function init(array $list) : array
+function init(array $list): array
 {
     return array_slice($list, 0, -1);
 }
-
 
 /**
  * Decompose a list into its head and tail.
@@ -417,14 +388,10 @@ function init(array $list) : array
  *
  * @return array [head, [tail]]
  */
-function uncons(array $list) : array
+function uncons(array $list): array
 {
-    return [
-        $list[0],
-        array_slice($list, 1),
-    ];
+    return [$list[0], array_slice($list, 1)];
 }
-
 
 /**
  * Filter a list removing null values.
@@ -436,15 +403,11 @@ function uncons(array $list) : array
 function non_null(array $list): array
 {
     return array_values(
-        array_filter(
-            $list,
-            function ($item) {
-                return !is_null($item);
-            }
-        )
+        array_filter($list, function ($item) {
+            return !is_null($item);
+        })
     );
 }
-
 
 /**
  * Filter a list removing empty values.
@@ -456,15 +419,11 @@ function non_null(array $list): array
 function non_empty(array $list): array
 {
     return array_values(
-        array_filter(
-            $list,
-            function ($item) {
-                return !empty($item);
-            }
-        )
+        array_filter($list, function ($item) {
+            return !empty($item);
+        })
     );
 }
-
 
 /**
  * Partial application.

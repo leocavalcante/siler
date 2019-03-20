@@ -13,7 +13,7 @@ class SwooleHttpRequestMock
     {
         $this->server = [
             'request_method' => $method,
-            'request_uri'    => $uri,
+            'request_uri' => $uri
         ];
 
         $this->header = $header;

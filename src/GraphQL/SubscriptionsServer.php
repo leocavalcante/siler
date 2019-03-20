@@ -16,7 +16,6 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
      */
     protected $manager;
 
-
     /**
      * SubscriptionsServer constructor.
      *
@@ -26,7 +25,6 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
     {
         $this->manager = $manager;
     }
-
 
     /**
      * @override
@@ -38,7 +36,6 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
     public function onOpen(ConnectionInterface $conn)
     {
     }
-
 
     /**
      * @override
@@ -73,7 +70,6 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
         }
     }
 
-
     /**
      * @override
      *
@@ -84,7 +80,6 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
     public function onClose(ConnectionInterface $conn)
     {
     }
-
 
     /**
      * @override
@@ -98,11 +93,10 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
     {
     }
 
-
     /**
      * @return array
      */
-    public function getSubProtocols() : array
+    public function getSubProtocols(): array
     {
         return ['graphql-ws'];
     }

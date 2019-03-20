@@ -33,7 +33,7 @@ class StratigilityTest extends TestCase
             $step = $request->getAttribute('step');
             $this->assertEquals(1, $step);
 
-            return $handler->handle($request->withAttribute('step', ($step + 1)));
+            return $handler->handle($request->withAttribute('step', $step + 1));
         };
 
         $handler = function ($request, $params) {

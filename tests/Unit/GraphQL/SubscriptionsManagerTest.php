@@ -15,12 +15,12 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
 {
     public function testHandleConnectionInit()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)
-            ->getMock();
+        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
 
         $message = '{"type":"connection_ack","payload":[]}';
 
-        $conn->expects($this->once())
+        $conn
+            ->expects($this->once())
             ->method('send')
             ->with($message);
 
@@ -34,10 +34,9 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testHandleStartQuery()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)
-            ->getMock();
+        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
 
-        $dataResponse     = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
+        $dataResponse = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
         $completeResponse = '{"type":"complete","id":1}';
 
         $schema = BuildSchema::build(
@@ -48,21 +47,20 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         '
         );
 
-        Executor::setDefaultFieldResolver(
-            function ($root) {
-                return 'test';
-            }
-        );
+        Executor::setDefaultFieldResolver(function ($root) {
+            return 'test';
+        });
 
         $data = [
-            'id'      => 1,
-            'payload' => ['query' => 'query { dummy }'],
+            'id' => 1,
+            'payload' => ['query' => 'query { dummy }']
         ];
 
         $manager = new SubscriptionsManager($schema);
         $manager->handleConnectionInit($conn);
 
-        $conn->expects($this->exactly(2))
+        $conn
+            ->expects($this->exactly(2))
             ->method('send')
             ->withConsecutive([$dataResponse], [$completeResponse]);
 
@@ -71,10 +69,9 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testHandleStartMutation()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)
-            ->getMock();
+        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
 
-        $dataResponse     = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
+        $dataResponse = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
         $completeResponse = '{"type":"complete","id":1}';
 
         $schema = BuildSchema::build(
@@ -89,21 +86,20 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         '
         );
 
-        Executor::setDefaultFieldResolver(
-            function ($root) {
-                return 'test';
-            }
-        );
+        Executor::setDefaultFieldResolver(function ($root) {
+            return 'test';
+        });
 
         $data = [
-            'id'      => 1,
-            'payload' => ['query' => 'mutation { dummy }'],
+            'id' => 1,
+            'payload' => ['query' => 'mutation { dummy }']
         ];
 
         $manager = new SubscriptionsManager($schema);
         $manager->handleConnectionInit($conn);
 
-        $conn->expects($this->exactly(2))
+        $conn
+            ->expects($this->exactly(2))
             ->method('send')
             ->withConsecutive([$dataResponse], [$completeResponse]);
 
@@ -112,8 +108,7 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testHandleStartSubscription()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)
-            ->getMock();
+        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
 
         $dataResponse = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
 
@@ -129,21 +124,20 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         '
         );
 
-        Executor::setDefaultFieldResolver(
-            function ($root) {
-                return 'test';
-            }
-        );
+        Executor::setDefaultFieldResolver(function ($root) {
+            return 'test';
+        });
 
         $data = [
-            'id'      => 1,
-            'payload' => ['query' => 'subscription { dummy }'],
+            'id' => 1,
+            'payload' => ['query' => 'subscription { dummy }']
         ];
 
         $manager = new SubscriptionsManager($schema);
         $manager->handleConnectionInit($conn);
 
-        $conn->expects($this->once())
+        $conn
+            ->expects($this->once())
             ->method('send')
             ->with($dataResponse);
 
@@ -152,13 +146,13 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testHandleStartFail()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)
-            ->getMock();
+        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
 
         $response = '{"type":"error","id":1,"payload":"Missing query parameter from payload"}';
         $complete = '{"type":"complete","id":1}';
 
-        $conn->expects($this->exactly(2))
+        $conn
+            ->expects($this->exactly(2))
             ->method('send')
             ->withConsecutive([$response], [$complete]);
 
@@ -167,8 +161,8 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
             ->getMock();
 
         $data = [
-            'id'      => 1,
-            'payload' => [],
+            'id' => 1,
+            'payload' => []
         ];
 
         $manager = new SubscriptionsManager($schema);
@@ -177,8 +171,7 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testHandleData()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)
-            ->getMock();
+        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
 
         $schema = BuildSchema::build(
             '
@@ -192,26 +185,25 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         '
         );
 
-        Executor::setDefaultFieldResolver(
-            function ($root) {
-                return 'test';
-            }
-        );
+        Executor::setDefaultFieldResolver(function ($root) {
+            return 'test';
+        });
 
         $startData = [
-            'id'      => 1,
-            'payload' => ['query' => 'subscription { dummy }'],
+            'id' => 1,
+            'payload' => ['query' => 'subscription { dummy }']
         ];
 
         $data = [
             'subscription' => 'dummy',
-            'payload'      => 'test',
+            'payload' => 'test'
         ];
 
         $startExpected = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
-        $expected      = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
+        $expected = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
 
-        $conn->expects($this->exactly(2))
+        $conn
+            ->expects($this->exactly(2))
             ->method('send')
             ->withConsecutive([$startExpected], [$expected]);
 
@@ -234,8 +226,7 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testHandleDataWithFilters()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)
-            ->getMock();
+        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
 
         $schema = BuildSchema::build(
             '
@@ -249,23 +240,21 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         '
         );
 
-        Executor::setDefaultFieldResolver(
-            function ($root) {
-                return 'test';
-            }
-        );
+        Executor::setDefaultFieldResolver(function ($root) {
+            return 'test';
+        });
 
         $startData = [
-            'id'      => 1,
+            'id' => 1,
             'payload' => [
-                'query'     => 'subscription { dummy }',
-                'variables' => ['pass' => 'bar'],
-            ],
+                'query' => 'subscription { dummy }',
+                'variables' => ['pass' => 'bar']
+            ]
         ];
 
         $data = [
             'subscription' => 'dummy',
-            'payload'      => 'foo',
+            'payload' => 'foo'
         ];
 
         $expected = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
@@ -273,10 +262,11 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
         $filters = [
             'test' => function ($payload, $vars) {
                 return $payload == $vars['pass'];
-            },
+            }
         ];
 
-        $conn->expects($this->exactly(2))
+        $conn
+            ->expects($this->exactly(2))
             ->method('send')
             ->withConsecutive([$expected], [$expected]);
 
@@ -286,7 +276,7 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
 
         $data = [
             'subscription' => 'test',
-            'payload'      => 'bar',
+            'payload' => 'bar'
         ];
 
         $manager->handleData($data);
@@ -294,16 +284,15 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
 
     public function testHandleStop()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)
-            ->getMock();
+        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
 
         $schema = $this->getMockBuilder(Schema::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $data = [
-            'id'      => 1,
-            'payload' => ['query' => 'subscription { test }'],
+            'id' => 1,
+            'payload' => ['query' => 'subscription { test }']
         ];
 
         $manager = new SubscriptionsManager($schema);
@@ -325,10 +314,10 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $nameNode        = new \stdClass();
+        $nameNode = new \stdClass();
         $nameNode->value = 'test';
 
-        $selection       = new \stdClass();
+        $selection = new \stdClass();
         $selection->name = $nameNode;
 
         $selectionSet = new \stdClass();

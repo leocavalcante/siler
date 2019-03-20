@@ -17,14 +17,14 @@ class GraphQLResolverTest extends \PHPUnit\Framework\TestCase
         ';
 
         $resolvers = [
-            'Query' => ['message' => 'foo'],
+            'Query' => ['message' => 'foo']
         ];
 
         $expected = [
-            'data' => ['message' => 'foo'],
+            'data' => ['message' => 'foo']
         ];
 
-        $query  = 'query { message }';
+        $query = 'query { message }';
         $schema = GraphQL\schema($typeDefs, $resolvers);
         $actual = \GraphQL\GraphQL::executeQuery($schema, $query)->toArray();
 
@@ -43,15 +43,15 @@ class GraphQLResolverTest extends \PHPUnit\Framework\TestCase
             'Query' => [
                 'message' => function ($root, $args) {
                     return 'foo';
-                },
-            ],
+                }
+            ]
         ];
 
         $expected = [
-            'data' => ['message' => 'foo'],
+            'data' => ['message' => 'foo']
         ];
 
-        $query  = 'query { message }';
+        $query = 'query { message }';
         $schema = GraphQL\schema($typeDefs, $resolvers);
         $actual = \GraphQL\GraphQL::executeQuery($schema, $query)->toArray();
 
@@ -73,16 +73,16 @@ class GraphQLResolverTest extends \PHPUnit\Framework\TestCase
         $resolvers = [
             'Mutation' => [
                 'sum' => function ($root, $args) {
-                    return ($args['a'] + $args['b']);
-                },
-            ],
+                    return $args['a'] + $args['b'];
+                }
+            ]
         ];
 
         $expected = [
-            'data' => ['sum' => 4],
+            'data' => ['sum' => 4]
         ];
 
-        $query  = 'mutation { sum(a: 2, b: 2) }';
+        $query = 'mutation { sum(a: 2, b: 2) }';
         $schema = GraphQL\schema($typeDefs, $resolvers);
         $actual = \GraphQL\GraphQL::executeQuery($schema, $query)->toArray();
 
@@ -91,7 +91,7 @@ class GraphQLResolverTest extends \PHPUnit\Framework\TestCase
 
     public function testObjectResolve()
     {
-        $object          = new \stdClass();
+        $object = new \stdClass();
         $object->message = 'foo';
 
         $typeDefs = '
@@ -103,10 +103,10 @@ class GraphQLResolverTest extends \PHPUnit\Framework\TestCase
         $resolvers = ['Query' => $object];
 
         $expected = [
-            'data' => ['message' => 'foo'],
+            'data' => ['message' => 'foo']
         ];
 
-        $query  = 'query { message }';
+        $query = 'query { message }';
         $schema = GraphQL\schema($typeDefs, $resolvers);
         $actual = \GraphQL\GraphQL::executeQuery($schema, $query)->toArray();
 

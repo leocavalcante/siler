@@ -11,7 +11,6 @@ use Siler\Container;
 
 const SWIFT_MAILER = 'swift_mailer';
 
-
 /**
  * Send a Swift_Message using the Mailer in the Container.
  *
@@ -30,7 +29,6 @@ function send(\Swift_Message $message)
     return $mailer->send($message);
 }
 
-
 /**
  * Sugar to create a new SwiftMailer Message.
  *
@@ -42,15 +40,19 @@ function send(\Swift_Message $message)
  *
  * @return \Swift_Message
  */
-function message(string $subject, array $from, array $to, string $body, string $contentType = 'text/plain'): \Swift_Message
-{
+function message(
+    string $subject,
+    array $from,
+    array $to,
+    string $body,
+    string $contentType = 'text/plain'
+): \Swift_Message {
     return (new \Swift_Message())
         ->setSubject($subject)
         ->setFrom($from)
         ->setTo($to)
         ->setBody($body, $contentType);
 }
-
 
 /**
  * Sugar to create a new SwiftMailer SMTP transport.
@@ -76,7 +78,6 @@ function smtp(string $host, int $port, ?string $username = null, ?string $passwo
 
     return $transport;
 }
-
 
 /**
  * Setup a Swift Mailer in the Siler Container.

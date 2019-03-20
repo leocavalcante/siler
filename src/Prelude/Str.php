@@ -10,7 +10,6 @@ namespace Siler\Str;
 use Cocur\Slugify\Slugify;
 use Siler\Container;
 
-
 /**
  * Slugify a string.
  *
@@ -28,7 +27,6 @@ function slugify(string $input, ?array $opts = null): string
     return Container\get('slugify')->slugify($input, $opts);
 }
 
-
 /**
  *  Breaks a string into lines.
  *
@@ -38,10 +36,7 @@ function slugify(string $input, ?array $opts = null): string
  */
 function lines(string $input): array
 {
-    return array_map(
-        function (string $row): string {
-            return trim($row);
-        },
-        preg_split('/\n/', $input)
-    );
+    return array_map(function (string $row): string {
+        return trim($row);
+    }, preg_split('/\n/', $input));
 }

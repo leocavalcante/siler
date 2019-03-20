@@ -11,7 +11,6 @@ class Identity
      */
     protected $value;
 
-
     /**
      * @param mixed $value
      */
@@ -19,7 +18,6 @@ class Identity
     {
         $this->value = $value;
     }
-
 
     public function __invoke(callable $function = null)
     {

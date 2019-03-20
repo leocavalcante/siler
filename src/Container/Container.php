@@ -21,7 +21,6 @@ function get(string $key, $default = null)
     return array_get($container->values, $key, $default);
 }
 
-
 /**
  * Set a value in the container.
  *
@@ -36,7 +35,6 @@ function set(string $key, $value)
     $container->values[$key] = $value;
 }
 
-
 /**
  * Checks if there is some value in the given $key.
  *
@@ -44,7 +42,7 @@ function set(string $key, $value)
  *
  * @return bool
  */
-function has(string $key) : bool
+function has(string $key): bool
 {
     $container = Container::getInstance();
 
@@ -73,7 +71,7 @@ final class Container
     /**
      * Singleton -> instance.
      */
-    public static function getInstance() : self
+    public static function getInstance(): self
     {
         static $instance = null;
 
@@ -84,14 +82,12 @@ final class Container
         return $instance;
     }
 
-
     /**
      *  The actual holder.
      *
      * @var array
      */
     public $values = [];
-
 
     /**
      * Constructor.

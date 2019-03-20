@@ -9,17 +9,17 @@ $res = Swoole\response();
 
 $todos = [
     [
-        'id'   => 1,
-        'text' => 'foo',
+        'id' => 1,
+        'text' => 'foo'
     ],
     [
-        'id'   => 2,
-        'text' => 'bar',
+        'id' => 2,
+        'text' => 'bar'
     ],
     [
-        'id'   => 3,
-        'text' => 'baz',
-    ],
+        'id' => 3,
+        'text' => 'baz'
+    ]
 ];
 
 return function () use ($todos) {

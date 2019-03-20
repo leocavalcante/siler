@@ -15,7 +15,7 @@ class RoutePsr7Test extends \PHPUnit\Framework\TestCase
      */
     public function testRoute()
     {
-        $server  = ['REQUEST_URI' => '/test'];
+        $server = ['REQUEST_URI' => '/test'];
         $request = ServerRequestFactory::fromGlobals($server);
 
         $actual = Route\get(
@@ -35,7 +35,7 @@ class RoutePsr7Test extends \PHPUnit\Framework\TestCase
      */
     public function testNullRoute()
     {
-        $server  = ['REQUEST_URI' => '/foo'];
+        $server = ['REQUEST_URI' => '/foo'];
         $request = ServerRequestFactory::fromGlobals($server);
 
         $actual = Route\get(

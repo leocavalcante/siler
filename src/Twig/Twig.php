@@ -9,7 +9,6 @@ namespace Siler\Twig;
 
 use Siler\Container;
 
-
 /**
  * Initialize the Twig environment.
  *
@@ -19,14 +18,14 @@ use Siler\Container;
  *
  * @return \Twig_Environment
  */
-function init(string $templatesPath, $templatesCachePath = false, bool $debug = false) : \Twig\Environment
+function init(string $templatesPath, $templatesCachePath = false, bool $debug = false): \Twig\Environment
 {
     $twig = new \Twig\Environment(
         /* @phan-suppress-next-line PhanDeprecatedInterface */
         new \Twig\Loader\FilesystemLoader($templatesPath),
         [
             'debug' => $debug,
-            'cache' => $templatesCachePath,
+            'cache' => $templatesCachePath
         ]
     );
 
@@ -34,7 +33,6 @@ function init(string $templatesPath, $templatesCachePath = false, bool $debug = 
 
     return $twig;
 }
-
 
 /**
  * Renders the given template within the given data.
@@ -46,7 +44,7 @@ function init(string $templatesPath, $templatesCachePath = false, bool $debug = 
  *
  * @return string
  */
-function render(string $name, array $data = []) : string
+function render(string $name, array $data = []): string
 {
     $twig = Container\get('twig');
 

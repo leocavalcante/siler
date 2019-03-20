@@ -1,6 +1,6 @@
 <?php
 
-namespace  Siler\Redis;
+namespace Siler\Redis;
 
 use Siler\Container;
 

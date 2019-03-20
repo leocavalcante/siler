@@ -15,7 +15,6 @@ use Siler\Http\Request;
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 use function Siler\require_fn;
 
-
 /**
  * Define a new route using the GET HTTP method.
  *
@@ -29,7 +28,6 @@ function get(string $path, $callback, $request = null)
 {
     return route('get', $path, $callback, $request);
 }
-
 
 /**
  * Define a new route using the POST HTTP method.
@@ -45,7 +43,6 @@ function post(string $path, $callback, $request = null)
     return route('post', $path, $callback, $request);
 }
 
-
 /**
  * Define a new route using the PUT HTTP method.
  *
@@ -59,7 +56,6 @@ function put(string $path, $callback, $request = null)
 {
     return route('put', $path, $callback, $request);
 }
-
 
 /**
  * Define a new route using the DELETE HTTP method.
@@ -75,7 +71,6 @@ function delete(string $path, $callback, $request = null)
     return route('delete', $path, $callback, $request);
 }
 
-
 /**
  * Define a new route using the OPTIONS HTTP method.
  *
@@ -90,7 +85,6 @@ function options(string $path, $callback, $request = null)
     return route('options', $path, $callback, $request);
 }
 
-
 /**
  * Define a new route using the any HTTP method.
  *
@@ -104,7 +98,6 @@ function any(string $path, $callback, $request = null)
 {
     return route('any', $path, $callback, $request);
 }
-
 
 /**
  * Define a new route.
@@ -130,8 +123,9 @@ function route($method, string $path, $callback, $request = null)
 
     $methodPath = method_path($request);
 
-    if (count($methodPath) >= 2 && (Request\method_is($method, $methodPath[0]) || $method == 'any')
-        && preg_match($path, $methodPath[1], $params)
+    if (count($methodPath) >= 2 &&
+        (Request\method_is($method, $methodPath[0]) || $method == 'any') &&
+        preg_match($path, $methodPath[1], $params)
     ) {
         Container\set('route_match', true);
 
@@ -140,7 +134,6 @@ function route($method, string $path, $callback, $request = null)
 
     return null;
 }
-
 
 /**
  * @internal Used to guess the given request method and path.
@@ -156,27 +149,17 @@ function method_path($request): array
     }
 
     if ($request instanceof ServerRequestInterface) {
-        return [
-            $request->getMethod(),
-            $request->getUri()->getPath(),
-        ];
+        return [$request->getMethod(), $request->getUri()->getPath()];
     }
 
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
         $request = Container\get(SWOOLE_HTTP_REQUEST);
 
-        return [
-            $request->server['request_method'],
-            $request->server['request_uri'],
-        ];
+        return [$request->server['request_method'], $request->server['request_uri']];
     }
 
-    return [
-        Request\method(),
-        Http\path(),
-    ];
+    return [Request\method(), Http\path()];
 }
-
 
 /**
  * Turns a URL route path into a Regexp.
@@ -185,14 +168,13 @@ function method_path($request): array
  *
  * @return string
  */
-function regexify(string $path) : string
+function regexify(string $path): string
 {
     $path = preg_replace('/\{([A-z-]+)\}/', '(?<$1>[A-z0-9_-]+)', $path);
     $path = "#^{$path}/?$#";
 
     return $path;
 }
-
 
 /**
  * Creates a resource route path mapping.
@@ -204,7 +186,7 @@ function regexify(string $path) : string
  */
 function resource(string $basePath, string $resourcesPath, ?string $identityParam = null, $request = null)
 {
-    $basePath      = '/' . trim($basePath, '/');
+    $basePath = '/' . trim($basePath, '/');
     $resourcesPath = rtrim($resourcesPath, '/');
 
     if (is_null($identityParam)) {
@@ -221,7 +203,6 @@ function resource(string $basePath, string $resourcesPath, ?string $identityPara
     delete($basePath . '/{' . $identityParam . '}', $resourcesPath . '/destroy.php', $request);
 }
 
-
 /**
  * Maps a filename to a route method-path pair.
  *
@@ -229,38 +210,31 @@ function resource(string $basePath, string $resourcesPath, ?string $identityPara
  *
  * @return array [HTTP_METHOD, HTTP_PATH]
  */
-function routify(string $filename) : array
+function routify(string $filename): array
 {
     $filename = str_replace('\\', '/', $filename);
     $filename = trim($filename, '/');
     $filename = str_replace('/', '.', $filename);
 
     $tokens = array_slice(explode('.', $filename), 0, -1);
-    $tokens = array_map(
-        function ($token) {
-            if ($token[0] == '$') {
-                $token = '{' . substr($token, 1) . '}';
-            }
+    $tokens = array_map(function ($token) {
+        if ($token[0] == '$') {
+            $token = '{' . substr($token, 1) . '}';
+        }
 
-            if ($token[0] == '@') {
-                $token = '?{' . substr($token, 1) . '}?';
-            }
+        if ($token[0] == '@') {
+            $token = '?{' . substr($token, 1) . '}?';
+        }
 
-            return $token;
-        },
-        $tokens
-    );
+        return $token;
+    }, $tokens);
 
     $method = array_pop($tokens);
-    $path   = implode('/', $tokens);
-    $path   = '/' . trim(str_replace('index', '', $path), '/');
+    $path = implode('/', $tokens);
+    $path = '/' . trim(str_replace('index', '', $path), '/');
 
-    return [
-        $method,
-        $path,
-    ];
+    return [$method, $path];
 }
-
 
 /**
  * Iterates over the given $basePath listening for matching routified files.
@@ -280,14 +254,14 @@ function files(string $basePath, string $routePrefix = '', $request = null)
     }
 
     $directory = new \RecursiveDirectoryIterator($realpath);
-    $iterator  = new \RecursiveIteratorIterator($directory);
-    $regex     = new \RegexIterator($iterator, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
+    $iterator = new \RecursiveIteratorIterator($directory);
+    $regex = new \RegexIterator($iterator, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
 
     $files = array_keys(iterator_to_array($regex));
 
     sort($files);
 
-    $cut         = strlen($realpath);
+    $cut = strlen($realpath);
     $routePrefix = rtrim($routePrefix, '/');
     $routeResult = null;
 
@@ -308,12 +282,11 @@ function files(string $basePath, string $routePrefix = '', $request = null)
             $path = $routePrefix . $path;
         }
 
-        $routeResult = (route($method, $path, (string) $filename, $request) ?? $routeResult);
+        $routeResult = route($method, $path, (string) $filename, $request) ?? $routeResult;
     }
 
     return $routeResult;
 }
-
 
 /**
  * Uses a class name to create routes based on its public methods.
@@ -327,7 +300,7 @@ function files(string $basePath, string $routePrefix = '', $request = null)
 function class_name(string $basePath, string $className, $request = null)
 {
     $reflection = new \ReflectionClass($className);
-    $object     = $reflection->newInstance();
+    $object = $reflection->newInstance();
 
     $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
 
@@ -336,19 +309,13 @@ function class_name(string $basePath, string $className, $request = null)
 
         $pathSegments = array_map('strtolower', array_slice($specs, 1));
 
-        $pathSegments = array_filter(
-            $pathSegments,
-            function (string $segment) : bool {
-                return $segment != 'index';
-            }
-        );
+        $pathSegments = array_filter($pathSegments, function (string $segment): bool {
+            return $segment != 'index';
+        });
 
-        $pathParams = array_map(
-            function (\ReflectionParameter $param) {
-                return "{{$param->name}}";
-            },
-            $method->getParameters()
-        );
+        $pathParams = array_map(function (\ReflectionParameter $param) {
+            return "{{$param->name}}";
+        }, $method->getParameters());
 
         $pathSegments = array_merge($pathSegments, $pathParams);
 
@@ -369,9 +336,8 @@ function class_name(string $basePath, string $className, $request = null)
             },
             $request
         );
-    }//end foreach
+    } //end foreach
 }
-
 
 /**
  * Avoids routes to be called after the first match.
@@ -381,7 +347,6 @@ function stop_propagation()
     Container\set('route_stop_propagation', true);
 }
 
-
 /**
  * Resets default routing behaviour.
  */
@@ -389,7 +354,6 @@ function resume()
 {
     Container\set('route_stop_propagation', false);
 }
-
 
 /**
  * Returns the first non-null route result.

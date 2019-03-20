@@ -19,13 +19,11 @@ class RequestHandlerDecorator implements RequestHandlerInterface
     private $handler;
     private $pathParams;
 
-
     public function __construct(callable $handler, array $pathParams = [])
     {
-        $this->handler    = $handler;
+        $this->handler = $handler;
         $this->pathParams = $pathParams;
     }
-
 
     /**
      * {@inheritdoc}.

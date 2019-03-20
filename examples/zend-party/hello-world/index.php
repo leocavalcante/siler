@@ -9,10 +9,8 @@ use function Siler\HttpHandlerRunner\sapi_emit;
 use function Siler\Stratigility\handle;
 use function Siler\Stratigility\pipe;
 
-pipe(
-    function ($request, $handler) {
-        return text('hello world');
-    }
-);
+pipe(function ($request, $handler) {
+    return text('hello world');
+});
 
 sapi_emit(handle(request()));
