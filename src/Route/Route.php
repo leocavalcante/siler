@@ -15,6 +15,9 @@ use Siler\Http\Request;
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 use function Siler\require_fn;
 
+const DID_MATCH = 'route_did_match';
+const STOP_PROPAGATION = 'route_stop_propagation';
+
 /**
  * Define a new route using the GET HTTP method.
  *
@@ -111,7 +114,7 @@ function any(string $path, $callback, $request = null)
  */
 function route($method, string $path, $callback, $request = null)
 {
-    if (Container\get('route_match', false) && Container\get('route_stop_propagation', false)) {
+    if (did_match() && Container\get(STOP_PROPAGATION, true)) {
         return null;
     }
 
@@ -127,8 +130,7 @@ function route($method, string $path, $callback, $request = null)
         (Request\method_is($method, $methodPath[0]) || $method == 'any') &&
         preg_match($path, $methodPath[1], $params)
     ) {
-        Container\set('route_match', true);
-
+        Container\set(DID_MATCH, true);
         return $callback($params);
     }
 
@@ -183,6 +185,8 @@ function regexify(string $path): string
  * @param string                            $resourcesPath The base path name for the corresponding PHP files
  * @param string|null                       $identityParam
  * @param array|ServerRequestInterface|null $request       null, array[method, path] or Psr7 Request Message
+ *
+ * @return mixed|null
  */
 function resource(string $basePath, string $resourcesPath, ?string $identityParam = null, $request = null)
 {
@@ -193,14 +197,39 @@ function resource(string $basePath, string $resourcesPath, ?string $identityPara
         $identityParam = 'id';
     }
 
-    get($basePath, $resourcesPath . '/index.php', $request);
-    get($basePath . '/create', $resourcesPath . '/create.php', $request);
-    get($basePath . '/{' . $identityParam . '}/edit', $resourcesPath . '/edit.php', $request);
-    get($basePath . '/{' . $identityParam . '}', $resourcesPath . '/show.php', $request);
+    $routes = [
+        function () use ($basePath, $resourcesPath, $request) {
+            return get($basePath, $resourcesPath . '/index.php', $request);
+        },
+        function () use ($basePath, $resourcesPath, $request) {
+            return get($basePath . '/create', $resourcesPath . '/create.php', $request);
+        },
+        function () use ($basePath, $resourcesPath, $request, $identityParam) {
+            return get($basePath . '/{' . $identityParam . '}/edit', $resourcesPath . '/edit.php', $request);
+        },
+        function () use ($basePath, $resourcesPath, $request, $identityParam) {
+            return get($basePath . '/{' . $identityParam . '}', $resourcesPath . '/show.php', $request);
+        },
+        function () use ($basePath, $resourcesPath, $request) {
+            return post($basePath, $resourcesPath . '/store.php', $request);
+        },
+        function () use ($basePath, $resourcesPath, $request, $identityParam) {
+            return put($basePath . '/{' . $identityParam . '}', $resourcesPath . '/update.php', $request);
+        },
+        function () use ($basePath, $resourcesPath, $request, $identityParam) {
+            return delete($basePath . '/{' . $identityParam . '}', $resourcesPath . '/destroy.php', $request);
+        },
+    ];
 
-    post($basePath, $resourcesPath . '/store.php', $request);
-    put($basePath . '/{' . $identityParam . '}', $resourcesPath . '/update.php', $request);
-    delete($basePath . '/{' . $identityParam . '}', $resourcesPath . '/destroy.php', $request);
+    foreach ($routes as $route) {
+        $result = $route();
+
+        if (!is_null($result)) {
+            return $result;
+        }
+    }
+
+    return null;
 }
 
 /**
@@ -240,12 +269,12 @@ function routify(string $filename): array
  * Iterates over the given $basePath listening for matching routified files.
  *
  * @param string                            $basePath
- * @param string                            $routePrefix
+ * @param string                            $prefix
  * @param array|ServerRequestInterface|null $request     null, array[method, path] or Psr7 Request Message
  *
  * @return mixed|null
  */
-function files(string $basePath, string $routePrefix = '', $request = null)
+function files(string $basePath, string $prefix = '', $request = null)
 {
     $realpath = realpath($basePath);
 
@@ -262,8 +291,7 @@ function files(string $basePath, string $routePrefix = '', $request = null)
     sort($files);
 
     $cut = strlen($realpath);
-    $routePrefix = rtrim($routePrefix, '/');
-    $routeResult = null;
+    $prefix = rtrim($prefix, '/');
 
     foreach ($files as $filename) {
         $cutFilename = substr((string) $filename, $cut);
@@ -275,17 +303,21 @@ function files(string $basePath, string $routePrefix = '', $request = null)
         list($method, $path) = routify($cutFilename);
 
         if ('/' === $path) {
-            if ($routePrefix) {
-                $path = $routePrefix;
+            if ($prefix) {
+                $path = $prefix;
             }
         } else {
-            $path = $routePrefix . $path;
+            $path = $prefix . $path;
         }
 
-        $routeResult = route($method, $path, (string) $filename, $request) ?? $routeResult;
+        $result = route($method, $path, (string) $filename, $request);
+
+        if (!is_null($result)) {
+            return $result;
+        }
     }
 
-    return $routeResult;
+    return null;
 }
 
 /**
@@ -344,7 +376,7 @@ function class_name(string $basePath, string $className, $request = null)
  */
 function stop_propagation()
 {
-    Container\set('route_stop_propagation', true);
+    Container\set(STOP_PROPAGATION, true);
 }
 
 /**
@@ -352,13 +384,15 @@ function stop_propagation()
  */
 function resume()
 {
-    Container\set('route_stop_propagation', false);
+    Container\set(STOP_PROPAGATION, false);
 }
 
 /**
  * Returns the first non-null route result.
  *
  * @param array $routes The route results to br tested
+ *
+ * @return mixed|null
  */
 function match(array $routes)
 {
@@ -369,4 +403,14 @@ function match(array $routes)
     }
 
     return null;
+}
+
+/**
+ * Returns true if a Route has a match.
+ *
+ * @return bool
+ */
+function did_match(): bool
+{
+    return Container\get(DID_MATCH, false);
 }
