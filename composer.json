@@ -26,6 +26,7 @@
         "ext-mongodb": "^1.5",
         "cboden/ratchet": "^0.4",
         "cocur/slugify": "^3.2",
+        "eaglewu/swoole-ide-helper": "dev-master",
         "gabordemooij/redbean": "^5.2",
         "mongodb/mongodb": "^1.4",
         "monolog/monolog": "^1.24",

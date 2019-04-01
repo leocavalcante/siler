@@ -8,7 +8,11 @@ declare(strict_types=1);
 
 namespace Siler\Swoole;
 
+use Swoole\Http\Request;
+use Swoole\Http\Response;
+use Swoole\Http\Server;
 use Siler\Container;
+use const Siler\Route\DID_MATCH;
 
 const SWOOLE_HTTP_REQUEST = 'swoole_http_request';
 const SWOOLE_HTTP_REQUEST_ENDED = 'swoole_http_request_ended';
@@ -24,13 +28,14 @@ const SWOOLE_WEBSOCKET_ONCLOSE = 'swoole_websocket_onclose';
  * @param int      $port    The port binding (defaults to 9501).
  * @param string   $host    The host binding (defaults to 0.0.0.0).
  *
- * @return \Swoole\Http\Server
+ * @return Server
  */
-function http(callable $handler, int $port = 9501, string $host = '0.0.0.0')
+function http(callable $handler, int $port = 9501, string $host = '0.0.0.0'): Server
 {
-    $server = new \Swoole\Http\Server($host, $port);
+    $server = new Server($host, $port);
 
     $server->on('request', function ($request, $response) use ($handler) {
+        Container\set(DID_MATCH, false);
         Container\set(SWOOLE_HTTP_REQUEST_ENDED, false);
         Container\set(SWOOLE_HTTP_REQUEST, $request);
         Container\set(SWOOLE_HTTP_RESPONSE, $response);
@@ -44,7 +49,7 @@ function http(callable $handler, int $port = 9501, string $host = '0.0.0.0')
 /**
  * Gets the current Swoole HTTP request.
  */
-function request()
+function request(): Request
 {
     return Container\get(SWOOLE_HTTP_REQUEST);
 }
@@ -52,7 +57,7 @@ function request()
 /**
  * Gets the current Swoole HTTP response.
  */
-function response()
+function response(): Response
 {
     return Container\get(SWOOLE_HTTP_RESPONSE);
 }
@@ -63,6 +68,8 @@ function response()
  * @param string $content Content for the output.
  * @param int    $status  HTTP response status code.
  * @param array  $headers HTTP response headers.
+ *
+ * @return null
  */
 function emit(string $content, int $status = 200, array $headers = [])
 {
@@ -78,15 +85,19 @@ function emit(string $content, int $status = 200, array $headers = [])
 
     Container\set(SWOOLE_HTTP_REQUEST_ENDED, true);
 
-    return response()->end($content);
+    response()->end($content);
+
+    return null;
 }
 
 /**
  * Sugar to emit() JSON encoded data.
  *
  * @param mixed $data
- * @param int   $status
+ * @param int $status
  * @param array $headers
+ *
+ * @return null
  */
 function json($data, int $status = 200, array $headers = [])
 {
@@ -125,8 +136,10 @@ function websocket_hooks(array $hooks)
  * Returns a Swoole\WebSocket\Server.
  *
  * @param callable $handler The handler to call on each message.
- * @param int      $port    The port binding (defaults to 9502).
- * @param string   $host    The host binding (defaults to 0.0.0.0).
+ * @param int $port The port binding (defaults to 9502).
+ * @param string $host The host binding (defaults to 0.0.0.0).
+ * 
+ * @return \Swoole\WebSocket\Server
  */
 function websocket(callable $handler, int $port = 9502, string $host = '0.0.0.0'): \Swoole\WebSocket\Server
 {
