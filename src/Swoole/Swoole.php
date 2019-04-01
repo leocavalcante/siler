@@ -138,7 +138,7 @@ function websocket_hooks(array $hooks)
  * @param callable $handler The handler to call on each message.
  * @param int $port The port binding (defaults to 9502).
  * @param string $host The host binding (defaults to 0.0.0.0).
- * 
+ *
  * @return \Swoole\WebSocket\Server
  */
 function websocket(callable $handler, int $port = 9502, string $host = '0.0.0.0'): \Swoole\WebSocket\Server
