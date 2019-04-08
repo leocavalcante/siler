@@ -9,7 +9,7 @@ description: >-
 
 Siler is bundled with the `Siler\Functional` namespace. It brings some function declarations that aids the work with another **first-class** and **high-order** PHP functions!
 
-#### `identity()`
+## `identity()`
 
 Returns a Closure that returns its given arguments.
 
@@ -24,7 +24,7 @@ array_map(λ\identity(), [1, 2, 3]);
 Doesn't seem useful at first, but working with the functional paradigm, you'll find the reason shortly.
 {% endhint %}
 
-#### `always($value)`
+## `always($value)`
 
 Almost like `identity()`, but it always returns the given value.
 
@@ -35,7 +35,7 @@ array_map(λ\always('foo'), range(1, 3));
 // [foo, foo, foo]
 ```
 
-#### `if_else(callable $cond) -> $then -> $else`
+## `if_else(callable $cond) -> $then -> $else`
 
 A functional if/then/else.
 
@@ -48,7 +48,7 @@ echo $pred('foo'); // is foo
 echo $pred('bar'); // isnt foo
 ```
 
-#### `partial(callable $callable, ...$partial)`
+## `partial(callable $callable, ...$partial)`
 
 Partial application refers to the process of fixing a number of arguments to a function, producing another function of smaller [arity](https://en.wikipedia.org/wiki/Arity). Given a function![{\displaystyle f\colon \(X\times Y\times Z\)\to N}](https://wikimedia.org/api/rest_v1/media/math/render/svg/5c7acf81877307746cd88e2785967d9a2f287107), we might fix \(or 'bind'\) the first argument, producing a function of type ![{\displaystyle {\text{partial}}\(f\)\colon \(Y\times Z\)\to N}](https://wikimedia.org/api/rest_v1/media/math/render/svg/d45fcfd39c660c562ebd3da8158dbfd8f673836e).  
 [https://en.wikipedia.org/wiki/Partial\_application](https://en.wikipedia.org/wiki/Partial_application)
@@ -85,7 +85,7 @@ print_r($explodeCommas('foo,bar,baz'));
  */
 ```
 
-#### `match(array $matches)`
+## `match(array $matches)`
 
 A pattern-match attempt. Truthy Closure evaluations on the left calls and short-circuits evaluations on the right.
 

@@ -129,10 +129,16 @@ Now we are forwarding **GET** requests from path `/` to file `pages/home.php`.
 
 use Siler\Swoole;
 
-Swoole\emit('Hello World');
+return function () {
+    Swoole\emit('Hello World');
+};
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
+
+{% hint style="info" %}
+When using Swoole, routes that uses files should return a function to ensure a re-computation. Siler will require the file **only** on the first match, then on the next matches it will only re-execute the returned function. This makes possible the use of `require_once` while maintaining a way to re-execute something.
+{% endhint %}
 
 You may ask: **"What about** `Swoole\emit('Not found', 404)` **on the end?"**.
 
@@ -152,7 +158,9 @@ Twig should work exactly the same as there is no Swoole behind it:
 use Siler\Swoole;
 use Siler\Twig;
 
-Swoole\emit(Twig\render('home.twig'));
+return function () {
+    Swoole\emit(Twig\render('home.twig'));
+};
 ```
 {% endcode-tabs-item %}
 
@@ -208,6 +216,27 @@ Swoole\http($handler)->start();
 Swoole's HTTP server will auto-magically outputs the Response header Content-type as text/html instead of text/plain now.
 {% endhint %}
 
+If you're sure that your template doesn't depends on the request, you can render it once:
+
+{% code-tabs %}
+{% code-tabs-item title="pages/home.php" %}
+```php
+<?php declare(strict_types=1);
+
+use Siler\Swoole;
+use Siler\Twig;
+
+$html = Twig\render('home.twig');
+
+return function () use ($html) {
+    Swoole\emit($html);
+};
+```
+{% endcode-tabs-item %}
+{% endcode-tabs %}
+
+This avoids the template to be re-rendered on each request unnecessarily.
+
 ## Request's Query string, Body & Headers
 
 Since there is no web server module or CGI layer, things like $\_GET won't work for query string parameters etc. **But fear nothing**, Siler provides getters for both Swoole's Request and Response objects: `Siler\Swoole\request()` and `Siler\Swoole\response()`.
@@ -222,8 +251,10 @@ Instead of always printing "Hello World", let's print the name that came from th
 use Siler\Swoole;
 use Siler\Twig;
 
-$name = Swoole\request()->get['name'] ?? 'World';
-Swoole\emit(Twig\render('home.twig', ['name' => $name]));
+return function () {
+    $name = Swoole\request()->get['name'] ?? 'World';
+    Swoole\emit(Twig\render('home.twig', ['name' => $name]));
+};
 ```
 {% endcode-tabs-item %}
 
@@ -289,8 +320,10 @@ $todos = [
     ['id' => 3, 'text' => 'baz'],
 ];
 
-Swoole\cors();
-Swoole\json($todos);
+return function () {
+    Swoole\cors();
+    Swoole\json($todos);
+};
 ```
 {% endcode-tabs-item %}
 {% endcode-tabs %}
@@ -298,26 +331,7 @@ Swoole\json($todos);
 Head to [http://localhost:9501/todos](http://localhost:9501/todos). There we go!  
 A **Siler** ❤️ **Swoole** powered API.
 
-## Documentation
-
-All functions on `Siler\Swoole` namespace.
-
-`http(callback $handler, int $port = 9501, string $host = '0.0.0.0'): Swoole\Http\Server`  
-Starts the HTTP server binding it to the specified `$host` and `$post` using the `$handler` on each request.
-
-`request(): Swoole\Http\Request`  
-Returns the current HTTP Request.
-
-`response(): Swoole\Http\Response`  
-Returns the current HTTP Response.
-
-`emit(string $content, int $status = 200, array $headers = [])`  
-Emits a HTTP response using Swoole's Response object and Siler's halting strategy.
-
-`json($data, int $status = 200, array $headers = [])`  
-Sugar to emit a JSON encoded response
-
 {% hint style="info" %}
-You can still use any other Swoole module. More abstractions to come.
+You can still use any other Swoole module like Coroutines and Redis. More abstractions to come.
 {% endhint %}
 
