@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Siler\Container;
 
+use OverflowException;
+use UnderflowException;
 use function Siler\array_get;
 
 /**
@@ -59,6 +61,43 @@ function clear(string $key): void
     $container = Container::getInstance();
 
     unset($container->values[$key]);
+}
+
+/**
+ * Sugar for Container\set that throws an OverflowException when the key is already in use.
+ * Useful for dependency injection.
+ *
+ * @param string $serviceName
+ * @param $service
+ */
+function inject(string $serviceName, $service): void
+{
+    $container = Container::getInstance();
+
+    if (array_key_exists($serviceName, $container->values)) {
+        throw new OverflowException("$serviceName already in use");
+    }
+
+    $container->values[$serviceName] = $service;
+}
+
+/**
+ * Sugar for Container\get that throws an UnderflowException when the key isn't initialized.
+ * Useful for dependency injection/IoC.
+ *
+ * @param string $serviceName
+ *
+ * @return mixed
+ */
+function retrieve(string $serviceName)
+{
+    $container = Container::getInstance();
+
+    if (!array_key_exists($serviceName, $container->values)) {
+        throw new UnderflowException("$serviceName not initialized");
+    }
+
+    return $container->values[$serviceName];
 }
 
 /**
