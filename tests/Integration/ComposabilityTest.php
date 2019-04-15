@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Siler\Test\Integration;
 
+use PHPUnit\Framework\TestCase;
 use function Siler\Functional\all;
 use function Siler\Functional\any;
 use function Siler\Functional\compose;
 use function Siler\Functional\equal;
 use function Siler\Functional\mod;
 
-class ComposabilityTest extends \PHPUnit\Framework\TestCase
+class ComposabilityTest extends TestCase
 {
     public function testCompose()
     {

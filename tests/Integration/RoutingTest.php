@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace Siler\Test\Integration;
 
+use PHPUnit\Framework\TestCase;
 use Siler\Functional as F;
 use Siler\Route;
 use Siler\Twig;
 
-class RoutingTest extends \PHPUnit\Framework\TestCase
+class RoutingTest extends TestCase
 {
     public function setUp(): void
     {
+        Route\purge_match();
         $_SERVER['REQUEST_URI'] = '/';
     }
+
 
     public function testHelloWorld()
     {

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
+use PHPUnit\Framework\TestCase;
 use Siler\Functional as f;
 use Siler\Functional\Monad;
 
-class MonadTest extends \PHPUnit\Framework\TestCase
+class MonadTest extends TestCase
 {
     public function testIdentity()
     {

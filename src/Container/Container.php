@@ -9,8 +9,8 @@ use function Siler\array_get;
 /**
  * Get a value from the container.
  *
- * @param string $key     The key to be searched on the container
- * @param mixed  $default Default value when the key does not exists on the container
+ * @param string $key The key to be searched on the container
+ * @param mixed $default Default value when the key does not exists on the container
  *
  * @return mixed
  */
@@ -24,8 +24,8 @@ function get(string $key, $default = null)
 /**
  * Set a value in the container.
  *
- * @param string $key   Identified by the given key
- * @param mixed  $value The value to be stored
+ * @param string $key Identified by the given key
+ * @param mixed $value The value to be stored
  *
  * @return void
  */
@@ -69,20 +69,6 @@ function clear(string $key): void
 final class Container
 {
     /**
-     * Singleton -> instance.
-     */
-    public static function getInstance(): self
-    {
-        static $instance = null;
-
-        if ($instance === null) {
-            $instance = new self();
-        }
-
-        return $instance;
-    }
-
-    /**
      *  The actual holder.
      *
      * @var array
@@ -94,5 +80,19 @@ final class Container
      */
     private function __construct()
     {
+    }
+
+    /**
+     * Singleton -> instance.
+     */
+    public static function getInstance(): self
+    {
+        static $instance = null;
+
+        if ($instance === null) {
+            $instance = new self();
+        }
+
+        return $instance;
     }
 }

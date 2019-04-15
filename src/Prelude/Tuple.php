@@ -7,6 +7,12 @@ declare(strict_types=1);
 
 namespace Siler\Tuple;
 
+use ArrayAccess;
+use Countable;
+use OutOfBoundsException;
+use OutOfRangeException;
+use RuntimeException;
+
 /**
  * Creates a new Tuple.
  *
@@ -22,14 +28,14 @@ function tuple(...$values)
 /**
  * A class representing a Tuple.
  */
-final class Tuple implements \ArrayAccess, \Countable
+final class Tuple implements ArrayAccess, Countable
 {
     private $values;
 
     /**
+     * @param array $values Tuple elements.
      * @internal Tuple constructor.
      *
-     * @param array $values Tuple elements.
      */
     public function __construct(array $values)
     {
@@ -63,9 +69,9 @@ final class Tuple implements \ArrayAccess, \Countable
      *
      * @param mixed $offset
      *
-     * @throws \OutOfBoundsException
-     *
      * @return mixed
+     * @throws OutOfBoundsException
+     *
      */
     public function offsetGet($offset)
     {
@@ -73,7 +79,7 @@ final class Tuple implements \ArrayAccess, \Countable
             return $this->values[$offset];
         }
 
-        throw new \OutOfRangeException('Invalid tuple position');
+        throw new OutOfRangeException('Invalid tuple position');
     }
 
     /**
@@ -82,13 +88,13 @@ final class Tuple implements \ArrayAccess, \Countable
      * @param mixed $offset
      * @param mixed $value
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      *
      * @suppress PhanUnusedPublicFinalMethodParameter
      */
     public function offsetSet($offset, $value)
     {
-        throw new \RuntimeException('Tuples are immutable!');
+        throw new RuntimeException('Tuples are immutable!');
     }
 
     /**
@@ -96,19 +102,19 @@ final class Tuple implements \ArrayAccess, \Countable
      *
      * @param mixed $offset
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      *
      * @suppress PhanUnusedPublicFinalMethodParameter
      */
     public function offsetUnset($offset)
     {
-        throw new \RuntimeException('Tuples are immutable!');
+        throw new RuntimeException('Tuples are immutable!');
     }
 
     /**
+     * @return int
      * @internal Count elements of the Tuple.
      *
-     * @return int
      */
     public function count()
     {

@@ -8,12 +8,21 @@ declare(strict_types=1);
 
 namespace Siler\Route;
 
+use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RecursiveRegexIterator;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
+use ReflectionParameter;
+use RegexIterator;
 use Siler\Container;
 use Siler\Http;
 use Siler\Http\Request;
-use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 use function Siler\require_fn;
+use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 const DID_MATCH = 'route_did_match';
 const STOP_PROPAGATION = 'route_stop_propagation';
@@ -21,9 +30,9 @@ const STOP_PROPAGATION = 'route_stop_propagation';
 /**
  * Define a new route using the GET HTTP method.
  *
- * @param string                            $path     The HTTP URI to listen on
- * @param string|callable                   $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request  null, array[method, path] or Psr7 Request Message
+ * @param string $path The HTTP URI to listen on
+ * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
+ * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
  *
  * @return mixed|null
  */
@@ -35,9 +44,9 @@ function get(string $path, $callback, $request = null)
 /**
  * Define a new route using the POST HTTP method.
  *
- * @param string                            $path     The HTTP URI to listen on
- * @param string|callable                   $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request  null, array[method, path] or Psr7 Request Message
+ * @param string $path The HTTP URI to listen on
+ * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
+ * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
  *
  * @return mixed|null
  */
@@ -49,9 +58,9 @@ function post(string $path, $callback, $request = null)
 /**
  * Define a new route using the PUT HTTP method.
  *
- * @param string                            $path     The HTTP URI to listen on
- * @param string|callable                   $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request  null, array[method, path] or Psr7 Request Message
+ * @param string $path The HTTP URI to listen on
+ * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
+ * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
  *
  * @return mixed|null
  */
@@ -63,9 +72,9 @@ function put(string $path, $callback, $request = null)
 /**
  * Define a new route using the DELETE HTTP method.
  *
- * @param string                            $path     The HTTP URI to listen on
- * @param string|callable                   $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request  null, array[method, path] or Psr7 Request Message
+ * @param string $path The HTTP URI to listen on
+ * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
+ * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
  *
  * @return mixed|null
  */
@@ -77,9 +86,9 @@ function delete(string $path, $callback, $request = null)
 /**
  * Define a new route using the OPTIONS HTTP method.
  *
- * @param string                            $path     The HTTP URI to listen on
- * @param string|callable                   $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request  null, array[method, path] or Psr7 Request Message
+ * @param string $path The HTTP URI to listen on
+ * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
+ * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
  *
  * @return mixed|null
  */
@@ -91,9 +100,9 @@ function options(string $path, $callback, $request = null)
 /**
  * Define a new route using the any HTTP method.
  *
- * @param string                            $path     The HTTP URI to listen on
- * @param string|callable                   $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request  null, array[method, path] or Psr7 Request Message
+ * @param string $path The HTTP URI to listen on
+ * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
+ * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
  *
  * @return mixed|null
  */
@@ -105,10 +114,10 @@ function any(string $path, $callback, $request = null)
 /**
  * Define a new route.
  *
- * @param string|array                      $method   The HTTP request method to listen on
- * @param string                            $path     The HTTP URI to listen on
- * @param string|callable                   $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request  Null, array[method, path] or Psr7 Request Message
+ * @param string|array $method The HTTP request method to listen on
+ * @param string $path The HTTP URI to listen on
+ * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
+ * @param array|ServerRequestInterface|null $request Null, array[method, path] or Psr7 Request Message
  *
  * @return mixed|null
  */
@@ -138,11 +147,11 @@ function route($method, string $path, $callback, $request = null)
 }
 
 /**
- * @internal Used to guess the given request method and path.
- *
  * @param mixed $request null, array[method, path], PSR-7 Request Message or Swoole HTTP request.
  *
  * @return array
+ * @internal Used to guess the given request method and path.
+ *
  */
 function method_path($request): array
 {
@@ -181,10 +190,10 @@ function regexify(string $path): string
 /**
  * Creates a resource route path mapping.
  *
- * @param string                            $basePath      The base for the resource
- * @param string                            $resourcesPath The base path name for the corresponding PHP files
- * @param string|null                       $identityParam
- * @param array|ServerRequestInterface|null $request       null, array[method, path] or Psr7 Request Message
+ * @param string $basePath The base for the resource
+ * @param string $resourcesPath The base path name for the corresponding PHP files
+ * @param string|null $identityParam
+ * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
  *
  * @return mixed|null
  */
@@ -268,9 +277,9 @@ function routify(string $filename): array
 /**
  * Iterates over the given $basePath listening for matching routified files.
  *
- * @param string                            $basePath
- * @param string                            $prefix
- * @param array|ServerRequestInterface|null $request     null, array[method, path] or Psr7 Request Message
+ * @param string $basePath
+ * @param string $prefix
+ * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
  *
  * @return mixed|null
  */
@@ -279,12 +288,12 @@ function files(string $basePath, string $prefix = '', $request = null)
     $realpath = realpath($basePath);
 
     if (false === $realpath) {
-        throw new \InvalidArgumentException("{$basePath} does not exists");
+        throw new InvalidArgumentException("{$basePath} does not exists");
     }
 
-    $directory = new \RecursiveDirectoryIterator($realpath);
-    $iterator = new \RecursiveIteratorIterator($directory);
-    $regex = new \RegexIterator($iterator, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
+    $directory = new RecursiveDirectoryIterator($realpath);
+    $iterator = new RecursiveIteratorIterator($directory);
+    $regex = new RegexIterator($iterator, '/^.+\.php$/i', RecursiveRegexIterator::GET_MATCH);
 
     $files = array_keys(iterator_to_array($regex));
 
@@ -294,7 +303,7 @@ function files(string $basePath, string $prefix = '', $request = null)
     $prefix = rtrim($prefix, '/');
 
     foreach ($files as $filename) {
-        $cutFilename = substr((string) $filename, $cut);
+        $cutFilename = substr((string)$filename, $cut);
 
         if (false === $cutFilename) {
             continue;
@@ -310,7 +319,7 @@ function files(string $basePath, string $prefix = '', $request = null)
             $path = $prefix . $path;
         }
 
-        $result = route($method, $path, (string) $filename, $request);
+        $result = route($method, $path, (string)$filename, $request);
 
         if (!is_null($result)) {
             return $result;
@@ -323,18 +332,18 @@ function files(string $basePath, string $prefix = '', $request = null)
 /**
  * Uses a class name to create routes based on its public methods.
  *
- * @param string                            $basePath  The prefix for all routes
- * @param string                            $className The qualified class name
- * @param array|ServerRequestInterface|null $request   null, array[method, path] or Psr7 Request Message
+ * @param string $basePath The prefix for all routes
+ * @param string $className The qualified class name
+ * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
  *
- * @throws \ReflectionException
+ * @throws ReflectionException
  */
 function class_name(string $basePath, string $className, $request = null)
 {
-    $reflection = new \ReflectionClass($className);
+    $reflection = new ReflectionClass($className);
     $object = $reflection->newInstance();
 
-    $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
+    $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
 
     foreach ($methods as $method) {
         $specs = preg_split('/(?=[A-Z])/', $method->name);
@@ -345,7 +354,7 @@ function class_name(string $basePath, string $className, $request = null)
             return $segment != 'index';
         });
 
-        $pathParams = array_map(function (\ReflectionParameter $param) {
+        $pathParams = array_map(function (ReflectionParameter $param) {
             return "{{$param->name}}";
         }, $method->getParameters());
 
@@ -413,4 +422,12 @@ function match(array $routes)
 function did_match(): bool
 {
     return Container\get(DID_MATCH, false);
+}
+
+/**
+ * Invalidate a route match.
+ */
+function purge_match(): void
+{
+    Container\set(DID_MATCH, false);
 }

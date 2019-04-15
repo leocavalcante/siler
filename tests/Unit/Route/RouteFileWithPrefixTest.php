@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
+use PHPUnit\Framework\TestCase;
 use Siler\Route;
 
-class RouteFileWithPrefixTest extends \PHPUnit\Framework\TestCase
+class RouteFileWithPrefixTest extends TestCase
 {
     /**
      * @runInSeparateProcess

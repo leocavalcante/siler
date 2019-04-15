@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
+use PHPUnit\Framework\TestCase;
 use Siler\Functional as f;
 
-class FunctionalTest extends \PHPUnit\Framework\TestCase
+class FunctionalTest extends TestCase
 {
     public function testId()
     {

@@ -7,7 +7,9 @@ declare(strict_types=1);
 
 namespace Siler\GraphQL;
 
+use Closure;
 use GraphQL\Executor\Executor;
+use GraphQL\Executor\Promise\Promise;
 use GraphQL\GraphQL;
 use GraphQL\Type\Definition\BooleanType;
 use GraphQL\Type\Definition\EnumType;
@@ -27,10 +29,12 @@ use Ratchet\Client;
 use Ratchet\Client\WebSocket;
 use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
+use Ratchet\WebSocket\WsServer;
 use Siler\Container;
 use Siler\Diactoros;
 use Siler\Http\Request;
 use Siler\Http\Response;
+use UnexpectedValueException;
 use function Siler\array_get;
 
 /**
@@ -66,10 +70,10 @@ const ON_DISCONNECT = 'graphql_on_disconnect';
 /**
  * Initializes a new GraphQL endpoint.
  *
- * @param Schema $schema    The application root Schema
- * @param mixed  $rootValue Some optional GraphQL root value
- * @param mixed  $context   Some optional GraphQL context
- * @param string $input     JSON file input, for testing
+ * @param Schema $schema The application root Schema
+ * @param mixed $rootValue Some optional GraphQL root value
+ * @param mixed $context Some optional GraphQL context
+ * @param string $input JSON file input, for testing
  *
  * @return void
  */
@@ -82,7 +86,7 @@ function init(Schema $schema, $rootValue = null, $context = null, string $input 
     }
 
     if (!is_array($data)) {
-        throw new \UnexpectedValueException('Input should be a JSON object');
+        throw new UnexpectedValueException('Input should be a JSON object');
     }
 
     $result = execute($schema, $data, $rootValue, $context);
@@ -93,12 +97,12 @@ function init(Schema $schema, $rootValue = null, $context = null, string $input 
 /**
  * Executes a GraphQL query over a schema.
  *
- * @param Schema $schema    The application root Schema
- * @param array  $input     Incoming query, operation and variables
- * @param mixed  $rootValue Some optional GraphQL root value
- * @param mixed  $context   Some optional GraphQL context
+ * @param Schema $schema The application root Schema
+ * @param array $input Incoming query, operation and variables
+ * @param mixed $rootValue Some optional GraphQL root value
+ * @param mixed $context Some optional GraphQL context
  *
- * @return array<mixed, mixed>|\GraphQL\Executor\Promise\Promise
+ * @return array<mixed, mixed>|Promise
  */
 function execute(Schema $schema, array $input, $rootValue = null, $context = null)
 {
@@ -114,15 +118,15 @@ function execute(Schema $schema, array $input, $rootValue = null, $context = nul
  *
  * @param Schema $schema GraphQL schema to execute
  *
- * @return \Closure ServerRequestInterface -> IO
+ * @return Closure ServerRequestInterface -> IO
  */
-function psr7(Schema $schema): \Closure
+function psr7(Schema $schema): Closure
 {
     return function (ServerRequestInterface $request) use ($schema) {
-        $input = json_decode((string) $request->getBody(), true);
+        $input = json_decode((string)$request->getBody(), true);
 
         if (!is_array($input)) {
-            throw new \UnexpectedValueException('Input should be a JSON object');
+            throw new UnexpectedValueException('Input should be a JSON object');
         }
 
         $data = execute($schema, $input);
@@ -136,7 +140,7 @@ function psr7(Schema $schema): \Closure
  * Also sets a Siler's default field resolver based on $resolvers array.
  *
  * @param string $typeDefs
- * @param array  $resolvers
+ * @param array $resolvers
  *
  * @return Schema
  */
@@ -162,11 +166,11 @@ function resolvers(array $resolvers)
         $fieldName = $info->fieldName;
 
         if (is_null($fieldName)) {
-            throw new \UnexpectedValueException('Could not get $fieldName from ResolveInfo');
+            throw new UnexpectedValueException('Could not get $fieldName from ResolveInfo');
         }
 
         if (is_null($info->parentType)) {
-            throw new \UnexpectedValueException('Could not get $parentType from ResolveInfo');
+            throw new UnexpectedValueException('Could not get $parentType from ResolveInfo');
         }
 
         $parentTypeName = $info->parentType->name;
@@ -196,14 +200,14 @@ function resolvers(array $resolvers)
 }
 
 /**
- * Returns a new websocket server bootstraped for GraphQL.
+ * Returns a new websocket server bootstrapped for GraphQL.
  *
  * @param Schema $schema
- * @param array  $filters
+ * @param array $filters
  * @param string $host
- * @param int    $port
- * @param array  $rootValue
- * @param array  $context
+ * @param int $port
+ * @param array $rootValue
+ * @param array $context
  *
  * @return IoServer
  */
@@ -217,7 +221,7 @@ function subscriptions(
 ): IoServer {
     $manager = new SubscriptionsManager($schema, $filters, $rootValue, $context);
     $server = new SubscriptionsServer($manager);
-    $websocket = new \Ratchet\WebSocket\WsServer($server);
+    $websocket = new WsServer($server);
     $http = new HttpServer($websocket);
 
     return IoServer::factory($http, $port, $host);
@@ -239,7 +243,7 @@ function subscriptions_at(string $url)
  * Publishes the given $payload to the $subscribeName.
  *
  * @param string $subscriptionName
- * @param mixed  $payload
+ * @param mixed $payload
  *
  * @return void
  */
@@ -267,12 +271,11 @@ function listen(string $eventName, callable $listener)
 /**
  * Returns a GraphQL value definition.
  *
- * @param string  $name
- * @param ?string $description
- *
- * @return \Closure -> value -> array
+ * @param string $name
+ * @param string|null $description
+ * @return Closure -> value -> array
  */
-function val(string $name, ?string $description = null): \Closure
+function val(string $name, ?string $description = null): Closure
 {
     return function ($value) use ($name, $description): array {
         return [
@@ -286,12 +289,11 @@ function val(string $name, ?string $description = null): \Closure
 /**
  *  Returns a GraphQL Enum type.
  *
- * @param string  $name
- * @param ?string $description
- *
- * @return \Closure -> values -> EnumType
+ * @param string $name
+ * @param string|null $description
+ * @return Closure -> values -> EnumType
  */
-function enum(string $name, ?string $description = null): \Closure
+function enum(string $name, ?string $description = null): Closure
 {
     return function (array $values) use ($name, $description): EnumType {
         return new EnumType(['name' => $name, 'description' => $description, 'values' => $values]);
@@ -301,13 +303,12 @@ function enum(string $name, ?string $description = null): \Closure
 /**
  * Returns an evaluable field definition.
  *
- * @param Type    $type
- * @param string  $name
- * @param ?string $description
- *
- * @return \Closure -> (resolve, args) -> array
+ * @param Type $type
+ * @param string $name
+ * @param string|null $description
+ * @return Closure -> (resolve, args) -> array
  */
-function field(Type $type, string $name, ?string $description = null): \Closure
+function field(Type $type, string $name, ?string $description = null): Closure
 {
     return function ($resolve = null, array $args = null) use ($type, $name, $description) {
         if (is_string($resolve)) {
@@ -329,10 +330,9 @@ function field(Type $type, string $name, ?string $description = null): \Closure
 /**
  * Returns an evaluable String field definition.
  *
- * @param ?string $name
- * @param ?string $description
- *
- * @return StringType|\Closure -> (resolve, args) -> array
+ * @param string|null $name
+ * @param string|null $description
+ * @return StringType|Closure -> (resolve, args) -> array
  */
 function str(?string $name = null, ?string $description = null)
 {
@@ -346,10 +346,9 @@ function str(?string $name = null, ?string $description = null)
 /**
  * Returns an evaluable Integer field definition.
  *
- * @param ?string $name
- * @param ?string $description
- *
- * @return IntType|\Closure -> (resolve, args) -> array
+ * @param string|null $name
+ * @param string|null $description
+ * @return IntType|Closure -> (resolve, args) -> array
  */
 function int(?string $name = null, ?string $description = null)
 {
@@ -363,10 +362,9 @@ function int(?string $name = null, ?string $description = null)
 /**
  * Returns an evaluable Float field definition.
  *
- * @param ?string $name
- * @param ?string $description
- *
- * @return FloatType|\Closure -> (resolve, args) -> array
+ * @param string|null $name
+ * @param string|null $description
+ * @return FloatType|Closure -> (resolve, args) -> array
  */
 function float(?string $name = null, ?string $description = null)
 {
@@ -380,10 +378,9 @@ function float(?string $name = null, ?string $description = null)
 /**
  * Returns an evaluable Boolean field definition.
  *
- * @param ?string $name
- * @param ?string $description
- *
- * @return BooleanType|\Closure -> (resolve, args) -> array
+ * @param string|null $name
+ * @param string|null $description
+ * @return BooleanType|Closure -> (resolve, args) -> array
  */
 function bool(?string $name = null, ?string $description = null)
 {
@@ -395,11 +392,10 @@ function bool(?string $name = null, ?string $description = null)
 }
 
 /**
- * @param Type    $type
- * @param ?string $name
- * @param ?string $description
- *
- * @return ListOfType|\Closure -> (resolve, args) -> array
+ * @param Type $type
+ * @param string|null $name
+ * @param string|null $description
+ * @return ListOfType|Closure -> (resolve, args) -> array
  */
 function list_of(Type $type, ?string $name = null, ?string $description = null)
 {
@@ -413,10 +409,9 @@ function list_of(Type $type, ?string $name = null, ?string $description = null)
 /**
  * Returns an evaluable Id field definition.
  *
- * @param ?string $name
- * @param ?string $description
- *
- * @return IDType|\Closure -> (resolve, args) -> array
+ * @param string|null $name
+ * @param string|null $description
+ * @return IDType|Closure -> (resolve, args) -> array
  */
 function id(?string $name = null, ?string $description = null)
 {
@@ -430,10 +425,9 @@ function id(?string $name = null, ?string $description = null)
 /**
  * Returns an InterfaceType factory function.
  *
- * @param string  $name
- * @param ?string $description
- *
- * @return \Closure -> fields -> resolve -> InterfaceType
+ * @param string $name
+ * @param string|null $description
+ * @return Closure -> fields -> resolve -> InterfaceType
  */
 function itype(string $name, ?string $description = null)
 {
@@ -452,14 +446,13 @@ function itype(string $name, ?string $description = null)
 /**
  * Returns an ObjectType factory function.
  *
- * @param string  $name
- * @param ?string $description
- *
- * @return \Closure -> fields -> resolve -> ObjectType
+ * @param string $name
+ * @param string|null $description
+ * @return Closure -> fields -> resolve -> ObjectType
  */
-function type(string $name, ?string $description = null): \Closure
+function type(string $name, ?string $description = null): Closure
 {
-    return function (array $fields = []) use ($name, $description): \Closure {
+    return function (array $fields = []) use ($name, $description): Closure {
         return function (callable $resolve = null) use ($name, $description, $fields): ObjectType {
             return new ObjectType([
                 'name' => $name,

@@ -6,6 +6,7 @@ namespace Siler\Test\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Siler\Container;
+use stdClass;
 
 class ContainerTest extends TestCase
 {
@@ -22,14 +23,14 @@ class ContainerTest extends TestCase
 
     public function testHas()
     {
-        Container\Container::getInstance()->values['test_has'] = new \stdClass();
+        Container\Container::getInstance()->values['test_has'] = new stdClass();
         $this->assertTrue(Container\has('test_has'));
         $this->assertFalse(Container\has('test_hasnt'));
     }
 
     public function testClear()
     {
-        Container\Container::getInstance()->values['test_clear'] = new \stdClass();
+        Container\Container::getInstance()->values['test_clear'] = new stdClass();
         $this->assertTrue(Container\has('test_clear'));
         Container\clear('test_clear');
         $this->assertFalse(Container\has('test_clear'));

@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit\Graphql;
 
+use Exception;
+use PHPUnit\Framework\TestCase;
 use Ratchet\ConnectionInterface;
 use Siler\GraphQL\SubscriptionsManager;
 use Siler\GraphQL\SubscriptionsServer;
 
-class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
+class SubscriptionsServerTest extends TestCase
 {
     public function testOnOpen()
     {
@@ -96,7 +98,7 @@ class SubscriptionsServerTest extends \PHPUnit\Framework\TestCase
         $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
 
         $server = new SubscriptionsServer($manager);
-        $server->onError($conn, new \Exception());
+        $server->onError($conn, new Exception());
 
         $this->assertInstanceOf(SubscriptionsServer::class, $server);
     }

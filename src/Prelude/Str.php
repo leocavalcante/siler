@@ -13,7 +13,7 @@ use Siler\Container;
 /**
  * Slugify a string.
  *
- * @param string     $input
+ * @param string $input
  * @param array|null $opts
  *
  * @return string

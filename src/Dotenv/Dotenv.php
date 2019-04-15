@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace Siler\Dotenv;
 
 use Dotenv\Dotenv;
+use function Siler\array_get;
 
 /**
  * Load the .env file contents into the environment.
@@ -27,12 +28,12 @@ function init(string $path): array
 /**
  * Get an environment value or fallback to the given default.
  *
- * @param ?string $key     The key to be searched on the environment
- * @param mixed   $default A default when the key do not exists
+ * @param string|null $key
+ * @param mixed $default A default when the key do not exists
  *
  * @return mixed
  */
 function env(?string $key = null, $default = null)
 {
-    return \Siler\array_get($_SERVER, $key, $default);
+    return array_get($_SERVER, $key, $default);
 }

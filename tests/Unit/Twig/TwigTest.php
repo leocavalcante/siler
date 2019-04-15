@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace Siler\Test\Unit;
 
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Siler\Container;
 use Siler\Twig;
+use Twig\Environment;
 
 class TwigTest extends TestCase
 {
     public function testRenderWithoutInit()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Twig should be initialized first');
 
         Container\set('twig', null);
@@ -22,7 +24,7 @@ class TwigTest extends TestCase
     public function testCreateTwigEnv()
     {
         $twigEnv = Twig\init(__DIR__ . '/../../fixtures');
-        $this->assertInstanceOf(\Twig\Environment::class, $twigEnv);
+        $this->assertInstanceOf(Environment::class, $twigEnv);
     }
 
     public function testRender()

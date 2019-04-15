@@ -13,8 +13,8 @@ use function Siler\array_get;
 /**
  * Get a value from the $_COOKIE global.
  *
- * @param ?string $key     The key to be searched
- * @param mixed   $default The default value to be returned when the key don't exists
+ * @param string|null $key
+ * @param mixed $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
@@ -26,8 +26,8 @@ function cookie(?string $key = null, $default = null)
 /**
  * Get a value from the $_SESSION global.
  *
- * @param ?string $key     The key to be searched
- * @param mixed   $default The default value to be returned when the key don't exists
+ * @param string|null $key
+ * @param mixed $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
@@ -39,8 +39,8 @@ function session(?string $key = null, $default = null)
 /**
  * Set a value in the $_SESSION global.
  *
- * @param string $key   The key to be used
- * @param mixed  $value The value to be stored
+ * @param string $key The key to be used
+ * @param mixed $value The value to be stored
  */
 function setsession(string $key, $value)
 {
@@ -50,8 +50,8 @@ function setsession(string $key, $value)
 /**
  * Get a value from the $_SESSION global and remove it.
  *
- * @param ?string $key     The key to be searched
- * @param mixed   $default The default value to be returned when the key don't exists
+ * @param string|null $key
+ * @param mixed $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
@@ -79,8 +79,7 @@ function redirect(string $url)
 /**
  * Returns a path based on the projects base url.
  *
- * @param ?string $path Concat some URI
- *
+ * @param string|null $path
  * @return string
  */
 function url(?string $path = null): string
@@ -118,8 +117,7 @@ function path(): string
 /**
  * Get the absolute project's URI.
  *
- * @param ?string $protocol Pass a protocol, defaults to http or https
- *
+ * @param string|null $protocol
  * @return string
  */
 function uri(?string $protocol = null): string

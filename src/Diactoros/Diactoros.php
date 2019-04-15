@@ -30,8 +30,8 @@ function request(): ServerRequest
  * Returns a new response.
  *
  * @param string $body
- * @param int    $status
- * @param array  $headers
+ * @param int $status
+ * @param array $headers
  *
  * @return Response
  */
@@ -44,8 +44,8 @@ function response(string $body = 'php://memory', int $status = 200, array $heade
  * Returns a new HTML response.
  *
  * @param string $html
- * @param int    $status
- * @param array  $headers
+ * @param int $status
+ * @param array $headers
  *
  * @return HtmlResponse
  */
@@ -58,9 +58,9 @@ function html(string $html, int $status = 200, array $headers = []): HtmlRespons
  * Returns a new JSON encoded response.
  *
  * @param mixed $data
- * @param int   $status
+ * @param int $status
  * @param array $headers
- * @param int   $encodingOptions
+ * @param int $encodingOptions
  *
  * @return JsonResponse
  */
@@ -77,8 +77,8 @@ function json(
  * Returns a new text response.
  *
  * @param string $text
- * @param int    $status
- * @param array  $headers
+ * @param int $status
+ * @param array $headers
  *
  * @return TextResponse
  */
@@ -91,8 +91,8 @@ function text(string $text, int $status = 200, array $headers = []): TextRespons
  * Returns a new redirect response.
  *
  * @param string $uri
- * @param int    $status
- * @param array  $headers
+ * @param int $status
+ * @param array $headers
  *
  * @return RedirectResponse
  */
@@ -104,7 +104,7 @@ function redirect(string $uri, int $status = 302, array $headers = []): Redirect
 /**
  * Returns a new empty response.
  *
- * @param int   $status
+ * @param int $status
  * @param array $headers
  *
  * @return EmptyResponse

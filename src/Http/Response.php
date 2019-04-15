@@ -8,14 +8,15 @@ declare(strict_types=1);
 namespace Siler\Http\Response;
 
 use Siler\Http;
+use UnexpectedValueException;
 
 /**
  * Outputs the given parameters based on a HTTP response.
  *
- * @param string $content  The HTTP response body
- * @param int    $code     The HTTP response status code
+ * @param string $content The HTTP response body
+ * @param int $code The HTTP response status code
  * @param string $mimeType A value for HTTP Header Content-Type
- * @param string $charset  The HTTP response charset
+ * @param string $charset The HTTP response charset
  *
  * @return int Returns 1, always
  */
@@ -31,7 +32,7 @@ function output(string $content = '', int $code = 204, string $mimeType = 'text/
  * Outputs a HTTP response as simple text.
  *
  * @param string $content The HTTP response body
- * @param int    $code    The HTTP response status code
+ * @param int $code The HTTP response status code
  * @param string $charset The HTTP response charset
  *
  * @return int Returns 1, always
@@ -45,7 +46,7 @@ function text(string $content, int $code = 200, string $charset = 'utf-8'): int
  * Outputs a HTML HTTP response.
  *
  * @param string $content The HTTP response body
- * @param int    $code    The HTTP response status code
+ * @param int $code The HTTP response status code
  * @param string $charset The HTTP response charset
  *
  * @return int Returns 1, always
@@ -59,7 +60,7 @@ function html(string $content, int $code = 200, string $charset = 'utf-8'): int
  * Outputs the given content as JSON mime type.
  *
  * @param string $content The HTTP response body
- * @param int    $code    The HTTP response status code
+ * @param int $code The HTTP response status code
  * @param string $charset The HTTP response charset
  *
  * @return int Returns 1, always
@@ -72,8 +73,8 @@ function jsonstr(string $content, int $code = 200, string $charset = 'utf-8'): i
 /**
  * Outputs the given content encoded as JSON string.
  *
- * @param mixed  $content The HTTP response body
- * @param int    $code    The HTTP response status code
+ * @param mixed $content The HTTP response body
+ * @param int $code The HTTP response status code
  * @param string $charset The HTTP response charset
  *
  * @return int Returns 1, always
@@ -83,7 +84,7 @@ function json($content, int $code = 200, string $charset = 'utf-8'): int
     $body = json_encode($content);
 
     if (false === $body) {
-        throw new \UnexpectedValueException('Could not encode content');
+        throw new UnexpectedValueException('Could not encode content');
     }
 
     return jsonstr($body, $code, $charset);
@@ -92,9 +93,9 @@ function json($content, int $code = 200, string $charset = 'utf-8'): int
 /**
  * Helper method to setup a header item as key-value parts.
  *
- * @param string $key     The response header name
- * @param string $val     The response header value
- * @param bool   $replace Should replace a previous similar header, or add a second header of the same type.
+ * @param string $key The response header name
+ * @param string $val The response header value
+ * @param bool $replace Should replace a previous similar header, or add a second header of the same type.
  */
 function header(string $key, string $val, bool $replace = true)
 {

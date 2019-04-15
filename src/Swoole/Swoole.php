@@ -8,10 +8,12 @@ declare(strict_types=1);
 
 namespace Siler\Swoole;
 
+use OutOfBoundsException;
+use Siler\Container;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\Http\Server;
-use Siler\Container;
+use UnexpectedValueException;
 use const Siler\Route\DID_MATCH;
 
 const SWOOLE_HTTP_REQUEST = 'swoole_http_request';
@@ -25,8 +27,8 @@ const SWOOLE_WEBSOCKET_ONCLOSE = 'swoole_websocket_onclose';
  * Returns a Swoole HTTP server.
  *
  * @param callable $handler The callable to call on each request.
- * @param int      $port    The port binding (defaults to 9501).
- * @param string   $host    The host binding (defaults to 0.0.0.0).
+ * @param int $port The port binding (defaults to 9501).
+ * @param string $host The host binding (defaults to 0.0.0.0).
  *
  * @return Server
  */
@@ -66,8 +68,8 @@ function response(): Response
  * Controls Swoole halting avoiding calling end() more than once.
  *
  * @param string $content Content for the output.
- * @param int    $status  HTTP response status code.
- * @param array  $headers HTTP response headers.
+ * @param int $status HTTP response status code.
+ * @param array $headers HTTP response headers.
  *
  * @return null
  */
@@ -106,7 +108,7 @@ function json($data, int $status = 200, array $headers = [])
     if (false === $content) {
         $error = json_last_error_msg();
 
-        throw new \UnexpectedValueException($error);
+        throw new UnexpectedValueException($error);
     }
 
     $headers = array_merge(['Content-Type' => 'application/json'], $headers);
@@ -173,14 +175,14 @@ function websocket(callable $handler, int $port = 9502, string $host = '0.0.0.0'
  * Pushes a message to a specific websocket client.
  *
  * @param string $message
- * @param int    $fd
+ * @param int $fd
  *
  * @return mixed
  */
 function push(string $message, int $fd)
 {
     if (!Container\has(SWOOLE_WEBSOCKET_SERVER)) {
-        throw new \OutOfBoundsException('There is no server to push.');
+        throw new OutOfBoundsException('There is no server to push.');
     }
 
     $server = Container\get(SWOOLE_WEBSOCKET_SERVER);
@@ -196,7 +198,7 @@ function push(string $message, int $fd)
 function broadcast(string $message)
 {
     if (!Container\has(SWOOLE_WEBSOCKET_SERVER)) {
-        throw new \OutOfBoundsException('There is no server to broadcast.');
+        throw new OutOfBoundsException('There is no server to broadcast.');
     }
 
     $server = Container\get(SWOOLE_WEBSOCKET_SERVER);
@@ -209,7 +211,7 @@ function broadcast(string $message)
 /**
  * Enable CORS in a Swoole Response.
  *
- * @param string $origin  Comma-separated list of allowed origins, defaults to "*".
+ * @param string $origin Comma-separated list of allowed origins, defaults to "*".
  * @param string $headers Comma-separated list of allowed headers, defaults to "Content-Type".
  * @param string $methods Comma-separated list of allowed methods, defaults to "GET, POST, PUT, DELETE".
  */

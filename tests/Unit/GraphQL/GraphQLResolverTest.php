@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit\Graphql;
 
+use PHPUnit\Framework\TestCase;
 use Siler\GraphQL;
+use stdClass;
 
-class GraphQLResolverTest extends \PHPUnit\Framework\TestCase
+class GraphQLResolverTest extends TestCase
 {
     public function testResolver()
     {
@@ -91,7 +93,7 @@ class GraphQLResolverTest extends \PHPUnit\Framework\TestCase
 
     public function testObjectResolve()
     {
-        $object = new \stdClass();
+        $object = new stdClass();
         $object->message = 'foo';
 
         $typeDefs = '

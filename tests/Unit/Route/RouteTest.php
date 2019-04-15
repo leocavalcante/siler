@@ -13,16 +13,6 @@ use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 class RouteTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        $_GET = $_POST = $_REQUEST = ['foo' => 'bar'];
-
-        $_SERVER['HTTP_HOST'] = 'test:8000';
-        $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
-        $_SERVER['REQUEST_URI'] = '/bar/baz';
-        $_SERVER['REQUEST_METHOD'] = 'GET';
-    }
-
     /**
      * Test route with request parameter as an array.
      */
@@ -255,5 +245,15 @@ class RouteTest extends TestCase
         Container\set(SWOOLE_HTTP_REQUEST, new SwooleHttpRequestMock('DELETE', '/qux'));
         $methodPath = Route\method_path(null);
         $this->assertSame(['DELETE', '/qux'], $methodPath);
+    }
+
+    protected function setUp(): void
+    {
+        $_GET = $_POST = $_REQUEST = ['foo' => 'bar'];
+
+        $_SERVER['HTTP_HOST'] = 'test:8000';
+        $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
+        $_SERVER['REQUEST_URI'] = '/bar/baz';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
     }
 }

@@ -8,20 +8,25 @@ declare(strict_types=1);
 namespace Siler\SwiftMailer;
 
 use Siler\Container;
+use Swift_Mailer;
+use Swift_Message;
+use Swift_SmtpTransport;
+use Swift_Transport;
+use UnderflowException;
 
 const SWIFT_MAILER = 'swift_mailer';
 
 /**
  * Send a Swift_Message using the Mailer in the Container.
  *
- * @param \Swift_Message $message
+ * @param Swift_Message $message
  *
  * @return mixed
  */
-function send(\Swift_Message $message)
+function send(Swift_Message $message)
 {
     if (!Container\has(SWIFT_MAILER)) {
-        throw new \UnderflowException('You should call mailer() before send()');
+        throw new UnderflowException('You should call mailer() before send()');
     }
 
     $mailer = Container\get(SWIFT_MAILER);
@@ -33,12 +38,12 @@ function send(\Swift_Message $message)
  * Sugar to create a new SwiftMailer Message.
  *
  * @param string $subject
- * @param array  $from
- * @param array  $to
+ * @param array $from
+ * @param array $to
  * @param string $body
  * @param string $contentType
  *
- * @return \Swift_Message
+ * @return Swift_Message
  */
 function message(
     string $subject,
@@ -46,8 +51,8 @@ function message(
     array $to,
     string $body,
     string $contentType = 'text/plain'
-): \Swift_Message {
-    return (new \Swift_Message())
+): Swift_Message {
+    return (new Swift_Message())
         ->setSubject($subject)
         ->setFrom($from)
         ->setTo($to)
@@ -57,16 +62,16 @@ function message(
 /**
  * Sugar to create a new SwiftMailer SMTP transport.
  *
- * @param string      $host
- * @param int         $port
+ * @param string $host
+ * @param int $port
  * @param string|null $username
  * @param string|null $password
  *
- * @return \Swift_Transport
+ * @return Swift_Transport
  */
-function smtp(string $host, int $port, ?string $username = null, ?string $password = null): \Swift_Transport
+function smtp(string $host, int $port, ?string $username = null, ?string $password = null): Swift_Transport
 {
-    $transport = new \Swift_SmtpTransport($host, $port);
+    $transport = new Swift_SmtpTransport($host, $port);
 
     if (!is_null($username)) {
         $transport->setUsername($username);
@@ -82,13 +87,13 @@ function smtp(string $host, int $port, ?string $username = null, ?string $passwo
 /**
  * Setup a Swift Mailer in the Siler Container.
  *
- * @param \Swift_Transport $transport
+ * @param Swift_Transport $transport
  *
- * @return \Swift_Mailer
+ * @return Swift_Mailer
  */
-function mailer(\Swift_Transport $transport): \Swift_Mailer
+function mailer(Swift_Transport $transport): Swift_Mailer
 {
-    $mailer = new \Swift_Mailer($transport);
+    $mailer = new Swift_Mailer($transport);
     Container\set(SWIFT_MAILER, $mailer);
 
     return $mailer;

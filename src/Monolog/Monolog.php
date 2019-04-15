@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Siler\Monolog;
 
+use Exception;
+use InvalidArgumentException;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -15,15 +17,15 @@ const MONOLOG_DEFAULT_CHANNEL = 'log';
  * Can be used to store into php://stderr, remote and local files, etc.
  *
  * @param resource|string $stream
- * @param int             $level          The minimum logging level at which this handler will be triggered
- * @param bool            $bubble         Whether the messages that are handled can bubble up the stack or not
- * @param int|null        $filePermission Optional file permissions (default (0644) are only for owner read/write)
- * @param bool            $useLocking     Try to lock log file before doing any writes
- *
- * @throws \Exception                If a missing directory is not buildable
- * @throws \InvalidArgumentException If stream is not a resource or string
+ * @param int $level The minimum logging level at which this handler will be triggered
+ * @param bool $bubble Whether the messages that are handled can bubble up the stack or not
+ * @param int|null $filePermission Optional file permissions (default (0644) are only for owner read/write)
+ * @param bool $useLocking Try to lock log file before doing any writes
  *
  * @return StreamHandler
+ * @throws InvalidArgumentException If stream is not a resource or string
+ *
+ * @throws Exception                If a missing directory is not buildable
  */
 function stream(
     $stream,
@@ -39,9 +41,9 @@ function stream(
  * Adds a log record at an arbitrary level.
  * This function allows for compatibility with common interfaces.
  *
- * @param int    $level   The log level.
+ * @param int $level The log level.
  * @param string $message The log message.
- * @param array  $context The log context.
+ * @param array $context The log context.
  * @param string $channel The log channel.
  *
  * @return bool Whether the record has been processed.
@@ -57,7 +59,7 @@ function log(int $level, string $message, array $context = [], string $channel =
  * Pushes a handler on to the stack.
  *
  * @param HandlerInterface $handler The handler to be pushed.
- * @param string           $channel The Logger channel.
+ * @param string $channel The Logger channel.
  *
  * @return Logger Returns the Logger.
  */
@@ -72,7 +74,7 @@ function handler(HandlerInterface $handler, string $channel = MONOLOG_DEFAULT_CH
  * Detailed debug information.
  *
  * @param string $message The log message.
- * @param array  $context The log context.
+ * @param array $context The log context.
  * @param string $channel The log channel.
  *
  * @return bool Whether the record has been processed.
@@ -86,7 +88,7 @@ function debug(string $message, array $context = [], string $channel = MONOLOG_D
  * Interesting events. Examples: User logs in, SQL logs.
  *
  * @param string $message The log message.
- * @param array  $context The log context.
+ * @param array $context The log context.
  * @param string $channel The log channel.
  *
  * @return bool Whether the record has been processed.
@@ -100,7 +102,7 @@ function info(string $message, array $context = [], string $channel = MONOLOG_DE
  * Normal but significant events.
  *
  * @param string $message The log message.
- * @param array  $context The log context.
+ * @param array $context The log context.
  * @param string $channel The log channel.
  *
  * @return bool Whether the record has been processed.
@@ -114,7 +116,7 @@ function notice(string $message, array $context = [], string $channel = MONOLOG_
  * Exceptional occurrences that are not errors. Examples: Use of deprecated APIs, poor use of an API, undesirable things that are not necessarily wrong.
  *
  * @param string $message The log message.
- * @param array  $context The log context.
+ * @param array $context The log context.
  * @param string $channel The log channel.
  *
  * @return bool Whether the record has been processed.
@@ -128,7 +130,7 @@ function warning(string $message, array $context = [], string $channel = MONOLOG
  * Runtime errors that do not require immediate action but should typically be logged and monitored.
  *
  * @param string $message The log message.
- * @param array  $context The log context.
+ * @param array $context The log context.
  * @param string $channel The log channel.
  *
  * @return bool Whether the record has been processed.
@@ -142,7 +144,7 @@ function error(string $message, array $context = [], string $channel = MONOLOG_D
  * Critical conditions. Example: Application component unavailable, unexpected exception.
  *
  * @param string $message The log message.
- * @param array  $context The log context.
+ * @param array $context The log context.
  * @param string $channel The log channel.
  *
  * @return bool Whether the record has been processed.
@@ -156,7 +158,7 @@ function critical(string $message, array $context = [], string $channel = MONOLO
  * Action must be taken immediately. Example: Entire website down, database unavailable, etc. This should trigger the SMS alerts and wake you up.
  *
  * @param string $message The log message.
- * @param array  $context The log context.
+ * @param array $context The log context.
  * @param string $channel The log channel.
  *
  * @return bool Whether the record has been processed.
@@ -170,7 +172,7 @@ function alert(string $message, array $context = [], string $channel = MONOLOG_D
  * Emergency: system is unusable.
  *
  * @param string $message The log message.
- * @param array  $context The log context.
+ * @param array $context The log context.
  * @param string $channel The log channel.
  *
  * @return bool Whether the record has been processed.

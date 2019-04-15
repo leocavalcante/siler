@@ -1,9 +1,12 @@
-<?php
+<?php /** @noinspection PhpComposerExtensionStubsInspection */
 
 declare(strict_types=1);
 
 namespace Siler\Db;
 
+use OutOfRangeException;
+use PDO;
+use PDOStatement;
 use Siler\Container;
 
 const DB_DEFAULT_NAME = 'db';
@@ -14,14 +17,14 @@ const DB_DEFAULT_NAME = 'db';
  * @param string $dsn
  * @param string $username
  * @param string $passwd
- * @param array  $options
+ * @param array $options
  *
- * @return \PDO
+ * @return PDO
  */
-function connect(string $dsn, string $username = 'root', string $passwd = '', array $options = []): \PDO
+function connect(string $dsn, string $username = 'root', string $passwd = '', array $options = []): PDO
 {
-    $pdo = new \PDO($dsn, $username, $passwd, $options);
-    $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+    $pdo = new PDO($dsn, $username, $passwd, $options);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
     Container\set(DB_DEFAULT_NAME, $pdo);
 
@@ -34,12 +37,12 @@ function connect(string $dsn, string $username = 'root', string $passwd = '', ar
  * @param string $statement
  * @param string $pdoName
  *
- * @return \PDOStatement
+ * @return PDOStatement
  */
-function query(string $statement, string $pdoName = DB_DEFAULT_NAME): \PDOStatement
+function query(string $statement, string $pdoName = DB_DEFAULT_NAME): PDOStatement
 {
     if (!Container\has($pdoName)) {
-        throw new \OutOfRangeException("$pdoName not found");
+        throw new OutOfRangeException("$pdoName not found");
     }
 
     return Container\get($pdoName)->query($statement);
@@ -49,15 +52,15 @@ function query(string $statement, string $pdoName = DB_DEFAULT_NAME): \PDOStatem
  * Prepare a statement.
  *
  * @param string $statement
- * @param array  $driverOpts
+ * @param array $driverOpts
  * @param string $pdoName
  *
- * @return \PDOStatement|null
+ * @return PDOStatement|null
  */
-function prepare(string $statement, array $driverOpts = [], string $pdoName = DB_DEFAULT_NAME): ?\PDOStatement
+function prepare(string $statement, array $driverOpts = [], string $pdoName = DB_DEFAULT_NAME): ?PDOStatement
 {
     if (!Container\has($pdoName)) {
-        throw new \OutOfRangeException("$pdoName not found");
+        throw new OutOfRangeException("$pdoName not found");
     }
 
     $stmt = Container\get($pdoName)->prepare($statement, $driverOpts);
@@ -79,7 +82,7 @@ function prepare(string $statement, array $driverOpts = [], string $pdoName = DB
 function error(string $pdoName = DB_DEFAULT_NAME): array
 {
     if (!Container\has($pdoName)) {
-        throw new \OutOfRangeException("$pdoName not found");
+        throw new OutOfRangeException("$pdoName not found");
     }
 
     return Container\get($pdoName)->errorInfo();
@@ -94,7 +97,7 @@ function error(string $pdoName = DB_DEFAULT_NAME): array
  *
  * @return array|null Returns the resulting array (maybe empty) or null in case of error.
  */
-function fetch_all(string $statement, int $fetchStyle = \PDO::FETCH_ASSOC, string $pdoName = DB_DEFAULT_NAME): ?array
+function fetch_all(string $statement, int $fetchStyle = PDO::FETCH_ASSOC, string $pdoName = DB_DEFAULT_NAME): ?array
 {
     $results = query($statement, $pdoName)->fetchAll($fetchStyle);
 
@@ -114,7 +117,7 @@ function fetch_all(string $statement, int $fetchStyle = \PDO::FETCH_ASSOC, strin
  *
  * @return array|null Returns the resulting array (maybe empty) or null in case of error.
  */
-function fetch(string $statement, int $fetchStyle = \PDO::FETCH_ASSOC, string $pdoName = DB_DEFAULT_NAME): ?array
+function fetch(string $statement, int $fetchStyle = PDO::FETCH_ASSOC, string $pdoName = DB_DEFAULT_NAME): ?array
 {
     $result = query($statement, $pdoName)->fetch($fetchStyle);
 

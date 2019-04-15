@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
+use OutOfRangeException;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Siler\Tuple as T;
 
 class TupleTest extends TestCase
@@ -24,21 +26,21 @@ class TupleTest extends TestCase
 
     public function testOutOfRangeGet()
     {
-        $this->expectException(\OutOfRangeException::class);
+        $this->expectException(OutOfRangeException::class);
         $tuple = T\tuple(1);
         $tuple[1];
     }
 
     public function testImmutableSet()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $tuple = T\tuple(1);
         $tuple[1] = 2;
     }
 
     public function testImmutableUnset()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $tuple = T\tuple(1);
         unset($tuple[0]);
     }

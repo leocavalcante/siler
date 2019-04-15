@@ -9,15 +9,6 @@ use Siler\Http;
 
 class HttpTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = ['foo' => 'bar'];
-
-        $_SERVER['HTTP_HOST'] = 'test:8000';
-        $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
-        $_SERVER['REQUEST_URI'] = '/bar/baz';
-    }
-
     public function testCookie()
     {
         $this->assertSame($_COOKIE, Http\cookie());
@@ -87,5 +78,14 @@ class HttpTest extends TestCase
         $headers = xdebug_get_headers();
 
         $this->assertContains('Location: test://siler', $headers);
+    }
+
+    protected function setUp(): void
+    {
+        $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = ['foo' => 'bar'];
+
+        $_SERVER['HTTP_HOST'] = 'test:8000';
+        $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
+        $_SERVER['REQUEST_URI'] = '/bar/baz';
     }
 }

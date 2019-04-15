@@ -6,6 +6,7 @@ namespace Siler\Test\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Siler\Http\Response;
+use UnexpectedValueException;
 
 /**
  * @runTestsInSeparateProcesses
@@ -54,7 +55,7 @@ class ResponseTest extends TestCase
 
     public function testJsonError()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
 
         Response\json(fopen('php://input', 'r'));
     }

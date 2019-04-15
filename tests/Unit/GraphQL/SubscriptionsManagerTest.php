@@ -8,10 +8,12 @@ use GraphQL\Executor\Executor;
 use GraphQL\Language\AST\DocumentNode;
 use GraphQL\Type\Schema;
 use GraphQL\Utils\BuildSchema;
+use PHPUnit\Framework\TestCase;
 use Ratchet\ConnectionInterface;
 use Siler\GraphQL\SubscriptionsManager;
+use stdClass;
 
-class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
+class SubscriptionsManagerTest extends TestCase
 {
     public function testHandleConnectionInit()
     {
@@ -314,16 +316,16 @@ class SubscriptionsManagerTest extends \PHPUnit\Framework\TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $nameNode = new \stdClass();
+        $nameNode = new stdClass();
         $nameNode->value = 'test';
 
-        $selection = new \stdClass();
+        $selection = new stdClass();
         $selection->name = $nameNode;
 
-        $selectionSet = new \stdClass();
+        $selectionSet = new stdClass();
         $selectionSet->selections = [$selection];
 
-        $definition = new \stdClass();
+        $definition = new stdClass();
         $definition->selectionSet = $selectionSet;
 
         $document->definitions = [$definition];

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Siler\Result;
 
-abstract class Result implements \JsonSerializable
+use JsonSerializable;
+
+abstract class Result implements JsonSerializable
 {
     private $id;
     private $data;
@@ -32,9 +34,6 @@ abstract class Result implements \JsonSerializable
         return $this->data;
     }
 
-    abstract public function isSuccess(): bool;
-    abstract public function isFailure(): bool;
-
     public function jsonSerialize()
     {
         $json = [
@@ -58,6 +57,10 @@ abstract class Result implements \JsonSerializable
         $json['data'] = $this->data;
         return $json;
     }
+
+    abstract public function isFailure(): bool;
+
+    abstract public function isSuccess(): bool;
 }
 
 function success($data = null, int $code = 0, string $id = null): Success

@@ -1,7 +1,8 @@
-<?php
+<?php /** @noinspection PhpComposerExtensionStubsInspection */
 
 namespace Siler\Redis;
 
+use Redis;
 use Siler\Container;
 
 /**
@@ -16,11 +17,11 @@ const DEFAULT_INSTANCE = 'redis_default_instance';
  * @param int $port
  * @param string $redisInstance
  *
- * @return \Redis
+ * @return Redis
  */
-function connect(string $host = '127.0.0.1', int $port = 6379, string $redisInstance = DEFAULT_INSTANCE): \Redis
+function connect(string $host = '127.0.0.1', int $port = 6379, string $redisInstance = DEFAULT_INSTANCE): Redis
 {
-    $redis = new \Redis();
+    $redis = new Redis();
     $redis->connect($host, $port);
 
     Container\set($redisInstance, $redis);
@@ -62,6 +63,7 @@ function set(string $key, string $val, string $redisInstance = DEFAULT_INSTANCE)
  *
  * @param string $key
  *
+ * @param string $redisInstance
  * @return bool
  */
 function has(string $key, string $redisInstance = DEFAULT_INSTANCE): bool

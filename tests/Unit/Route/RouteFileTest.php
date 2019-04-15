@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 use Siler\Route;
 
-class RouteFileTest extends \PHPUnit\Framework\TestCase
+class RouteFileTest extends TestCase
 {
     /**
      * @runInSeparateProcess
@@ -85,7 +87,7 @@ class RouteFileTest extends \PHPUnit\Framework\TestCase
      */
     public function testNotExists()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         Route\files('path/does/not/exists');
     }
 }

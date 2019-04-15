@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Siler\GraphQL;
 
+use Exception;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 use Ratchet\WebSocket\WsServerInterface;
 use Siler\GraphQL;
+use UnexpectedValueException;
 
 class SubscriptionsServer implements MessageComponentInterface, WsServerInterface
 {
@@ -41,14 +43,14 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
      * @override
      *
      * @param ConnectionInterface $conn
-     * @param string              $message
+     * @param string $message
      */
     public function onMessage(ConnectionInterface $conn, $message)
     {
         $data = json_decode($message, true);
 
         if (!is_array($data)) {
-            throw new \UnexpectedValueException('GraphQL message should be a JSON object');
+            throw new UnexpectedValueException('GraphQL message should be a JSON object');
         }
 
         switch ($data['type']) {
@@ -85,11 +87,11 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
      * @override
      *
      * @param ConnectionInterface $conn
-     * @param \Exception          $exception
+     * @param Exception $exception
      *
      * @suppress PhanUnusedPublicMethodParameter
      */
-    public function onError(ConnectionInterface $conn, \Exception $exception)
+    public function onError(ConnectionInterface $conn, Exception $exception)
     {
     }
 

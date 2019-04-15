@@ -9,8 +9,8 @@ namespace Siler\Http\Request;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Siler\Container;
-use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 use function Siler\array_get;
+use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 /**
  * Returns the raw HTTP body request.
@@ -21,7 +21,7 @@ use function Siler\array_get;
  */
 function raw(string $input = 'php://input'): string
 {
-    return (string) file_get_contents($input);
+    return (string)file_get_contents($input);
 }
 
 /**
@@ -107,8 +107,8 @@ function headers(): array
 /**
  * Returns the request header or the given default.
  *
- * @param string $key     The header name
- * @param mixed  $default The default value when header isnt present
+ * @param string $key The header name
+ * @param mixed $default The default value when header isnt present
  *
  * @return mixed
  */
@@ -120,8 +120,8 @@ function header(string $key, $default = null)
 /**
  * Get a value from the $_GET global.
  *
- * @param ?string $key     The key to be searched
- * @param mixed   $default The default value to be returned when the key don't exists
+ * @param string|null $key
+ * @param mixed $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
@@ -133,8 +133,8 @@ function get(?string $key = null, $default = null)
 /**
  * Get a value from the $_POST global.
  *
- * @param ?string $key     The key to be searched
- * @param mixed   $default The default value to be returned when the key don't exists
+ * @param string|null $key
+ * @param mixed $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
@@ -146,8 +146,8 @@ function post(?string $key = null, $default = null)
 /**
  * Get a value from the $_REQUEST global.
  *
- * @param ?string $key     The key to be searched
- * @param mixed   $default The default value to be returned when the key don't exists
+ * @param string|null $key
+ * @param mixed $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
@@ -159,8 +159,8 @@ function input(?string $key = null, $default = null)
 /**
  * Get a value from the $_FILES global.
  *
- * @param ?string $key     The key to be searched
- * @param mixed   $default The default value to be returned when the key don't exists
+ * @param string|null $key
+ * @param mixed $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
@@ -177,7 +177,7 @@ function file(?string $key = null, $default = null)
  */
 function method(): string
 {
-    if ($method = \Siler\Http\Request\header('X-Http-Method-Override')) {
+    if ($method = header('X-Http-Method-Override')) {
         return $method;
     }
 
@@ -195,9 +195,8 @@ function method(): string
 /**
  * Checks for the current HTTP request method.
  *
- * @param string|array $method        The given method to check on
- * @param ?string      $requestMethod
- *
+ * @param string|array $method The given method to check on
+ * @param string|null $requestMethod
  * @return bool
  */
 function method_is($method, ?string $requestMethod = null): bool
@@ -276,7 +275,7 @@ function recommended_locale(string $default = ''): string
 
     if (empty($locale)) {
         $locales = accepted_locales();
-        $locale = empty($locales) ? '' : (string) array_keys($locales)[0];
+        $locale = empty($locales) ? '' : (string)array_keys($locales)[0];
     }
 
     if (empty($locale)) {
@@ -285,6 +284,8 @@ function recommended_locale(string $default = ''): string
 
     if (empty($locale) && function_exists('locale_get_default')) {
         /* @phan-suppress-next-line PhanUndeclaredFunction */
+        /** @noinspection PhpFullyQualifiedNameUsageInspection */
+        /** @noinspection PhpComposerExtensionStubsInspection */
         $locale = \locale_get_default();
     }
 

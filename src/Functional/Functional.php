@@ -11,12 +11,14 @@ declare(strict_types=1);
 
 namespace Siler\Functional;
 
+use Closure;
+
 /**
  * Identity function.
  *
- * @return \Closure $value -> $value
+ * @return Closure $value -> $value
  */
-function identity(): \Closure
+function identity(): Closure
 {
     return function ($value) {
         return $value;
@@ -28,9 +30,9 @@ function identity(): \Closure
  *
  * @param mixed $value
  *
- * @return \Closure a -> $value
+ * @return Closure a -> $value
  */
-function always($value): \Closure
+function always($value): Closure
 {
     return function () use ($value) {
         return $value;
@@ -42,9 +44,9 @@ function always($value): \Closure
  *
  * @param mixed $right
  *
- * @return \Closure $left -> bool
+ * @return Closure $left -> bool
  */
-function equal($right): \Closure
+function equal($right): Closure
 {
     return function ($left) use ($right) {
         return $left === $right;
@@ -56,9 +58,9 @@ function equal($right): \Closure
  *
  * @param mixed $right
  *
- * @return \Closure $left -> bool
+ * @return Closure $left -> bool
  */
-function less_than($right): \Closure
+function less_than($right): Closure
 {
     return function ($left) use ($right) {
         return $left < $right;
@@ -70,9 +72,9 @@ function less_than($right): \Closure
  *
  * @param mixed $right
  *
- * @return \Closure $left -> bool
+ * @return Closure $left -> bool
  */
-function greater_than($right): \Closure
+function greater_than($right): Closure
 {
     return function ($left) use ($right) {
         return $left > $right;
@@ -84,9 +86,9 @@ function greater_than($right): \Closure
  *
  * @param callable $cond
  *
- * @return \Closure $then -> $else -> $value -> mixed
+ * @return Closure $then -> $else -> $value -> mixed
  */
-function if_else(callable $cond): \Closure
+function if_else(callable $cond): Closure
 {
     return function (callable $then) use ($cond) {
         return function (callable $else) use ($cond, $then) {
@@ -102,9 +104,9 @@ function if_else(callable $cond): \Closure
  *
  * @param array $matches
  *
- * @return \Closure $value -> mixed|null
+ * @return Closure $value -> mixed|null
  */
-function match(array $matches): \Closure
+function match(array $matches): Closure
 {
     return function ($value) use ($matches) {
         if (empty($matches)) {
@@ -122,9 +124,9 @@ function match(array $matches): \Closure
  *
  * @param array $functions
  *
- * @return \Closure $value -> bool
+ * @return Closure $value -> bool
  */
-function any(array $functions): \Closure
+function any(array $functions): Closure
 {
     return function ($value) use ($functions) {
         return array_reduce(
@@ -142,9 +144,9 @@ function any(array $functions): \Closure
  *
  * @param callable[] $functions
  *
- * @return \Closure $value -> bool
+ * @return Closure $value -> bool
  */
-function all(array $functions): \Closure
+function all(array $functions): Closure
 {
     return function ($value) use ($functions) {
         return array_reduce(
@@ -162,9 +164,9 @@ function all(array $functions): \Closure
  *
  * @param callable $function
  *
- * @return \Closure $value -> ! $function $value
+ * @return Closure $value -> ! $function $value
  */
-function not(callable $function): \Closure
+function not(callable $function): Closure
 {
     return function ($value) use ($function) {
         return !$function($value);
@@ -176,9 +178,9 @@ function not(callable $function): \Closure
  *
  * @param mixed $right
  *
- * @return \Closure $left -> $left + $right
+ * @return Closure $left -> $left + $right
  */
-function add($right): \Closure
+function add($right): Closure
 {
     return function ($left) use ($right) {
         return $left + $right;
@@ -190,9 +192,9 @@ function add($right): \Closure
  *
  * @param mixed $right
  *
- * @return \Closure $left -> $left * $right
+ * @return Closure $left -> $left * $right
  */
-function mul($right): \Closure
+function mul($right): Closure
 {
     return function ($left) use ($right) {
         return $left * $right;
@@ -204,9 +206,9 @@ function mul($right): \Closure
  *
  * @param mixed $right
  *
- * @return \Closure $left -> $left - $right
+ * @return Closure $left -> $left - $right
  */
-function sub($right): \Closure
+function sub($right): Closure
 {
     return function ($left) use ($right) {
         return $left - $right;
@@ -218,9 +220,9 @@ function sub($right): \Closure
  *
  * @param mixed $right
  *
- * @return \Closure $left -> $left / $right
+ * @return Closure $left -> $left / $right
  */
-function div($right): \Closure
+function div($right): Closure
 {
     return function ($left) use ($right) {
         return $left / $right;
@@ -232,9 +234,9 @@ function div($right): \Closure
  *
  * @param mixed $right
  *
- * @return \Closure $right -> $left % $right
+ * @return Closure $right -> $left % $right
  */
-function mod($right): \Closure
+function mod($right): Closure
 {
     return function ($left) use ($right) {
         return $left % $right;
@@ -247,9 +249,9 @@ function mod($right): \Closure
  *
  * @param array $functions
  *
- * @return \Closure $value -> mixed
+ * @return Closure $value -> mixed
  */
-function compose(array $functions): \Closure
+function compose(array $functions): Closure
 {
     return function ($value) use ($functions) {
         return array_reduce(
@@ -265,12 +267,12 @@ function compose(array $functions): \Closure
 /**
  * Converts the given $value to a boolean.
  *
- * @return \Closure $value -> bool
+ * @return Closure $value -> bool
  */
-function bool(): \Closure
+function bool(): Closure
 {
     return function ($value): bool {
-        return (bool) $value;
+        return (bool)$value;
     };
 }
 
@@ -278,9 +280,9 @@ function bool(): \Closure
  * In computer science, a NOP or NOOP (short for No Operation) is an assembly language instruction,
  * programming language statement, or computer protocol command that does nothing.
  *
- * @return \Closure a ->
+ * @return Closure a ->
  */
-function noop(): \Closure
+function noop(): Closure
 {
     return function () {
     };
@@ -291,9 +293,9 @@ function noop(): \Closure
  *
  * @param callable $function
  *
- * @return \Closure a -> $function(a)
+ * @return Closure a -> $function(a)
  */
-function hold(callable $function): \Closure
+function hold(callable $function): Closure
 {
     return function () use ($function) {
         return call_user_func_array($function, func_get_args());
@@ -305,9 +307,9 @@ function hold(callable $function): \Closure
  *
  * @param string $value
  *
- * @return \Closure a -> echo $value
+ * @return Closure a -> echo $value
  */
-function puts($value): \Closure
+function puts($value): Closure
 {
     return function () use ($value) {
         echo $value;
@@ -429,11 +431,11 @@ function non_empty(array $list): array
  * Partial application.
  *
  * @param callable $callable
- * @param mixed    ...$partial
+ * @param mixed ...$partial
  *
- * @return \Closure
+ * @return Closure
  */
-function partial(callable $callable, ...$partial): \Closure
+function partial(callable $callable, ...$partial): Closure
 {
     return function (...$args) use ($callable, $partial) {
         return call_user_func_array($callable, array_merge($partial, $args));
@@ -445,9 +447,9 @@ function partial(callable $callable, ...$partial): \Closure
  *
  * @param callable $predicate
  *
- * @return \Closure
+ * @return Closure
  */
-function if_then(callable $predicate): \Closure
+function if_then(callable $predicate): Closure
 {
     return function (callable $then) use ($predicate) {
         if ($predicate()) {
@@ -461,9 +463,9 @@ function if_then(callable $predicate): \Closure
  *
  * @param $var
  *
- * @return \Closure
+ * @return Closure
  */
-function is_empty($var): \Closure
+function is_empty($var): Closure
 {
     return function () use ($var): bool {
         return empty($var);
@@ -475,9 +477,9 @@ function is_empty($var): \Closure
  *
  * @param $var
  *
- * @return \Closure
+ * @return Closure
  */
-function isnull($var): \Closure
+function isnull($var): Closure
 {
     return function () use ($var): bool {
         return is_null($var);

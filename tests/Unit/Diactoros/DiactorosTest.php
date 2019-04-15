@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Siler\Diactoros;
@@ -13,7 +14,7 @@ use Zend\Diactoros\Response\JsonResponse;
 use Zend\Diactoros\Response\RedirectResponse;
 use Zend\Diactoros\Response\TextResponse;
 
-class DiactorosTest extends \PHPUnit\Framework\TestCase
+class DiactorosTest extends TestCase
 {
     public function testRequest()
     {

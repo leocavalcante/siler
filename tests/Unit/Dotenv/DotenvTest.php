@@ -6,12 +6,13 @@ namespace Siler\Test\Unit;
 
 use PHPUnit\Framework\TestCase;
 use function Siler\Dotenv\env as env;
+use function Siler\Dotenv\init;
 
 class DotenvTest extends TestCase
 {
     public function testEnv()
     {
-        $entries = \Siler\Dotenv\init(__DIR__ . '/../../fixtures');
+        $entries = init(__DIR__ . '/../../fixtures');
 
         $this->assertCount(2, $entries);
         $this->assertArrayHasKey('FOO', $entries);

@@ -53,4 +53,9 @@ class RouteClassNameTest extends TestCase
     {
         Route\resume();
     }
+
+    protected function setUp(): void
+    {
+        Route\purge_match();
+    }
 }

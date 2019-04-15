@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Siler\Container;
 use Siler\Diactoros;
 use Siler\Stratigility;
+use UnexpectedValueException;
 use Zend\Diactoros\ServerRequest;
 use Zend\Stratigility\MiddlewarePipe;
 
@@ -15,13 +16,13 @@ class StratigilityTest extends TestCase
 {
     public function testProcessThrowsWhenNull()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         Stratigility\process(new ServerRequest(), 'null_process_test');
     }
 
     public function testProcessThrowsWhenNotMiddlewarePipe()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
 
         Container\set('not_middlewarepipe', 1);
         Stratigility\process(new ServerRequest(), 'not_middlewarepipe');
@@ -63,13 +64,13 @@ class StratigilityTest extends TestCase
 
     public function testHandleThrowsWhenNull()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         Stratigility\handle(new ServerRequest(), 'null_handle_test');
     }
 
     public function testHandleThrowsWhenNotMiddlewarePipe()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
 
         Container\set('not_middlewarepipe', 1);
         Stratigility\handle(new ServerRequest(), 'not_middlewarepipe');

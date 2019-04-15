@@ -7,24 +7,13 @@ namespace Siler\Test\Unit;
 use PHPUnit\Framework\TestCase;
 use Siler\Container;
 use Siler\Http\Request;
-use Zend\Diactoros\ServerRequest;
 use Siler\Test\Unit\Route\SwooleHttpRequestMock;
+use Zend\Diactoros\ServerRequest;
+use function locale_get_default;
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 class RequestTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = $_FILES = ['foo' => 'bar'];
-
-        $_SERVER['HTTP_HOST'] = 'test:8000';
-        $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
-        $_SERVER['PATH_INFO'] = '/bar/baz';
-        $_SERVER['NON_HTTP'] = 'Ignore me';
-        $_SERVER['CONTENT_TYPE'] = 'phpunit/test';
-        $_SERVER['CONTENT_LENGTH'] = '123';
-    }
-
     public function testRaw()
     {
         $rawContent = Request\raw(__DIR__ . '/../../fixtures/php_input.txt');
@@ -191,7 +180,7 @@ class RequestTest extends TestCase
 
         if (function_exists('locale_get_default')) {
             $_SERVER['HTTP_ACCEPT_LANGUAGE'] = '';
-            $this->assertSame(\locale_get_default(), Request\recommended_locale());
+            $this->assertSame(locale_get_default(), Request\recommended_locale());
         }
     }
 
@@ -228,5 +217,17 @@ class RequestTest extends TestCase
         Container\set(SWOOLE_HTTP_REQUEST, $request);
         $this->assertSame('foo', Request\bearer($request));
         Container\clear(SWOOLE_HTTP_REQUEST);
+    }
+
+    protected function setUp(): void
+    {
+        $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = $_FILES = ['foo' => 'bar'];
+
+        $_SERVER['HTTP_HOST'] = 'test:8000';
+        $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
+        $_SERVER['PATH_INFO'] = '/bar/baz';
+        $_SERVER['NON_HTTP'] = 'Ignore me';
+        $_SERVER['CONTENT_TYPE'] = 'phpunit/test';
+        $_SERVER['CONTENT_LENGTH'] = '123';
     }
 }

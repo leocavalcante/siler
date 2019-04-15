@@ -16,9 +16,11 @@ use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
+use PHPUnit\Framework\TestCase;
 use Siler\GraphQL;
+use stdClass;
 
-class GraphQLTest extends \PHPUnit\Framework\TestCase
+class GraphQLTest extends TestCase
 {
     public function testVal()
     {
@@ -165,7 +167,7 @@ class GraphQLTest extends \PHPUnit\Framework\TestCase
         $field = GraphQL\field(new ObjectType(['name' => 'test']), 'test')('stdClass');
         $computed = $field['resolve']();
 
-        $this->assertInstanceOf(\stdClass::class, $computed);
+        $this->assertInstanceOf(stdClass::class, $computed);
     }
 
     public function testSchema()
