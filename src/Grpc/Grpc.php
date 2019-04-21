@@ -4,6 +4,7 @@ namespace Siler\Grpc;
 
 use Closure;
 use Google\Protobuf\Internal\Message;
+use Grpc\Client;
 use Grpc\Parser;
 use ReflectionObject;
 use Swoole\Http\Request;
@@ -11,7 +12,6 @@ use Swoole\Http\Response;
 use Swoole\Http\Server;
 use Throwable;
 
-const SWOOLE_CLOSE = '>>>SWOOLE|CLOSE<<<';
 const STATUS_TRAILER = 'grpc-status';
 const MESSAGE_TRAILER = 'grpc-message';
 const CONTENT_TYPE = 'application/grpc';
@@ -35,7 +35,7 @@ function server(array $services, int $port = 9090, string $host = '0.0.0.0'): Se
             $path = $request->server['request_uri'];
             var_dump($path);
 
-            if ($path == SWOOLE_CLOSE) {
+            if ($path == Client::CLOSE_KEYWORD) {
                 return $finish(0);
             }
 
