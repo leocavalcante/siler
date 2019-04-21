@@ -4,15 +4,14 @@
 
 namespace Helloworld;
 
-use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\Internal\Message;
 use GPBMetadata\Helloworld;
 
 /**
  * Generated from protobuf message <code>helloworld.HelloRequest</code>
  */
-class HelloRequest extends \Google\Protobuf\Internal\Message
+class HelloRequest extends Message
 {
     /**
      * Generated from protobuf field <code>string name = 1;</code>
@@ -25,10 +24,10 @@ class HelloRequest extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type string $name
+     * @type string $name
      * }
      */
-    public function __construct($data = null)
+    public function __construct($data = NULL)
     {
         Helloworld::initOnce();
         parent::__construct($data);
@@ -50,9 +49,11 @@ class HelloRequest extends \Google\Protobuf\Internal\Message
      */
     public function setName($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->name = $var;
 
         return $this;
     }
+
 }
+
