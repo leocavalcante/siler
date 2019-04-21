@@ -1,0 +1,19 @@
+{
+    "name": "siler/grpc",
+    "description": "Siler gRPC example",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "leocavalcante",
+            "email": "lc@leocavalcante.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    }
+}

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f98bdbcaa0526105f294a6200bdc5754",
+  "content-hash": "50bf6d82f689c9430b4fc93a97be341d",
     "packages": [],
     "packages-dev": [
         {
@@ -574,6 +574,88 @@
             "time": "2019-03-15T09:34:00+00:00"
         },
         {
+          "name": "google/protobuf",
+          "version": "v3.7.1",
+          "source": {
+            "type": "git",
+            "url": "https://github.com/protocolbuffers/protobuf-php.git",
+            "reference": "0657d28864692480c3d8506ba4fc90e8813deae5"
+          },
+          "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/0657d28864692480c3d8506ba4fc90e8813deae5",
+            "reference": "0657d28864692480c3d8506ba4fc90e8813deae5",
+            "shasum": ""
+          },
+          "require": {
+            "php": ">=5.5.0"
+          },
+          "require-dev": {
+            "phpunit/phpunit": ">=4.8.0"
+          },
+          "suggest": {
+            "ext-bcmath": "Need to support JSON deserialization"
+          },
+          "type": "library",
+          "autoload": {
+            "psr-4": {
+              "Google\\Protobuf\\": "src/Google/Protobuf",
+              "GPBMetadata\\Google\\Protobuf\\": "src/GPBMetadata/Google/Protobuf"
+            }
+          },
+          "notification-url": "https://packagist.org/downloads/",
+          "license": [
+            "BSD-3-Clause"
+          ],
+          "description": "proto library for PHP",
+          "homepage": "https://developers.google.com/protocol-buffers/",
+          "keywords": [
+            "proto"
+          ],
+          "time": "2019-03-26T18:06:41+00:00"
+        },
+      {
+        "name": "grpc/grpc",
+        "version": "1.19.0",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/grpc/grpc-php.git",
+          "reference": "0f1ffdde45bfb9257c5d9eab81695d0f042bea22"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/grpc/grpc-php/zipball/0f1ffdde45bfb9257c5d9eab81695d0f042bea22",
+          "reference": "0f1ffdde45bfb9257c5d9eab81695d0f042bea22",
+          "shasum": ""
+        },
+        "require": {
+          "php": ">=5.5.0"
+        },
+        "require-dev": {
+          "google/auth": "^v1.3.0"
+        },
+        "suggest": {
+          "ext-protobuf": "For better performance, install the protobuf C extension.",
+          "google/protobuf": "To get started using grpc quickly, install the native protobuf library."
+        },
+        "type": "library",
+        "autoload": {
+          "psr-4": {
+            "Grpc\\": "src/lib/"
+          }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+          "Apache-2.0"
+        ],
+        "description": "gRPC library for PHP",
+        "homepage": "https://grpc.io",
+        "keywords": [
+          "rpc"
+        ],
+        "time": "2019-02-27T04:47:56+00:00"
+      },
+      {
             "name": "guzzlehttp/psr7",
             "version": "1.5.2",
             "source": {
@@ -916,16 +998,16 @@
         },
         {
             "name": "phan/phan",
-            "version": "1.2.8",
+          "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phan/phan.git",
-                "reference": "63eb0801e193adddcd7d308980e731ff5546426f"
+              "reference": "afbcf1ab162df39dbfd96672ba29a0208a49efff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phan/phan/zipball/63eb0801e193adddcd7d308980e731ff5546426f",
-                "reference": "63eb0801e193adddcd7d308980e731ff5546426f",
+              "url": "https://api.github.com/repos/phan/phan/zipball/afbcf1ab162df39dbfd96672ba29a0208a49efff",
+              "reference": "afbcf1ab162df39dbfd96672ba29a0208a49efff",
                 "shasum": ""
             },
             "require": {
@@ -937,7 +1019,8 @@
                 "microsoft/tolerant-php-parser": "0.0.17",
                 "php": "^7.0.0",
                 "sabre/event": "^5.0",
-                "symfony/console": "^2.3|^3.0|~4.0"
+              "symfony/console": "^2.3|^3.0|~4.0",
+              "symfony/polyfill-mbstring": "^1.11.0"
             },
             "require-dev": {
                 "brianium/paratest": "^1.1",
@@ -980,7 +1063,7 @@
                 "php",
                 "static"
             ],
-            "time": "2019-04-06T14:41:29+00:00"
+          "time": "2019-04-20T18:35:23+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -1603,16 +1686,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "8.1.2",
+          "version": "8.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "e7450b51b6f5d29edcd645ff72b355ab0633ca35"
+              "reference": "2a676677982b484ee36b54961f570c02eabbe7e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e7450b51b6f5d29edcd645ff72b355ab0633ca35",
-                "reference": "e7450b51b6f5d29edcd645ff72b355ab0633ca35",
+              "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2a676677982b484ee36b54961f570c02eabbe7e1",
+              "reference": "2a676677982b484ee36b54961f570c02eabbe7e1",
                 "shasum": ""
             },
             "require": {
@@ -1681,7 +1764,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-04-08T16:03:02+00:00"
+          "time": "2019-04-19T15:52:00+00:00"
         },
         {
             "name": "psr/http-factory",
@@ -3138,20 +3221,80 @@
             "time": "2019-03-10T07:52:41+00:00"
         },
         {
+          "name": "swoole/etcd-client",
+          "version": "v1.0.1",
+          "source": {
+            "type": "git",
+            "url": "https://github.com/swoole/grpc-client.git",
+            "reference": "d040a2e2f520a2698bc11c6fd322cdc4ec5041d4"
+          },
+          "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/swoole/grpc-client/zipball/d040a2e2f520a2698bc11c6fd322cdc4ec5041d4",
+            "reference": "d040a2e2f520a2698bc11c6fd322cdc4ec5041d4",
+            "shasum": ""
+          },
+          "require": {
+            "google/protobuf": "^3",
+            "php": ">=7.0"
+          },
+          "type": "library",
+          "autoload": {
+            "classmap": [
+              "src/Grpc",
+              "src/Etcd"
+            ],
+            "files": [
+              "src/include/functions.php"
+            ]
+          },
+          "notification-url": "https://packagist.org/downloads/",
+          "license": [
+            "Apache-2.0"
+          ],
+          "authors": [
+            {
+              "name": "twosee",
+              "email": "twose@qq.com"
+            }
+          ],
+          "description": "Grpc PHP Client base on Swoole Http2 Coroutine",
+          "keywords": [
+            "client",
+            "coroutine",
+            "etcd",
+            "gRPC",
+            "http",
+            "http2",
+            "php",
+            "swoole"
+          ],
+          "time": "2018-11-16T07:03:56+00:00"
+        },
+      {
             "name": "swoole/ide-helper",
-            "version": "4.3.1",
+        "version": "4.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swoole/ide-helper.git",
-                "reference": "e2d966c5c84951778e57564c7f35d86b67152248"
+              "reference": "094ae00e07213b40c86f173eb24c6f652dd941d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/e2d966c5c84951778e57564c7f35d86b67152248",
-                "reference": "e2d966c5c84951778e57564c7f35d86b67152248",
+              "url": "https://api.github.com/repos/swoole/ide-helper/zipball/094ae00e07213b40c86f173eb24c6f652dd941d8",
+              "reference": "094ae00e07213b40c86f173eb24c6f652dd941d8",
                 "shasum": ""
             },
+        "require-dev": {
+          "squizlabs/php_codesniffer": "~3.4.0",
+          "zendframework/zend-code": "~3.3.0"
+        },
             "type": "library",
+        "autoload": {
+          "psr-4": {
+            "Swoole\\IDEHelper\\": "src/"
+          }
+        },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache-2.0"
@@ -3162,21 +3305,21 @@
                     "email": "team@swoole.com"
                 }
             ],
-            "description": "swoole-ide-helper",
-            "time": "2019-03-14T18:08:12+00:00"
+        "description": "IDE help files for Swoole.",
+        "time": "2019-04-20T03:21:42+00:00"
         },
         {
             "name": "symfony/console",
-            "version": "v4.2.5",
+          "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "24206aff3efe6962593297e57ef697ebb220e384"
+              "reference": "e2840bb38bddad7a0feaf85931e38fdcffdb2f81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/24206aff3efe6962593297e57ef697ebb220e384",
-                "reference": "24206aff3efe6962593297e57ef697ebb220e384",
+              "url": "https://api.github.com/repos/symfony/console/zipball/e2840bb38bddad7a0feaf85931e38fdcffdb2f81",
+              "reference": "e2840bb38bddad7a0feaf85931e38fdcffdb2f81",
                 "shasum": ""
             },
             "require": {
@@ -3235,7 +3378,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2019-04-01T07:32:59+00:00"
+          "time": "2019-04-08T14:23:48+00:00"
         },
         {
             "name": "symfony/contracts",
@@ -3307,16 +3450,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v4.2.5",
+          "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "5b7ab6beaa5b053b8d3c9b13367ada9b292e12e1"
+              "reference": "6ebbe61f48069033225c9d3fa7eb5ed116d766d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/5b7ab6beaa5b053b8d3c9b13367ada9b292e12e1",
-                "reference": "5b7ab6beaa5b053b8d3c9b13367ada9b292e12e1",
+              "url": "https://api.github.com/repos/symfony/http-foundation/zipball/6ebbe61f48069033225c9d3fa7eb5ed116d766d6",
+              "reference": "6ebbe61f48069033225c9d3fa7eb5ed116d766d6",
                 "shasum": ""
             },
             "require": {
@@ -3357,7 +3500,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2019-03-30T15:58:42+00:00"
+          "time": "2019-04-17T14:56:00+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -3654,16 +3797,16 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v4.2.5",
+          "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "319f600c1ea0f981f6bdc2f042cfc1690957c0e0"
+              "reference": "0e5719d216017b1a0342fa48e86467cedca1c954"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/319f600c1ea0f981f6bdc2f042cfc1690957c0e0",
-                "reference": "319f600c1ea0f981f6bdc2f042cfc1690957c0e0",
+              "url": "https://api.github.com/repos/symfony/routing/zipball/0e5719d216017b1a0342fa48e86467cedca1c954",
+              "reference": "0e5719d216017b1a0342fa48e86467cedca1c954",
                 "shasum": ""
             },
             "require": {
@@ -3726,7 +3869,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2019-03-30T15:58:42+00:00"
+          "time": "2019-04-14T18:04:59+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -3770,16 +3913,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.7.4",
+          "version": "v2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "ed9c49220e09bfaeb1ba4d48077c08a7b09908dd"
+              "reference": "91cc2594d3143761ce0399c1caffd0b500ffe5b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/ed9c49220e09bfaeb1ba4d48077c08a7b09908dd",
-                "reference": "ed9c49220e09bfaeb1ba4d48077c08a7b09908dd",
+              "url": "https://api.github.com/repos/twigphp/Twig/zipball/91cc2594d3143761ce0399c1caffd0b500ffe5b9",
+              "reference": "91cc2594d3143761ce0399c1caffd0b500ffe5b9",
                 "shasum": ""
             },
             "require": {
@@ -3795,7 +3938,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.7-dev"
+                  "dev-master": "2.8-dev"
                 }
             },
             "autoload": {
@@ -3833,7 +3976,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-03-23T14:28:58+00:00"
+          "time": "2019-04-16T17:14:24+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -4233,6 +4376,7 @@
         "ext-json": "^1.2"
     },
     "platform-dev": {
+      "ext-grpc": "^1.19",
         "ext-mongodb": "^1.5"
     }
 }

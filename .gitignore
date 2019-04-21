@@ -1,5 +1,5 @@
-/.idea/
 *.cache
 /*.phar
+/.idea/
 /coverage-*
-/vendor/
+vendor/

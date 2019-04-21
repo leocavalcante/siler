@@ -23,10 +23,12 @@
     },
     "minimum-stability": "stable",
     "require-dev": {
+        "ext-grpc": "^1.19",
         "ext-mongodb": "^1.5",
         "cboden/ratchet": "^0.4",
         "cocur/slugify": "^3.2",
         "gabordemooij/redbean": "^5.2",
+        "grpc/grpc": "^1.19",
         "mongodb/mongodb": "^1.4",
         "monolog/monolog": "^1.24",
         "phan/phan": "^1.2",
@@ -40,7 +42,9 @@
         "webonyx/graphql-php": "^0.13",
         "zendframework/zend-diactoros": "^2.1",
         "zendframework/zend-httphandlerrunner": "^1.1",
-        "zendframework/zend-stratigility": "^3.1"
+        "zendframework/zend-stratigility": "^3.1",
+        "google/protobuf": "^3.7",
+        "swoole/etcd-client": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -56,6 +60,7 @@
             "src/Functional/Functional.php",
             "src/Functional/Monad/Monad.php",
             "src/GraphQL/GraphQL.php",
+            "src/Grpc/Grpc.php",
             "src/Http/Http.php",
             "src/Http/Request.php",
             "src/Http/Response.php",
