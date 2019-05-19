@@ -55,12 +55,22 @@ class HttpTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testNotInSubfolderPath()
+    public function testNotInSubFolderPath()
     {
         $_SERVER['SCRIPT_NAME'] = '/index.php';
         $_SERVER['REQUEST_URI'] = '/foo/bar';
 
         $this->assertSame('/foo/bar', Http\path());
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testSubFolderPathRepeats()
+    {
+        $_SERVER['REQUEST_URI'] = '/bar/foo/baz';
+
+        $this->assertSame('/bar/foo/baz', Http\path());
     }
 
     public function testUri()

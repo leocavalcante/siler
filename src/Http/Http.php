@@ -110,7 +110,7 @@ function path(): string
     if (!strlen(str_replace('/', '', $scriptPath))) {
         return '/' . ltrim($requestUri, '/');
     } else {
-        return '/' . ltrim(str_replace($scriptPath, '', $requestUri), '/');
+        return '/' . ltrim(preg_replace("#^$scriptPath#", '', $requestUri, 1), '/');
     }
 }
 
