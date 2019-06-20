@@ -140,17 +140,17 @@ function psr7(Schema $schema): Closure
  * Also sets a Siler's default field resolver based on $resolvers array.
  *
  * @param string $typeDefs
- * @param array $resolvers
+ * @param array  $resolvers
  *
  * @return Schema
  */
-function schema(string $typeDefs, array $resolvers = []): Schema
+function schema(string $typeDefs, array $resolvers = [], ?callable $typeConfigDecorator = null): Schema
 {
     if (!empty($resolvers)) {
         resolvers($resolvers);
     }
 
-    return BuildSchema::build($typeDefs);
+    return BuildSchema::build($typeDefs, $typeConfigDecorator);
 }
 
 /**
