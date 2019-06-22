@@ -14,6 +14,11 @@
 
 Siler is a set of general purpose high-level abstractions aiming an API for declarative programming in PHP.
 
+### Note:
+This is a fork of `leocavalcante/siler`. Please visit [https://github.com/leocavalcante/siler](https://github.com/leocavalcante/siler) to learn more about the package.
+
+The only addition is the fact that this fork supports `type config decorator`. It will be taken down once the PR on `leocavalcante/siler` is merged.
+
 * 💧 **Files and functions** as first-class citizens
 * 🔋 **Zero dependency**, everything is on top of PHP built-in functions
 * ⚡ **Blazing fast**, no additional overhead - [*benchmark*](https://github.com/kenjis/php-framework-benchmark#results)
@@ -31,7 +36,7 @@ Flat files and plain-old PHP functions rocking on a production-grade, high-perfo
 ### Installation
 
 ```bash
-$ composer require leocavalcante/siler
+$ composer require cmdlucas/siler-fork
 ```
 
 That is it. Actually, Siler is a library, not a framework (maybe a micro-framework), the overall program flow of control is dictated by you. So, no hidden configs or predefined directory structures.

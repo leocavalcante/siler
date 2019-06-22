@@ -1,5 +1,5 @@
 {
-    "name": "leocavalcante/siler",
+    "name": "cmdlucas/siler-fork",
     "type": "library",
     "description": "Siler is a set of general purpose high-level abstractions aiming an API for declarative programming in PHP.",
     "keywords": [
@@ -13,8 +13,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "leocavalcante",
-            "email": "lc@leocavalcante.com"
+            "name": "cmdlucas",
+            "email": "caleb@lucasbin.com"
         }
     ],
     "require": {
