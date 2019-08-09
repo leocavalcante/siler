@@ -79,7 +79,7 @@ const ON_DISCONNECT = 'graphql_on_disconnect';
  */
 function init(Schema $schema, $rootValue = null, $context = null, string $input = 'php://input')
 {
-    if (Request\header('Content-Type') == 'application/json') {
+    if (preg_match('#application/json(;charset=utf-8)?#', Request\header('Content-Type'))) {
         $data = Request\json($input);
     } else {
         $data = Request\post();
@@ -140,7 +140,7 @@ function psr7(Schema $schema): Closure
  * Also sets a Siler's default field resolver based on $resolvers array.
  *
  * @param string $typeDefs
- * @param array  $resolvers
+ * @param array $resolvers
  *
  * @return Schema
  */
@@ -218,7 +218,8 @@ function subscriptions(
     int $port = 5000,
     array $rootValue = [],
     array $context = []
-): IoServer {
+): IoServer
+{
     $manager = new SubscriptionsManager($schema, $filters, $rootValue, $context);
     $server = new SubscriptionsServer($manager);
     $websocket = new WsServer($server);
