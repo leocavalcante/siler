@@ -23,6 +23,7 @@
     },
     "minimum-stability": "stable",
     "require-dev": {
+        "ext-ast": "^1.0",
         "ext-mongodb": "^1.5",
         "cboden/ratchet": "^0.4",
         "cocur/slugify": "^3.2",

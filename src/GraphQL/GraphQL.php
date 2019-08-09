@@ -79,7 +79,9 @@ const ON_DISCONNECT = 'graphql_on_disconnect';
  */
 function init(Schema $schema, $rootValue = null, $context = null, string $input = 'php://input')
 {
-    if (preg_match('#application/json(;charset=utf-8)?#', Request\header('Content-Type'))) {
+    $contentType = Request\header('Content-Type');
+
+    if (!is_null($contentType) && preg_match('#application/json(;charset=utf-8)?#', $contentType)) {
         $data = Request\json($input);
     } else {
         $data = Request\post();

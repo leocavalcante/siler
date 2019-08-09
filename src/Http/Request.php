@@ -283,9 +283,9 @@ function recommended_locale(string $default = ''): string
     }
 
     if (empty($locale) && function_exists('locale_get_default')) {
-        /* @phan-suppress-next-line PhanUndeclaredFunction */
         /** @noinspection PhpFullyQualifiedNameUsageInspection */
         /** @noinspection PhpComposerExtensionStubsInspection */
+        /* @phan-suppress-next-line PhanUndeclaredFunction */
         $locale = \locale_get_default();
     }
 
