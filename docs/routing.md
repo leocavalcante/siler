@@ -51,8 +51,16 @@ The above will match anything, not only numbers. For a fine-grained control, ple
 Optional named parameters can be defined using the question mark `?` as sufix:
 
 ```php
-Route\get('/hello/{name?}', <handler>);
+Route\get('/hello/{name}?', <handler>);
 ```
+
+{% hint style="info" %}
+To avoid the need of a trailing slash, add a question mark after it, like regex \(because it is regex\):
+
+```php
+Route\get('/hello/?{name}?', <handler>);
+```
+{% endhint %}
 
 ### Route handlers
 
