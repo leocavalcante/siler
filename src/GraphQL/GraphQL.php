@@ -10,6 +10,7 @@ namespace Siler\GraphQL;
 use Closure;
 use GraphQL\Executor\Executor;
 use GraphQL\Executor\Promise\Promise;
+use GraphQL\Executor\Promise\PromiseAdapter;
 use GraphQL\GraphQL;
 use GraphQL\Type\Definition\BooleanType;
 use GraphQL\Type\Definition\EnumType;
@@ -42,26 +43,17 @@ use function Siler\array_get;
  *
  * @see https://github.com/apollographql/subscriptions-transport-ws/blob/master/src/message-types.ts
  */
-const GQL_CONNECTION_INIT = 'connection_init';
-// Client -> Server
-const GQL_CONNECTION_ACK = 'connection_ack';
-// Server -> Client
-const GQL_CONNECTION_ERROR = 'connection_error';
-// Server -> Client
-const GQL_CONNECTION_KEEP_ALIVE = 'ka';
-// Server -> Client
-const GQL_CONNECTION_TERMINATE = 'connection_terminate';
-// Client -> Server
-const GQL_START = 'start';
-// Client -> Server
-const GQL_DATA = 'data';
-// Server -> Client
-const GQL_ERROR = 'error';
-// Server -> Client
-const GQL_COMPLETE = 'complete';
-// Server -> Client
-const GQL_STOP = 'stop';
-// Client -> Server
+const GQL_CONNECTION_INIT = 'connection_init'; // Client -> Server
+const GQL_CONNECTION_ACK = 'connection_ack'; // Server -> Client
+const GQL_CONNECTION_ERROR = 'connection_error'; // Server -> Client
+const GQL_CONNECTION_KEEP_ALIVE = 'ka'; // Server -> Client
+const GQL_CONNECTION_TERMINATE = 'connection_terminate'; // Client -> Server
+const GQL_START = 'start'; // Client -> Server
+const GQL_DATA = 'data'; // Server -> Client
+const GQL_ERROR = 'error'; // Server -> Client
+const GQL_COMPLETE = 'complete'; // Server -> Client
+const GQL_STOP = 'stop'; // Client -> Server
+
 const ON_OPERATION = 'graphql_on_operation';
 const ON_OPERATION_COMPLETE = 'graphql_on_operation_complete';
 const ON_CONNECT = 'graphql_on_connect';
@@ -79,6 +71,19 @@ const ON_DISCONNECT = 'graphql_on_disconnect';
  */
 function init(Schema $schema, $rootValue = null, $context = null, string $input = 'php://input')
 {
+    $result = execute($schema, input($input), $rootValue, $context);
+    Response\json($result);
+}
+
+/**
+ * Retrieves the GraphQL input from SAPI.
+ *
+ * @param string $input
+ *
+ * @return array
+ */
+function input(string $input = 'php://input'): array
+{
     $contentType = Request\header('Content-Type');
 
     if (!is_null($contentType) && preg_match('#application/json(;charset=utf-8)?#', $contentType)) {
@@ -91,9 +96,7 @@ function init(Schema $schema, $rootValue = null, $context = null, string $input 
         throw new UnexpectedValueException('Input should be a JSON object');
     }
 
-    $result = execute($schema, $data, $rootValue, $context);
-
-    Response\json($result);
+    return $data;
 }
 
 /**
@@ -104,7 +107,7 @@ function init(Schema $schema, $rootValue = null, $context = null, string $input 
  * @param mixed $rootValue Some optional GraphQL root value
  * @param mixed $context Some optional GraphQL context
  *
- * @return array<mixed, mixed>|Promise
+ * @return array
  */
 function execute(Schema $schema, array $input, $rootValue = null, $context = null)
 {
@@ -113,6 +116,26 @@ function execute(Schema $schema, array $input, $rootValue = null, $context = nul
     $variables = array_get($input, 'variables');
 
     return GraphQL::executeQuery($schema, $query, $rootValue, $context, $variables, $operation)->toArray();
+}
+
+/**
+ * Same as execute(), but allows passing a custom Promise adapter.
+ *
+ * @param PromiseAdapter $adapter
+ * @param Schema $schema
+ * @param array $input
+ * @param null $rootValue
+ * @param null $context
+ *
+ * @return Promise
+ */
+function promise_execute(PromiseAdapter $adapter, Schema $schema, array $input, $rootValue = null, $context = null): Promise
+{
+    $query = array_get($input, 'query');
+    $operation = array_get($input, 'operationName');
+    $variables = array_get($input, 'variables');
+
+    return GraphQL::promiseToExecute($adapter, $schema, $query, $rootValue, $context, $variables, $operation);
 }
 
 /**
