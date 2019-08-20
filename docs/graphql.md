@@ -175,7 +175,7 @@ Start the server:
 $ php -S localhost:8000 api.php
 ```
 
-Test with a [Graph_i_QL](https://github.com/graphql/graphiql) app.
+\*\*\*\*[**You can use Prima's GraphQL Playground to test it.**](https://github.com/prisma/graphql-playground)\*\*\*\*
 
 Here are some queries you can execute:
 
@@ -563,7 +563,7 @@ Behind the scenes [ReactPHP](http://reactphp.org/), [Ratchet](http://socketo.me/
 
 #### Ready to test?
 
-You'll need a [Graph_i_QL](https://github.com/graphql/graphiql) app with Subscriptions enabled. For example: [leocavalcante/graphiql-app](https://github.com/leocavalcante/graphiql-app).
+\*\*\*\*[**You can use Prisma's GraphQL Playground to test the subscriptions as well.**](https://github.com/prisma/graphql-playground)\*\*\*\*
 
 A subscription query looks like this:
 
@@ -651,7 +651,9 @@ $message['roomName'] = $roomName; // For the inbox filter
 GraphQL\publish('inbox', $message); // <- Exactly what "inbox" will receive
 ```
 
-_Note: when a RedBeanObject is encoded to JSON it automatically converts camel case properties to underscore ones. That is why we give `roomName`, but receives as `room_name`._
+{% hint style="info" %}
+When a `RedBeanObject` is encoded to JSON it automatically converts camel case properties to underscore ones. That is why we give `roomName`, but receive as `room_name`.
+{% endhint %}
 
 And that should be enough to solve our problem, now you only receive data from the subscribed rooms. **Enjoy!**
 
