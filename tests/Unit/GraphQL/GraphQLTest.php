@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Siler\Test\Unit;
 
 use GraphQL\Error\Error;
+use GraphQL\Executor\ExecutionResult;
+use GraphQL\Executor\Promise\Adapter\SyncPromise;
+use GraphQL\Executor\Promise\Adapter\SyncPromiseAdapter;
 use GraphQL\Type\Definition\BooleanType;
 use GraphQL\Type\Definition\EnumType;
 use GraphQL\Type\Definition\FloatType;
@@ -175,5 +178,26 @@ class GraphQLTest extends TestCase
         $typeDefs = file_get_contents(__DIR__ . '/../../fixtures/schema.graphql');
         $schema = GraphQL\schema($typeDefs);
         $this->assertInstanceOf(Schema::class, $schema);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testPromiseExecute()
+    {
+        $_POST = ['query' => '{ foo }'];
+
+        $root = GraphQL\type('Root')([
+            GraphQL\str('foo')(function ($root, $args) {
+                return 'bar';
+            })
+        ]);
+
+        $adapter = new SyncPromiseAdapter();
+        $schema = new Schema(['query' => $root()]);
+        $promise = GraphQL\promise_execute($adapter, $schema, GraphQL\input());
+        $result = $adapter->wait($promise);
+
+        $this->assertSame(['foo' => 'bar'], $result->data);
     }
 }
