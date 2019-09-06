@@ -181,10 +181,13 @@ function method_path($request): array
  */
 function regexify(string $path): string
 {
-    $path = preg_replace('/\{([A-z-]+)\}/', '(?<$1>[A-z0-9_-]+)', $path);
-    $path = "#^{$path}/?$#";
+    $patterns = [
+        '/{([A-z-]+)}/' => '(?<$1>[A-z0-9_-]+)',
+        '/{([A-z-]+):(.*)}/' => '(?<$1>$2)',
+    ];
 
-    return $path;
+    $path = preg_replace(array_keys($patterns), array_values($patterns), $path);
+    return "#^{$path}/?$#";
 }
 
 /**
