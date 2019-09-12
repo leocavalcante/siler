@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace Siler\GraphQL;
 
 use Closure;
+use GraphQL\Error\Debug;
 use GraphQL\Executor\Executor;
 use GraphQL\Executor\Promise\Promise;
 use GraphQL\Executor\Promise\PromiseAdapter;
@@ -58,6 +59,19 @@ const ON_OPERATION = 'graphql_on_operation';
 const ON_OPERATION_COMPLETE = 'graphql_on_operation_complete';
 const ON_CONNECT = 'graphql_on_connect';
 const ON_DISCONNECT = 'graphql_on_disconnect';
+
+const GRAPHQL_DEBUG = 'graphql_debug';
+
+/**
+ * Sets GraphQL debug level.
+ *
+ * @param int $level GraphQL debug level
+ * @see https://webonyx.github.io/graphql-php/error-handling/
+ */
+function debug(int $level = Debug::INCLUDE_DEBUG_MESSAGE)
+{
+    Container\set(GRAPHQL_DEBUG, $level);
+}
 
 /**
  * Initializes a new GraphQL endpoint.
@@ -115,7 +129,7 @@ function execute(Schema $schema, array $input, $rootValue = null, $context = nul
     $operation = array_get($input, 'operationName');
     $variables = array_get($input, 'variables');
 
-    return GraphQL::executeQuery($schema, $query, $rootValue, $context, $variables, $operation)->toArray();
+    return GraphQL::executeQuery($schema, $query, $rootValue, $context, $variables, $operation)->toArray(Container\get(GRAPHQL_DEBUG));
 }
 
 /**
@@ -243,7 +257,8 @@ function subscriptions(
     int $port = 5000,
     array $rootValue = [],
     array $context = []
-): IoServer {
+): IoServer
+{
     $manager = new SubscriptionsManager($schema, $filters, $rootValue, $context);
     $server = new SubscriptionsServer($manager);
     $websocket = new WsServer($server);
