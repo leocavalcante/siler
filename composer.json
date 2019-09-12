@@ -30,7 +30,7 @@
         "cocur/slugify": "^3.2",
         "gabordemooij/redbean": "^5.3",
         "mongodb/mongodb": "^1.4",
-        "monolog/monolog": "^1.24",
+        "monolog/monolog": "^2.0",
         "phan/phan": "^2.2",
         "phpunit/phpunit": "^8.3",
         "ratchet/pawl": "^0.3",
