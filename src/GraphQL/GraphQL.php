@@ -257,8 +257,7 @@ function subscriptions(
     int $port = 5000,
     array $rootValue = [],
     array $context = []
-): IoServer
-{
+): IoServer {
     $manager = new SubscriptionsManager($schema, $filters, $rootValue, $context);
     $server = new SubscriptionsServer($manager);
     $websocket = new WsServer($server);
