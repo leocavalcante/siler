@@ -66,7 +66,7 @@ const GRAPHQL_DEBUG = 'graphql_debug';
  * Sets GraphQL debug level.
  *
  * @param int $level GraphQL debug level
- * @see https://webonyx.github.io/graphql-php/error-handling/
+ * @see https://webonyx.github.io/graphql-php/error-handling
  */
 function debug(int $level = Debug::INCLUDE_DEBUG_MESSAGE)
 {
