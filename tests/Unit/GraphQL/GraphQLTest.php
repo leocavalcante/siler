@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
+use GraphQL\Error\Debug;
 use GraphQL\Error\Error;
-use GraphQL\Executor\ExecutionResult;
-use GraphQL\Executor\Promise\Adapter\SyncPromise;
 use GraphQL\Executor\Promise\Adapter\SyncPromiseAdapter;
 use GraphQL\Type\Definition\BooleanType;
 use GraphQL\Type\Definition\EnumType;
@@ -20,6 +19,7 @@ use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
 use PHPUnit\Framework\TestCase;
+use Siler\Container;
 use Siler\GraphQL;
 use stdClass;
 
@@ -199,5 +199,12 @@ class GraphQLTest extends TestCase
         $result = $adapter->wait($promise);
 
         $this->assertSame(['foo' => 'bar'], $result->data);
+    }
+
+    public function testDebug()
+    {
+        GraphQL\debug();
+        $this->assertSame(Debug::INCLUDE_DEBUG_MESSAGE, Container\get(GraphQL\GRAPHQL_DEBUG));
+        GraphQL\debug(0);
     }
 }

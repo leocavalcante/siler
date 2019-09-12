@@ -26,6 +26,7 @@
     "require-dev": {
         "ext-ast": "^1.0",
         "ext-mongodb": "^1.5",
+        "ext-xdebug": "*",
         "cboden/ratchet": "^0.4",
         "cocur/slugify": "^3.2",
         "gabordemooij/redbean": "^5.3",
