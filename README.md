@@ -184,5 +184,17 @@ $resolvers = [
 Graphql\init(Graphql\schema($typeDefs, $resolvers));
 ```
 
+## Testing
+
+Build the development environment image:
+```bash
+docker build -t siler-dev .
+```
+Then run `composer` commands using it:
+```bash
+docker run --rm -v "$(pwd):/opt/siler" siler-dev composer install
+docker run --rm -v "$(pwd):/opt/siler" siler-dev composer test
+```
+
 ---
 MIT 2019

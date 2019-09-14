@@ -1,0 +1,8 @@
+**
+!Dockerfile
+!.phan/config.php
+!src/**
+!tests/**
+!composer.json
+!composer.lock
+!phpunit.xml.dist

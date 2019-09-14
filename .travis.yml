@@ -1,11 +1,11 @@
 language: php
 
 php:
-  - "7.2"
-  - "7.3"
+  - 7.2
+  - 7.3
 
 install:
-  - pecl install -f mongodb ast
+  - yes | pecl install -f ast mongodb
   - composer install
 
 script:
