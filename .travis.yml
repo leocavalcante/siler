@@ -3,10 +3,9 @@ language: php
 php:
   - 7.2
   - 7.3
-  - 7.4snapshot
 
 install:
-  - yes | pecl install -f ast mongodb xdebug
+  - yes | pecl install -f ast mongodb
   - composer install
 
 script:
