@@ -4,10 +4,9 @@ php:
   - 7.2
   - 7.3
   - 7.4snapshot
-  - nightly
 
 install:
-  - yes | pecl install -f mongodb ast
+  - yes | pecl install -f ast mongodb xdebug
   - composer install
 
 script:
