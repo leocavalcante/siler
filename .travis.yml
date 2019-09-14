@@ -1,11 +1,13 @@
 language: php
 
 php:
-  - "7.2"
-  - "7.3"
+  - 7.2
+  - 7.3
+  - 7.4snapshot
+  - nightly
 
 install:
-  - pecl install -f mongodb ast
+  - yes | pecl install -f mongodb ast
   - composer install
 
 script:
