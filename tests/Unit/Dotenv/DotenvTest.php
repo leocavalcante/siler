@@ -18,7 +18,7 @@ class DotenvTest extends TestCase
     {
         $entries = init(__DIR__ . '/../../fixtures');
 
-        $this->assertCount(2, $entries);
+        $this->assertCount(11, $entries);
         $this->assertArrayHasKey('FOO', $entries);
         $this->assertSame('bar', $entries['FOO']);
         $this->assertSame($_SERVER, env());
