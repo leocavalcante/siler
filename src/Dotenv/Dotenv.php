@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace Siler\Dotenv;
 
 use Dotenv\Dotenv;
+use UnexpectedValueException;
 use function Siler\array_get;
 
 /**
@@ -55,4 +56,51 @@ function env_int(string $key, int $default = null): ?int
     }
 
     return $default;
+}
+
+/**
+ * Returns an environment variable as an boolean.
+ *
+ * @param string $key
+ * @param bool|null $default
+ *
+ * @return bool|null
+ */
+function env_bool(string $key, bool $default = null): ?bool
+{
+    $val = env($key, $default);
+
+    if ($val === null) {
+        return $default;
+    }
+
+    if ($val === 'false') {
+        return false;
+    }
+
+    if ($val === '[]') {
+        return false;
+    }
+
+    if ($val === '{}') {
+        return false;
+    }
+
+    return boolval($val);
+}
+
+/**
+ * Checks for the presence of an environment variable.
+ *
+ * @param string $key
+ *
+ * @return bool
+ */
+function env_requires(string $key): bool
+{
+    if (array_key_exists($key, $_ENV)) {
+        return true;
+    }
+
+    throw new UnexpectedValueException("$key is not set in the environment variables");
 }
