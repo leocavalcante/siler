@@ -60,5 +60,4 @@ class DotenvTest extends TestCase
         env_requires('FOO');
         env_requires('BAR');
     }
-
 }
