@@ -6,6 +6,7 @@ namespace Siler\Test\Unit;
 
 use PHPUnit\Framework\TestCase;
 use function Siler\Dotenv\env as env;
+use function Siler\Dotenv\env_int;
 use function Siler\Dotenv\init;
 
 class DotenvTest extends TestCase
@@ -21,5 +22,15 @@ class DotenvTest extends TestCase
         $this->assertSame('bar', env('FOO'));
         $this->assertSame('baz', env('BAR', 'baz'));
         $this->assertNull(env('BAR'));
+    }
+
+    public function testEvnInt()
+    {
+        init(__DIR__ . '/../../fixtures');
+
+        $this->assertSame(8, env_int('ENV_INT'));
+        $this->assertNull(env_int('ENV_INT_NULL'));
+        $this->assertSame(0, env_int('ENV_INT_DEFAULT', 0));
+        $this->assertNull(env_int('ENV_INT_NOT_NUMERIC'));
     }
 }

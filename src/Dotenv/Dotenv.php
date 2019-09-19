@@ -37,3 +37,22 @@ function env(?string $key = null, $default = null)
 {
     return array_get($_SERVER, $key, $default);
 }
+
+/**
+ * Returns an environment variable as an integer.
+ *
+ * @param string $key
+ * @param int|null $default
+ *
+ * @return int|null
+ */
+function env_int(string $key, int $default = null): ?int
+{
+    $val = env($key, $default);
+
+    if (is_numeric($val)) {
+        return intval($val);
+    }
+
+    return $default;
+}
