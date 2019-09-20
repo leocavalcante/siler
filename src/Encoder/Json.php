@@ -10,7 +10,7 @@ if (!defined('JSON_THROW_ON_ERROR')) {
 /**
  * Sugar for JSON encoding. With defensive programming check.
  *
- * @param $value
+ * @param mixed $value
  * @param int $options
  * @param int $depth
  *
@@ -23,7 +23,7 @@ function encode($value, int $options = JSON_THROW_ON_ERROR, int $depth = 512): s
 
     // TODO: Remove when PHP 7.2 support is dropped
     if ($json === false) {
-        throw new \Exception('Could not encode the given value');
+        throw new \UnexpectedValueException('Could not encode the given value');
     }
 
     return $json;
