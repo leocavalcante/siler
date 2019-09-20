@@ -22,4 +22,10 @@ class JsonTest extends TestCase
         $this->expectException(\JsonException::class);
         Json\decode('invalid json');
     }
+
+    public function testEncodeException()
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        Json\encode(fopen('php://input', 'r'));
+    }
 }
