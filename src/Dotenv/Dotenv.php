@@ -47,7 +47,7 @@ function env(?string $key = null, $default = null)
  *
  * @return int|null
  */
-function env_int(string $key, int $default = null): ?int
+function int_val(string $key, int $default = null): ?int
 {
     $val = env($key, $default);
 
@@ -66,7 +66,7 @@ function env_int(string $key, int $default = null): ?int
  *
  * @return bool|null
  */
-function env_bool(string $key, bool $default = null): ?bool
+function bool_val(string $key, bool $default = null): ?bool
 {
     $val = env($key, $default);
 
@@ -96,7 +96,7 @@ function env_bool(string $key, bool $default = null): ?bool
  *
  * @return bool
  */
-function env_requires(string $key): bool
+function requires(string $key): bool
 {
     if (array_key_exists($key, $_ENV)) {
         return true;

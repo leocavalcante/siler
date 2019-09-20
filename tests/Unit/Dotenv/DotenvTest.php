@@ -7,9 +7,9 @@ namespace Siler\Test\Unit;
 use PHPUnit\Framework\TestCase;
 use UnexpectedValueException;
 use function Siler\Dotenv\env as env;
-use function Siler\Dotenv\env_bool;
-use function Siler\Dotenv\env_int;
-use function Siler\Dotenv\env_requires;
+use function Siler\Dotenv\bool_val;
+use function Siler\Dotenv\int_val;
+use function Siler\Dotenv\requires;
 use function Siler\Dotenv\init;
 
 class DotenvTest extends TestCase
@@ -31,23 +31,23 @@ class DotenvTest extends TestCase
     {
         init(__DIR__ . '/../../fixtures');
 
-        $this->assertSame(8, env_int('ENV_INT'));
-        $this->assertNull(env_int('ENV_INT_NULL'));
-        $this->assertSame(0, env_int('ENV_INT_DEFAULT', 0));
-        $this->assertNull(env_int('ENV_INT_NOT_NUMERIC'));
+        $this->assertSame(8, int_val('ENV_INT'));
+        $this->assertNull(int_val('ENV_INT_NULL'));
+        $this->assertSame(0, int_val('ENV_INT_DEFAULT', 0));
+        $this->assertNull(int_val('ENV_INT_NOT_NUMERIC'));
     }
 
     public function testEnvBool()
     {
         init(__DIR__ . '/../../fixtures');
 
-        $this->assertNull(env_bool('ENV_BOOL_NULL'));
+        $this->assertNull(bool_val('ENV_BOOL_NULL'));
 
         foreach (range(0, 5) as $index) {
-            $this->assertFalse(env_bool("ENV_BOOL_FV$index"), "$index isn't falsy");
+            $this->assertFalse(bool_val("ENV_BOOL_FV$index"), "$index isn't falsy");
         }
 
-        $this->assertTrue(env_bool('ENV_BOOL_TV'));
+        $this->assertTrue(bool_val('ENV_BOOL_TV'));
     }
 
     public function testEnvRequires()
@@ -57,7 +57,7 @@ class DotenvTest extends TestCase
 
         init(__DIR__ . '/../../fixtures');
 
-        env_requires('FOO');
-        env_requires('BAR');
+        requires('FOO');
+        requires('BAR');
     }
 }
