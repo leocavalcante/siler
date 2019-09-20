@@ -2,6 +2,11 @@
 
 namespace Siler\Encoder\Json;
 
+// TODO: Remove when PHP 7.2 support is dropped
+if (!defined('JSON_THROW_ON_ERROR')) {
+    define('JSON_THROW_ON_ERROR', 4194304);
+}
+
 /**
  * Sugar for JSON encoding. With defensive programming check.
  *
@@ -10,13 +15,15 @@ namespace Siler\Encoder\Json;
  * @param int $depth
  *
  * @return string
+ * @throws \Exception
  */
-function encode($value, int $options = 0, int $depth = 512): string
+function encode($value, int $options = JSON_THROW_ON_ERROR, int $depth = 512): string
 {
     $json = \json_encode($value, $options, $depth);
 
+    // TODO: Remove when PHP 7.2 support is dropped
     if ($json === false) {
-        throw new \UnexpectedValueException('Could not encode the given value');
+        throw new \Exception('Could not encode the given value');
     }
 
     return $json;
@@ -25,14 +32,22 @@ function encode($value, int $options = 0, int $depth = 512): string
 /**
  * Sugar for JSON decoding. Defaults to associative array throw on error.
  *
- * @param $json
+ * @param string $json
  * @param bool $assoc
  * @param int $options
  * @param int $depth
  *
  * @return mixed
+ * @throws \Exception
  */
-function decode($json, bool $assoc = true, int $options = JSON_THROW_ON_ERROR, int $depth = 512)
+function decode(string $json, bool $assoc = true, int $options = JSON_THROW_ON_ERROR, int $depth = 512)
 {
-    return \json_decode($json, $assoc, $depth, $options);
+    $value = \json_decode($json, $assoc, $depth, $options);
+
+    // TODO: Remove when PHP 7.2 support is dropped
+    if ($value === null) {
+        throw new \Exception("Could not decode $json");
+    }
+
+    return $value;
 }

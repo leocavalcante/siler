@@ -19,13 +19,15 @@ class JsonTest extends TestCase
 
     public function testDecodeException()
     {
-        $this->expectException(\JsonException::class);
+        // TODO: Use JsonException when PHP 7.2 support drops
+        $this->expectException(\Exception::class);
         Json\decode('invalid json');
     }
 
     public function testEncodeException()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        // TODO: Use JsonException when PHP 7.2 support drops
+        $this->expectException(\Exception::class);
         Json\encode(fopen('php://input', 'r'));
     }
 }
