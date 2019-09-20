@@ -1,4 +1,5 @@
-FROM php:7.3
+ARG version=7.3
+FROM php:$version
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 ENV COMPOSER_ALLOW_SUPERUSER=1

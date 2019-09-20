@@ -56,6 +56,7 @@
             "src/Db/Redis.php",
             "src/Diactoros/Diactoros.php",
             "src/Dotenv/Dotenv.php",
+            "src/Encoder/Json.php",
             "src/Functional/Functional.php",
             "src/Functional/Monad/Monad.php",
             "src/GraphQL/GraphQL.php",
