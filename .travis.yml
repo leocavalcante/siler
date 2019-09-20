@@ -3,12 +3,13 @@ language: php
 php:
   - 7.2
   - 7.3
+  - 7.4snapshot
 
 env:
   - PHAN_ALLOW_XDEBUG=1
 
 install:
-  - yes | pecl install -f ast mongodb
+  - yes | pecl install -f ast mongodb xdebug-2.8.0
   - composer install
 
 script:
