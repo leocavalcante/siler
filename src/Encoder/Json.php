@@ -46,7 +46,7 @@ function decode(string $json, bool $assoc = true, int $options = JSON_THROW_ON_E
 
     // TODO: Remove when PHP 7.2 support is dropped
     if ($value === null) {
-        throw new \Exception("Could not decode $json");
+        throw new \UnexpectedValueException("Could not decode $json");
     }
 
     return $value;
