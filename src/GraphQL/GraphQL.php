@@ -25,7 +25,6 @@ use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
-use GraphQL\Utils\BuildSchema;
 use Psr\Http\Message\ServerRequestInterface;
 use Ratchet\Client;
 use Ratchet\Client\WebSocket;
@@ -180,16 +179,18 @@ function psr7(Schema $schema): Closure
  *
  * @param string $typeDefs
  * @param array $resolvers
+ * @param callable|null $typeConfigDecorator
+ * @param array $options
  *
  * @return Schema
  */
-function schema(string $typeDefs, array $resolvers = [], ?callable $typeConfigDecorator = null): Schema
+function schema(string $typeDefs, array $resolvers = [], ?callable $typeConfigDecorator = null, array $options = []): Schema
 {
     if (!empty($resolvers)) {
         resolvers($resolvers);
     }
 
-    return BuildSchema::build($typeDefs, $typeConfigDecorator);
+    return BuildSchema::build($typeDefs, $typeConfigDecorator, $options, $resolvers);
 }
 
 /**

@@ -301,6 +301,7 @@ return [
     'exclude_analysis_directory_list' => [
         'src/Swoole/Swoole.php',
         'src/Db/Redis.php',
+        'src/GraphQL/BuildSchema.php',
         'vendor/',
     ],
 
