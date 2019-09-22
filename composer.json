@@ -19,14 +19,10 @@
         }
     ],
     "require": {
-        "php": ">=7.2",
-        "ext-json": "*"
+        "php": ">=7.2"
     },
     "minimum-stability": "stable",
     "require-dev": {
-        "ext-ast": "^1.0",
-        "ext-mongodb": "^1.5",
-        "ext-xdebug": "*",
         "cboden/ratchet": "^0.4",
         "cocur/slugify": "^3.2",
         "gabordemooij/redbean": "^5.3",
@@ -70,10 +66,10 @@
             "src/Prelude/Tuple.php",
             "src/Result/Result.php",
             "src/Route/Route.php",
+            "src/Siler.php",
             "src/Stratigility/Stratigility.php",
             "src/Swoole/Swoole.php",
-            "src/Twig/Twig.php",
-            "src/Siler.php"
+            "src/Twig/Twig.php"
         ]
     },
     "autoload-dev": {
