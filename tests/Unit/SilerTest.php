@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siler\Test\Unit;
 
 use PHPUnit\Framework\TestCase;
+
 use function Siler\array_get;
 use function Siler\require_fn;
 

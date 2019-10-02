@@ -9,7 +9,7 @@ use GraphQL\Language\AST\DocumentNode;
 use GraphQL\Type\Schema;
 use GraphQL\Utils\BuildSchema;
 use PHPUnit\Framework\TestCase;
-use Ratchet\ConnectionInterface;
+use Siler\GraphQL\SubscriptionsConnection;
 use Siler\GraphQL\SubscriptionsManager;
 use stdClass;
 
@@ -17,7 +17,7 @@ class SubscriptionsManagerTest extends TestCase
 {
     public function testHandleConnectionInit()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(SubscriptionsConnection::class)->getMock();
 
         $message = '{"type":"connection_ack","payload":[]}';
 
@@ -36,7 +36,7 @@ class SubscriptionsManagerTest extends TestCase
 
     public function testHandleStartQuery()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(SubscriptionsConnection::class)->getMock();
 
         $dataResponse = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
         $completeResponse = '{"type":"complete","id":1}';
@@ -71,7 +71,7 @@ class SubscriptionsManagerTest extends TestCase
 
     public function testHandleStartMutation()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(SubscriptionsConnection::class)->getMock();
 
         $dataResponse = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
         $completeResponse = '{"type":"complete","id":1}';
@@ -110,7 +110,7 @@ class SubscriptionsManagerTest extends TestCase
 
     public function testHandleStartSubscription()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(SubscriptionsConnection::class)->getMock();
 
         $dataResponse = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
 
@@ -148,7 +148,7 @@ class SubscriptionsManagerTest extends TestCase
 
     public function testHandleStartFail()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(SubscriptionsConnection::class)->getMock();
 
         $response = '{"type":"error","id":1,"payload":"Missing query parameter from payload"}';
         $complete = '{"type":"complete","id":1}';
@@ -173,7 +173,7 @@ class SubscriptionsManagerTest extends TestCase
 
     public function testHandleData()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(SubscriptionsConnection::class)->getMock();
 
         $schema = BuildSchema::build(
             '
@@ -228,7 +228,7 @@ class SubscriptionsManagerTest extends TestCase
 
     public function testHandleDataWithFilters()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(SubscriptionsConnection::class)->getMock();
 
         $schema = BuildSchema::build(
             '
@@ -286,7 +286,7 @@ class SubscriptionsManagerTest extends TestCase
 
     public function testHandleStop()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(SubscriptionsConnection::class)->getMock();
 
         $schema = $this->getMockBuilder(Schema::class)
             ->disableOriginalConstructor()
@@ -302,7 +302,7 @@ class SubscriptionsManagerTest extends TestCase
         $manager->handleStart($conn, $data);
         $manager->handleStop($conn, ['id' => 1]);
 
-        $this->assertEmpty($manager->getConnStorage()->offsetGet($conn));
+        $this->assertEmpty($manager->getConnStorage()[$conn->key()]);
         $this->assertTrue(empty($manager->getSubscriptions()['test']));
     }
 

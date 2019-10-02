@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * Siler module to work with Swoole.
  */
@@ -15,6 +18,8 @@ use Swoole\Http\Server;
 use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server as WebsocketServer;
 use UnexpectedValueException;
+
+use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
 use const Siler\Route\DID_MATCH;
 
 const SWOOLE_HTTP_REQUEST = 'swoole_http_request';
@@ -157,7 +162,7 @@ function websocket(callable $handler, int $port = 9502, string $host = '0.0.0.0'
         }
     });
 
-    $server->on('message', function ($server, $frame) use ($handler) {
+    $server->on('message', function (WebsocketServer $server, Frame $frame) use ($handler) {
         return $handler($frame, $server);
     });
 
@@ -266,11 +271,17 @@ function no_content()
  */
 function graphql_subscriptions(SubscriptionsManager $manager, int $port = 3000, string $host = '0.0.0.0'): WebsocketServer
 {
-    $handler = function (WebsocketServer $server, Frame $frame) use ($manager) {
-        $conn = new GraphQLSubscriptionsConnection($server, $frame);
+    $handler = function (Frame $frame) use ($manager) {
+        $conn = new GraphQLSubscriptionsConnection($frame);
         $message = Json\decode($frame->data);
         $manager->handle($conn, $message);
     };
 
-    return websocket($handler, $port, $host);
+    $server = websocket($handler, $port, $host);
+    $server->set([
+        'websocket_subprotocol' => WEBSOCKET_SUB_PROTOCOL,
+        'worker_num' => 1, // TODO: handle multi-thread
+    ]);
+
+    return $server;
 }

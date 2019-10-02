@@ -2,15 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Siler\Test\Unit\Graphql;
+namespace Siler\Test\Unit\Ratchet;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Ratchet\ConnectionInterface;
+use Siler\GraphQL\SubscriptionsConnection;
 use Siler\GraphQL\SubscriptionsManager;
 use Siler\GraphQL\SubscriptionsServer;
+use Siler\Ratchet\GraphQLSubscriptionsServer;
 
-class SubscriptionsServerTest extends TestCase
+use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
+
+class GraphQLSubscriptionsServerTest extends TestCase
 {
     public function testOnOpen()
     {
@@ -20,10 +24,10 @@ class SubscriptionsServerTest extends TestCase
 
         $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
 
-        $server = new SubscriptionsServer($manager);
+        $server = new GraphQLSubscriptionsServer($manager);
         $server->onOpen($conn);
 
-        $this->assertInstanceOf(SubscriptionsServer::class, $server);
+        $this->assertInstanceOf(GraphQLSubscriptionsServer::class, $server);
     }
 
     public function testOnMessage()
@@ -34,14 +38,15 @@ class SubscriptionsServerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $server = new SubscriptionsServer($manager);
-
-        $manager
-            ->expects($this->once())
-            ->method('handleConnectionInit')
-            ->with($conn);
+        $server = new GraphQLSubscriptionsServer($manager);
+        $server->onOpen($conn);
 
         $message = '{"type": "connection_init"}';
+        $manager
+            ->expects($this->once())
+            ->method('handle')
+            ->with($conn);
+
         $server->onMessage($conn, $message);
 
         $data = ['type' => 'start'];
@@ -83,10 +88,10 @@ class SubscriptionsServerTest extends TestCase
 
         $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
 
-        $server = new SubscriptionsServer($manager);
+        $server = new GraphQLSubscriptionsServer($manager);
         $server->onClose($conn);
 
-        $this->assertInstanceOf(SubscriptionsServer::class, $server);
+        $this->assertInstanceOf(GraphQLSubscriptionsServer::class, $server);
     }
 
     public function testOnError()
@@ -97,10 +102,10 @@ class SubscriptionsServerTest extends TestCase
 
         $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
 
-        $server = new SubscriptionsServer($manager);
+        $server = new GraphQLSubscriptionsServer($manager);
         $server->onError($conn, new Exception());
 
-        $this->assertInstanceOf(SubscriptionsServer::class, $server);
+        $this->assertInstanceOf(GraphQLSubscriptionsServer::class, $server);
     }
 
     public function testGetSubProtocols()
@@ -109,8 +114,8 @@ class SubscriptionsServerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $server = new SubscriptionsServer($manager);
+        $server = new GraphQLSubscriptionsServer($manager);
 
-        $this->assertContains('graphql-ws', $server->getSubProtocols());
+        $this->assertContains(WEBSOCKET_SUB_PROTOCOL, $server->getSubProtocols());
     }
 }

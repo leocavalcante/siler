@@ -21,7 +21,9 @@ use RegexIterator;
 use Siler\Container;
 use Siler\Http;
 use Siler\Http\Request;
+
 use function Siler\require_fn;
+
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 const DID_MATCH = 'route_did_match';
@@ -135,8 +137,10 @@ function route($method, string $path, $callback, $request = null)
 
     $methodPath = method_path($request);
 
-    if (count($methodPath) >= 2 &&
-        (Request\method_is($method, $methodPath[0]) || $method == 'any') &&
+    if (
+        count($methodPath) >= 2 &&
+        (Request\method_is($method, $methodPath[0]) ||
+        $method == 'any') &&
         preg_match($path, $methodPath[1], $params)
     ) {
         Container\set(DID_MATCH, true);

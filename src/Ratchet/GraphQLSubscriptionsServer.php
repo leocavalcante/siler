@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Siler\Ratchet;
 
@@ -8,13 +10,16 @@ use Ratchet\MessageComponentInterface;
 use Ratchet\WebSocket\WsServerInterface;
 use Siler\Encoder\Json;
 use Siler\GraphQL\SubscriptionsManager;
+use SplObjectStorage;
+
+use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
 
 class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerInterface
 {
-    /**
-     * @var SubscriptionsManager
-     */
-    protected $manager;
+    /** @var SubscriptionsManager */
+    private $manager;
+    /** @var SplObjectStorage */
+    private $connections;
 
     /**
      * SubscriptionsServer constructor.
@@ -24,6 +29,7 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
     public function __construct(SubscriptionsManager $manager)
     {
         $this->manager = $manager;
+        $this->connections = new SplObjectStorage();
     }
 
     /**
@@ -35,6 +41,7 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
      */
     public function onOpen(ConnectionInterface $conn)
     {
+        $this->connections->offsetSet($conn, new GraphQLSubscriptionsConnection($conn, uniqid()));
     }
 
     /**
@@ -47,7 +54,7 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
      */
     public function onMessage(ConnectionInterface $conn, $message)
     {
-        $conn = new GraphQLSubscriptionsConnection($conn);
+        $conn = $this->connections->offsetGet($conn);
         $message = Json\decode($message);
         $this->manager->handle($conn, $message);
     }
@@ -61,6 +68,7 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
      */
     public function onClose(ConnectionInterface $conn)
     {
+        $this->connections->offsetUnset($conn);
     }
 
     /**
@@ -80,6 +88,6 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
      */
     public function getSubProtocols(): array
     {
-        return ['graphql-ws'];
+        return [WEBSOCKET_SUB_PROTOCOL];
     }
 }

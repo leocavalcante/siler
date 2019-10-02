@@ -40,8 +40,6 @@ GraphQL\listen(GraphQL\ON_CONNECT, function (array $connParams) {
 });
 
 GraphQL\listen(GraphQL\ON_OPERATION, function (array $subscription, array $rootValue, array $context) {
-    print_r($context);
-
     if (
         $subscription['name'] === 'inbox' &&
         (empty($context['user']) || !in_array('inbox', $context['user']['roles']))
@@ -54,4 +52,6 @@ $manager = GraphQL\subscriptions_manager($schema, $filters);
 
 $port = 3000;
 printf("Listening at %s\n", $port);
+
 Siler\Ratchet\graphql_subscriptions($manager, $port)->run();
+//Siler\Swoole\graphql_subscriptions($manager, $port)->start();

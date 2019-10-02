@@ -11,8 +11,8 @@ use GraphQL\Language\AST\DocumentNode;
 use GraphQL\Language\Parser;
 use GraphQL\Type\Schema;
 use Siler\Container;
-use SplObjectStorage;
-use UnexpectedValueException;
+use Siler\Encoder\Json;
+
 use function Siler\array_get;
 
 /**
@@ -22,34 +22,17 @@ use function Siler\array_get;
  */
 class SubscriptionsManager
 {
-    /**
-     * @var Schema
-     */
+    /** @var Schema */
     protected $schema;
-
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $filters;
-
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $rootValue;
-
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $context;
-
-    /**
-     * @var array
-     */
+    /**  @var array */
     protected $subscriptions;
-
-    /**
-     * @var SplObjectStorage<SubscriptionsConnection>
-     */
+    /** @var array */
     protected $connStorage;
 
     /**
@@ -67,13 +50,14 @@ class SubscriptionsManager
         $this->rootValue = $rootValue;
         $this->context = $context;
         $this->subscriptions = [];
-        $this->connStorage = new SplObjectStorage();
+        $this->connStorage = [];
     }
 
     public function handle(SubscriptionsConnection $conn, array $message)
     {
         switch ($message['type']) {
             case GQL_CONNECTION_INIT:
+                echo 'AT INIT';
                 $this->handleConnectionInit($conn, $message);
                 break;
 
@@ -91,17 +75,17 @@ class SubscriptionsManager
         }
     }
 
-
     /**
      * @param SubscriptionsConnection $conn
      * @param array|null $message
      *
      * @return void
+     * @throws Exception
      */
     public function handleConnectionInit(SubscriptionsConnection $conn, ?array $message = null)
     {
         try {
-            $this->connStorage->offsetSet($conn, []);
+            $this->connStorage[$conn->key()] = [];
 
             $response = [
                 'type' => GQL_CONNECTION_ACK,
@@ -119,13 +103,7 @@ class SubscriptionsManager
                 'payload' => $e->getMessage()
             ];
         } finally {
-            $result = json_encode($response);
-
-            if (false === $result) {
-                throw new UnexpectedValueException('Could not encode response');
-            }
-
-            $conn->send($result);
+            $conn->send(Json\encode($response));
         }
     }
 
@@ -135,6 +113,7 @@ class SubscriptionsManager
      * @param array $data
      *
      * @return void
+     * @throws Exception
      */
     public function handleStart(SubscriptionsConnection $conn, array $data)
     {
@@ -159,13 +138,7 @@ class SubscriptionsManager
                 'payload' => $result
             ];
 
-            $response = json_encode($response);
-
-            if (false === $response) {
-                throw new UnexpectedValueException('Could not encode response');
-            }
-
-            $conn->send($response);
+            $conn->send(Json\encode($response));
 
             if ($operation == 'subscription') {
                 $data['name'] = $this->getSubscriptionName($document);
@@ -175,11 +148,11 @@ class SubscriptionsManager
                 end($this->subscriptions[$data['name']]);
                 $data['index'] = key($this->subscriptions[$data['name']]);
 
-                $connSubscriptions = $this->connStorage->offsetExists($conn)
-                    ? $this->connStorage->offsetGet($conn)
+                $connSubscriptions = array_key_exists($conn->key(), $this->connStorage)
+                    ? $this->connStorage[$conn->key()]
                     : [];
                 $connSubscriptions[$data['id']] = $data;
-                $this->connStorage->offsetSet($conn, $connSubscriptions);
+                $this->connStorage[$conn->key()] = $connSubscriptions;
 
                 $this->callListener(ON_OPERATION, [$data, $this->rootValue, $this->context]);
             } else {
@@ -188,15 +161,10 @@ class SubscriptionsManager
                     'id' => $data['id']
                 ];
 
-                $response = json_encode($response);
+                $conn->send(Json\encode($response));
 
-                if (false === $response) {
-                    throw new UnexpectedValueException('Could not encode response');
-                }
-
-                $conn->send($response);
                 $this->callListener(ON_OPERATION_COMPLETE, [$data, $this->rootValue, $this->context]);
-            } //end if
+            }
         } catch (Exception $e) {
             $response = [
                 'type' => GQL_ERROR,
@@ -204,26 +172,14 @@ class SubscriptionsManager
                 'payload' => $e->getMessage()
             ];
 
-            $response = json_encode($response);
-
-            if (false === $response) {
-                throw new UnexpectedValueException('Could not encode response');
-            }
-
-            $conn->send($response);
+            $conn->send(Json\encode($response));
 
             $response = [
                 'type' => GQL_COMPLETE,
                 'id' => $data['id']
             ];
 
-            $response = json_encode($response);
-
-            if (false === $response) {
-                throw new UnexpectedValueException('Could not encode response');
-            }
-
-            $conn->send($response);
+            $conn->send(Json\encode($response));
         } //end try
     }
 
@@ -236,7 +192,7 @@ class SubscriptionsManager
      */
     private function execute(string $query, $payload = null, ?array $variables = null)
     {
-        return GraphQL::executeQuery($this->schema, $query, $payload, $this->context, $variables)->toArray();
+        return GraphQL::executeQuery($this->schema, $query, $payload, $this->context, $variables)->toArray(Container\get(GRAPHQL_DEBUG));
     }
 
     /**
@@ -255,6 +211,7 @@ class SubscriptionsManager
      * @param array $data
      *
      * @return void
+     * @throws Exception
      */
     public function handleData(array $data)
     {
@@ -264,6 +221,7 @@ class SubscriptionsManager
         if (is_null($subscriptions)) {
             return;
         }
+
 
         foreach ($subscriptions as $subscription) {
             try {
@@ -285,14 +243,8 @@ class SubscriptionsManager
                     'payload' => $result
                 ];
 
-                $response = json_encode($response);
-
-                if (false === $response) {
-                    throw new UnexpectedValueException('Could not encode response');
-                }
-
                 /** @noinspection PhpUndefinedMethodInspection */
-                $subscription['conn']->send($response);
+                $subscription['conn']->send(Json\encode($response));
             } catch (Exception $e) {
                 $response = [
                     'type' => GQL_ERROR,
@@ -300,14 +252,8 @@ class SubscriptionsManager
                     'payload' => $e->getMessage()
                 ];
 
-                $response = json_encode($response);
-
-                if (false === $response) {
-                    throw new UnexpectedValueException('Could not encode response');
-                }
-
                 /** @noinspection PhpUndefinedMethodInspection */
-                $subscription['conn']->send($response);
+                $subscription['conn']->send(Json\encode($response));
             } //end try
         } //end foreach
     }
@@ -320,13 +266,13 @@ class SubscriptionsManager
      */
     public function handleStop(SubscriptionsConnection $conn, array $data)
     {
-        $connSubscriptions = $this->connStorage->offsetGet($conn);
+        $connSubscriptions = $this->connStorage[$conn->key()];
         $subscription = array_get($connSubscriptions, $data['id']);
 
         if (!is_null($subscription)) {
             unset($this->subscriptions[$subscription['name']][$subscription['index']]);
             unset($connSubscriptions[$subscription['id']]);
-            $this->connStorage->offsetSet($conn, $connSubscriptions);
+            $this->connStorage[$conn->key()] = $connSubscriptions;
             $this->callListener(ON_DISCONNECT, [$subscription, $this->rootValue, $this->context]);
         }
     }
@@ -336,7 +282,7 @@ class SubscriptionsManager
         return $this->subscriptions;
     }
 
-    public function getConnStorage(): SplObjectStorage
+    public function getConnStorage(): array
     {
         return $this->connStorage;
     }

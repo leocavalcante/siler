@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siler\Test\Integration;
 
 use PHPUnit\Framework\TestCase;
+
 use function Siler\Functional\all;
 use function Siler\Functional\any;
 use function Siler\Functional\compose;

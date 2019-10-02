@@ -1,7 +1,6 @@
-<?php declare(strict_types=1);
-/*
- * Helper functions for webonyx/graphql-php GraphQL implementation.
- */
+<?php
+
+declare(strict_types=1);
 
 namespace Siler\GraphQL;
 
@@ -32,14 +31,12 @@ use Siler\Diactoros;
 use Siler\Http\Request;
 use Siler\Http\Response;
 use UnexpectedValueException;
+
 use function Siler\array_get;
 use function Siler\Ratchet\graphql_subscriptions;
 
-/**
- * Protocol messages.
- *
- * @see https://github.com/apollographql/subscriptions-transport-ws/blob/master/src/message-types.ts
- */
+// Protocol messages.
+// @see https://github.com/apollographql/subscriptions-transport-ws/blob/master/src/message-types.ts
 const GQL_CONNECTION_INIT = 'connection_init'; // Client -> Server
 const GQL_CONNECTION_ACK = 'connection_ack'; // Server -> Client
 const GQL_CONNECTION_ERROR = 'connection_error'; // Server -> Client
@@ -57,6 +54,7 @@ const ON_CONNECT = 'graphql_on_connect';
 const ON_DISCONNECT = 'graphql_on_disconnect';
 
 const GRAPHQL_DEBUG = 'graphql_debug';
+const WEBSOCKET_SUB_PROTOCOL = 'graphql-ws';
 
 /**
  * Sets GraphQL debug level.
@@ -251,8 +249,7 @@ function subscriptions_manager(
     array $filters = [],
     array $rootValue = [],
     array $context = []
-): SubscriptionsManager
-{
+): SubscriptionsManager {
     return new SubscriptionsManager($schema, $filters, $rootValue, $context);
 }
 
@@ -275,8 +272,7 @@ function subscriptions(
     int $port = 5000,
     array $rootValue = [],
     array $context = []
-): IoServer
-{
+): IoServer {
     $manager = subscriptions_manager($schema, $filters, $rootValue, $context);
     return graphql_subscriptions($manager, $port, $host);
 }
@@ -305,7 +301,7 @@ function publish(string $subscriptionName, $payload = null)
 {
     $wsEndpoint = Container\get('graphql_subscriptions_endpoint');
 
-    Client\connect($wsEndpoint, ['graphql-ws'])->then(function (WebSocket $conn) use ($subscriptionName, $payload) {
+    Client\connect($wsEndpoint, [WEBSOCKET_SUB_PROTOCOL])->then(function (WebSocket $conn) use ($subscriptionName, $payload) {
         $request = [
             'type' => GQL_DATA,
             'subscription' => $subscriptionName,

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Siler\Ratchet;
 
@@ -20,8 +22,7 @@ function graphql_subscriptions(
     SubscriptionsManager $manager,
     int $port = 3000,
     string $host = '0.0.0.0'
-): IoServer
-{
+): IoServer {
     $server = new GraphQLSubscriptionsServer($manager);
     $websocket = new WsServer($server);
     $http = new HttpServer($websocket);

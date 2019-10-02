@@ -11,6 +11,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Siler\Container;
 use UnexpectedValueException;
 use Zend\Stratigility\MiddlewarePipe;
+
 use function Zend\Stratigility\middleware;
 
 const DEFAULT_STRATIGILITY_PIPELINE = 'default_stratigility_pipeline';

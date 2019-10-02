@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * String module. Functions to operate on strings.
  */
