@@ -1,10 +1,10 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Siler\GraphQL;
+
+GraphQL\debug();
 
 $filters = [
     'inbox' => function ($payload, $vars) {
@@ -12,8 +12,6 @@ $filters = [
     }
 ];
 
-$host = '0.0.0.0';
-$port = 5000;
 $schema = include __DIR__ . '/schema.php';
 
 GraphQL\listen(GraphQL\ON_CONNECT, function (array $connParams) {
@@ -42,6 +40,8 @@ GraphQL\listen(GraphQL\ON_CONNECT, function (array $connParams) {
 });
 
 GraphQL\listen(GraphQL\ON_OPERATION, function (array $subscription, array $rootValue, array $context) {
+    print_r($context);
+
     if (
         $subscription['name'] === 'inbox' &&
         (empty($context['user']) || !in_array('inbox', $context['user']['roles']))
@@ -50,5 +50,8 @@ GraphQL\listen(GraphQL\ON_OPERATION, function (array $subscription, array $rootV
     }
 });
 
-printf("Listening at %s:%s\n", $host, $port);
-GraphQL\subscriptions($schema, $filters, $host, $port)->run();
+$manager = GraphQL\subscriptions_manager($schema, $filters);
+
+$port = 3000;
+printf("Listening at %s\n", $port);
+Siler\Ratchet\graphql_subscriptions($manager, $port)->run();

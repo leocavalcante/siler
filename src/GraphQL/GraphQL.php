@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 /*
  * Helper functions for webonyx/graphql-php GraphQL implementation.
  */
@@ -28,15 +26,14 @@ use GraphQL\Type\Schema;
 use Psr\Http\Message\ServerRequestInterface;
 use Ratchet\Client;
 use Ratchet\Client\WebSocket;
-use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
-use Ratchet\WebSocket\WsServer;
 use Siler\Container;
 use Siler\Diactoros;
 use Siler\Http\Request;
 use Siler\Http\Response;
 use UnexpectedValueException;
 use function Siler\array_get;
+use function Siler\Ratchet\graphql_subscriptions;
 
 /**
  * Protocol messages.
@@ -240,8 +237,26 @@ function resolvers(array $resolvers)
 }
 
 /**
- * Returns a new websocket server bootstrapped for GraphQL.
+ * Returns a GraphQL Subscriptions Manager.
  *
+ * @param Schema $schema
+ * @param array $filters
+ * @param array $rootValue
+ * @param array $context
+ *
+ * @return SubscriptionsManager
+ */
+function subscriptions_manager(
+    Schema $schema,
+    array $filters = [],
+    array $rootValue = [],
+    array $context = []
+): SubscriptionsManager
+{
+    return new SubscriptionsManager($schema, $filters, $rootValue, $context);
+}
+
+/**
  * @param Schema $schema
  * @param array $filters
  * @param string $host
@@ -250,6 +265,8 @@ function resolvers(array $resolvers)
  * @param array $context
  *
  * @return IoServer
+ * @deprecated Returns a new websocket server bootstrapped for GraphQL.
+ *
  */
 function subscriptions(
     Schema $schema,
@@ -258,13 +275,10 @@ function subscriptions(
     int $port = 5000,
     array $rootValue = [],
     array $context = []
-): IoServer {
-    $manager = new SubscriptionsManager($schema, $filters, $rootValue, $context);
-    $server = new SubscriptionsServer($manager);
-    $websocket = new WsServer($server);
-    $http = new HttpServer($websocket);
-
-    return IoServer::factory($http, $port, $host);
+): IoServer
+{
+    $manager = subscriptions_manager($schema, $filters, $rootValue, $context);
+    return graphql_subscriptions($manager, $port, $host);
 }
 
 /**

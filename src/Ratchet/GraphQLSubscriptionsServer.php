@@ -1,17 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
-
-namespace Siler\GraphQL;
+namespace Siler\Ratchet;
 
 use Exception;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 use Ratchet\WebSocket\WsServerInterface;
-use Siler\GraphQL;
-use UnexpectedValueException;
+use Siler\Encoder\Json;
+use Siler\GraphQL\SubscriptionsManager;
 
-class SubscriptionsServer implements MessageComponentInterface, WsServerInterface
+class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerInterface
 {
     /**
      * @var SubscriptionsManager
@@ -44,32 +42,14 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
      *
      * @param ConnectionInterface $conn
      * @param string $message
+     *
+     * @throws Exception
      */
     public function onMessage(ConnectionInterface $conn, $message)
     {
-        $data = json_decode($message, true);
-
-        if (!is_array($data)) {
-            throw new UnexpectedValueException('GraphQL message should be a JSON object');
-        }
-
-        switch ($data['type']) {
-            case GraphQL\GQL_CONNECTION_INIT:
-                $this->manager->handleConnectionInit($conn, $data);
-                break;
-
-            case GraphQL\GQL_START:
-                $this->manager->handleStart($conn, $data);
-                break;
-
-            case GraphQL\GQL_DATA:
-                $this->manager->handleData($data);
-                break;
-
-            case GraphQL\GQL_STOP:
-                $this->manager->handleStop($conn, $data);
-                break;
-        }
+        $conn = new GraphQLSubscriptionsConnection($conn);
+        $message = Json\decode($message);
+        $this->manager->handle($conn, $message);
     }
 
     /**

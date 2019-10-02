@@ -64,6 +64,7 @@
             "src/Monolog/Monolog.php",
             "src/Prelude/Str.php",
             "src/Prelude/Tuple.php",
+            "src/Ratchet/Ratchet.php",
             "src/Result/Result.php",
             "src/Route/Route.php",
             "src/Siler.php",

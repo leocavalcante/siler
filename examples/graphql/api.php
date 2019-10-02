@@ -11,7 +11,7 @@ use Siler\Http\Response;
 Response\header('Access-Control-Allow-Origin', '*');
 Response\header('Access-Control-Allow-Headers', 'content-type');
 
-GraphQL\subscriptions_at('ws://127.0.0.1:5000');
+GraphQL\subscriptions_at('ws://127.0.0.1:3000');
 
 if (Request\method_is('post')) {
     $schema = include __DIR__ . '/schema.php';

@@ -10,7 +10,6 @@ use GraphQL\GraphQL;
 use GraphQL\Language\AST\DocumentNode;
 use GraphQL\Language\Parser;
 use GraphQL\Type\Schema;
-use Ratchet\ConnectionInterface;
 use Siler\Container;
 use SplObjectStorage;
 use UnexpectedValueException;
@@ -49,7 +48,7 @@ class SubscriptionsManager
     protected $subscriptions;
 
     /**
-     * @var SplObjectStorage
+     * @var SplObjectStorage<SubscriptionsConnection>
      */
     protected $connStorage;
 
@@ -71,13 +70,35 @@ class SubscriptionsManager
         $this->connStorage = new SplObjectStorage();
     }
 
+    public function handle(SubscriptionsConnection $conn, array $message)
+    {
+        switch ($message['type']) {
+            case GQL_CONNECTION_INIT:
+                $this->handleConnectionInit($conn, $message);
+                break;
+
+            case GQL_START:
+                $this->handleStart($conn, $message);
+                break;
+
+            case GQL_DATA:
+                $this->handleData($message);
+                break;
+
+            case GQL_STOP:
+                $this->handleStop($conn, $message);
+                break;
+        }
+    }
+
+
     /**
-     * @param ConnectionInterface $conn
-     * @param array|null $data
+     * @param SubscriptionsConnection $conn
+     * @param array|null $message
      *
      * @return void
      */
-    public function handleConnectionInit(ConnectionInterface $conn, ?array $data = null)
+    public function handleConnectionInit(SubscriptionsConnection $conn, ?array $message = null)
     {
         try {
             $this->connStorage->offsetSet($conn, []);
@@ -87,7 +108,7 @@ class SubscriptionsManager
                 'payload' => []
             ];
 
-            $context = $this->callListener(ON_CONNECT, [array_get($data, 'payload', [])]);
+            $context = $this->callListener(ON_CONNECT, [array_get($message, 'payload', [])]);
 
             if (is_array($context)) {
                 $this->context = array_merge($this->context, $context);
@@ -105,33 +126,17 @@ class SubscriptionsManager
             }
 
             $conn->send($result);
-        } //end try
-    }
-
-    /**
-     * @param string $eventName
-     * @param array $withArgs
-     *
-     * @return mixed|null
-     */
-    private function callListener(string $eventName, array $withArgs)
-    {
-        $listener = Container\get($eventName);
-
-        if (is_callable($listener)) {
-            return call_user_func_array($listener, $withArgs);
         }
-
-        return null;
     }
 
+
     /**
-     * @param ConnectionInterface $conn
+     * @param SubscriptionsConnection $conn
      * @param array $data
      *
      * @return void
      */
-    public function handleStart(ConnectionInterface $conn, array $data)
+    public function handleStart(SubscriptionsConnection $conn, array $data)
     {
         try {
             $payload = array_get($data, 'payload');
@@ -308,12 +313,12 @@ class SubscriptionsManager
     }
 
     /**
-     * @param ConnectionInterface $conn
+     * @param SubscriptionsConnection $conn
      * @param array $data
      *
      * @return void
      */
-    public function handleStop(ConnectionInterface $conn, array $data)
+    public function handleStop(SubscriptionsConnection $conn, array $data)
     {
         $connSubscriptions = $this->connStorage->offsetGet($conn);
         $subscription = array_get($connSubscriptions, $data['id']);
@@ -334,5 +339,22 @@ class SubscriptionsManager
     public function getConnStorage(): SplObjectStorage
     {
         return $this->connStorage;
+    }
+
+    /**
+     * @param string $eventName
+     * @param array $withArgs
+     *
+     * @return mixed|null
+     */
+    private function callListener(string $eventName, array $withArgs)
+    {
+        $listener = Container\get($eventName);
+
+        if (is_callable($listener)) {
+            return call_user_func_array($listener, $withArgs);
+        }
+
+        return null;
     }
 }
