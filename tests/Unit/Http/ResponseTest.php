@@ -92,4 +92,21 @@ class ResponseTest extends TestCase
 
         $this->assertContains('Location: /foo/bar', $headers);
     }
+
+    public function testNoContent()
+    {
+        $this->expectOutputString('');
+        Response\no_content();
+        $this->assertSame(204, http_response_code());
+    }
+
+    public function testCors()
+    {
+        Response\cors();
+        $headers = xdebug_get_headers();
+
+        $this->assertContains('Access-Control-Allow-Origin: *', $headers);
+        $this->assertContains('Access-Control-Allow-Headers: Content-Type', $headers);
+        $this->assertContains('Access-Control-Allow-Methods: GET, POST, PUT, DELETE', $headers);
+    }
 }
