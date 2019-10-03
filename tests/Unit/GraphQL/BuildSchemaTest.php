@@ -22,6 +22,7 @@ use GraphQL\Type\Definition\UnionType;
 use GraphQL\Utils\SchemaPrinter;
 use PHPUnit\Framework\TestCase;
 use Siler\GraphQL\BuildSchema;
+
 use function array_keys;
 use function count;
 
@@ -1246,11 +1247,13 @@ interface Hello {
             'description' => '',
             'deprecationReason' => '',
         ];
-        foreach ([
+        foreach (
+            [
                      'RED' => $enumValue,
                      'GREEN' => $enumValue,
                      'BLUE' => $enumValue,
-                 ] as $colorKey => $colorValue) {
+                 ] as $colorKey => $colorValue
+        ) {
             self::assertArrayHasKey($colorKey, $defaultConfig['values']);
         }
         self::assertCount(4, $defaultConfig); // 3 + astNode

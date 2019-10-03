@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * Helpers functions for HTTP requests.
  */
@@ -9,7 +10,9 @@ namespace Siler\Http\Request;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Siler\Container;
+
 use function Siler\array_get;
+
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 /**

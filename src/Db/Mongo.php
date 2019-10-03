@@ -1,6 +1,9 @@
-<?php /** @noinspection PhpComposerExtensionStubsInspection */
+<?php
+
+/** @noinspection PhpComposerExtensionStubsInspection */
 
 declare(strict_types=1);
+
 /*
  * Module to work with MongoDB operations.
  */

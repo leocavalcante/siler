@@ -4,6 +4,7 @@
 
     <rule ref="PSR12">
         <exclude name="Generic.Files.LineLength"/>
+        <exclude name="PSR12.Properties.ConstantVisibility.NotFound"/>
     </rule>
 
     <file>src</file>

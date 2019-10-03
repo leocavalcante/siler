@@ -9,7 +9,9 @@ use Siler\Container;
 use Siler\Http\Request;
 use Siler\Test\Unit\Route\SwooleHttpRequestMock;
 use Zend\Diactoros\ServerRequest;
+
 use function locale_get_default;
+
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 class RequestTest extends TestCase

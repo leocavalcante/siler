@@ -10,10 +10,16 @@ namespace Siler\Swoole;
 
 use OutOfBoundsException;
 use Siler\Container;
+use Siler\Encoder\Json;
+use Siler\GraphQL\SubscriptionsManager;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\Http\Server;
+use Swoole\WebSocket\Frame;
+use Swoole\WebSocket\Server as WebsocketServer;
 use UnexpectedValueException;
+
+use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
 use const Siler\Route\DID_MATCH;
 
 const SWOOLE_HTTP_REQUEST = 'swoole_http_request';
@@ -141,11 +147,11 @@ function websocket_hooks(array $hooks)
  * @param int $port The port binding (defaults to 9502).
  * @param string $host The host binding (defaults to 0.0.0.0).
  *
- * @return \Swoole\WebSocket\Server
+ * @return WebsocketServer
  */
-function websocket(callable $handler, int $port = 9502, string $host = '0.0.0.0'): \Swoole\WebSocket\Server
+function websocket(callable $handler, int $port = 9502, string $host = '0.0.0.0'): WebsocketServer
 {
-    $server = new \Swoole\WebSocket\Server($host, $port);
+    $server = new WebsocketServer($host, $port);
     Container\set(SWOOLE_WEBSOCKET_SERVER, $server);
 
     $server->on('open', function ($server, $request) {
@@ -156,7 +162,7 @@ function websocket(callable $handler, int $port = 9502, string $host = '0.0.0.0'
         }
     });
 
-    $server->on('message', function ($server, $frame) use ($handler) {
+    $server->on('message', function (WebsocketServer $server, Frame $frame) use ($handler) {
         return $handler($frame, $server);
     });
 
@@ -252,4 +258,30 @@ function raw(): string
 function no_content()
 {
     emit('', 204);
+}
+
+/**
+ * Creates and handles GraphQL subscriptions messages over Swoole WebSockets.
+ *
+ * @param SubscriptionsManager $manager
+ * @param int $port
+ * @param string $host
+ *
+ * @return WebsocketServer
+ */
+function graphql_subscriptions(SubscriptionsManager $manager, int $port = 3000, string $host = '0.0.0.0'): WebsocketServer
+{
+    $handler = function (Frame $frame) use ($manager) {
+        $conn = new GraphQLSubscriptionsConnection($frame);
+        $message = Json\decode($frame->data);
+        $manager->handle($conn, $message);
+    };
+
+    $server = websocket($handler, $port, $host);
+    $server->set([
+        'websocket_subprotocol' => WEBSOCKET_SUB_PROTOCOL,
+        'worker_num' => 1, // TODO: handle multi-thread
+    ]);
+
+    return $server;
 }

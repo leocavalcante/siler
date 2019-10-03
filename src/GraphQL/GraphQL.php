@@ -1,9 +1,6 @@
 <?php
 
 declare(strict_types=1);
-/*
- * Helper functions for webonyx/graphql-php GraphQL implementation.
- */
 
 namespace Siler\GraphQL;
 
@@ -28,21 +25,18 @@ use GraphQL\Type\Schema;
 use Psr\Http\Message\ServerRequestInterface;
 use Ratchet\Client;
 use Ratchet\Client\WebSocket;
-use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
-use Ratchet\WebSocket\WsServer;
 use Siler\Container;
 use Siler\Diactoros;
 use Siler\Http\Request;
 use Siler\Http\Response;
 use UnexpectedValueException;
-use function Siler\array_get;
 
-/**
- * Protocol messages.
- *
- * @see https://github.com/apollographql/subscriptions-transport-ws/blob/master/src/message-types.ts
- */
+use function Siler\array_get;
+use function Siler\Ratchet\graphql_subscriptions;
+
+// Protocol messages.
+// @see https://github.com/apollographql/subscriptions-transport-ws/blob/master/src/message-types.ts
 const GQL_CONNECTION_INIT = 'connection_init'; // Client -> Server
 const GQL_CONNECTION_ACK = 'connection_ack'; // Server -> Client
 const GQL_CONNECTION_ERROR = 'connection_error'; // Server -> Client
@@ -60,6 +54,7 @@ const ON_CONNECT = 'graphql_on_connect';
 const ON_DISCONNECT = 'graphql_on_disconnect';
 
 const GRAPHQL_DEBUG = 'graphql_debug';
+const WEBSOCKET_SUB_PROTOCOL = 'graphql-ws';
 
 /**
  * Sets GraphQL debug level.
@@ -240,8 +235,25 @@ function resolvers(array $resolvers)
 }
 
 /**
- * Returns a new websocket server bootstrapped for GraphQL.
+ * Returns a GraphQL Subscriptions Manager.
  *
+ * @param Schema $schema
+ * @param array $filters
+ * @param array $rootValue
+ * @param array $context
+ *
+ * @return SubscriptionsManager
+ */
+function subscriptions_manager(
+    Schema $schema,
+    array $filters = [],
+    array $rootValue = [],
+    array $context = []
+): SubscriptionsManager {
+    return new SubscriptionsManager($schema, $filters, $rootValue, $context);
+}
+
+/**
  * @param Schema $schema
  * @param array $filters
  * @param string $host
@@ -250,6 +262,8 @@ function resolvers(array $resolvers)
  * @param array $context
  *
  * @return IoServer
+ * @deprecated Returns a new websocket server bootstrapped for GraphQL.
+ *
  */
 function subscriptions(
     Schema $schema,
@@ -259,12 +273,8 @@ function subscriptions(
     array $rootValue = [],
     array $context = []
 ): IoServer {
-    $manager = new SubscriptionsManager($schema, $filters, $rootValue, $context);
-    $server = new SubscriptionsServer($manager);
-    $websocket = new WsServer($server);
-    $http = new HttpServer($websocket);
-
-    return IoServer::factory($http, $port, $host);
+    $manager = subscriptions_manager($schema, $filters, $rootValue, $context);
+    return graphql_subscriptions($manager, $port, $host);
 }
 
 /**
@@ -291,7 +301,7 @@ function publish(string $subscriptionName, $payload = null)
 {
     $wsEndpoint = Container\get('graphql_subscriptions_endpoint');
 
-    Client\connect($wsEndpoint, ['graphql-ws'])->then(function (WebSocket $conn) use ($subscriptionName, $payload) {
+    Client\connect($wsEndpoint, [WEBSOCKET_SUB_PROTOCOL])->then(function (WebSocket $conn) use ($subscriptionName, $payload) {
         $request = [
             'type' => GQL_DATA,
             'subscription' => $subscriptionName,

@@ -7,6 +7,7 @@ namespace Siler\Test\Unit;
 use PHPUnit\Framework\TestCase;
 use Siler\Result\Failure;
 use Siler\Result\Success;
+
 use function Siler\Result\failure;
 use function Siler\Result\success;
 

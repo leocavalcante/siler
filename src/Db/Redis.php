@@ -1,13 +1,17 @@
-<?php /** @noinspection PhpComposerExtensionStubsInspection */
+<?php
+
+/**
+ * @noinspection PhpComposerExtensionStubsInspection
+ */
+
+declare(strict_types=1);
 
 namespace Siler\Redis;
 
 use Redis;
 use Siler\Container;
 
-/**
- * Default Redis instance name on Siler\Container.
- */
+// Default Redis instance name on Siler\Container.
 const DEFAULT_INSTANCE = 'redis_default_instance';
 
 /**

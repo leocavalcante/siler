@@ -9,15 +9,20 @@ use GraphQL\Language\AST\DocumentNode;
 use GraphQL\Type\Schema;
 use GraphQL\Utils\BuildSchema;
 use PHPUnit\Framework\TestCase;
-use Ratchet\ConnectionInterface;
+use Siler\GraphQL\SubscriptionsConnection;
 use Siler\GraphQL\SubscriptionsManager;
 use stdClass;
+
+use const Siler\GraphQL\GQL_CONNECTION_INIT;
+use const Siler\GraphQL\GQL_DATA;
+use const Siler\GraphQL\GQL_START;
+use const Siler\GraphQL\GQL_STOP;
 
 class SubscriptionsManagerTest extends TestCase
 {
     public function testHandleConnectionInit()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(SubscriptionsConnection::class)->getMock();
 
         $message = '{"type":"connection_ack","payload":[]}';
 
@@ -31,12 +36,12 @@ class SubscriptionsManagerTest extends TestCase
             ->getMock();
 
         $manager = new SubscriptionsManager($schema);
-        $manager->handleConnectionInit($conn);
+        $manager->handle($conn, ['type' => GQL_CONNECTION_INIT]);
     }
 
     public function testHandleStartQuery()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(SubscriptionsConnection::class)->getMock();
 
         $dataResponse = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
         $completeResponse = '{"type":"complete","id":1}';
@@ -59,19 +64,19 @@ class SubscriptionsManagerTest extends TestCase
         ];
 
         $manager = new SubscriptionsManager($schema);
-        $manager->handleConnectionInit($conn);
+        $manager->handle($conn, ['type' => GQL_CONNECTION_INIT]);
 
         $conn
             ->expects($this->exactly(2))
             ->method('send')
             ->withConsecutive([$dataResponse], [$completeResponse]);
 
-        $manager->handleStart($conn, $data);
+        $manager->handle($conn, array_merge(['type' => GQL_START], $data));
     }
 
     public function testHandleStartMutation()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(SubscriptionsConnection::class)->getMock();
 
         $dataResponse = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
         $completeResponse = '{"type":"complete","id":1}';
@@ -98,19 +103,19 @@ class SubscriptionsManagerTest extends TestCase
         ];
 
         $manager = new SubscriptionsManager($schema);
-        $manager->handleConnectionInit($conn);
+        $manager->handle($conn, ['type' => GQL_CONNECTION_INIT]);
 
         $conn
             ->expects($this->exactly(2))
             ->method('send')
             ->withConsecutive([$dataResponse], [$completeResponse]);
 
-        $manager->handleStart($conn, $data);
+        $manager->handle($conn, array_merge(['type' => GQL_START], $data));
     }
 
     public function testHandleStartSubscription()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(SubscriptionsConnection::class)->getMock();
 
         $dataResponse = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
 
@@ -136,19 +141,19 @@ class SubscriptionsManagerTest extends TestCase
         ];
 
         $manager = new SubscriptionsManager($schema);
-        $manager->handleConnectionInit($conn);
+        $manager->handle($conn, ['type' => GQL_CONNECTION_INIT]);
 
         $conn
             ->expects($this->once())
             ->method('send')
             ->with($dataResponse);
 
-        $manager->handleStart($conn, $data);
+        $manager->handle($conn, array_merge(['type' => GQL_START], $data));
     }
 
     public function testHandleStartFail()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(SubscriptionsConnection::class)->getMock();
 
         $response = '{"type":"error","id":1,"payload":"Missing query parameter from payload"}';
         $complete = '{"type":"complete","id":1}';
@@ -168,12 +173,12 @@ class SubscriptionsManagerTest extends TestCase
         ];
 
         $manager = new SubscriptionsManager($schema);
-        $manager->handleStart($conn, $data);
+        $manager->handle($conn, array_merge(['type' => GQL_START], $data));
     }
 
     public function testHandleData()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(SubscriptionsConnection::class)->getMock();
 
         $schema = BuildSchema::build(
             '
@@ -210,8 +215,8 @@ class SubscriptionsManagerTest extends TestCase
             ->withConsecutive([$startExpected], [$expected]);
 
         $manager = new SubscriptionsManager($schema);
-        $manager->handleStart($conn, $startData);
-        $manager->handleData($data);
+        $manager->handle($conn, array_merge(['type' => GQL_START], $startData));
+        $manager->handle($conn, array_merge(['type' => GQL_DATA], $data));
     }
 
     public function testHandleNullData()
@@ -228,7 +233,7 @@ class SubscriptionsManagerTest extends TestCase
 
     public function testHandleDataWithFilters()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(SubscriptionsConnection::class)->getMock();
 
         $schema = BuildSchema::build(
             '
@@ -286,7 +291,7 @@ class SubscriptionsManagerTest extends TestCase
 
     public function testHandleStop()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(SubscriptionsConnection::class)->getMock();
 
         $schema = $this->getMockBuilder(Schema::class)
             ->disableOriginalConstructor()
@@ -300,9 +305,9 @@ class SubscriptionsManagerTest extends TestCase
         $manager = new SubscriptionsManager($schema);
         $manager->handleConnectionInit($conn);
         $manager->handleStart($conn, $data);
-        $manager->handleStop($conn, ['id' => 1]);
+        $manager->handle($conn, ['type' => GQL_STOP, 'id' => 1]);
 
-        $this->assertEmpty($manager->getConnStorage()->offsetGet($conn));
+        $this->assertEmpty($manager->getConnStorage()[$conn->key()]);
         $this->assertTrue(empty($manager->getSubscriptions()['test']));
     }
 

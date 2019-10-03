@@ -2,21 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Siler\GraphQL;
+namespace Siler\Ratchet;
 
 use Exception;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 use Ratchet\WebSocket\WsServerInterface;
-use Siler\GraphQL;
-use UnexpectedValueException;
+use Siler\Encoder\Json;
+use Siler\GraphQL\SubscriptionsConnection;
+use Siler\GraphQL\SubscriptionsManager;
+use SplObjectStorage;
 
-class SubscriptionsServer implements MessageComponentInterface, WsServerInterface
+use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
+
+class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerInterface
 {
-    /**
-     * @var SubscriptionsManager
-     */
-    protected $manager;
+    /** @var SubscriptionsManager */
+    private $manager;
+    /** @var SplObjectStorage */
+    private $connections;
 
     /**
      * SubscriptionsServer constructor.
@@ -26,6 +30,12 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
     public function __construct(SubscriptionsManager $manager)
     {
         $this->manager = $manager;
+        $this->connections = new SplObjectStorage();
+    }
+
+    public function getSubscriptionsConnection(ConnectionInterface $conn): SubscriptionsConnection
+    {
+        return $this->connections->offsetGet($conn);
     }
 
     /**
@@ -37,6 +47,7 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
      */
     public function onOpen(ConnectionInterface $conn)
     {
+        $this->connections->offsetSet($conn, new GraphQLSubscriptionsConnection($conn, uniqid()));
     }
 
     /**
@@ -44,32 +55,14 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
      *
      * @param ConnectionInterface $conn
      * @param string $message
+     *
+     * @throws Exception
      */
     public function onMessage(ConnectionInterface $conn, $message)
     {
-        $data = json_decode($message, true);
-
-        if (!is_array($data)) {
-            throw new UnexpectedValueException('GraphQL message should be a JSON object');
-        }
-
-        switch ($data['type']) {
-            case GraphQL\GQL_CONNECTION_INIT:
-                $this->manager->handleConnectionInit($conn, $data);
-                break;
-
-            case GraphQL\GQL_START:
-                $this->manager->handleStart($conn, $data);
-                break;
-
-            case GraphQL\GQL_DATA:
-                $this->manager->handleData($data);
-                break;
-
-            case GraphQL\GQL_STOP:
-                $this->manager->handleStop($conn, $data);
-                break;
-        }
+        $conn = $this->connections->offsetGet($conn);
+        $message = Json\decode($message);
+        $this->manager->handle($conn, $message);
     }
 
     /**
@@ -81,6 +74,7 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
      */
     public function onClose(ConnectionInterface $conn)
     {
+        $this->connections->offsetUnset($conn);
     }
 
     /**
@@ -100,6 +94,6 @@ class SubscriptionsServer implements MessageComponentInterface, WsServerInterfac
      */
     public function getSubProtocols(): array
     {
-        return ['graphql-ws'];
+        return [WEBSOCKET_SUB_PROTOCOL];
     }
 }

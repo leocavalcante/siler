@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /**
  * Borrowed from https://github.com/webonyx/graphql-php/blob/master/src/Utils/BuildSchema.php
  * Added the type resolver feature.
@@ -15,6 +18,7 @@ use GraphQL\Language\Parser;
 use GraphQL\Type\Definition\Directive;
 use GraphQL\Type\Schema;
 use GraphQL\Utils\ASTDefinitionBuilder;
+
 use function array_map;
 use function array_reduce;
 use function sprintf;
@@ -27,19 +31,14 @@ class BuildSchema
 {
     /** @var DocumentNode */
     private $ast;
-
-    /** @var Node[] */
+/** @var Node[] */
     private $nodeMap;
-
-    /** @var callable|null */
+/** @var callable|null */
     private $typeConfigDecorator;
-
-    /** @var bool[] */
+/** @var bool[] */
     private $options;
-
-    /** @var array */
+/** @var array */
     private $resolvers;
-
     public function __construct(DocumentNode $ast, ?callable $typeConfigDecorator = null, array $options = [], array $resolvers = [])
     {
         $this->ast = $ast;
@@ -74,6 +73,7 @@ class BuildSchema
                         throw new Error('Must provide only one schema definition.');
                     }
                     $schemaDef = $d;
+
                     break;
                 case NodeKind::SCALAR_TYPE_DEFINITION:
                 case NodeKind::OBJECT_TYPE_DEFINITION:
@@ -86,13 +86,15 @@ class BuildSchema
                         throw new Error(sprintf('Type "%s" was defined more than once.', $typeName));
                     }
                     if (in_array($typeName, $this->resolvers) && $d->kind === NodeKind::SCALAR_TYPE_DEFINITION) {
-                        break;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       break;
                     }
-                    $typeDefs[] = $d;
-                    $this->nodeMap[$typeName] = $d;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           $typeDefs[] = $d;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           $this->nodeMap[$typeName] = $d;
+
                     break;
                 case NodeKind::DIRECTIVE_DEFINITION:
-                    $directiveDefs[] = $d;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       $directiveDefs[] = $d;
+
                     break;
             }
         }
@@ -104,53 +106,38 @@ class BuildSchema
                 'mutation' => isset($this->nodeMap['Mutation']) ? 'Mutation' : null,
                 'subscription' => isset($this->nodeMap['Subscription']) ? 'Subscription' : null,
             ];
+        $builder = new ASTDefinitionBuilder($this->nodeMap, $this->options, function ($typeName) {
 
-        $builder = new ASTDefinitionBuilder(
-            $this->nodeMap,
-            $this->options,
-            function ($typeName) {
-                if (array_key_exists($typeName, $this->resolvers)) {
-                    return $this->resolvers[$typeName];
-                }
-                throw new Error('Type "' . $typeName . '" not found in document.');
-            },
-            $this->typeConfigDecorator
-        );
-
-        $directives = array_map(
-            static function ($def) use ($builder) {
-                return $builder->buildDirective($def);
-            },
-            $directiveDefs
-        );
-
-        // If specified directives were not explicitly declared, add them.
-        $skip = array_reduce(
-            $directives,
-            static function ($hasSkip, $directive) {
-                return (bool)$hasSkip || $directive->name === 'skip';
+            if (array_key_exists($typeName, $this->resolvers)) {
+                return $this->resolvers[$typeName];
             }
-        );
+                throw new Error('Type "' . $typeName . '" not found in document.');
+        }, $this->typeConfigDecorator);
+        $directives = array_map(static function ($def) use ($builder) {
+
+                return $builder->buildDirective($def);
+        }, $directiveDefs);
+// If specified directives were not explicitly declared, add them.
+        $skip = array_reduce($directives, static function ($hasSkip, $directive) {
+
+                return (bool)$hasSkip || $directive->name === 'skip';
+        });
         if (!$skip) {
             $directives[] = Directive::skipDirective();
         }
 
-        $include = array_reduce(
-            $directives,
-            static function ($hasInclude, $directive) {
+        $include = array_reduce($directives, static function ($hasInclude, $directive) {
+
                 return (bool)$hasInclude || $directive->name === 'include';
-            }
-        );
+        });
         if (!$include) {
             $directives[] = Directive::includeDirective();
         }
 
-        $deprecated = array_reduce(
-            $directives,
-            static function ($hasDeprecated, $directive) {
+        $deprecated = array_reduce($directives, static function ($hasDeprecated, $directive) {
+
                 return (bool)$hasDeprecated || $directive->name === 'deprecated';
-            }
-        );
+        });
         if (!$deprecated) {
             $directives[] = Directive::deprecatedDirective();
         }
@@ -170,11 +157,13 @@ class BuildSchema
                 ? $builder->buildType($operationTypes['subscription'])
                 : null,
             'typeLoader' => static function ($name) use ($builder) {
+
                 return $builder->buildType($name);
             },
             'directives' => $directives,
             'astNode' => $schemaDef,
             'types' => function () use ($builder) {
+
                 $types = [];
                 foreach ($this->nodeMap as $name => $def) {
                     $types[] = $builder->buildType($def->name->value);
@@ -188,11 +177,9 @@ class BuildSchema
     private function getOperationTypes($schemaDef)
     {
         $opTypes = [];
-
         foreach ($schemaDef->operationTypes as $operationType) {
             $typeName = $operationType->type->name->value;
             $operation = $operationType->operation;
-
             if (isset($opTypes[$operation])) {
                 throw new Error(sprintf('Must provide only one %s type in schema.', $operation));
             }

@@ -10,6 +10,7 @@ namespace Siler\Dotenv;
 
 use Dotenv\Dotenv;
 use UnexpectedValueException;
+
 use function Siler\array_get;
 
 /**

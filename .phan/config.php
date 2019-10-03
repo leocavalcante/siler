@@ -299,7 +299,6 @@ return [
     //       should be added to the `directory_list` as well as
     //       to `exclude_analysis_directory_list`.
     'exclude_analysis_directory_list' => [
-        'src/Swoole/Swoole.php',
         'src/Db/Redis.php',
         'src/GraphQL/BuildSchema.php',
         'vendor/',
@@ -371,6 +370,7 @@ return [
         'vendor/ratchet/pawl/src',
         'vendor/react/promise/src',
         'vendor/swiftmailer/swiftmailer/lib',
+        'vendor/swoole/ide-helper/output/swoole',
         'vendor/twig/twig/lib',
         'vendor/twig/twig/src',
         'vendor/vlucas/phpdotenv/src',
