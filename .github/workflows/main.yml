@@ -1,0 +1,16 @@
+name: CI
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test job
+    steps:
+    - name: Use Siler image
+      uses: actions/siler@v1
+      
+    - name: Test
+      run: |
+        composer install
+        composer test
