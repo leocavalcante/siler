@@ -1,5 +1,0 @@
-name: 'Siler'
-description: 'Siler development and testing environment'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'
