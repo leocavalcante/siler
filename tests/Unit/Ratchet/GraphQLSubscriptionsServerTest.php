@@ -7,7 +7,6 @@ namespace Siler\Test\Unit\Ratchet;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Ratchet\ConnectionInterface;
-use Siler\GraphQL\SubscriptionsConnection;
 use Siler\GraphQL\SubscriptionsManager;
 use Siler\GraphQL\SubscriptionsServer;
 use Siler\Ratchet\GraphQLSubscriptionsServer;
@@ -32,7 +31,8 @@ class GraphQLSubscriptionsServerTest extends TestCase
 
     public function testOnMessage()
     {
-        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+        $conn = $this->getMockBuilder(ConnectionInterface::class)
+            ->getMock();
 
         $manager = $this->getMockBuilder(SubscriptionsManager::class)
             ->disableOriginalConstructor()
@@ -41,43 +41,15 @@ class GraphQLSubscriptionsServerTest extends TestCase
         $server = new GraphQLSubscriptionsServer($manager);
         $server->onOpen($conn);
 
-        $message = '{"type": "connection_init"}';
         $manager
-            ->expects($this->once())
-            ->method('handle')
-            ->with($conn);
+            ->expects($this->exactly(5))
+            ->method('handle');
 
-        $server->onMessage($conn, $message);
-
-        $data = ['type' => 'start'];
-        $manager
-            ->expects($this->once())
-            ->method('handleStart')
-            ->with($conn, $data);
-
-        $message = '{"type": "start"}';
-        $server->onMessage($conn, $message);
-
-        $data = ['type' => 'data'];
-        $manager
-            ->expects($this->once())
-            ->method('handleData')
-            ->with($data);
-
-        $message = '{"type": "data"}';
-        $server->onMessage($conn, $message);
-
-        $data = ['type' => 'stop'];
-        $manager
-            ->expects($this->once())
-            ->method('handleStop')
-            ->with($conn, $data);
-
-        $message = '{"type": "stop"}';
-        $server->onMessage($conn, $message);
-
-        $message = '{"type": "unknown"}';
-        $server->onMessage($conn, $message);
+        $server->onMessage($conn, '{"type": "connection_init"}');
+        $server->onMessage($conn, '{"type": "start"}');
+        $server->onMessage($conn, '{"type": "data"}');
+        $server->onMessage($conn, '{"type": "stop"}');
+        $server->onMessage($conn, '{"type": "unknown"}');
     }
 
     public function testOnClose()

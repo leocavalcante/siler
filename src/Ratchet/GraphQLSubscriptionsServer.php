@@ -9,6 +9,7 @@ use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 use Ratchet\WebSocket\WsServerInterface;
 use Siler\Encoder\Json;
+use Siler\GraphQL\SubscriptionsConnection;
 use Siler\GraphQL\SubscriptionsManager;
 use SplObjectStorage;
 
@@ -30,6 +31,11 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
     {
         $this->manager = $manager;
         $this->connections = new SplObjectStorage();
+    }
+
+    public function getSubscriptionsConnection(ConnectionInterface $conn): SubscriptionsConnection
+    {
+        return $this->connections->offsetGet($conn);
     }
 
     /**
