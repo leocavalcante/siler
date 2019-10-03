@@ -7,6 +7,7 @@ namespace Siler\Test\Unit\Ratchet;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Ratchet\ConnectionInterface;
+use Siler\GraphQL\SubscriptionsConnection;
 use Siler\GraphQL\SubscriptionsManager;
 use Siler\GraphQL\SubscriptionsServer;
 use Siler\Ratchet\GraphQLSubscriptionsServer;
@@ -15,6 +16,20 @@ use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
 
 class GraphQLSubscriptionsServerTest extends TestCase
 {
+    public function testGetSubscriptionsConnection()
+    {
+        $manager = $this->getMockBuilder(SubscriptionsManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $conn = $this->getMockBuilder(ConnectionInterface::class)->getMock();
+
+        $server = new GraphQLSubscriptionsServer($manager);
+        $server->onOpen($conn);
+
+        $this->assertInstanceOf(SubscriptionsConnection::class, $server->getSubscriptionsConnection($conn));
+    }
+
     public function testOnOpen()
     {
         $manager = $this->getMockBuilder(SubscriptionsManager::class)

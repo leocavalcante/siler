@@ -14,6 +14,7 @@
     <whitelist processUncoveredFilesFromWhitelist="true">
       <directory>src</directory>
       <exclude>
+        <file>src/Swoole/GraphQLSubscriptionsConnection.php</file>
         <file>src/Swoole/Swoole.php</file>
         <file>src/Db/Db.php</file>
         <file>src/Db/Mongo.php</file>

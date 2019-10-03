@@ -57,7 +57,6 @@ class SubscriptionsManager
     {
         switch ($message['type']) {
             case GQL_CONNECTION_INIT:
-                echo 'AT INIT';
                 $this->handleConnectionInit($conn, $message);
                 break;
 
