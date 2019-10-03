@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace Siler\Http\Response;
 
 use Siler\Http;
+use Siler\Http\Request;
 use UnexpectedValueException;
 
 /**
@@ -111,4 +112,30 @@ function header(string $key, string $val, bool $replace = true)
 function redirect(string $path)
 {
     Http\redirect(Http\url($path));
+}
+
+/**
+ * Facade for No Content HTTP Responses.
+ */
+function no_content()
+{
+    output();
+}
+
+/**
+ * Enable CORS on SAPI.
+ *
+ * @param string $origin
+ * @param string $headers
+ * @param string $methods
+ */
+function cors(string $origin = '*', string $headers = 'Content-Type', string $methods = 'GET, POST, PUT, DELETE')
+{
+    header('Access-Control-Allow-Origin', $origin);
+    header('Access-Control-Allow-Headers', $headers);
+    header('Access-Control-Allow-Methods', $methods);
+
+    if (Request\method_is('options')) {
+        no_content();
+    }
 }
