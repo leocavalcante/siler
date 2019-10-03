@@ -15,6 +15,7 @@ use Siler\GraphQL\SubscriptionsManager;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\Http\Server;
+use Swoole\Table;
 use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server as WebsocketServer;
 use UnexpectedValueException;
@@ -271,17 +272,33 @@ function no_content()
  */
 function graphql_subscriptions(SubscriptionsManager $manager, int $port = 3000, string $host = '0.0.0.0'): WebsocketServer
 {
-    $handler = function (Frame $frame) use ($manager) {
+    $workers = new Table(1024);
+    $workers->column('id', Table::TYPE_INT);
+    $workers->create();
+
+    $handler = function (Frame $frame, WebsocketServer $server) use ($manager, $workers) {
         $conn = new GraphQLSubscriptionsConnection($frame);
         $message = Json\decode($frame->data);
         $manager->handle($conn, $message);
+
+        foreach ($workers as $worker) {
+            if ($worker['id'] !== $server->worker_id) {
+                $server->sendMessage('oi', $worker['id']);
+            }
+        }
     };
 
     $server = websocket($handler, $port, $host);
-    $server->set([
-        'websocket_subprotocol' => WEBSOCKET_SUB_PROTOCOL,
-        'worker_num' => 1, // TODO: handle multi-thread
-    ]);
+    $server->set(['websocket_subprotocol' => WEBSOCKET_SUB_PROTOCOL]);
+
+    $server->on('workerStart', function (WebsocketServer $server, int $workerId) use ($workers) {
+        $workers[$workerId] = ['id' => $workerId];
+    });
+
+    $server->on('pipeMessage', function (WebsocketServer $server, int $fromWorkerId, string $message) {
+        echo 'Im ' . $server->worker_id . ' and ';
+        echo "worker $fromWorkerId said: $message\n";
+    });
 
     return $server;
 }
