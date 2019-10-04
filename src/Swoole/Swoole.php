@@ -276,15 +276,19 @@ function graphql_subscriptions(SubscriptionsManager $manager, int $port = 3000, 
     $workers->column('id', Table::TYPE_INT);
     $workers->create();
 
-    $handler = function (Frame $frame, WebsocketServer $server) use ($manager, $workers) {
-        $conn = new GraphQLSubscriptionsConnection($frame);
-        $message = Json\decode($frame->data);
+    $handle = function (array $message, int $fd) use ($manager) {
+        $conn = new GraphQLSubscriptionsConnection($fd);
         $manager->handle($conn, $message);
+    };
 
+    $handler = function (Frame $frame, WebsocketServer $server) use ($workers, $handle) {
         foreach ($workers as $worker) {
-            if ($worker['id'] !== $server->worker_id) {
-                $server->sendMessage('oi', $worker['id']);
+            if ($worker['id'] === $server->worker_id) {
+                $handle(Json\decode($frame->data), $worker['id']);
+                continue;
             }
+
+            $server->sendMessage($frame->data, $worker['id']);
         }
     };
 
@@ -295,9 +299,12 @@ function graphql_subscriptions(SubscriptionsManager $manager, int $port = 3000, 
         $workers[$workerId] = ['id' => $workerId];
     });
 
-    $server->on('pipeMessage', function (WebsocketServer $server, int $fromWorkerId, string $message) {
-        echo 'Im ' . $server->worker_id . ' and ';
-        echo "worker $fromWorkerId said: $message\n";
+    $server->on('pipeMessage', function (WebsocketServer $server, int $fromWorkerId, string $message) use ($handle) {
+        $message = Json\decode($message);
+
+        foreach ($server->connections as $fd) {
+            $handle($message, $fd);
+        }
     });
 
     return $server;
