@@ -20,6 +20,7 @@ use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server as WebsocketServer;
 use UnexpectedValueException;
 
+use const Siler\GraphQL\GQL_DATA;
 use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
 use const Siler\Route\DID_MATCH;
 
@@ -282,24 +283,26 @@ function graphql_subscriptions(SubscriptionsManager $manager, int $port = 3000, 
     };
 
     $handler = function (Frame $frame, WebsocketServer $server) use ($workers, $handle) {
-        foreach ($workers as $worker) {
-            if ($worker['id'] === $server->worker_id) {
-                $handle(Json\decode($frame->data), $worker['id']);
-                continue;
-            }
+        $message = Json\decode($frame->data);
+        $handle($message, $frame->fd);
 
-            $server->sendMessage($frame->data, $worker['id']);
+        if ($message['type'] === GQL_DATA) {
+            foreach ($workers as $worker) {
+                if ($worker['id'] !== $server->worker_id) {
+                    $server->sendMessage($frame->data, $worker['id']);
+                }
+            }
         }
     };
 
     $server = websocket($handler, $port, $host);
     $server->set(['websocket_subprotocol' => WEBSOCKET_SUB_PROTOCOL]);
 
-    $server->on('workerStart', function (WebsocketServer $server, int $workerId) use ($workers) {
+    $server->on('workerStart', function (WebsocketServer $_, int $workerId) use ($workers) {
         $workers[$workerId] = ['id' => $workerId];
     });
 
-    $server->on('pipeMessage', function (WebsocketServer $server, int $fromWorkerId, string $message) use ($handle) {
+    $server->on('pipeMessage', function (WebsocketServer $server, int $_, string $message) use ($handle) {
         $message = Json\decode($message);
 
         foreach ($server->connections as $fd) {
