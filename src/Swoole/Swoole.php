@@ -15,10 +15,12 @@ use Siler\GraphQL\SubscriptionsManager;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\Http\Server;
+use Swoole\Table;
 use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server as WebsocketServer;
 use UnexpectedValueException;
 
+use const Siler\GraphQL\GQL_DATA;
 use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
 use const Siler\Route\DID_MATCH;
 
@@ -271,17 +273,42 @@ function no_content()
  */
 function graphql_subscriptions(SubscriptionsManager $manager, int $port = 3000, string $host = '0.0.0.0'): WebsocketServer
 {
-    $handler = function (Frame $frame) use ($manager) {
-        $conn = new GraphQLSubscriptionsConnection($frame);
-        $message = Json\decode($frame->data);
+    $workers = new Table(1024);
+    $workers->column('id', Table::TYPE_INT);
+    $workers->create();
+
+    $handle = function (array $message, int $fd) use ($manager) {
+        $conn = new GraphQLSubscriptionsConnection($fd);
         $manager->handle($conn, $message);
     };
 
+    $handler = function (Frame $frame, WebsocketServer $server) use ($workers, $handle) {
+        $message = Json\decode($frame->data);
+        $handle($message, $frame->fd);
+
+        if ($message['type'] === GQL_DATA) {
+            foreach ($workers as $worker) {
+                if ($worker['id'] !== $server->worker_id) {
+                    $server->sendMessage($frame->data, $worker['id']);
+                }
+            }
+        }
+    };
+
     $server = websocket($handler, $port, $host);
-    $server->set([
-        'websocket_subprotocol' => WEBSOCKET_SUB_PROTOCOL,
-        'worker_num' => 1, // TODO: handle multi-thread
-    ]);
+    $server->set(['websocket_subprotocol' => WEBSOCKET_SUB_PROTOCOL]);
+
+    $server->on('workerStart', function (WebsocketServer $_, int $workerId) use ($workers) {
+        $workers[$workerId] = ['id' => $workerId];
+    });
+
+    $server->on('pipeMessage', function (WebsocketServer $server, int $_, string $message) use ($handle) {
+        $message = Json\decode($message);
+
+        foreach ($server->connections as $fd) {
+            $handle($message, $fd);
+        }
+    });
 
     return $server;
 }

@@ -49,9 +49,9 @@ GraphQL\listen(GraphQL\ON_OPERATION, function (array $subscription, array $rootV
 });
 
 $manager = GraphQL\subscriptions_manager($schema, $filters);
-
 $port = 3000;
+
 printf("Listening at %s\n", $port);
 
-Siler\Ratchet\graphql_subscriptions($manager, $port)->run();
-//Siler\Swoole\graphql_subscriptions($manager, $port)->start();
+//Siler\Ratchet\graphql_subscriptions($manager, $port)->run();
+Siler\Swoole\graphql_subscriptions($manager, $port)->start();

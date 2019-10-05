@@ -5,25 +5,24 @@ declare(strict_types=1);
 namespace Siler\Swoole;
 
 use Siler\GraphQL\SubscriptionsConnection;
-use Swoole\WebSocket\Frame;
 
 class GraphQLSubscriptionsConnection implements SubscriptionsConnection
 {
-    /** @var Frame */
-    private $frame;
+    /** @var int */
+    private $fd;
 
-    public function __construct(Frame $frame)
+    public function __construct(int $fd)
     {
-        $this->frame = $frame;
+        $this->fd = $fd;
     }
 
     public function send(string $data)
     {
-        push($data, $this->frame->fd);
+        push($data, $this->fd);
     }
 
     public function key()
     {
-        return $this->frame->fd;
+        return $this->fd;
     }
 }
