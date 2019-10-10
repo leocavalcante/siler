@@ -42,7 +42,7 @@ function encode($value, int $options = JSON_THROW_ON_ERROR, int $depth = 512): s
  * @return mixed
  * @throws \Exception
  */
-function decode(string $json, bool $assoc = true, int $options = JSON_THROW_ON_ERROR, int $depth = 512)
+function decode(string $json, bool $assoc = true, int $options = JSON_THROW_ON_ERROR | JSON_BIGINT_AS_STRING, int $depth = 512)
 {
     $value = \json_decode($json, $assoc, $depth, $options);
 
