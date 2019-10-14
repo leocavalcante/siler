@@ -10,6 +10,9 @@ use Siler\Route;
 use Siler\Test\Unit\Route\SwooleHttpRequestMock;
 use Zend\Diactoros\ServerRequest;
 
+use function Siler\Functional\always;
+use function Siler\Functional\Monad\identity;
+
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 class RouteTest extends TestCase
@@ -250,6 +253,23 @@ class RouteTest extends TestCase
         Container\set(SWOOLE_HTTP_REQUEST, new SwooleHttpRequestMock('DELETE', '/qux'));
         $methodPath = Route\method_path(null);
         $this->assertSame(['DELETE', '/qux'], $methodPath);
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testCancel()
+    {
+        $result = Route\get('/bar/baz', always('foo'));
+        $this->assertFalse(Route\canceled());
+        $this->assertSame('foo', $result);
+
+        Route\resume();
+        Route\cancel();
+
+        $result = Route\get('/bar/baz', always('foo'));
+        $this->assertTrue(Route\canceled());
+        $this->assertNull($result);
     }
 
     protected function setUp(): void

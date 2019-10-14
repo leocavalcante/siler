@@ -28,6 +28,7 @@ use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 const DID_MATCH = 'route_did_match';
 const STOP_PROPAGATION = 'route_stop_propagation';
+const CANCEL = 'route_cancel';
 
 /**
  * Define a new route using the GET HTTP method.
@@ -125,6 +126,10 @@ function any(string $path, $callback, $request = null)
  */
 function route($method, string $path, $callback, $request = null)
 {
+    if (canceled()) {
+        return null;
+    }
+
     if (did_match() && Container\get(STOP_PROPAGATION, true)) {
         return null;
     }
@@ -396,11 +401,30 @@ function stop_propagation()
 }
 
 /**
+ * Avoids routes to be called even on a match.
+ */
+function cancel()
+{
+    Container\set(CANCEL, true);
+}
+
+/**
+ * Returns true if routing is canceled.
+ *
+ * @return bool
+ */
+function canceled(): bool
+{
+    return Container\get(CANCEL, false);
+}
+
+/**
  * Resets default routing behaviour.
  */
 function resume()
 {
     Container\set(STOP_PROPAGATION, false);
+    Container\set(CANCEL, false);
 }
 
 /**
