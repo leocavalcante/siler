@@ -20,6 +20,8 @@ use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server as WebsocketServer;
 use UnexpectedValueException;
 
+use function Siler\array_get;
+
 use const Siler\GraphQL\GQL_DATA;
 use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
 use const Siler\Route\DID_MATCH;
@@ -234,7 +236,7 @@ function cors(string $origin = '*', string $headers = 'Content-Type', string $me
     $request = Container\get(SWOOLE_HTTP_REQUEST);
 
     if ('OPTIONS' === $request->server['request_method']) {
-        emit('');
+        no_content();
     }
 }
 
@@ -311,4 +313,26 @@ function graphql_subscriptions(SubscriptionsManager $manager, int $port = 3000, 
     });
 
     return $server;
+}
+
+/**
+ * Gets the Bearer token from the Authorization request header.
+ *
+ * @return string|null
+ */
+function bearer(): ?string
+{
+    $token = array_get(request()->header, 'authorization');
+
+    if ($token === null) {
+        return null;
+    }
+
+    $token = substr($token, 7);
+
+    if ($token === false) {
+        return null;
+    }
+
+    return $token;
 }
