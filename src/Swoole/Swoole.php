@@ -21,6 +21,7 @@ use Swoole\WebSocket\Server as WebsocketServer;
 use UnexpectedValueException;
 
 use function Siler\array_get;
+
 use const Siler\GraphQL\GQL_DATA;
 use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
 use const Siler\Route\DID_MATCH;
