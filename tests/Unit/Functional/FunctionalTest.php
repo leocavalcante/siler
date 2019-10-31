@@ -157,6 +157,9 @@ class FunctionalTest extends TestCase
 
         $this->assertSame($expected, $actual);
         $this->assertSame([1, 2, 3, 4, 5], $input);
+        $this->assertSame('foo', f\head(['foo', 'bar', 'baz']));
+        $this->assertNull(f\head([]));
+        $this->assertSame('foo', f\head([], 'foo'));
     }
 
     public function testLast()
@@ -167,6 +170,9 @@ class FunctionalTest extends TestCase
 
         $this->assertSame($expected, $actual);
         $this->assertSame([1, 2, 3, 4, 5], $input);
+        $this->assertSame('baz', f\last(['foo', 'bar', 'baz']));
+        $this->assertNull(f\last([]));
+        $this->assertSame('foo', f\last([], 'foo'));
     }
 
     public function testTail()

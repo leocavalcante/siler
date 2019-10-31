@@ -336,26 +336,36 @@ function flatten(array $list, array $flat = []): array
 }
 
 /**
- * Extract the first element of a list, which must be non-empty.
+ * Extract the first element of a list.
  *
  * @param array $list
+ * @param mixed $default
  *
- * @return mixed
+ * @return mixed|null
  */
-function head(array $list)
+function head(array $list, $default = null)
 {
+    if (empty($list)) {
+        return $default;
+    }
+
     return array_shift($list);
 }
 
 /**
- * Extract the last element of a list, which must be finite and non-empty.
+ * Extract the last element of a list.
  *
  * @param array $list
+ * @param mixed $default
  *
- * @return mixed
+ * @return mixed|null
  */
-function last(array $list)
+function last(array $list, $default = null)
 {
+    if (empty($list)) {
+        return $default;
+    }
+
     return array_pop($list);
 }
 
