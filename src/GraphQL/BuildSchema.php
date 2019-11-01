@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /**
  * Borrowed from https://github.com/webonyx/graphql-php/blob/master/src/Utils/BuildSchema.php
  * Added the type resolver feature.
@@ -15,6 +18,7 @@ use GraphQL\Language\Parser;
 use GraphQL\Type\Definition\Directive;
 use GraphQL\Type\Schema;
 use GraphQL\Utils\ASTDefinitionBuilder;
+
 use function array_map;
 use function array_reduce;
 use function sprintf;
