@@ -89,7 +89,7 @@ class BuildSchema
                     if (!empty($this->nodeMap[$typeName])) {
                         throw new Error(sprintf('Type "%s" was defined more than once.', $typeName));
                     }
-                    if (array_key_exists($typeName, $this->resolvers) && $d->kind === NodeKind::SCALAR_TYPE_DEFINITION) {
+                    if (array_key_exists($typeName, $this->resolvers) && ($d->kind === NodeKind::SCALAR_TYPE_DEFINITION || $d->kind === NodeKind::ENUM_TYPE_DEFINITION)) {
                         break;
                     }
                     $typeDefs[] = $d;
