@@ -26,9 +26,9 @@ class SubscriptionsManager
     protected $schema;
     /** @var array */
     protected $filters;
-    /** @var array */
+    /** @var mixed */
     protected $rootValue;
-    /** @var array */
+    /** @var mixed */
     protected $context;
     /**  @var array */
     protected $subscriptions;
@@ -40,10 +40,10 @@ class SubscriptionsManager
      *
      * @param Schema $schema
      * @param array $filters
-     * @param array $rootValue
-     * @param array $context
+     * @param mixed $rootValue
+     * @param mixed $context
      */
-    public function __construct(Schema $schema, array $filters = [], array $rootValue = [], array $context = [])
+    public function __construct(Schema $schema, array $filters = [], $rootValue = [], $context = [])
     {
         $this->schema = $schema;
         $this->filters = $filters;
