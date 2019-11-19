@@ -247,8 +247,8 @@ function resolvers(array $resolvers)
 function subscriptions_manager(
     Schema $schema,
     array $filters = [],
-    array $rootValue = [],
-    array $context = []
+    $rootValue = [],
+    $context = []
 ): SubscriptionsManager {
     return new SubscriptionsManager($schema, $filters, $rootValue, $context);
 }
