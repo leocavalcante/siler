@@ -270,10 +270,10 @@ function accepted_locales(): array
  */
 function recommended_locale(string $default = ''): string
 {
-    $locale = array_get($_GET, 'lang', '');
+    $locale = strval(array_get($_GET, 'lang', ''));
 
     if (empty($locale)) {
-        $locale = array_get($_SESSION, 'lang', '');
+        $locale = strval(array_get($_SESSION, 'lang', ''));
     }
 
     if (empty($locale)) {

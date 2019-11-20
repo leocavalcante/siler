@@ -19,25 +19,25 @@
         }
     ],
     "require": {
-        "php": ">=7.2"
+        "php": ">=7.2",
+        "cboden/ratchet": "^0.4.1"
     },
     "minimum-stability": "stable",
     "require-dev": {
-        "cboden/ratchet": "^0.4",
         "cocur/slugify": "^3.2",
-        "gabordemooij/redbean": "^5.3",
-        "mongodb/mongodb": "^1.4",
+        "gabordemooij/redbean": "^5.4",
+        "mongodb/mongodb": "^1.5",
         "monolog/monolog": "^2.0",
-        "phan/phan": "^2.2",
-        "phpunit/phpunit": "^8.3",
-        "ratchet/pawl": "^0.3",
-        "squizlabs/php_codesniffer": "^3.4",
+        "phan/phan": "^2.4",
+        "phpunit/phpunit": "^8.4",
+        "squizlabs/php_codesniffer": "^3.5",
         "swiftmailer/swiftmailer": "^6.2",
         "swoole/ide-helper": "^4.4",
-        "twig/twig": "^2.11",
-        "vlucas/phpdotenv": "^3.4",
+        "textalk/websocket": "^1.2",
+        "twig/twig": "^3.0",
+        "vlucas/phpdotenv": "^3.6",
         "webonyx/graphql-php": "^0.13",
-        "zendframework/zend-diactoros": "^2.1",
+        "zendframework/zend-diactoros": "^2.2",
         "zendframework/zend-httphandlerrunner": "^1.1",
         "zendframework/zend-stratigility": "^3.2"
     },
