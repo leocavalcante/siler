@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Borrowed from https://github.com/webonyx/graphql-php/blob/master/src/Utils/BuildSchema.php
  * Added the type resolver feature.
  */
+
+declare(strict_types=1);
 
 namespace Siler\GraphQL;
 

@@ -23,16 +23,17 @@ use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
 use Psr\Http\Message\ServerRequestInterface;
-use Ratchet\Client;
-use Ratchet\Client\WebSocket;
 use Ratchet\Server\IoServer;
 use Siler\Container;
 use Siler\Diactoros;
 use Siler\Http\Request;
 use Siler\Http\Response;
 use UnexpectedValueException;
+use WebSocket\BadOpcodeException;
+use WebSocket\Client;
 
 use function Siler\array_get;
+use function Siler\Encoder\Json\encode;
 use function Siler\Ratchet\graphql_subscriptions;
 
 // Protocol messages.
@@ -296,21 +297,20 @@ function subscriptions_at(string $url)
  * @param mixed $payload
  *
  * @return void
+ * @throws BadOpcodeException
  */
 function publish(string $subscriptionName, $payload = null)
 {
+    $message = [
+        'type' => GQL_DATA,
+        'subscription' => $subscriptionName,
+        'payload' => $payload
+    ];
+
     $wsEndpoint = Container\get('graphql_subscriptions_endpoint');
 
-    Client\connect($wsEndpoint, [WEBSOCKET_SUB_PROTOCOL])->then(function (WebSocket $conn) use ($subscriptionName, $payload) {
-        $request = [
-            'type' => GQL_DATA,
-            'subscription' => $subscriptionName,
-            'payload' => $payload
-        ];
-
-        $conn->send(json_encode($request));
-        $conn->close();
-    });
+    $client = new Client($wsEndpoint);
+    $client->send(encode($message));
 }
 
 function listen(string $eventName, callable $listener)
