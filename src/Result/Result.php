@@ -6,11 +6,17 @@ namespace Siler\Result;
 
 use JsonSerializable;
 
+/**
+ * @template <T>
+ */
 abstract class Result implements JsonSerializable
 {
-    private $id;
+    /** @var mixed */
     private $data;
+    /** @var int */
     private $code;
+    /** @var string */
+    private $id;
 
     public function __construct($data = null, int $code = 0, string $id = null)
     {
@@ -29,9 +35,27 @@ abstract class Result implements JsonSerializable
         return $this->code;
     }
 
+    /**
+     * @return mixed|null
+     */
     public function unwrap()
     {
         return $this->data;
+    }
+
+    public function bind(callable $fn): self
+    {
+        if ($this instanceof Success) {
+            $val = $fn($this->unwrap());
+
+            if (!($val instanceof Result)) {
+                throw new \InvalidArgumentException('$fn argument at Result->bind should return a Result');
+            }
+
+            return $val;
+        }
+
+        return $this;
     }
 
     public function jsonSerialize()
