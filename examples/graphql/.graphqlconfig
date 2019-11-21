@@ -5,7 +5,7 @@
       "siler_graphql": {
         "url": "http://localhost:8000",
         "subscription": {
-          "url": "ws://localhost:3000"
+          "url": "ws://localhost:8001"
         }
       }
     }

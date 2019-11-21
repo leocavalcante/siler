@@ -8,21 +8,26 @@ declare(strict_types=1);
 
 namespace Siler\Swoole;
 
+use GraphQL\Error\FormattedError;
+use GraphQL\Type\Schema;
 use OutOfBoundsException;
 use Siler\Container;
 use Siler\Encoder\Json;
 use Siler\GraphQL\SubscriptionsManager;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
-use Swoole\Http\Server;
+use Swoole\Http\Server as HttpServer;
+use Swoole\Server;
+use Swoole\Server\Port as ServerPort;
 use Swoole\Table;
 use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server as WebsocketServer;
-use UnexpectedValueException;
 
 use function Siler\array_get;
+use function Siler\GraphQL\execute;
 
 use const Siler\GraphQL\GQL_DATA;
+use const Siler\GraphQL\GRAPHQL_DEBUG;
 use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
 use const Siler\Route\DID_MATCH;
 
@@ -33,6 +38,18 @@ const SWOOLE_WEBSOCKET_SERVER = 'swoole_websocket_server';
 const SWOOLE_WEBSOCKET_ONOPEN = 'swoole_websocket_onopen';
 const SWOOLE_WEBSOCKET_ONCLOSE = 'swoole_websocket_onclose';
 
+function http_handler(callable $handler): \Closure
+{
+    return function (Request $request, Response $response) use ($handler) {
+        Container\set(DID_MATCH, false);
+        Container\set(SWOOLE_HTTP_REQUEST_ENDED, false);
+        Container\set(SWOOLE_HTTP_REQUEST, $request);
+        Container\set(SWOOLE_HTTP_RESPONSE, $response);
+
+        return $handler($request, $response);
+    };
+}
+
 /**
  * Returns a Swoole HTTP server.
  *
@@ -40,20 +57,12 @@ const SWOOLE_WEBSOCKET_ONCLOSE = 'swoole_websocket_onclose';
  * @param int $port The port binding (defaults to 9501).
  * @param string $host The host binding (defaults to 0.0.0.0).
  *
- * @return Server
+ * @return HttpServer
  */
-function http(callable $handler, int $port = 9501, string $host = '0.0.0.0'): Server
+function http(callable $handler, int $port = 9501, string $host = '0.0.0.0'): HttpServer
 {
-    $server = new Server($host, $port);
-
-    $server->on('request', function ($request, $response) use ($handler) {
-        Container\set(DID_MATCH, false);
-        Container\set(SWOOLE_HTTP_REQUEST_ENDED, false);
-        Container\set(SWOOLE_HTTP_REQUEST, $request);
-        Container\set(SWOOLE_HTTP_RESPONSE, $response);
-
-        return $handler($request, $response);
-    });
+    $server = new HttpServer($host, $port);
+    $server->on('request', http_handler($handler));
 
     return $server;
 }
@@ -110,17 +119,11 @@ function emit(string $content, int $status = 200, array $headers = [])
  * @param array $headers
  *
  * @return null
+ * @throws \Exception
  */
 function json($data, int $status = 200, array $headers = [])
 {
-    $content = json_encode($data);
-
-    if (false === $content) {
-        $error = json_last_error_msg();
-
-        throw new UnexpectedValueException($error);
-    }
-
+    $content = Json\encode($data);
     $headers = array_merge(['Content-Type' => 'application/json'], $headers);
 
     return emit($content, $status, $headers);
@@ -222,10 +225,10 @@ function broadcast(string $message)
  * Enable CORS in a Swoole Response.
  *
  * @param string $origin Comma-separated list of allowed origins, defaults to "*".
- * @param string $headers Comma-separated list of allowed headers, defaults to "Content-Type".
+ * @param string $headers Comma-separated list of allowed headers, defaults to "Content-Type, Authorization".
  * @param string $methods Comma-separated list of allowed methods, defaults to "GET, POST, PUT, DELETE".
  */
-function cors(string $origin = '*', string $headers = 'Content-Type', string $methods = 'GET, POST, PUT, DELETE')
+function cors(string $origin = '*', string $headers = 'Content-Type, Authorization', string $methods = 'GET, POST, PUT, DELETE')
 {
     $response = Container\get(SWOOLE_HTTP_RESPONSE);
 
@@ -258,10 +261,23 @@ function raw(): string
 
 /**
  * Sugar for HTTP 204 No Content.
+ *
+ * @param array $headers
  */
-function no_content()
+function no_content(array $headers = [])
 {
-    emit('', 204);
+    emit('', 204, $headers);
+}
+
+/**
+ * Sugar for HTTP 404 Not Found.
+ *
+ * @param string $content
+ * @param array $headers
+ */
+function not_found(string $content = '', array $headers = [])
+{
+    emit($content, 404, $headers);
 }
 
 /**
@@ -335,4 +351,37 @@ function bearer(): ?string
     }
 
     return $token;
+}
+
+/**
+ * Creates a HTTP server from a server port.
+ *
+ * @param Server $server
+ * @param callable $handler
+ * @param int $port
+ * @param string $host
+ *
+ * @return ServerPort
+ */
+function http_server_port(Server $server, callable $handler, int $port = 80, string $host = '0.0.0.0'): ServerPort
+{
+    $port_server = $server->addlistener($host, $port, SWOOLE_SOCK_TCP);
+    $port_server->set(['open_http_protocol' => true]);
+    $port_server->on('request', http_handler($handler));
+
+    return $port_server;
+}
+
+function graphql_handler(Schema $schema, $rootValue = null, $context = null): \Closure
+{
+    return function () use ($schema, $rootValue, $context) {
+        try {
+            $input = Json\decode(raw());
+            $result = execute($schema, $input, $rootValue, $context);
+        } catch (\Throwable $exception) {
+            $result = FormattedError::createFromException($exception, Container\get(GRAPHQL_DEBUG, 0) > 0);
+        } finally {
+            json($result);
+        }
+    };
 }

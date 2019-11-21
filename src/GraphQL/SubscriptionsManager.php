@@ -91,7 +91,7 @@ class SubscriptionsManager
                 'payload' => []
             ];
 
-            $context = $this->callListener(ON_CONNECT, [array_get($message, 'payload', [])]);
+            $context = $this->callListener(ON_CONNECT, [array_get($message, 'payload', []), $this->context]);
 
             if (is_array($context)) {
                 $this->context = array_merge($this->context, $context);
