@@ -124,20 +124,9 @@ class SubscriptionsManager
                 throw new Exception('Missing query parameter from payload');
             }
 
-            $variables = array_get($payload, 'variables');
-
             $document = Parser::parse($query);
             // @phan-suppress-next-line PhanUndeclaredProperty
             $operation = $document->definitions[0]->operation;
-            $result = $this->execute($query, $payload, $variables);
-
-            $response = [
-                'type' => GQL_DATA,
-                'id' => $data['id'],
-                'payload' => $result
-            ];
-
-            $conn->send(Json\encode($response));
 
             if ($operation == 'subscription') {
                 $data['name'] = $this->getSubscriptionName($document);
@@ -155,6 +144,17 @@ class SubscriptionsManager
 
                 $this->callListener(ON_OPERATION, [$data, $this->rootValue, $this->context]);
             } else {
+                $variables = array_get($payload, 'variables');
+                $result = $this->execute($query, $payload, $variables);
+
+                $response = [
+                    'type' => GQL_DATA,
+                    'id' => $data['id'],
+                    'payload' => $result
+                ];
+
+                $conn->send(Json\encode($response));
+
                 $response = [
                     'type' => GQL_COMPLETE,
                     'id' => $data['id']

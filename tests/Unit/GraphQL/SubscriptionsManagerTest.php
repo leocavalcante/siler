@@ -135,9 +135,14 @@ class SubscriptionsManagerTest extends TestCase
             return 'test';
         });
 
-        $data = [
+        $subscription = [
             'id' => 1,
             'payload' => ['query' => 'subscription { dummy }']
+        ];
+
+        $data = [
+            'subscription' => 'dummy',
+            'payload' => 'test'
         ];
 
         $manager = new SubscriptionsManager($schema);
@@ -148,7 +153,8 @@ class SubscriptionsManagerTest extends TestCase
             ->method('send')
             ->with($dataResponse);
 
-        $manager->handle($conn, array_merge(['type' => GQL_START], $data));
+        $manager->handle($conn, array_merge(['type' => GQL_START], $subscription));
+        $manager->handle($conn, array_merge(['type' => GQL_DATA], $data));
     }
 
     public function testHandleStartFail()
@@ -206,13 +212,12 @@ class SubscriptionsManagerTest extends TestCase
             'payload' => 'test'
         ];
 
-        $startExpected = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
         $expected = '{"type":"data","id":1,"payload":{"data":{"dummy":"test"}}}';
 
         $conn
-            ->expects($this->exactly(2))
+            ->expects($this->once())
             ->method('send')
-            ->withConsecutive([$startExpected], [$expected]);
+            ->with($expected);
 
         $manager = new SubscriptionsManager($schema);
         $manager->handle($conn, array_merge(['type' => GQL_START], $startData));
@@ -251,7 +256,7 @@ class SubscriptionsManagerTest extends TestCase
             return 'test';
         });
 
-        $startData = [
+        $subscription = [
             'id' => 1,
             'payload' => [
                 'query' => 'subscription { dummy }',
@@ -273,12 +278,12 @@ class SubscriptionsManagerTest extends TestCase
         ];
 
         $conn
-            ->expects($this->exactly(2))
+            ->expects($this->once())
             ->method('send')
-            ->withConsecutive([$expected], [$expected]);
+            ->with($expected);
 
         $manager = new SubscriptionsManager($schema, $filters);
-        $manager->handleStart($conn, $startData);
+        $manager->handleStart($conn, $subscription);
         $manager->handleData($data);
 
         $data = [
