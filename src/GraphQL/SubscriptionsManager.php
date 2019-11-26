@@ -12,7 +12,6 @@ use GraphQL\Language\Parser;
 use GraphQL\Type\Schema;
 use Siler\Container;
 use Siler\Encoder\Json;
-
 use function Siler\array_get;
 
 /**

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Siler\File;
 
@@ -45,6 +47,7 @@ function recur_iter_dir(string $dirname, string $regex = '/.*/', $mode = \RegexI
  */
 function concat_files(array $files): string
 {
+    $files = array_map('strval', $files);
     $files = array_map('file_get_contents', $files);
     return trim(array_reduce($files, concat("\n"), ''));
 }
