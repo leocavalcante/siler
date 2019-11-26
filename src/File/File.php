@@ -42,12 +42,13 @@ function recur_iter_dir(string $dirname, string $regex = '/.*/', $mode = \RegexI
  * Loads and concatenates file contents.
  *
  * @param string[]|\SplFileInfo[] $files
+ * @param string $separator
  *
  * @return string
  */
-function concat_files(array $files): string
+function concat_files(array $files, string $separator = "\n"): string
 {
     $files = array_map('strval', $files);
     $files = array_map('file_get_contents', $files);
-    return trim(array_reduce($files, concat("\n"), ''));
+    return trim(array_reduce($files, concat($separator), ''));
 }
