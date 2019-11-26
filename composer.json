@@ -53,6 +53,7 @@
             "src/Diactoros/Diactoros.php",
             "src/Dotenv/Dotenv.php",
             "src/Encoder/Json.php",
+            "src/File/File.php",
             "src/Functional/Functional.php",
             "src/Functional/Monad/Monad.php",
             "src/GraphQL/GraphQL.php",
@@ -70,7 +71,8 @@
             "src/Siler.php",
             "src/Stratigility/Stratigility.php",
             "src/Swoole/Swoole.php",
-            "src/Twig/Twig.php"
+            "src/Twig/Twig.php",
+            "src/facades.php"
         ]
     },
     "autoload-dev": {

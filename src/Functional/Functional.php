@@ -495,3 +495,17 @@ function isnull($var): Closure
         return is_null($var);
     };
 }
+
+/**
+ * Returns a Closure that concatenates two strings using the given separator.
+ *
+ * @param string $separator
+ *
+ * @return Closure
+ */
+function concat(string $separator = ''): Closure
+{
+    return function (string $a, string $b) use ($separator): string {
+        return "{$a}{$separator}{$b}";
+    };
+}
