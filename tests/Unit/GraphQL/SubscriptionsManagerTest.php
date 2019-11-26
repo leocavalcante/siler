@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Siler\GraphQL\SubscriptionsConnection;
 use Siler\GraphQL\SubscriptionsManager;
 use stdClass;
+
 use const Siler\GraphQL\GQL_CONNECTION_INIT;
 use const Siler\GraphQL\GQL_DATA;
 use const Siler\GraphQL\GQL_START;
