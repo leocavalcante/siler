@@ -90,7 +90,8 @@
             "@composer lint",
             "@composer phan",
             "@composer unit"
-        ]
+        ],
+        "generate-facades": "php bin/generate-facades.php"
     },
     "suggest": {
         "vlucas/phpdotenv": "Storing configuration in the environment is one of the tenets of a twelve-factor app."

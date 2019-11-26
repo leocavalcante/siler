@@ -9,4 +9,6 @@
 
     <file>src</file>
     <file>tests</file>
+
+    <exclude-pattern>src/facades.php</exclude-pattern>
 </ruleset>
