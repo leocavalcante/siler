@@ -1,9 +1,11 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Siler\File;
 
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RegexIterator;
+use SplFileInfo;
 use function Siler\Functional\concat;
 
 /**
@@ -13,15 +15,23 @@ use function Siler\Functional\concat;
  * @param string $regex
  * @param int $mode
  *
- * @return \SplFileInfo[]
+ * @psalm-return list<SplFileInfo>
+ * @return SplFileInfo[]
  */
-function recursively_iterated_directory(string $dirname, string $regex = '/.*/', $mode = \RegexIterator::MATCH): array
+function recursively_iterated_directory(string $dirname, string $regex = '/.*/', $mode = RegexIterator::MATCH): array
 {
-    $dir_iterator = new \RecursiveDirectoryIterator($dirname);
-    $iterator = new \RecursiveIteratorIterator($dir_iterator);
-    $regexp_iterator = new \RegexIterator($iterator, $regex, $mode);
+    $dir_iterator = new RecursiveDirectoryIterator($dirname);
+    $iterator = new RecursiveIteratorIterator($dir_iterator);
+    $regexp_iterator = new RegexIterator($iterator, $regex, $mode);
 
-    return array_values(iterator_to_array($regexp_iterator));
+    $list = [];
+
+    /** @var SplFileInfo $spl_file_info */
+    foreach ($regexp_iterator as $spl_file_info) {
+        $list[] = $spl_file_info;
+    }
+
+    return $list;
 }
 
 /**
@@ -31,9 +41,10 @@ function recursively_iterated_directory(string $dirname, string $regex = '/.*/',
  * @param string $regex
  * @param int $mode
  *
- * @return \SplFileInfo[]
+ * @psalm-return list<SplFileInfo>
+ * @return SplFileInfo[]
  */
-function recur_iter_dir(string $dirname, string $regex = '/.*/', $mode = \RegexIterator::MATCH): array
+function recur_iter_dir(string $dirname, string $regex = '/.*/', $mode = RegexIterator::MATCH): array
 {
     return recursively_iterated_directory($dirname, $regex, $mode);
 }
@@ -41,7 +52,7 @@ function recur_iter_dir(string $dirname, string $regex = '/.*/', $mode = \RegexI
 /**
  * Loads and concatenates file contents.
  *
- * @param string[]|\SplFileInfo[] $files
+ * @param string[]|SplFileInfo[] $files
  * @param string $separator
  *
  * @return string
@@ -50,5 +61,8 @@ function concat_files(array $files, string $separator = "\n"): string
 {
     $files = array_map('strval', $files);
     $files = array_map('file_get_contents', $files);
-    return trim(array_reduce($files, concat($separator), ''));
+
+    /** @var string $contents */
+    $contents = array_reduce($files, concat($separator), '');
+    return trim($contents);
 }

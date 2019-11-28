@@ -4,9 +4,145 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f45212a8f43dc68a8af440a905079f2b",
+    "content-hash": "ce32e91ce37726ad9ae7fb505bdd08a2",
     "packages": [],
     "packages-dev": [
+        {
+            "name": "amphp/amp",
+            "version": "v2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/amphp/amp.git",
+                "reference": "13930a582947831bb66ff1aeac28672fd91c38ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/amphp/amp/zipball/13930a582947831bb66ff1aeac28672fd91c38ea",
+                "reference": "13930a582947831bb66ff1aeac28672fd91c38ea",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7"
+            },
+            "require-dev": {
+                "amphp/php-cs-fixer-config": "dev-master",
+                "amphp/phpunit-util": "^1",
+                "ext-json": "*",
+                "phpstan/phpstan": "^0.8.5",
+                "phpunit/phpunit": "^6.0.9 | ^7",
+                "react/promise": "^2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Amp\\": "lib"
+                },
+                "files": [
+                    "lib/functions.php",
+                    "lib/Internal/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Lowrey",
+                    "email": "rdlowrey@php.net"
+                },
+                {
+                    "name": "Aaron Piotrowski",
+                    "email": "aaron@trowski.com"
+                },
+                {
+                    "name": "Bob Weinand",
+                    "email": "bobwei9@hotmail.com"
+                },
+                {
+                    "name": "Niklas Keller",
+                    "email": "me@kelunik.com"
+                }
+            ],
+            "description": "A non-blocking concurrency framework for PHP applications.",
+            "homepage": "http://amphp.org/amp",
+            "keywords": [
+                "async",
+                "asynchronous",
+                "awaitable",
+                "concurrency",
+                "event",
+                "event-loop",
+                "future",
+                "non-blocking",
+                "promise"
+            ],
+            "time": "2019-11-11T19:32:05+00:00"
+        },
+        {
+            "name": "amphp/byte-stream",
+            "version": "v1.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/amphp/byte-stream.git",
+                "reference": "9d8205686a004948475dc43f8a88d2fa5e75a113"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/amphp/byte-stream/zipball/9d8205686a004948475dc43f8a88d2fa5e75a113",
+                "reference": "9d8205686a004948475dc43f8a88d2fa5e75a113",
+                "shasum": ""
+            },
+            "require": {
+                "amphp/amp": "^2"
+            },
+            "require-dev": {
+                "amphp/php-cs-fixer-config": "dev-master",
+                "amphp/phpunit-util": "^1",
+                "friendsofphp/php-cs-fixer": "^2.3",
+                "infection/infection": "^0.9.3",
+                "phpunit/phpunit": "^6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Amp\\ByteStream\\": "lib"
+                },
+                "files": [
+                    "lib/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Piotrowski",
+                    "email": "aaron@trowski.com"
+                },
+                {
+                    "name": "Niklas Keller",
+                    "email": "me@kelunik.com"
+                }
+            ],
+            "description": "A stream abstraction to make working with non-blocking I/O simple.",
+            "homepage": "http://amphp.org/byte-stream",
+            "keywords": [
+                "amp",
+                "amphp",
+                "async",
+                "io",
+                "non-blocking",
+                "stream"
+            ],
+            "time": "2019-10-27T14:33:41+00:00"
+        },
         {
             "name": "cboden/ratchet",
             "version": "v0.4.1",
@@ -124,68 +260,6 @@
                 "slugify"
             ],
             "time": "2019-01-31T20:38:55+00:00"
-        },
-        {
-            "name": "composer/semver",
-            "version": "1.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/composer/semver.git",
-                "reference": "46d9139568ccb8d9e7cdd4539cab7347568a5e2e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/46d9139568ccb8d9e7cdd4539cab7347568a5e2e",
-                "reference": "46d9139568ccb8d9e7cdd4539cab7347568a5e2e",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.3.2 || ^7.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.5 || ^5.0.5",
-                "phpunit/phpunit-mock-objects": "2.3.0 || ^3.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Composer\\Semver\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nils Adermann",
-                    "email": "naderman@naderman.de",
-                    "homepage": "http://www.naderman.de"
-                },
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
-                },
-                {
-                    "name": "Rob Bast",
-                    "email": "rob.bast@gmail.com",
-                    "homepage": "http://robbast.nl"
-                }
-            ],
-            "description": "Semver library that offers utilities, version constraint parsing and validation.",
-            "keywords": [
-                "semantic",
-                "semver",
-                "validation",
-                "versioning"
-            ],
-            "time": "2019-03-19T17:25:45+00:00"
         },
         {
             "name": "composer/xdebug-handler",
@@ -492,6 +566,53 @@
             "time": "2019-09-12T22:41:08+00:00"
         },
         {
+            "name": "felixfbecker/language-server-protocol",
+            "version": "v1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/felixfbecker/php-language-server-protocol.git",
+                "reference": "378801f6139bb74ac215d81cca1272af61df9a9f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/felixfbecker/php-language-server-protocol/zipball/378801f6139bb74ac215d81cca1272af61df9a9f",
+                "reference": "378801f6139bb74ac215d81cca1272af61df9a9f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "*",
+                "phpunit/phpunit": "^6.3",
+                "squizlabs/php_codesniffer": "^3.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LanguageServerProtocol\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "ISC"
+            ],
+            "authors": [
+                {
+                    "name": "Felix Becker",
+                    "email": "felix.b@outlook.com"
+                }
+            ],
+            "description": "PHP classes for the Language Server Protocol",
+            "keywords": [
+                "language",
+                "microsoft",
+                "php",
+                "server"
+            ],
+            "time": "2019-06-23T21:03:50+00:00"
+        },
+        {
             "name": "fig/http-message-util",
             "version": "1.1.3",
             "source": {
@@ -652,47 +773,6 @@
                 "url"
             ],
             "time": "2019-07-01T23:21:34+00:00"
-        },
-        {
-            "name": "microsoft/tolerant-php-parser",
-            "version": "v0.0.18",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/microsoft/tolerant-php-parser.git",
-                "reference": "e255aa978b45729094da2a1a6f9954044a244ff2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/microsoft/tolerant-php-parser/zipball/e255aa978b45729094da2a1a6f9954044a244ff2",
-                "reference": "e255aa978b45729094da2a1a6f9954044a244ff2",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Microsoft\\PhpParser\\": [
-                        "src/"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Rob Lourens",
-                    "email": "roblou@microsoft.com"
-                }
-            ],
-            "description": "Tolerant PHP-to-AST parser designed for IDE usage scenarios",
-            "time": "2019-07-01T02:21:00+00:00"
         },
         {
             "name": "mongodb/mongodb",
@@ -938,53 +1018,92 @@
             "time": "2019-08-15T19:41:25+00:00"
         },
         {
-            "name": "phan/phan",
-            "version": "2.4.4",
+            "name": "nikic/php-parser",
+            "version": "v4.3.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/phan/phan.git",
-                "reference": "9236f30e5b6ccb582ebc77b1635eabe08bdecf9e"
+                "url": "https://github.com/nikic/PHP-Parser.git",
+                "reference": "9a9981c347c5c49d6dfe5cf826bb882b824080dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phan/phan/zipball/9236f30e5b6ccb582ebc77b1635eabe08bdecf9e",
-                "reference": "9236f30e5b6ccb582ebc77b1635eabe08bdecf9e",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/9a9981c347c5c49d6dfe5cf826bb882b824080dc",
+                "reference": "9a9981c347c5c49d6dfe5cf826bb882b824080dc",
                 "shasum": ""
             },
             "require": {
-                "composer/semver": "^1.4",
-                "composer/xdebug-handler": "^1.3.2",
-                "ext-filter": "*",
-                "ext-json": "*",
                 "ext-tokenizer": "*",
-                "felixfbecker/advanced-json-rpc": "^3.0.4",
-                "microsoft/tolerant-php-parser": "0.0.18",
-                "netresearch/jsonmapper": "^1.6.0",
-                "php": "^7.1.0",
-                "sabre/event": "^5.0",
-                "symfony/console": "^2.3|^3.0|~4.0",
-                "symfony/polyfill-mbstring": "^1.11.0"
+                "php": ">=7.0"
             },
             "require-dev": {
-                "brianium/paratest": "^2.2.0",
-                "phpunit/phpunit": "^7.5.0"
-            },
-            "suggest": {
-                "ext-ast": "Needed for parsing ASTs (unless --use-fallback-parser is used). 1.0.1+ is needed.",
-                "ext-iconv": "Either iconv or mbstring is needed to ensure issue messages are valid utf-8",
-                "ext-igbinary": "Improves performance of polyfill when ext-ast is unavailable",
-                "ext-mbstring": "Either iconv or mbstring is needed to ensure issue messages are valid utf-8",
-                "ext-tokenizer": "Needed for non-AST support and file/line-based suppressions."
+                "ircmaxell/php-yacc": "0.0.5",
+                "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0"
             },
             "bin": [
-                "phan",
-                "phan_client",
-                "tocheckstyle"
+                "bin/php-parse"
             ],
-            "type": "project",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.3-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "Phan\\": "src/Phan"
+                    "PhpParser\\": "lib/PhpParser"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nikita Popov"
+                }
+            ],
+            "description": "A PHP parser written in PHP",
+            "keywords": [
+                "parser",
+                "php"
+            ],
+            "time": "2019-11-08T13:50:10+00:00"
+        },
+        {
+            "name": "ocramius/package-versions",
+            "version": "1.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Ocramius/PackageVersions.git",
+                "reference": "44af6f3a2e2e04f2af46bcb302ad9600cba41c7d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/44af6f3a2e2e04f2af46bcb302ad9600cba41c7d",
+                "reference": "44af6f3a2e2e04f2af46bcb302ad9600cba41c7d",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0.0",
+                "php": "^7.1.0"
+            },
+            "require-dev": {
+                "composer/composer": "^1.6.3",
+                "doctrine/coding-standard": "^5.0.1",
+                "ext-zip": "*",
+                "infection/infection": "^0.7.1",
+                "phpunit/phpunit": "^7.5.17"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "PackageVersions\\Installer",
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PackageVersions\\": "src/PackageVersions"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -993,22 +1112,61 @@
             ],
             "authors": [
                 {
-                    "name": "Tyson Andre"
-                },
-                {
-                    "name": "Rasmus Lerdorf"
-                },
-                {
-                    "name": "Andrew S. Morrison"
+                    "name": "Marco Pivetta",
+                    "email": "ocramius@gmail.com"
                 }
             ],
-            "description": "A static analyzer for PHP",
-            "keywords": [
-                "analyzer",
-                "php",
-                "static"
+            "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
+            "time": "2019-11-15T16:17:10+00:00"
+        },
+        {
+            "name": "openlss/lib-array2xml",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nullivex/lib-array2xml.git",
+                "reference": "a91f18a8dfc69ffabe5f9b068bc39bb202c81d90"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nullivex/lib-array2xml/zipball/a91f18a8dfc69ffabe5f9b068bc39bb202c81d90",
+                "reference": "a91f18a8dfc69ffabe5f9b068bc39bb202c81d90",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "LSS": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
             ],
-            "time": "2019-11-24T16:38:38+00:00"
+            "authors": [
+                {
+                    "name": "Bryan Tong",
+                    "email": "bryan@nullivex.com",
+                    "homepage": "https://www.nullivex.com"
+                },
+                {
+                    "name": "Tony Butler",
+                    "email": "spudz76@gmail.com",
+                    "homepage": "https://www.nullivex.com"
+                }
+            ],
+            "description": "Array2XML conversion library credit to lalit.org",
+            "homepage": "https://www.nullivex.com",
+            "keywords": [
+                "array",
+                "array conversion",
+                "xml",
+                "xml conversion"
+            ],
+            "time": "2019-03-29T20:06:56+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -2422,66 +2580,6 @@
             "time": "2019-01-01T16:15:09+00:00"
         },
         {
-            "name": "sabre/event",
-            "version": "5.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sabre-io/event.git",
-                "reference": "f5cf802d240df1257866d8813282b98aee3bc548"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/event/zipball/f5cf802d240df1257866d8813282b98aee3bc548",
-                "reference": "f5cf802d240df1257866d8813282b98aee3bc548",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": ">=6",
-                "sabre/cs": "~1.0.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Sabre\\Event\\": "lib/"
-                },
-                "files": [
-                    "lib/coroutine.php",
-                    "lib/Loop/functions.php",
-                    "lib/Promise/functions.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Evert Pot",
-                    "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "sabre/event is a library for lightweight event-based programming",
-            "homepage": "http://sabre.io/event/",
-            "keywords": [
-                "EventEmitter",
-                "async",
-                "coroutine",
-                "eventloop",
-                "events",
-                "hooks",
-                "plugin",
-                "promise",
-                "reactor",
-                "signal"
-            ],
-            "time": "2018-03-05T13:55:47+00:00"
-        },
-        {
             "name": "sebastian/code-unit-reverse-lookup",
             "version": "1.0.1",
             "source": {
@@ -3244,41 +3342,41 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.4.0",
+            "version": "v5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "35d9077f495c6d184d9930f7a7ecbd1ad13c7ab8"
+                "reference": "1ece22ce0c2d54572dafcd114cc08c0031cc0ac3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/35d9077f495c6d184d9930f7a7ecbd1ad13c7ab8",
-                "reference": "35d9077f495c6d184d9930f7a7ecbd1ad13c7ab8",
+                "url": "https://api.github.com/repos/symfony/console/zipball/1ece22ce0c2d54572dafcd114cc08c0031cc0ac3",
+                "reference": "1ece22ce0c2d54572dafcd114cc08c0031cc0ac3",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1.3",
+                "php": "^7.2.5",
                 "symfony/polyfill-mbstring": "~1.0",
                 "symfony/polyfill-php73": "^1.8",
                 "symfony/service-contracts": "^1.1|^2"
             },
             "conflict": {
-                "symfony/dependency-injection": "<3.4",
-                "symfony/event-dispatcher": "<4.3|>=5",
+                "symfony/dependency-injection": "<4.4",
+                "symfony/event-dispatcher": "<4.4",
                 "symfony/lock": "<4.4",
-                "symfony/process": "<3.3"
+                "symfony/process": "<4.4"
             },
             "provide": {
                 "psr/log-implementation": "1.0"
             },
             "require-dev": {
                 "psr/log": "~1.0",
-                "symfony/config": "^3.4|^4.0|^5.0",
-                "symfony/dependency-injection": "^3.4|^4.0|^5.0",
-                "symfony/event-dispatcher": "^4.3",
+                "symfony/config": "^4.4|^5.0",
+                "symfony/dependency-injection": "^4.4|^5.0",
+                "symfony/event-dispatcher": "^4.4|^5.0",
                 "symfony/lock": "^4.4|^5.0",
-                "symfony/process": "^3.4|^4.0|^5.0",
-                "symfony/var-dumper": "^4.3|^5.0"
+                "symfony/process": "^4.4|^5.0",
+                "symfony/var-dumper": "^4.4|^5.0"
             },
             "suggest": {
                 "psr/log": "For using the console logger",
@@ -3289,7 +3387,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.4-dev"
+                    "dev-master": "5.0-dev"
                 }
             },
             "autoload": {
@@ -3316,7 +3414,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2019-11-13T07:39:40+00:00"
+            "time": "2019-11-18T17:27:11+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -4064,6 +4162,94 @@
             "time": "2019-11-15T20:38:32+00:00"
         },
         {
+            "name": "vimeo/psalm",
+            "version": "3.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vimeo/psalm.git",
+                "reference": "a154191922d14dcdde8ef348520a88d735d82304"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/a154191922d14dcdde8ef348520a88d735d82304",
+                "reference": "a154191922d14dcdde8ef348520a88d735d82304",
+                "shasum": ""
+            },
+            "require": {
+                "amphp/amp": "^2.1",
+                "amphp/byte-stream": "^1.5",
+                "composer/xdebug-handler": "^1.1",
+                "felixfbecker/advanced-json-rpc": "^3.0.3",
+                "felixfbecker/language-server-protocol": "^1.4",
+                "netresearch/jsonmapper": "^1.0",
+                "nikic/php-parser": "^4.3",
+                "ocramius/package-versions": "^1.2",
+                "openlss/lib-array2xml": "^1.0",
+                "php": "^7.1.3",
+                "sebastian/diff": "^3.0",
+                "symfony/console": "^3.3||^4.0||^5.0",
+                "webmozart/glob": "^4.1",
+                "webmozart/path-util": "^2.3"
+            },
+            "provide": {
+                "psalm/psalm": "self.version"
+            },
+            "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.2",
+                "ext-curl": "*",
+                "friendsofphp/php-cs-fixer": "^2.15",
+                "phpmyadmin/sql-parser": "^5.0",
+                "phpunit/phpunit": "^7.5 || ^8.0",
+                "psalm/plugin-phpunit": "^0.6",
+                "slevomat/coding-standard": "^5.0",
+                "squizlabs/php_codesniffer": "3.4.0",
+                "symfony/process": "^4.3"
+            },
+            "suggest": {
+                "ext-igbinary": "^2.0.5"
+            },
+            "bin": [
+                "psalm",
+                "psalter",
+                "psalm-language-server",
+                "psalm-plugin",
+                "psalm-refactor"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev",
+                    "dev-2.x": "2.x-dev",
+                    "dev-1.x": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psalm\\Plugin\\": "src/Psalm/Plugin",
+                    "Psalm\\": "src/Psalm"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthew Brown"
+                }
+            ],
+            "description": "A static analysis tool for finding errors in PHP applications",
+            "keywords": [
+                "code",
+                "inspection",
+                "php"
+            ],
+            "time": "2019-11-27T14:18:47+00:00"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v3.6.0",
             "source": {
@@ -4167,6 +4353,99 @@
                 "validate"
             ],
             "time": "2019-11-24T13:36:37+00:00"
+        },
+        {
+            "name": "webmozart/glob",
+            "version": "4.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webmozart/glob.git",
+                "reference": "3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webmozart/glob/zipball/3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe",
+                "reference": "3cbf63d4973cf9d780b93d2da8eec7e4a9e63bbe",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.3|^7.0",
+                "webmozart/path-util": "^2.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.6",
+                "sebastian/version": "^1.0.1",
+                "symfony/filesystem": "^2.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Webmozart\\Glob\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@gmail.com"
+                }
+            ],
+            "description": "A PHP implementation of Ant's glob.",
+            "time": "2015-12-29T11:14:33+00:00"
+        },
+        {
+            "name": "webmozart/path-util",
+            "version": "2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webmozart/path-util.git",
+                "reference": "d939f7edc24c9a1bb9c0dee5cb05d8e859490725"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webmozart/path-util/zipball/d939f7edc24c9a1bb9c0dee5cb05d8e859490725",
+                "reference": "d939f7edc24c9a1bb9c0dee5cb05d8e859490725",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "webmozart/assert": "~1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.6",
+                "sebastian/version": "^1.0.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Webmozart\\PathUtil\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@gmail.com"
+                }
+            ],
+            "description": "A robust cross-platform utility for normalizing, comparing and modifying file paths.",
+            "time": "2015-12-17T08:42:14+00:00"
         },
         {
             "name": "webonyx/graphql-php",

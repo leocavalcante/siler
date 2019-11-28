@@ -1,7 +1,4 @@
-<?php
-
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 /*
  * In computer science, functional programming is a programming paradigm
  * a style of building the structure and elements of computer programs
@@ -16,27 +13,35 @@ use Closure;
 /**
  * Identity function.
  *
- * @return Closure $value -> $value
+ * @template T
+ * @return Closure(mixed): mixed
  */
 function identity(): Closure
 {
-    return function ($value) {
-        return $value;
-    };
+    return
+        /**
+         * @psalm-param T $value
+         * @psalm-return T
+         */
+        static function ($value) {
+            return $value;
+        };
 }
 
 /**
  * Is a unary function which evaluates to $value for all inputs.
  *
- * @param mixed $value
- *
- * @return Closure a -> $value
+ * @template T
+ * @psalm-param T $value
+ * @return Closure(): mixed
  */
 function always($value): Closure
 {
-    return function () use ($value) {
-        return $value;
-    };
+    return
+        /** @psalm-return T */
+        static function () use ($value) {
+            return $value;
+        };
 }
 
 /**
@@ -44,13 +49,18 @@ function always($value): Closure
  *
  * @param mixed $right
  *
- * @return Closure $left -> bool
+ * @return Closure(mixed): bool
  */
 function equal($right): Closure
 {
-    return function ($left) use ($right) {
-        return $left === $right;
-    };
+    return
+        /**
+         * @param mixed $left
+         * @return bool
+         */
+        static function ($left) use ($right) {
+            return $left === $right;
+        };
 }
 
 /**
@@ -58,13 +68,18 @@ function equal($right): Closure
  *
  * @param mixed $right
  *
- * @return Closure $left -> bool
+ * @return Closure(mixed): bool
  */
 function less_than($right): Closure
 {
-    return function ($left) use ($right) {
-        return $left < $right;
-    };
+    return
+        /**
+         * @param mixed $left
+         * @return bool
+         */
+        static function ($left) use ($right) {
+            return $left < $right;
+        };
 }
 
 /**
@@ -72,13 +87,18 @@ function less_than($right): Closure
  *
  * @param mixed $right
  *
- * @return Closure $left -> bool
+ * @return Closure(mixed): bool
  */
 function greater_than($right): Closure
 {
-    return function ($left) use ($right) {
-        return $left > $right;
-    };
+    return
+        /**
+         * @param mixed $left
+         * @return bool
+         */
+        static function ($left) use ($right) {
+            return $left > $right;
+        };
 }
 
 /**
@@ -86,15 +106,20 @@ function greater_than($right): Closure
  *
  * @param callable $cond
  *
- * @return Closure $then -> $else -> $value -> mixed
+ * @return Closure(callable):Closure(callable):Closure(mixed):mixed
  */
 function if_else(callable $cond): Closure
 {
-    return function (callable $then) use ($cond) {
-        return function (callable $else) use ($cond, $then) {
-            return function ($value) use ($cond, $then, $else) {
-                return $cond($value) ? $then($value) : $else($value);
-            };
+    return static function (callable $then) use ($cond): Closure {
+        return static function (callable $else) use ($cond, $then): Closure {
+            return
+                /**
+                 * @param mixed $value
+                 * @return mixed
+                 */
+                static function ($value) use ($cond, $then, $else) {
+                    return $cond($value) ? $then($value) : $else($value);
+                };
         };
     };
 }
@@ -104,39 +129,56 @@ function if_else(callable $cond): Closure
  *
  * @param array $matches
  *
- * @return Closure $value -> mixed|null
+ * @return Closure
  */
 function match(array $matches): Closure
 {
-    return function ($value) use ($matches) {
-        if (empty($matches)) {
-            return null;
-        }
+    return
+        /**
+         * @param mixed $value
+         * @return mixed
+         */
+        static function ($value) use ($matches) {
+            if (empty($matches)) {
+                return null;
+            }
 
-        $match = $matches[0];
+            /** @var array<callable> $match */
+            $match = $matches[0];
+            $if_else = if_else($match[0])($match[1])(match(array_slice($matches, 1)));
 
-        return if_else($match[0])($match[1])(match(array_slice($matches, 1)))($value);
-    };
+            return $if_else($value);
+        };
 }
 
 /**
  * Determines whether any returns of $functions is TRUE.
  *
- * @param array $functions
+ * @param array<callable> $functions
  *
- * @return Closure $value -> bool
+ * @return Closure(mixed): bool
  */
 function any(array $functions): Closure
 {
-    return function ($value) use ($functions) {
-        return array_reduce(
-            $functions,
-            function ($current, $function) use ($value) {
-                return $current || $function($value);
-            },
-            false
-        );
-    };
+    return
+        /**
+         * @param mixed $value
+         * @return bool
+         */
+        static function ($value) use ($functions): bool {
+            return array_reduce(
+                $functions,
+                /**
+                 * @param mixed $current
+                 * @param callable $function
+                 * @return bool
+                 */
+                function ($current, $function) use ($value) {
+                    return $current || $function($value);
+                },
+                false
+            );
+        };
 }
 
 /**
@@ -144,19 +186,29 @@ function any(array $functions): Closure
  *
  * @param callable[] $functions
  *
- * @return Closure $value -> bool
+ * @return Closure(mixed): bool
  */
 function all(array $functions): Closure
 {
-    return function ($value) use ($functions) {
-        return array_reduce(
-            $functions,
-            function ($current, $function) use ($value) {
-                return $current && $function($value);
-            },
-            true
-        );
-    };
+    return
+        /**
+         * @param mixed $value
+         * @return bool
+         */
+        static function ($value) use ($functions): bool {
+            return array_reduce(
+                $functions,
+                /**
+                 * @param mixed $current
+                 * @param callable $function
+                 * @return bool
+                 */
+                static function ($current, $function) use ($value) {
+                    return $current && $function($value);
+                },
+                true
+            );
+        };
 }
 
 /**
@@ -164,127 +216,169 @@ function all(array $functions): Closure
  *
  * @param callable $function
  *
- * @return Closure $value -> ! $function $value
+ * @return Closure(mixed): bool
  */
 function not(callable $function): Closure
 {
-    return function ($value) use ($function) {
-        return !$function($value);
-    };
+    return
+        /**
+         * @param mixed $value
+         * @return bool
+         */
+        static function ($value) use ($function): bool {
+            return !$function($value);
+        };
 }
 
 /**
  * Sum of $left and $right.
  *
- * @param mixed $right
- *
- * @return Closure $left -> $left + $right
+ * @psalm-param numeric $right
+ * @return Closure(numeric): numeric
  */
 function add($right): Closure
 {
-    return function ($left) use ($right) {
-        return $left + $right;
-    };
+    return
+        /**
+         * @psalm-param numeric $left
+         * @psalm-return numeric
+         */
+        static function ($left) use ($right) {
+            return $left + $right;
+        };
 }
 
 /**
  * Product of $left and $right.
  *
- * @param mixed $right
- *
- * @return Closure $left -> $left * $right
+ * @psalm-param numeric $right
+ * @return Closure(numeric): numeric
  */
 function mul($right): Closure
 {
-    return function ($left) use ($right) {
-        return $left * $right;
-    };
+    return
+        /**
+         * @psalm-param numeric $left
+         * @psalm-return numeric
+         */
+        static function ($left) use ($right) {
+            return $left * $right;
+        };
 }
 
 /**
  * Difference of $left and $right.
  *
- * @param mixed $right
+ * @psalm-param numeric $right
  *
- * @return Closure $left -> $left - $right
+ * @return Closure(numeric): numeric
  */
 function sub($right): Closure
 {
-    return function ($left) use ($right) {
-        return $left - $right;
-    };
+    return
+        /**
+         * @psalm-param numeric $left
+         * @psalm-return numeric
+         */
+        static function ($left) use ($right) {
+            return $left - $right;
+        };
 }
 
 /**
  * Quotient of $left and $right.
  *
- * @param mixed $right
+ * @psalm-param numeric $right
  *
- * @return Closure $left -> $left / $right
+ * @return Closure(numeric): numeric
  */
 function div($right): Closure
 {
-    return function ($left) use ($right) {
-        return $left / $right;
-    };
+    return
+        /**
+         * @psalm-param numeric $left
+         * @psalm-return numeric
+         */
+        static function ($left) use ($right) {
+            return $left / $right;
+        };
 }
 
 /**
  * Remainder of $left divided by $right.
  *
- * @param mixed $right
- *
- * @return Closure $right -> $left % $right
+ * @psalm-param numeric $right
+ * @return Closure(numeric): numeric
  */
 function mod($right): Closure
 {
-    return function ($left) use ($right) {
-        return $left % $right;
-    };
+    return
+        /**
+         * @psalm-param numeric $left
+         * @psalm-return numeric
+         */
+        static function ($left) use ($right) {
+            return $left % $right;
+        };
 }
 
 /**
  * Function composition is the act of pipelining the result of one function,
  * to the input of another, creating an entirely new function.
  *
- * @param array $functions
+ * @param array<callable> $functions
  *
- * @return Closure $value -> mixed
+ * @return Closure(mixed): mixed
  */
 function compose(array $functions): Closure
 {
-    return function ($value) use ($functions) {
-        return array_reduce(
-            array_reverse($functions),
-            function ($value, $function) {
-                return $function($value);
-            },
-            $value
-        );
-    };
+    return
+        /**
+         * @param mixed $value
+         * @return mixed
+         */
+        static function ($value) use ($functions) {
+            return array_reduce(
+                array_reverse($functions),
+                /**
+                 * @param mixed $value
+                 * @param callable $function
+                 * @return mixed
+                 */
+                static function ($value, $function) {
+                    return $function($value);
+                },
+                $value
+            );
+        };
 }
 
 /**
  * Converts the given $value to a boolean.
  *
- * @return Closure $value -> bool
+ * @return Closure(mixed): bool
  */
 function bool(): Closure
 {
-    return function ($value): bool {
-        return (bool)$value;
-    };
+    return
+        /**
+         * @param mixed $value
+         * @return bool
+         */
+        static function ($value): bool {
+            return (bool)$value;
+        };
 }
 
 /**
  * In computer science, a NOP or NOOP (short for No Operation) is an assembly language instruction,
  * programming language statement, or computer protocol command that does nothing.
  *
- * @return Closure a ->
+ * @return Closure(): void
  */
 function noop(): Closure
 {
-    return function () {
+    return static function (): void {
     };
 }
 
@@ -293,13 +387,17 @@ function noop(): Closure
  *
  * @param callable $function
  *
- * @return Closure a -> $function(a)
+ * @return Closure(): mixed
  */
 function hold(callable $function): Closure
 {
-    return function () use ($function) {
-        return call_user_func_array($function, func_get_args());
-    };
+    return
+        /**
+         * @return mixed
+         */
+        static function () use ($function) {
+            return call_user_func_array($function, array_values(func_get_args()));
+        };
 }
 
 /**
@@ -307,11 +405,11 @@ function hold(callable $function): Closure
  *
  * @param string $value
  *
- * @return Closure a -> echo $value
+ * @return Closure(): void
  */
 function puts($value): Closure
 {
-    return function () use ($value) {
+    return static function () use ($value): void {
         echo $value;
     };
 }
@@ -320,19 +418,21 @@ function puts($value): Closure
  * Flats a multi-dimensional array.
  *
  * @param array $list
- * @param array $flat
- *
+ * @psalm-param list<mixed> $list
+ * @psalm-return list<mixed>
  * @return array
  */
-function flatten(array $list, array $flat = []): array
+function flatten(array $list): array
 {
-    if (empty($list)) {
-        return $flat;
-    }
+    /** @psalm-var list<mixed> $flat */
+    $flat = [];
 
-    list($head, $tail) = [$list[0], array_slice($list, 1)];
+    array_walk_recursive($list, /** @param mixed $value */ static function ($value) use ($flat): void {
+        /** @var mixed */
+        $flat[] = $value;
+    });
 
-    return flatten($tail, is_array($head) ? flatten($head, $flat) : array_merge($flat, [$head]));
+    return $flat;
 }
 
 /**
@@ -443,13 +543,18 @@ function non_empty(array $list): array
  * @param callable $callable
  * @param mixed ...$partial
  *
- * @return Closure
+ * @return Closure(mixed[]): mixed
  */
 function partial(callable $callable, ...$partial): Closure
 {
-    return function (...$args) use ($callable, $partial) {
-        return call_user_func_array($callable, array_merge($partial, $args));
-    };
+    return
+        /**
+         * @param mixed[] $args
+         * @return mixed
+         */
+        static function (...$args) use ($callable, $partial) {
+            return call_user_func_array($callable, array_merge($partial, $args));
+        };
 }
 
 /**
@@ -471,13 +576,13 @@ function if_then(callable $predicate): Closure
 /**
  * A lazy empty evaluation.
  *
- * @param $var
+ * @param mixed $var
  *
  * @return Closure
  */
 function is_empty($var): Closure
 {
-    return function () use ($var): bool {
+    return static function () use ($var): bool {
         return empty($var);
     };
 }
@@ -485,13 +590,13 @@ function is_empty($var): Closure
 /**
  * A lazy is_null evaluation.
  *
- * @param $var
+ * @param mixed $var
  *
  * @return Closure
  */
 function isnull($var): Closure
 {
-    return function () use ($var): bool {
+    return static function () use ($var): bool {
         return is_null($var);
     };
 }
@@ -501,11 +606,17 @@ function isnull($var): Closure
  *
  * @param string $separator
  *
- * @return Closure
+ * @return Closure(string, string|false): string
  */
 function concat(string $separator = ''): Closure
 {
-    return function (string $a, string $b) use ($separator): string {
-        return "{$a}{$separator}{$b}";
-    };
+    return
+        /**
+         * @param string $a
+         * @param string|false $b
+         * @return string
+         */
+        static function (string $a, $b) use ($separator): string {
+            return "{$a}{$separator}{$b}";
+        };
 }

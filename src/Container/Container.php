@@ -1,12 +1,9 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Siler\Container;
 
 use OverflowException;
 use UnderflowException;
-
 use function Siler\array_get;
 
 /**
@@ -20,7 +17,6 @@ use function Siler\array_get;
 function get(string $key, $default = null)
 {
     $container = Container::getInstance();
-
     return array_get($container->values, $key, $default);
 }
 
@@ -69,7 +65,7 @@ function clear(string $key): void
  * Useful for dependency injection.
  *
  * @param string $serviceName
- * @param $service
+ * @param mixed $service
  */
 function inject(string $serviceName, $service): void
 {
@@ -123,10 +119,11 @@ final class Container
     }
 
     /**
-     * Singleton -> instance.
+     * @return Container
      */
     public static function getInstance(): self
     {
+        /** @var Container|null $instance */
         static $instance = null;
 
         if ($instance === null) {

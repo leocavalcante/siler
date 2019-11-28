@@ -1,7 +1,4 @@
-<?php
-
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 /*
  * Helpers functions to work with vlucas/phpdotenv.
  */
@@ -10,7 +7,6 @@ namespace Siler\Dotenv;
 
 use Dotenv\Dotenv;
 use UnexpectedValueException;
-
 use function Siler\array_get;
 
 /**
@@ -22,9 +18,8 @@ use function Siler\array_get;
  */
 function init(string $path): array
 {
-    $dotenv = Dotenv::create($path);
-
-    return $dotenv->load();
+    $dot_env = Dotenv::create($path);
+    return $dot_env->load();
 }
 
 /**
@@ -33,11 +28,11 @@ function init(string $path): array
  * @param string|null $key
  * @param mixed $default A default when the key do not exists
  *
- * @return mixed
+ * @return string|null
  */
 function env(?string $key = null, $default = null)
 {
-    return array_get($_SERVER, $key, $default);
+    return strval(array_get($_SERVER, $key, $default));
 }
 
 /**

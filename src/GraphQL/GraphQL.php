@@ -10,17 +10,8 @@ use GraphQL\Executor\Executor;
 use GraphQL\Executor\Promise\Promise;
 use GraphQL\Executor\Promise\PromiseAdapter;
 use GraphQL\GraphQL;
-use GraphQL\Type\Definition\BooleanType;
-use GraphQL\Type\Definition\EnumType;
-use GraphQL\Type\Definition\FloatType;
-use GraphQL\Type\Definition\IDType;
-use GraphQL\Type\Definition\InterfaceType;
-use GraphQL\Type\Definition\IntType;
-use GraphQL\Type\Definition\ListOfType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
-use GraphQL\Type\Definition\StringType;
-use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
 use Psr\Http\Message\ServerRequestInterface;
 use Ratchet\Server\IoServer;
@@ -31,7 +22,6 @@ use Siler\Http\Response;
 use UnexpectedValueException;
 use WebSocket\BadOpcodeException;
 use WebSocket\Client;
-
 use function Siler\array_get;
 use function Siler\Encoder\Json\decode;
 use function Siler\Encoder\Json\encode;
@@ -64,9 +54,14 @@ const WEBSOCKET_SUB_PROTOCOL = 'graphql-ws';
  * @param int $level GraphQL debug level
  * @see https://webonyx.github.io/graphql-php/error-handling
  */
-function debug(int $level = Debug::INCLUDE_DEBUG_MESSAGE)
+function debug(int $level = Debug::INCLUDE_DEBUG_MESSAGE): void
 {
     Container\set(GRAPHQL_DEBUG, $level);
+}
+
+function debugging(): int
+{
+    return intval(Container\get(GRAPHQL_DEBUG, 0));
 }
 
 /**
@@ -89,14 +84,13 @@ function init(Schema $schema, $rootValue = null, $context = null, string $input 
  * Retrieves the GraphQL input from SAPI.
  *
  * @param string $input
- *
  * @return array
  */
 function input(string $input = 'php://input'): array
 {
     $contentType = Request\header('Content-Type');
 
-    if (!is_null($contentType) && preg_match('#application/json(;charset=utf-8)?#', $contentType)) {
+    if ($contentType !== null && preg_match('#application/json(;charset=utf-8)?#', $contentType)) {
         $data = Request\json($input);
     } else {
         $data = Request\post();
@@ -121,11 +115,14 @@ function input(string $input = 'php://input'): array
  */
 function execute(Schema $schema, array $input, $rootValue = null, $context = null)
 {
+    /** @var string $query */
     $query = array_get($input, 'query');
+    /** @var string $operation */
     $operation = array_get($input, 'operationName');
+    /** @var array $variables */
     $variables = array_get($input, 'variables');
 
-    return GraphQL::executeQuery($schema, $query, $rootValue, $context, $variables, $operation)->toArray(Container\get(GRAPHQL_DEBUG));
+    return GraphQL::executeQuery($schema, $query, $rootValue, $context, $variables, $operation)->toArray(debugging());
 }
 
 /**
@@ -141,8 +138,11 @@ function execute(Schema $schema, array $input, $rootValue = null, $context = nul
  */
 function promise_execute(PromiseAdapter $adapter, Schema $schema, array $input, $rootValue = null, $context = null): Promise
 {
+    /** @var string $query */
     $query = array_get($input, 'query');
+    /** @var string $operation */
     $operation = array_get($input, 'operationName');
+    /** @var array $variables */
     $variables = array_get($input, 'variables');
 
     return GraphQL::promiseToExecute($adapter, $schema, $query, $rootValue, $context, $variables, $operation);
@@ -178,7 +178,6 @@ function psr7(Schema $schema): Closure
  * @param array $resolvers
  * @param callable|null $typeConfigDecorator
  * @param array $options
- *
  * @return Schema
  */
 function schema(string $typeDefs, array $resolvers = [], ?callable $typeConfigDecorator = null, array $options = []): Schema
@@ -199,41 +198,52 @@ function schema(string $typeDefs, array $resolvers = [], ?callable $typeConfigDe
  */
 function resolvers(array $resolvers)
 {
-    Executor::setDefaultFieldResolver(function ($source, $args, $context, ResolveInfo $info) use ($resolvers) {
-        $fieldName = $info->fieldName;
+    Executor::setDefaultFieldResolver(
+        /**
+        * @param mixed $source
+        * @param mixed $context
+        */
+        static function ($source, array $args, $context, ResolveInfo $info) use ($resolvers) {
+            /** @var string|null $fieldName */
+            $fieldName = $info->fieldName;
 
-        if (is_null($fieldName)) {
-            throw new UnexpectedValueException('Could not get $fieldName from ResolveInfo');
-        }
+            if ($fieldName === null) {
+                throw new UnexpectedValueException('Could not get $fieldName from ResolveInfo');
+            }
 
-        if (is_null($info->parentType)) {
-            throw new UnexpectedValueException('Could not get $parentType from ResolveInfo');
-        }
+            /** @var ObjectType|null $parentType */
+            $parentType = $info->parentType;
 
-        $parentTypeName = $info->parentType->name;
+            if ($parentType === null) {
+                throw new UnexpectedValueException('Could not get $parentType from ResolveInfo');
+            }
 
-        if (isset($resolvers[$parentTypeName])) {
-            $resolver = $resolvers[$parentTypeName];
+            $parentTypeName = $parentType->name;
 
-            if (is_array($resolver)) {
-                if (array_key_exists($fieldName, $resolver)) {
-                    $value = $resolver[$fieldName];
+            if (isset($resolvers[$parentTypeName])) {
+                /** @var array|object $resolver */
+                $resolver = $resolvers[$parentTypeName];
 
-                    return is_callable($value) ? $value($source, $args, $context, $info) : $value;
+                if (is_array($resolver)) {
+                    if (array_key_exists($fieldName, $resolver)) {
+                        /** @var callable|mixed $value */
+                        $value = $resolver[$fieldName];
+                        return is_callable($value) ? $value($source, $args, $context, $info) : $value;
+                    }
+                }
+
+                if (is_object($resolver)) {
+                    if (isset($resolver->{$fieldName})) {
+                        /** @var callable|mixed $value */
+                        $value = $resolver->{$fieldName};
+                        return is_callable($value) ? $value($source, $args, $context, $info) : $value;
+                    }
                 }
             }
 
-            if (is_object($resolver)) {
-                if (isset($resolver->{$fieldName})) {
-                    $value = $resolver->{$fieldName};
-
-                    return is_callable($value) ? $value($source, $args, $context, $info) : $value;
-                }
-            }
+            return Executor::defaultFieldResolver($source, $args, $context, $info);
         }
-
-        return Executor::defaultFieldResolver($source, $args, $context, $info);
-    });
+    );
 }
 
 /**
@@ -300,7 +310,7 @@ function subscriptions_at(string $url)
  * @return void
  * @throws BadOpcodeException
  */
-function publish(string $subscriptionName, $payload = null)
+function publish(string $subscriptionName, $payload = null): void
 {
     $message = [
         'type' => GQL_DATA,
@@ -308,209 +318,14 @@ function publish(string $subscriptionName, $payload = null)
         'payload' => $payload
     ];
 
+    /** @var string $wsEndpoint */
     $wsEndpoint = Container\get('graphql_subscriptions_endpoint');
 
     $client = new Client($wsEndpoint);
     $client->send(encode($message));
 }
 
-function listen(string $eventName, callable $listener)
+function listen(string $eventName, callable $listener): void
 {
     Container\set($eventName, $listener);
-}
-
-/**
- * Returns a GraphQL value definition.
- *
- * @param string $name
- * @param string|null $description
- * @return Closure -> value -> array
- */
-function val(string $name, ?string $description = null): Closure
-{
-    return function ($value) use ($name, $description): array {
-        return [
-            'name' => $name,
-            'description' => $description,
-            'value' => $value
-        ];
-    };
-}
-
-/**
- *  Returns a GraphQL Enum type.
- *
- * @param string $name
- * @param string|null $description
- * @return Closure -> values -> EnumType
- */
-function enum(string $name, ?string $description = null): Closure
-{
-    return function (array $values) use ($name, $description): EnumType {
-        return new EnumType(['name' => $name, 'description' => $description, 'values' => $values]);
-    };
-}
-
-/**
- * Returns an evaluable field definition.
- *
- * @param Type $type
- * @param string $name
- * @param string|null $description
- * @return Closure -> (resolve, args) -> array
- */
-function field(Type $type, string $name, ?string $description = null): Closure
-{
-    return function ($resolve = null, array $args = null) use ($type, $name, $description) {
-        if (is_string($resolve)) {
-            $resolve = function () use ($resolve) {
-                return new $resolve();
-            };
-        }
-
-        return [
-            'type' => $type,
-            'name' => $name,
-            'description' => $description,
-            'resolve' => $resolve,
-            'args' => $args
-        ];
-    };
-}
-
-/**
- * Returns an evaluable String field definition.
- *
- * @param string|null $name
- * @param string|null $description
- * @return StringType|Closure -> (resolve, args) -> array
- */
-function str(?string $name = null, ?string $description = null)
-{
-    if (is_null($name)) {
-        return Type::string();
-    }
-
-    return field(Type::string(), $name, $description);
-}
-
-/**
- * Returns an evaluable Integer field definition.
- *
- * @param string|null $name
- * @param string|null $description
- * @return IntType|Closure -> (resolve, args) -> array
- */
-function int(?string $name = null, ?string $description = null)
-{
-    if (is_null($name)) {
-        return Type::int();
-    }
-
-    return field(Type::int(), $name, $description);
-}
-
-/**
- * Returns an evaluable Float field definition.
- *
- * @param string|null $name
- * @param string|null $description
- * @return FloatType|Closure -> (resolve, args) -> array
- */
-function float(?string $name = null, ?string $description = null)
-{
-    if (is_null($name)) {
-        return Type::float();
-    }
-
-    return field(Type::float(), $name, $description);
-}
-
-/**
- * Returns an evaluable Boolean field definition.
- *
- * @param string|null $name
- * @param string|null $description
- * @return BooleanType|Closure -> (resolve, args) -> array
- */
-function bool(?string $name = null, ?string $description = null)
-{
-    if (is_null($name)) {
-        return Type::boolean();
-    }
-
-    return field(Type::boolean(), $name, $description);
-}
-
-/**
- * @param Type $type
- * @param string|null $name
- * @param string|null $description
- * @return ListOfType|Closure -> (resolve, args) -> array
- */
-function list_of(Type $type, ?string $name = null, ?string $description = null)
-{
-    if (is_null($name)) {
-        return Type::listOf($type);
-    }
-
-    return field(Type::listOf($type), $name, $description);
-}
-
-/**
- * Returns an evaluable Id field definition.
- *
- * @param string|null $name
- * @param string|null $description
- * @return IDType|Closure -> (resolve, args) -> array
- */
-function id(?string $name = null, ?string $description = null)
-{
-    if (is_null($name)) {
-        return Type::id();
-    }
-
-    return field(Type::id(), $name, $description);
-}
-
-/**
- * Returns an InterfaceType factory function.
- *
- * @param string $name
- * @param string|null $description
- * @return Closure -> fields -> resolve -> InterfaceType
- */
-function itype(string $name, ?string $description = null)
-{
-    return function (array $fields = []) use ($name, $description) {
-        return function (callable $resolveType) use ($name, $description, $fields) {
-            return new InterfaceType([
-                'name' => $name,
-                'description' => $description,
-                'fields' => $fields,
-                'resolveType' => $resolveType
-            ]);
-        };
-    };
-}
-
-/**
- * Returns an ObjectType factory function.
- *
- * @param string $name
- * @param string|null $description
- * @return Closure -> fields -> resolve -> ObjectType
- */
-function type(string $name, ?string $description = null): Closure
-{
-    return function (array $fields = []) use ($name, $description): Closure {
-        return function (callable $resolve = null) use ($name, $description, $fields): ObjectType {
-            return new ObjectType([
-                'name' => $name,
-                'description' => $description,
-                'fields' => $fields,
-                'resolve' => $resolve
-            ]);
-        };
-    };
 }

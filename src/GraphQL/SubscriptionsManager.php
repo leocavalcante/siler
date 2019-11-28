@@ -8,11 +8,12 @@ use Exception;
 use GraphQL\Executor\Promise\Promise;
 use GraphQL\GraphQL;
 use GraphQL\Language\AST\DocumentNode;
+use GraphQL\Language\AST\FieldNode;
+use GraphQL\Language\AST\OperationDefinitionNode;
 use GraphQL\Language\Parser;
 use GraphQL\Type\Schema;
 use Siler\Container;
 use Siler\Encoder\Json;
-
 use function Siler\array_get;
 
 /**
@@ -30,7 +31,7 @@ class SubscriptionsManager
     protected $rootValue;
     /** @var mixed */
     protected $context;
-    /**  @var array */
+    /**  @var array<array> */
     protected $subscriptions;
     /** @var array */
     protected $connStorage;
@@ -53,7 +54,7 @@ class SubscriptionsManager
         $this->connStorage = [];
     }
 
-    public function handle(SubscriptionsConnection $conn, array $message)
+    public function handle(SubscriptionsConnection $conn, array $message): void
     {
         switch ($message['type']) {
             case GQL_CONNECTION_INIT:
@@ -77,11 +78,9 @@ class SubscriptionsManager
     /**
      * @param SubscriptionsConnection $conn
      * @param array|null $message
-     *
-     * @return void
      * @throws Exception
      */
-    public function handleConnectionInit(SubscriptionsConnection $conn, ?array $message = null)
+    public function handleConnectionInit(SubscriptionsConnection $conn, ?array $message = null): void
     {
         try {
             $this->connStorage[$conn->key()] = [];
@@ -91,9 +90,10 @@ class SubscriptionsManager
                 'payload' => []
             ];
 
+            /** @var array|mixed $context */
             $context = $this->callListener(ON_CONNECT, [array_get($message, 'payload', []), $this->context]);
 
-            if (is_array($context)) {
+            if (is_array($context) && is_array($this->context)) {
                 $this->context = array_merge($this->context, $context);
             }
         } catch (Exception $e) {
@@ -110,25 +110,26 @@ class SubscriptionsManager
     /**
      * @param SubscriptionsConnection $conn
      * @param array $data
-     *
-     * @return void
      * @throws Exception
      */
-    public function handleStart(SubscriptionsConnection $conn, array $data)
+    public function handleStart(SubscriptionsConnection $conn, array $data): void
     {
         try {
+            /** @var array $payload */
             $payload = array_get($data, 'payload');
+            /** @var string|null $query */
             $query = array_get($payload, 'query');
 
-            if (is_null($query)) {
+            if ($query === null) {
                 throw new Exception('Missing query parameter from payload');
             }
 
             $document = Parser::parse($query);
-            // @phan-suppress-next-line PhanUndeclaredProperty
-            $operation = $document->definitions[0]->operation;
+            /** @var OperationDefinitionNode $definition */
+            $definition = $document->definitions[0];
+            $operation = $definition->operation;
 
-            if ($operation == 'subscription') {
+            if ($operation === 'subscription') {
                 $data['name'] = $this->getSubscriptionName($document);
                 $data['conn'] = $conn;
 
@@ -136,14 +137,16 @@ class SubscriptionsManager
                 end($this->subscriptions[$data['name']]);
                 $data['index'] = key($this->subscriptions[$data['name']]);
 
+                /** @var array $connSubscriptions */
                 $connSubscriptions = array_key_exists($conn->key(), $this->connStorage)
                     ? $this->connStorage[$conn->key()]
                     : [];
-                $connSubscriptions[$data['id']] = $data;
+                $connSubscriptions[strval($data['id'])] = $data;
                 $this->connStorage[$conn->key()] = $connSubscriptions;
 
                 $this->callListener(ON_OPERATION, [$data, $this->rootValue, $this->context]);
             } else {
+                /** @var array $variables */
                 $variables = array_get($payload, 'variables');
                 $result = $this->execute($query, $payload, $variables);
 
@@ -191,19 +194,17 @@ class SubscriptionsManager
      */
     private function execute(string $query, $payload = null, ?array $variables = null)
     {
-        return GraphQL::executeQuery($this->schema, $query, $payload, $this->context, $variables)->toArray(Container\get(GRAPHQL_DEBUG));
+        return GraphQL::executeQuery($this->schema, $query, $payload, $this->context, $variables)->toArray(debugging());
     }
 
-    /**
-     * @param DocumentNode $document
-     *
-     * @return string
-     *
-     * @suppress PhanUndeclaredProperty
-     */
     public function getSubscriptionName(DocumentNode $document): string
     {
-        return $document->definitions[0]->selectionSet->selections[0]->name->value;
+        /** @var OperationDefinitionNode $definition */
+        $definition = $document->definitions[0];
+        /** @var FieldNode $node */
+        $node = $definition->selectionSet->selections[0];
+
+        return $node->name->value;
     }
 
     /**
@@ -214,18 +215,23 @@ class SubscriptionsManager
      */
     public function handleData(array $data)
     {
+        /** @var string $subscriptionName */
         $subscriptionName = $data['subscription'];
+        /** @var array<array>|null $subscriptions */
         $subscriptions = array_get($this->subscriptions, $subscriptionName);
 
         if (is_null($subscriptions)) {
             return;
         }
 
-
+        /** @var array $subscription */
         foreach ($subscriptions as $subscription) {
             try {
+                /** @var array $payload */
                 $payload = array_get($data, 'payload');
+                /** @var string $query */
                 $query = array_get($subscription['payload'], 'query');
+                /** @var array $variables */
                 $variables = array_get($subscription['payload'], 'variables');
 
                 if (isset($this->filters[$subscription['name']])) {

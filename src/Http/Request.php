@@ -10,9 +10,7 @@ namespace Siler\Http\Request;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Siler\Container;
-
 use function Siler\array_get;
-
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 /**
@@ -113,9 +111,9 @@ function headers(): array
  * @param string $key The header name
  * @param mixed $default The default value when header isnt present
  *
- * @return mixed
+ * @return string|null
  */
-function header(string $key, $default = null)
+function header(string $key, string $default = null): ?string
 {
     return array_get(headers(), $key, $default, true);
 }
@@ -139,9 +137,9 @@ function get(?string $key = null, $default = null)
  * @param string|null $key
  * @param mixed $default The default value to be returned when the key don't exists
  *
- * @return mixed
+ * @return string|array
  */
-function post(?string $key = null, $default = null)
+function post(?string $key = null, string $default = null)
 {
     return array_get($_POST, $key, $default);
 }

@@ -20,12 +20,12 @@ class GraphQLSubscriptionsConnection implements SubscriptionsConnection
         $this->key = $key;
     }
 
-    public function send(string $data)
+    public function send(string $data): void
     {
         $this->conn->send($data);
     }
 
-    public function key()
+    public function key(): string
     {
         return $this->key;
     }
