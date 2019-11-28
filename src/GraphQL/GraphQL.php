@@ -33,6 +33,7 @@ use WebSocket\BadOpcodeException;
 use WebSocket\Client;
 
 use function Siler\array_get;
+use function Siler\Encoder\Json\decode;
 use function Siler\Encoder\Json\encode;
 use function Siler\Ratchet\graphql_subscriptions;
 
@@ -157,7 +158,7 @@ function promise_execute(PromiseAdapter $adapter, Schema $schema, array $input, 
 function psr7(Schema $schema): Closure
 {
     return function (ServerRequestInterface $request) use ($schema) {
-        $input = json_decode((string)$request->getBody(), true);
+        $input = decode($request->getBody()->getContents());
 
         if (!is_array($input)) {
             throw new UnexpectedValueException('Input should be a JSON object');

@@ -307,7 +307,7 @@ function graphql_subscriptions(SubscriptionsManager $manager, int $port = 3000, 
         if ($message['type'] === GQL_DATA) {
             foreach ($workers as $worker) {
                 if ($worker['id'] !== $server->worker_id) {
-                    $server->sendMessage($frame->data, $worker['id']);
+                    $server->sendMessage(Frame::pack($frame), $worker['id']);
                 }
             }
         }
@@ -316,16 +316,14 @@ function graphql_subscriptions(SubscriptionsManager $manager, int $port = 3000, 
     $server = websocket($handler, $port, $host);
     $server->set(['websocket_subprotocol' => WEBSOCKET_SUB_PROTOCOL]);
 
-    $server->on('workerStart', function (WebsocketServer $_, int $workerId) use ($workers) {
+    $server->on('workerStart', function (WebsocketServer $unusedServer, int $workerId) use ($workers) {
         $workers[$workerId] = ['id' => $workerId];
     });
 
-    $server->on('pipeMessage', function (WebsocketServer $server, int $_, string $message) use ($handle) {
-        $message = Json\decode($message);
-
-        foreach ($server->connections as $fd) {
-            $handle($message, $fd);
-        }
+    $server->on('pipeMessage', function (WebsocketServer $unusedServer, int $unusedFromWorkerId, string $message) use ($handle) {
+        /** @var Frame $frame */
+        $frame = Frame::unpack($message);
+        $handle(Json\decode($frame->data), $frame->fd);
     });
 
     return $server;
