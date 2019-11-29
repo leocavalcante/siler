@@ -441,7 +441,7 @@ function flatten(array $list): array
     /** @psalm-var list<mixed> $flat */
     $flat = [];
 
-    array_walk_recursive($list, /** @param mixed $value */ static function ($value) use ($flat): void {
+    array_walk_recursive($list, /** @param mixed $value */ static function ($value) use (&$flat): void {
         /** @var mixed */
         $flat[] = $value;
     });

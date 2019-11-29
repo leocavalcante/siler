@@ -6,10 +6,10 @@
         "api",
         "framework",
         "functional",
+        "graphql",
         "micro",
         "router",
-        "swoole",
-        "graphql"
+        "swoole"
     ],
     "license": "MIT",
     "authors": [
@@ -19,14 +19,13 @@
         }
     ],
     "require": {
-        "php": ">=7.2"
+        "php": ">=7.3"
     },
     "minimum-stability": "stable",
     "require-dev": {
         "cboden/ratchet": "^0.4.1",
         "cocur/slugify": "^3.2",
         "gabordemooij/redbean": "^5.4",
-        "mongodb/mongodb": "^1.5",
         "monolog/monolog": "^2.0",
         "phpunit/phpunit": "^8.4",
         "squizlabs/php_codesniffer": "^3.5",
@@ -34,12 +33,12 @@
         "swoole/ide-helper": "^4.4",
         "textalk/websocket": "^1.2",
         "twig/twig": "^3.0",
+        "vimeo/psalm": "^3.7",
         "vlucas/phpdotenv": "^3.6",
         "webonyx/graphql-php": "^0.13",
         "zendframework/zend-diactoros": "^2.2",
         "zendframework/zend-httphandlerrunner": "^1.1",
-        "zendframework/zend-stratigility": "^3.2",
-        "vimeo/psalm": "^3.7"
+        "zendframework/zend-stratigility": "^3.2"
     },
     "autoload": {
         "psr-4": {
@@ -50,6 +49,7 @@
             "src/Diactoros/Diactoros.php",
             "src/Dotenv/Dotenv.php",
             "src/Encoder/Json.php",
+            "src/facades.php",
             "src/File/File.php",
             "src/Functional/Functional.php",
             "src/Functional/Monad/Monad.php",
@@ -68,8 +68,7 @@
             "src/Siler.php",
             "src/Stratigility/Stratigility.php",
             "src/Swoole/Swoole.php",
-            "src/Twig/Twig.php",
-            "src/facades.php"
+            "src/Twig/Twig.php"
         ]
     },
     "autoload-dev": {
@@ -78,17 +77,17 @@
         }
     },
     "scripts": {
+        "generate-facades": "php bin/generate-facades.php",
         "fix": "phpcbf",
         "lint": "phpcs",
-        "unit": "phpunit",
-        "test": [
+        "analyze": "psalm",
+        "test": "phpunit",
+        "build": [
+            "@composer generate-facades",
             "@composer fix",
             "@composer lint",
-            "@composer unit"
-        ],
-        "generate-facades": "php bin/generate-facades.php"
-    },
-    "suggest": {
-        "vlucas/phpdotenv": "Storing configuration in the environment is one of the tenets of a twelve-factor app."
+            "@composer analyze",
+            "@composer test"
+        ]
     }
 }

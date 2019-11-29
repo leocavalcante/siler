@@ -1,14 +1,10 @@
 language: php
 
 php:
-  - 7.2
   - 7.3
-
-env:
-  - PHAN_ALLOW_XDEBUG=1
+  - 7.4
 
 install:
-  - yes | pecl install -f ast mongodb
   - composer install
 
 script:
