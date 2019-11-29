@@ -1,7 +1,4 @@
-<?php
-
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 /*
  * Helpers for the HTTP abstraction.
  */
@@ -20,6 +17,7 @@ use function Siler\array_get;
  */
 function cookie(?string $key = null, $default = null)
 {
+    /** @var array<string, string> $_COOKIE */
     return array_get($_COOKIE, $key, $default);
 }
 
@@ -28,11 +26,11 @@ function cookie(?string $key = null, $default = null)
  *
  * @param string|null $key
  * @param mixed $default The default value to be returned when the key don't exists
- *
- * @return mixed
+ * @return string|null|array
  */
-function session(?string $key = null, $default = null)
+function session(?string $key = null, string $default = null)
 {
+    /** @var array<string, string> $_SESSION */
     return array_get($_SESSION, $key, $default);
 }
 
@@ -46,7 +44,7 @@ function session(?string $key = null, $default = null)
  */
 function setsession(string $key, $value): void
 {
-    $_SESSION[$key] = $value;
+    $_SESSION[$key] = strval($value);
 }
 
 /**
@@ -92,6 +90,10 @@ function url(?string $path = null): string
         $path = '/';
     }
 
+    /**
+     * @var array<string, string> $_SERVER
+     * @var string $scriptName
+     */
     $scriptName = array_get($_SERVER, 'SCRIPT_NAME', '');
 
     return rtrim(str_replace('\\', '/', dirname($scriptName)), '/') . '/' . ltrim($path, '/');
@@ -104,8 +106,14 @@ function url(?string $path = null): string
  */
 function path(): string
 {
+    /**
+     * @var array<string, string> $_SERVER
+     * @var string $scriptName
+     */
     $scriptName = array_get($_SERVER, 'SCRIPT_NAME', '');
+    /** @var string $queryString */
     $queryString = array_get($_SERVER, 'QUERY_STRING', '');
+    /** @var string $requestUri */
     $requestUri = array_get($_SERVER, 'REQUEST_URI', '');
 
     $requestUri = str_replace('?' . $queryString, '', $requestUri);
@@ -126,12 +134,17 @@ function path(): string
  */
 function uri(?string $protocol = null): string
 {
+    /**
+     * @var array<string, string> $_SERVER
+     * @var string $https
+     */
     $https = array_get($_SERVER, 'HTTPS', '');
 
-    if (is_null($protocol)) {
+    if ($protocol === null) {
         $protocol = empty($https) ? 'http' : 'https';
     }
 
+    /** @var string $httpHost */
     $httpHost = array_get($_SERVER, 'HTTP_HOST', '');
 
     return $protocol . '://' . $httpHost . path();

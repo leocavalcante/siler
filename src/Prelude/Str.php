@@ -25,7 +25,9 @@ function slugify(string $input, ?array $opts = null): string
         Container\set('slugify', new Slugify());
     }
 
-    return Container\get('slugify')->slugify($input, $opts);
+    /** @var Slugify $slugify */
+    $slugify = Container\get('slugify');
+    return $slugify->slugify($input, $opts);
 }
 
 /**

@@ -28,7 +28,7 @@ class SubscriptionsManager
     protected $rootValue;
     /** @var mixed */
     protected $context;
-    /**  @var array<array> */
+    /**  @var array<string, array> */
     protected $subscriptions;
     /** @var array */
     protected $connStorage;
@@ -51,6 +51,11 @@ class SubscriptionsManager
         $this->connStorage = [];
     }
 
+    /**
+     * @param SubscriptionsConnection $conn
+     * @param array<string, mixed> $message
+     * @throws Exception
+     */
     public function handle(SubscriptionsConnection $conn, array $message): void
     {
         switch ($message['type']) {
@@ -74,7 +79,7 @@ class SubscriptionsManager
 
     /**
      * @param SubscriptionsConnection $conn
-     * @param array|null $message
+     * @param array<string, mixed>|null $message
      * @throws Exception
      */
     public function handleConnectionInit(SubscriptionsConnection $conn, ?array $message = null): void
@@ -106,13 +111,13 @@ class SubscriptionsManager
 
     /**
      * @param SubscriptionsConnection $conn
-     * @param array $data
+     * @param array<string, mixed> $data
      * @throws Exception
      */
     public function handleStart(SubscriptionsConnection $conn, array $data): void
     {
         try {
-            /** @var array $payload */
+            /** @var array<string, mixed> $payload */
             $payload = array_get($data, 'payload');
             /** @var string|null $query */
             $query = array_get($payload, 'query');
@@ -205,8 +210,7 @@ class SubscriptionsManager
     }
 
     /**
-     * @param array $data
-     *
+     * @param array<string, mixed> $data
      * @return void
      * @throws Exception
      */
@@ -221,11 +225,12 @@ class SubscriptionsManager
             return;
         }
 
+        /** @var array<string, mixed> $subscription */
         foreach ($subscriptions as $subscription) {
             try {
                 /** @var array $payload */
                 $payload = array_get($data, 'payload');
-                /** @var array $subscription_payload */
+                /** @var array<string, mixed> $subscription_payload */
                 $subscription_payload = array_get($subscription, 'payload');
                 /** @var string $query */
                 $query = array_get($subscription_payload, 'query');
@@ -269,16 +274,15 @@ class SubscriptionsManager
 
     /**
      * @param SubscriptionsConnection $conn
-     * @param array $data
-     *
+     * @param array<string, mixed> $data
      * @return void
      */
     public function handleStop(SubscriptionsConnection $conn, array $data)
     {
-        /** @var array $connSubscriptions */
+        /** @var array<string, mixed> $connSubscriptions */
         $connSubscriptions = $this->connStorage[$conn->key()];
         /** @var array|null $subscription */
-        $subscription = array_get($connSubscriptions, $data['id']);
+        $subscription = array_get($connSubscriptions, strval($data['id']));
 
         if (!is_null($subscription)) {
             /** @var string subscription_name */

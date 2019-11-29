@@ -1,7 +1,4 @@
-<?php
-
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 /*
  * Siler core file.
  */
@@ -13,20 +10,20 @@ use Closure;
 /**
  * Get a value from an array checking if the key exists and returning a default value if not.
  *
- * @param array|null $array
- * @param mixed $key The key to be searched
- * @param mixed $default The default value to be returned when the key don't exists
+ * @template T
+ * @param array<string, T>|null $array
+ * @param string|null $key The key to be searched
+ * @param T|null $default The default value to be returned when the key don't exists
  * @param bool $caseInsensitive Ignore key case, default false
- *
- * @return mixed
+ * @return T|null|array<string, T>
  */
-function array_get(?array $array, $key = null, $default = null, bool $caseInsensitive = false)
+function array_get(?array $array, ?string $key = null, $default = null, bool $caseInsensitive = false)
 {
-    if (is_null($array)) {
+    if ($array === null) {
         return $default;
     }
 
-    if (is_null($key)) {
+    if ($key === null) {
         return $array;
     }
 
@@ -49,22 +46,28 @@ function array_get(?array $array, $key = null, $default = null, bool $caseInsens
  */
 function require_fn(string $filename): Closure
 {
-    return function (array $params = []) use ($filename) {
-        if (!file_exists($filename)) {
-            return null;
-        }
+    return
+        /**
+         * @param array $params
+         * @return mixed
+         */
+        static function (array $params = []) use ($filename) {
+            if (!file_exists($filename)) {
+                return null;
+            }
 
-        if (!Container\has($filename)) {
-            /** @noinspection PhpIncludeInspection */
-            Container\set($filename, include_once $filename);
-        }
+            if (!Container\has($filename)) {
+                /** @noinspection PhpIncludeInspection */
+                Container\set($filename, include_once $filename);
+            }
 
-        $value = Container\get($filename);
+            /** @var mixed $value */
+            $value = Container\get($filename);
 
-        if (is_callable($value)) {
-            return call_user_func($value, $params);
-        }
+            if (is_callable($value)) {
+                return call_user_func($value, $params);
+            }
 
-        return $value;
-    };
+            return $value;
+        };
 }

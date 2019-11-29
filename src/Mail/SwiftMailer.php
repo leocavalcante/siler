@@ -30,6 +30,7 @@ function send(Swift_Message $message)
         throw new UnderflowException('You should call mailer() before send()');
     }
 
+    /** @var Swift_Mailer $mailer */
     $mailer = Container\get(SWIFT_MAILER);
 
     return $mailer->send($message);

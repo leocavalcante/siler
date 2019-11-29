@@ -7,17 +7,22 @@ namespace Siler\Result;
 use JsonSerializable;
 
 /**
- * @template <T>
+ * @template T
  */
 abstract class Result implements JsonSerializable
 {
-    /** @var mixed */
-    private $data;
+    /** @var T|null */
+    protected $data;
     /** @var int */
-    private $code;
+    protected $code;
     /** @var string */
-    private $id;
+    protected $id;
 
+    /**
+     * @param T|null $data
+     * @param int $code
+     * @param string|null $id
+     */
     public function __construct($data = null, int $code = 0, string $id = null)
     {
         $this->id = is_null($id) ? base64_encode(uniqid()) : $id;
@@ -26,7 +31,7 @@ abstract class Result implements JsonSerializable
     }
 
     /**
-     * @return mixed|null
+     * @return T|null
      */
     public function unwrap()
     {
@@ -38,11 +43,25 @@ abstract class Result implements JsonSerializable
     abstract public function isSuccess(): bool;
 }
 
+/**
+ * @template T
+ * @param T|null $data
+ * @param int $code
+ * @param string|null $id
+ * @return Success<T>
+ */
 function success($data = null, int $code = 0, string $id = null): Success
 {
     return new Success($data, $code, $id);
 }
 
+/**
+ * @template T
+ * @param T|null $data
+ * @param int $code
+ * @param string|null $id
+ * @return Failure<T>
+ */
 function failure($data = null, int $code = 1, string $id = null): Failure
 {
     return new Failure($data, $code, $id);

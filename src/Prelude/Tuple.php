@@ -44,7 +44,7 @@ final class Tuple implements ArrayAccess, Countable
     /**
      * @override
      *
-     * @param mixed $offset
+     * @param string|int $offset
      *
      * @return bool
      */
@@ -56,7 +56,7 @@ final class Tuple implements ArrayAccess, Countable
     /**
      * @override
      *
-     * @param mixed $offset
+     * @param string|int $offset
      *
      * @return mixed
      * @throws OutOfBoundsException

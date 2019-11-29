@@ -4,8 +4,17 @@ declare(strict_types=1);
 
 namespace Siler\Result;
 
+/**
+ * @template T
+ * @extends Result<T>
+ */
 final class Success extends Result
 {
+    /**
+     * @param T|null $data
+     * @param int $code
+     * @param string|null $id
+     */
     public function __construct($data = null, int $code = 0, string $id = null)
     {
         parent::__construct($data, $code, $id);
@@ -25,5 +34,14 @@ final class Success extends Result
     public function isFailure(): bool
     {
         return false;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'code' => $this->code,
+            'data' => $this->data,
+        ];
     }
 }

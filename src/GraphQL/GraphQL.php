@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siler\GraphQL;
 
 use Closure;
+use Exception;
 use GraphQL\Error\Debug;
 use GraphQL\Executor\Executor;
 use GraphQL\Executor\Promise\Promise;
@@ -22,6 +23,7 @@ use Siler\Http\Response;
 use UnexpectedValueException;
 use WebSocket\BadOpcodeException;
 use WebSocket\Client;
+use Zend\Diactoros\Response\JsonResponse;
 use function Siler\array_get;
 use function Siler\Encoder\Json\decode;
 use function Siler\Encoder\Json\encode;
@@ -71,10 +73,9 @@ function debugging(): int
  * @param mixed $rootValue Some optional GraphQL root value
  * @param mixed $context Some optional GraphQL context
  * @param string $input JSON file input, for testing
- *
- * @return void
+ * @throws Exception
  */
-function init(Schema $schema, $rootValue = null, $context = null, string $input = 'php://input')
+function init(Schema $schema, $rootValue = null, $context = null, string $input = 'php://input'): void
 {
     $result = execute($schema, input($input), $rootValue, $context);
     Response\json($result);
@@ -84,10 +85,12 @@ function init(Schema $schema, $rootValue = null, $context = null, string $input 
  * Retrieves the GraphQL input from SAPI.
  *
  * @param string $input
- * @return array
+ * @return array<string, mixed>
+ * @throws Exception
  */
 function input(string $input = 'php://input'): array
 {
+    /** @var string|null $contentType */
     $contentType = Request\header('Content-Type');
 
     if ($contentType !== null && preg_match('#application/json(;charset=utf-8)?#', $contentType)) {
@@ -96,10 +99,11 @@ function input(string $input = 'php://input'): array
         $data = Request\post();
     }
 
-    if (!is_array($data)) {
-        throw new UnexpectedValueException('Input should be a JSON object');
+    if (!is_array($data) || !array_key_exists('query', $data)) {
+        throw new UnexpectedValueException('Input should be a JSON object with a query field');
     }
 
+    /** @var array<string, mixed> */
     return $data;
 }
 
@@ -107,7 +111,7 @@ function input(string $input = 'php://input'): array
  * Executes a GraphQL query over a schema.
  *
  * @param Schema $schema The application root Schema
- * @param array $input Incoming query, operation and variables
+ * @param array<string, mixed> $input Incoming query, operation and variables
  * @param mixed $rootValue Some optional GraphQL root value
  * @param mixed $context Some optional GraphQL context
  *
@@ -130,7 +134,7 @@ function execute(Schema $schema, array $input, $rootValue = null, $context = nul
  *
  * @param PromiseAdapter $adapter
  * @param Schema $schema
- * @param array $input
+ * @param array<string, mixed> $input
  * @param null $rootValue
  * @param null $context
  *
@@ -155,17 +159,13 @@ function promise_execute(PromiseAdapter $adapter, Schema $schema, array $input, 
  *
  * @return Closure ServerRequestInterface -> IO
  *
- * @psalm-return Closure(ServerRequestInterface):\Zend\Diactoros\Response\JsonResponse
+ * @psalm-return Closure(ServerRequestInterface): JsonResponse
  */
 function psr7(Schema $schema): Closure
 {
-    return function (ServerRequestInterface $request) use ($schema) {
+    return function (ServerRequestInterface $request) use ($schema): JsonResponse {
+        /** @var array<string, mixed> $input */
         $input = decode($request->getBody()->getContents());
-
-        if (!is_array($input)) {
-            throw new UnexpectedValueException('Input should be a JSON object');
-        }
-
         $data = execute($schema, $input);
 
         return Diactoros\json($data);

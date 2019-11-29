@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Siler\Ratchet;
 
@@ -12,7 +10,6 @@ use Siler\Encoder\Json;
 use Siler\GraphQL\SubscriptionsConnection;
 use Siler\GraphQL\SubscriptionsManager;
 use SplObjectStorage;
-
 use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
 
 class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerInterface
@@ -53,14 +50,16 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
      * @param ConnectionInterface $conn
      * @param string $message
      *
+     * @return void
      * @throws Exception
      *
-     * @return void
      */
     public function onMessage(ConnectionInterface $conn, $message)
     {
+        /** @var SubscriptionsConnection $conn */
         $conn = $this->connections->offsetGet($conn);
-        $message = Json\decode($message);
+        /** @var array<string, mixed> $message */
+        $message = Json\decode(strval($message));
         $this->manager->handle($conn, $message);
     }
 

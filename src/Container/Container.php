@@ -11,8 +11,7 @@ use function Siler\array_get;
  *
  * @param string $key The key to be searched on the container
  * @param mixed $default Default value when the key does not exists on the container
- *
- * @return mixed
+ * @return mixed|null
  */
 function get(string $key, $default = null)
 {
@@ -25,10 +24,8 @@ function get(string $key, $default = null)
  *
  * @param string $key Identified by the given key
  * @param mixed $value The value to be stored
- *
- * @return void
  */
-function set(string $key, $value)
+function set(string $key, $value): void
 {
     $container = Container::getInstance();
     $container->values[$key] = $value;
@@ -38,7 +35,6 @@ function set(string $key, $value)
  * Checks if there is some value in the given $key.
  *
  * @param string $key Key to search in the Container.
- *
  * @return bool
  */
 function has(string $key): bool
@@ -56,7 +52,6 @@ function has(string $key): bool
 function clear(string $key): void
 {
     $container = Container::getInstance();
-
     unset($container->values[$key]);
 }
 
@@ -83,7 +78,6 @@ function inject(string $serviceName, $service): void
  * Useful for dependency injection/IoC.
  *
  * @param string $serviceName
- *
  * @return mixed
  */
 function retrieve(string $serviceName)
@@ -97,33 +91,18 @@ function retrieve(string $serviceName)
     return $container->values[$serviceName];
 }
 
-/**
- *
- * @internal DIC.
- * @ignore   Not part of the API
- */
 final class Container
 {
-    /**
-     *  The actual holder.
-     *
-     * @var array
-     */
+    /** @var array<string, mixed> */
     public $values = [];
 
-    /**
-     * Constructor.
-     */
     private function __construct()
     {
     }
 
-    /**
-     * @return Container
-     */
     public static function getInstance(): self
     {
-        /** @var Container|null $instance */
+        /** @var Container|null */
         static $instance = null;
 
         if ($instance === null) {

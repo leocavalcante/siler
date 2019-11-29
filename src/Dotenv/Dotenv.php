@@ -30,13 +30,12 @@ function init(string $path): array
  * @param string|null $key
  * @param mixed $default A default when the key do not exists
  *
- * @return string|null
+ * @return string|null|array<string, string>
  */
-function env(?string $key = null, string $default = null): ?string
+function env(?string $key = null, string $default = null)
 {
-    /** @var string|null $val */
-    $val = array_get($_SERVER, $key, $default);
-    return $val;
+    /** @var array<string, string> $_SERVER */
+    return array_get($_SERVER, $key, $default);
 }
 
 /**

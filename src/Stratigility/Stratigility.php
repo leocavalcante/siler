@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Siler\Stratigility;
 
@@ -27,9 +25,10 @@ const DEFAULT_STRATIGILITY_PIPELINE = 'default_stratigility_pipeline';
  */
 function process(ServerRequestInterface $request, string $name = DEFAULT_STRATIGILITY_PIPELINE): Closure
 {
+    /** @var MiddlewarePipe|null $pipeline */
     $pipeline = Container\get($name);
 
-    if (is_null($pipeline) || !($pipeline instanceof MiddlewarePipe)) {
+    if ($pipeline === null || !($pipeline instanceof MiddlewarePipe)) {
         throw new UnexpectedValueException("MiddlewarePipe with name $name not found");
     }
 
@@ -50,9 +49,10 @@ function process(ServerRequestInterface $request, string $name = DEFAULT_STRATIG
  */
 function pipe($middleware, string $name = DEFAULT_STRATIGILITY_PIPELINE): MiddlewarePipe
 {
+    /** @var MiddlewarePipe|null $pipeline */
     $pipeline = Container\get($name);
 
-    if (is_null($pipeline)) {
+    if ($pipeline === null) {
         $pipeline = new MiddlewarePipe();
         Container\set($name, $pipeline);
     }
@@ -76,9 +76,10 @@ function pipe($middleware, string $name = DEFAULT_STRATIGILITY_PIPELINE): Middle
  */
 function handle(ServerRequestInterface $request, string $name = DEFAULT_STRATIGILITY_PIPELINE): ResponseInterface
 {
+    /** @var MiddlewarePipe|null $pipeline */
     $pipeline = Container\get($name);
 
-    if (is_null($pipeline) || !($pipeline instanceof MiddlewarePipe)) {
+    if ($pipeline === null || !($pipeline instanceof MiddlewarePipe)) {
         throw new UnexpectedValueException("MiddlewarePipe with name $name not found");
     }
 
