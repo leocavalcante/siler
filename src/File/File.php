@@ -62,7 +62,6 @@ function concat_files(array $files, string $separator = "\n"): string
     $files = array_map('strval', $files);
     $files = array_map('file_get_contents', $files);
 
-    /** @var string $contents */
     $contents = array_reduce($files, concat($separator), '');
     return trim($contents);
 }

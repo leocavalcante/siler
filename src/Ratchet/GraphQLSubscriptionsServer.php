@@ -33,17 +33,14 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
         $this->connections = new SplObjectStorage();
     }
 
-    public function getSubscriptionsConnection(ConnectionInterface $conn): SubscriptionsConnection
-    {
-        return $this->connections->offsetGet($conn);
-    }
-
     /**
      * @override
      *
      * @param ConnectionInterface $conn
      *
      * @suppress PhanUnusedPublicMethodParameter
+     *
+     * @return void
      */
     public function onOpen(ConnectionInterface $conn)
     {
@@ -57,6 +54,8 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
      * @param string $message
      *
      * @throws Exception
+     *
+     * @return void
      */
     public function onMessage(ConnectionInterface $conn, $message)
     {
@@ -71,6 +70,8 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
      * @param ConnectionInterface $conn
      *
      * @suppress PhanUnusedPublicMethodParameter
+     *
+     * @return void
      */
     public function onClose(ConnectionInterface $conn)
     {
@@ -84,13 +85,17 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
      * @param Exception $exception
      *
      * @suppress PhanUnusedPublicMethodParameter
+     *
+     * @return void
      */
     public function onError(ConnectionInterface $conn, Exception $exception)
     {
     }
 
     /**
-     * @return array
+     * @return string[]
+     *
+     * @psalm-return array{0: string}
      */
     public function getSubProtocols(): array
     {

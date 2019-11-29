@@ -11,7 +11,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Siler\Container;
 use UnexpectedValueException;
 use Zend\Stratigility\MiddlewarePipe;
-
 use function Zend\Stratigility\middleware;
 
 const DEFAULT_STRATIGILITY_PIPELINE = 'default_stratigility_pipeline';
@@ -23,6 +22,8 @@ const DEFAULT_STRATIGILITY_PIPELINE = 'default_stratigility_pipeline';
  * @param string $name The pipeline name.
  *
  * @return Closure
+ *
+ * @psalm-return Closure(callable):Closure(array):ResponseInterface
  */
 function process(ServerRequestInterface $request, string $name = DEFAULT_STRATIGILITY_PIPELINE): Closure
 {

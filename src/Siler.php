@@ -44,6 +44,8 @@ function array_get(?array $array, $key = null, $default = null, bool $caseInsens
  * @param string $filename The file to be required
  *
  * @return Closure
+ *
+ * @psalm-return Closure(array=):(false|mixed|null)
  */
 function require_fn(string $filename): Closure
 {

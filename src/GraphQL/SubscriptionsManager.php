@@ -1,11 +1,8 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Siler\GraphQL;
 
 use Exception;
-use GraphQL\Executor\Promise\Promise;
 use GraphQL\GraphQL;
 use GraphQL\Language\AST\DocumentNode;
 use GraphQL\Language\AST\FieldNode;
@@ -190,9 +187,9 @@ class SubscriptionsManager
      * @param mixed $payload
      * @param array|null $variables
      *
-     * @return array|Promise
+     * @return array
      */
-    private function execute(string $query, $payload = null, ?array $variables = null)
+    private function execute(string $query, $payload = null, ?array $variables = null): array
     {
         return GraphQL::executeQuery($this->schema, $query, $payload, $this->context, $variables)->toArray(debugging());
     }
@@ -224,18 +221,23 @@ class SubscriptionsManager
             return;
         }
 
-        /** @var array $subscription */
         foreach ($subscriptions as $subscription) {
             try {
                 /** @var array $payload */
                 $payload = array_get($data, 'payload');
+                /** @var array $subscription_payload */
+                $subscription_payload = array_get($subscription, 'payload');
                 /** @var string $query */
-                $query = array_get($subscription['payload'], 'query');
+                $query = array_get($subscription_payload, 'query');
                 /** @var array $variables */
-                $variables = array_get($subscription['payload'], 'variables');
+                $variables = array_get($subscription_payload, 'variables');
+                /** @var string $subscription_name */
+                $subscription_name = array_get($subscription, 'name');
 
-                if (isset($this->filters[$subscription['name']])) {
-                    if (!$this->filters[$subscription['name']]($payload, $variables, $this->context)) {
+                if (isset($this->filters[$subscription_name])) {
+                    /** @var mixed $filter */
+                    $filter = $this->filters[$subscription_name];
+                    if (is_callable($filter) && !$filter($payload, $variables, $this->context)) {
                         continue;
                     }
                 }
@@ -248,8 +250,9 @@ class SubscriptionsManager
                     'payload' => $result
                 ];
 
-                /** @noinspection PhpUndefinedMethodInspection */
-                $subscription['conn']->send(Json\encode($response));
+                /** @var SubscriptionsConnection $conn */
+                $conn = $subscription['conn'];
+                $conn->send(Json\encode($response));
             } catch (Exception $e) {
                 $response = [
                     'type' => GQL_ERROR,
@@ -257,8 +260,9 @@ class SubscriptionsManager
                     'payload' => $e->getMessage()
                 ];
 
-                /** @noinspection PhpUndefinedMethodInspection */
-                $subscription['conn']->send(Json\encode($response));
+                /** @var SubscriptionsConnection $conn */
+                $conn = $subscription['conn'];
+                $conn->send(Json\encode($response));
             } //end try
         } //end foreach
     }
@@ -271,35 +275,35 @@ class SubscriptionsManager
      */
     public function handleStop(SubscriptionsConnection $conn, array $data)
     {
+        /** @var array $connSubscriptions */
         $connSubscriptions = $this->connStorage[$conn->key()];
+        /** @var array|null $subscription */
         $subscription = array_get($connSubscriptions, $data['id']);
 
         if (!is_null($subscription)) {
-            unset($this->subscriptions[$subscription['name']][$subscription['index']]);
-            unset($connSubscriptions[$subscription['id']]);
+            /** @var string subscription_name */
+            $subscription_name = $subscription['name'];
+            /** @var int|string $subscription_index */
+            $subscription_index = $subscription['index'];
+            /** @var int|string $subscription_id */
+            $subscription_id = $subscription['id'];
+            unset($this->subscriptions[$subscription_name][$subscription_index]);
+            unset($connSubscriptions[$subscription_id]);
             $this->connStorage[$conn->key()] = $connSubscriptions;
             $this->callListener(ON_DISCONNECT, [$subscription, $this->rootValue, $this->context]);
         }
     }
 
-    public function getSubscriptions(): array
-    {
-        return $this->subscriptions;
-    }
-
-    public function getConnStorage(): array
-    {
-        return $this->connStorage;
-    }
-
     /**
      * @param string $eventName
      * @param array $withArgs
+     * @psalm-param array<int, mixed> $withArgs
      *
      * @return mixed|null
      */
     private function callListener(string $eventName, array $withArgs)
     {
+        /** @var callable|mixed $listener */
         $listener = Container\get($eventName);
 
         if (is_callable($listener)) {

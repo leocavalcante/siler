@@ -41,8 +41,10 @@ function session(?string $key = null, $default = null)
  *
  * @param string $key The key to be used
  * @param mixed $value The value to be stored
+ *
+ * @return void
  */
-function setsession(string $key, $value)
+function setsession(string $key, $value): void
 {
     $_SESSION[$key] = $value;
 }
@@ -70,8 +72,10 @@ function flash(?string $key = null, $default = null)
  * Redirects using the HTTP Location header.
  *
  * @param string $url The url to be redirected to
+ *
+ * @return void
  */
-function redirect(string $url)
+function redirect(string $url): void
 {
     Response\header('Location', $url);
 }

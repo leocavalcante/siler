@@ -21,9 +21,7 @@ use RegexIterator;
 use Siler\Container;
 use Siler\Http;
 use Siler\Http\Request;
-
 use function Siler\require_fn;
-
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 const DID_MATCH = 'route_did_match';
@@ -258,7 +256,9 @@ function resource(string $basePath, string $resourcesPath, ?string $identityPara
  *
  * @param string $filename
  *
- * @return array [HTTP_METHOD, HTTP_PATH]
+ * @return (null|string)[] [HTTP_METHOD, HTTP_PATH]
+ *
+ * @psalm-return array{0: null|string, 1: string}
  */
 function routify(string $filename): array
 {
@@ -349,8 +349,10 @@ function files(string $basePath, string $prefix = '', $request = null)
  * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
  *
  * @throws ReflectionException
+ *
+ * @return void
  */
-function class_name(string $basePath, string $className, $request = null)
+function class_name(string $basePath, string $className, $request = null): void
 {
     $reflection = new ReflectionClass($className);
     $object = $reflection->newInstance();
@@ -394,16 +396,20 @@ function class_name(string $basePath, string $className, $request = null)
 
 /**
  * Avoids routes to be called after the first match.
+ *
+ * @return void
  */
-function stop_propagation()
+function stop_propagation(): void
 {
     Container\set(STOP_PROPAGATION, true);
 }
 
 /**
  * Avoids routes to be called even on a match.
+ *
+ * @return void
  */
-function cancel()
+function cancel(): void
 {
     Container\set(CANCEL, true);
 }
@@ -420,8 +426,10 @@ function canceled(): bool
 
 /**
  * Resets default routing behaviour.
+ *
+ * @return void
  */
-function resume()
+function resume(): void
 {
     Container\set(STOP_PROPAGATION, false);
     Container\set(CANCEL, false);

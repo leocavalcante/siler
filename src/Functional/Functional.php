@@ -110,8 +110,18 @@ function greater_than($right): Closure
  */
 function if_else(callable $cond): Closure
 {
-    return static function (callable $then) use ($cond): Closure {
-        return static function (callable $else) use ($cond, $then): Closure {
+    return /**
+     * @return Closure
+     *
+     * @psalm-return \Closure(callable):\Closure(mixed):mixed
+     */
+    static function (callable $then) use ($cond): Closure {
+        return /**
+         * @return Closure
+         *
+         * @psalm-return \Closure(mixed):mixed
+         */
+        static function (callable $else) use ($cond, $then): Closure {
             return
                 /**
                  * @param mixed $value
@@ -130,6 +140,8 @@ function if_else(callable $cond): Closure
  * @param array $matches
  *
  * @return Closure
+ *
+ * @psalm-return Closure(mixed):mixed
  */
 function match(array $matches): Closure
 {
@@ -315,9 +327,11 @@ function mod($right): Closure
     return
         /**
          * @psalm-param numeric $left
+         *
          * @psalm-return numeric
+         * @return int
          */
-        static function ($left) use ($right) {
+        static function ($left) use ($right): int {
             return $left % $right;
         };
 }
@@ -498,7 +512,9 @@ function init(array $list): array
  *
  * @param array $list
  *
- * @return array [head, [tail]]
+ * @return (array|mixed)[] [head, [tail]]
+ *
+ * @psalm-return array{0: mixed, 1: array}
  */
 function uncons(array $list): array
 {
@@ -511,6 +527,8 @@ function uncons(array $list): array
  * @param array $list
  *
  * @return array
+ *
+ * @psalm-return list<mixed>
  */
 function non_null(array $list): array
 {
@@ -527,6 +545,8 @@ function non_null(array $list): array
  * @param array $list
  *
  * @return array
+ *
+ * @psalm-return list<mixed>
  */
 function non_empty(array $list): array
 {
@@ -558,11 +578,13 @@ function partial(callable $callable, ...$partial): Closure
 }
 
 /**
- *  Calls a function if the predicate is true.
+ * Calls a function if the predicate is true.
  *
  * @param callable $predicate
  *
  * @return Closure
+ *
+ * @psalm-return Closure(callable):mixed
  */
 function if_then(callable $predicate): Closure
 {
@@ -579,6 +601,8 @@ function if_then(callable $predicate): Closure
  * @param mixed $var
  *
  * @return Closure
+ *
+ * @psalm-return Closure():bool
  */
 function is_empty($var): Closure
 {
@@ -593,6 +617,8 @@ function is_empty($var): Closure
  * @param mixed $var
  *
  * @return Closure
+ *
+ * @psalm-return Closure():bool
  */
 function isnull($var): Closure
 {

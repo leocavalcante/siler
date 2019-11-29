@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace Siler\Swoole;
 
+use Closure;
+use Exception;
 use GraphQL\Error\FormattedError;
 use GraphQL\Type\Schema;
 use OutOfBoundsException;
@@ -22,10 +24,9 @@ use Swoole\Server\Port as ServerPort;
 use Swoole\Table;
 use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server as WebsocketServer;
-
+use Throwable;
 use function Siler\array_get;
 use function Siler\GraphQL\execute;
-
 use const Siler\GraphQL\GQL_DATA;
 use const Siler\GraphQL\GRAPHQL_DEBUG;
 use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
@@ -38,7 +39,12 @@ const SWOOLE_WEBSOCKET_SERVER = 'swoole_websocket_server';
 const SWOOLE_WEBSOCKET_ONOPEN = 'swoole_websocket_onopen';
 const SWOOLE_WEBSOCKET_ONCLOSE = 'swoole_websocket_onclose';
 
-function http_handler(callable $handler): \Closure
+/**
+ * @return Closure
+ *
+ * @psalm-return \Closure(Request, Response):mixed
+ */
+function http_handler(callable $handler): Closure
 {
     return function (Request $request, Response $response) use ($handler) {
         Container\set(DID_MATCH, false);
@@ -119,7 +125,7 @@ function emit(string $content, int $status = 200, array $headers = [])
  * @param array $headers
  *
  * @return null
- * @throws \Exception
+ * @throws Exception
  */
 function json($data, int $status = 200, array $headers = [])
 {
@@ -130,13 +136,15 @@ function json($data, int $status = 200, array $headers = [])
 }
 
 /**
- * Attach hooks for Swoole WebSocket server events.
- * `open` => Called when a client connects to the server.
- * `close` => Called when a client disconnects from the server.
+ *  Attach hooks for Swoole WebSocket server events.
+ *  `open` => Called when a client connects to the server.
+ *  `close` => Called when a client disconnects from the server.
  *
  * @param array $hooks The hooks to be attached.
+ *
+ * @return void
  */
-function websocket_hooks(array $hooks)
+function websocket_hooks(array $hooks): void
 {
     if (array_key_exists('open', $hooks)) {
         Container\set(SWOOLE_WEBSOCKET_ONOPEN, $hooks['open']);
@@ -204,11 +212,13 @@ function push(string $message, int $fd)
 }
 
 /**
- * Broadcasts a message to every websocket client.
+ *  Broadcasts a message to every websocket client.
  *
  * @param string $message
+ *
+ * @return void
  */
-function broadcast(string $message)
+function broadcast(string $message): void
 {
     if (!Container\has(SWOOLE_WEBSOCKET_SERVER)) {
         throw new OutOfBoundsException('There is no server to broadcast.');
@@ -222,13 +232,15 @@ function broadcast(string $message)
 }
 
 /**
- * Enable CORS in a Swoole Response.
+ *  Enable CORS in a Swoole Response.
  *
  * @param string $origin Comma-separated list of allowed origins, defaults to "*".
  * @param string $headers Comma-separated list of allowed headers, defaults to "Content-Type, Authorization".
  * @param string $methods Comma-separated list of allowed methods, defaults to "GET, POST, PUT, DELETE".
+ *
+ * @return void
  */
-function cors(string $origin = '*', string $headers = 'Content-Type, Authorization', string $methods = 'GET, POST, PUT, DELETE')
+function cors(string $origin = '*', string $headers = 'Content-Type, Authorization', string $methods = 'GET, POST, PUT, DELETE'): void
 {
     $response = Container\get(SWOOLE_HTTP_RESPONSE);
 
@@ -260,22 +272,26 @@ function raw(): string
 }
 
 /**
- * Sugar for HTTP 204 No Content.
+ *  Sugar for HTTP 204 No Content.
  *
  * @param array $headers
+ *
+ * @return void
  */
-function no_content(array $headers = [])
+function no_content(array $headers = []): void
 {
     emit('', 204, $headers);
 }
 
 /**
- * Sugar for HTTP 404 Not Found.
+ *  Sugar for HTTP 404 Not Found.
  *
  * @param string $content
  * @param array $headers
+ *
+ * @return void
  */
-function not_found(string $content = '', array $headers = [])
+function not_found(string $content = '', array $headers = []): void
 {
     emit($content, 404, $headers);
 }
@@ -370,13 +386,18 @@ function http_server_port(Server $server, callable $handler, int $port = 80, str
     return $port_server;
 }
 
-function graphql_handler(Schema $schema, $rootValue = null, $context = null): \Closure
+/**
+ * @return Closure
+ *
+ * @psalm-return \Closure():mixed
+ */
+function graphql_handler(Schema $schema, $rootValue = null, $context = null): Closure
 {
     return function () use ($schema, $rootValue, $context) {
         try {
             $input = Json\decode(raw());
             $result = execute($schema, $input, $rootValue, $context);
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             $result = FormattedError::createFromException($exception, Container\get(GRAPHQL_DEBUG, 0) > 0);
         } finally {
             json($result);

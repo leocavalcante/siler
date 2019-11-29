@@ -29,11 +29,13 @@ function slugify(string $input, ?array $opts = null): string
 }
 
 /**
- *  Breaks a string into lines.
+ * Breaks a string into lines.
  *
  * @param string $input
  *
- * @return array
+ * @return string[]
+ *
+ * @psalm-return array<int, string>
  */
 function lines(string $input): array
 {

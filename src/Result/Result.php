@@ -25,61 +25,12 @@ abstract class Result implements JsonSerializable
         $this->code = $code;
     }
 
-    public function id(): string
-    {
-        return $this->id;
-    }
-
-    public function code(): int
-    {
-        return $this->code;
-    }
-
     /**
      * @return mixed|null
      */
     public function unwrap()
     {
         return $this->data;
-    }
-
-    public function bind(callable $fn): self
-    {
-        if ($this instanceof Success) {
-            $val = $fn($this->unwrap());
-
-            if (!($val instanceof Result)) {
-                throw new \InvalidArgumentException('$fn argument at Result->bind should return a Result');
-            }
-
-            return $val;
-        }
-
-        return $this;
-    }
-
-    public function jsonSerialize()
-    {
-        $json = [
-            'error' => $this->isFailure() && !$this->isSuccess(),
-            'id' => $this->id
-        ];
-
-        if (is_null($this->data)) {
-            return $json;
-        }
-
-        if (is_string($this->data)) {
-            $json['message'] = $this->data;
-            return $json;
-        }
-
-        if (is_array($this->data)) {
-            return array_merge($json, $this->data);
-        }
-
-        $json['data'] = $this->data;
-        return $json;
     }
 
     abstract public function isFailure(): bool;

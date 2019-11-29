@@ -98,8 +98,10 @@ function json($content, int $code = 200, string $charset = 'utf-8'): int
  * @param string $key The response header name
  * @param string $val The response header value
  * @param bool $replace Should replace a previous similar header, or add a second header of the same type.
+ *
+ * @return void
  */
-function header(string $key, string $val, bool $replace = true)
+function header(string $key, string $val, bool $replace = true): void
 {
     \header($key . ': ' . $val, $replace);
 }
@@ -108,16 +110,20 @@ function header(string $key, string $val, bool $replace = true)
  * Composes a default HTTP redirect response with the current base url.
  *
  * @param string $path
+ *
+ * @return void
  */
-function redirect(string $path)
+function redirect(string $path): void
 {
     Http\redirect(Http\url($path));
 }
 
 /**
  * Facade for No Content HTTP Responses.
+ *
+ * @return void
  */
-function no_content()
+function no_content(): void
 {
     output();
 }
@@ -128,8 +134,10 @@ function no_content()
  * @param string $origin
  * @param string $headers
  * @param string $methods
+ *
+ * @return void
  */
-function cors(string $origin = '*', string $headers = 'Content-Type', string $methods = 'GET, POST, PUT, DELETE')
+function cors(string $origin = '*', string $headers = 'Content-Type', string $methods = 'GET, POST, PUT, DELETE'): void
 {
     header('Access-Control-Allow-Origin', $origin);
     header('Access-Control-Allow-Headers', $headers);

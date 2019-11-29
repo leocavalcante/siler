@@ -11,11 +11,17 @@ final class Success extends Result
         parent::__construct($data, $code, $id);
     }
 
+    /**
+     * @return true
+     */
     public function isSuccess(): bool
     {
         return true;
     }
 
+    /**
+     * @return false
+     */
     public function isFailure(): bool
     {
         return false;

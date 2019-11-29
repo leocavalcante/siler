@@ -154,6 +154,8 @@ function promise_execute(PromiseAdapter $adapter, Schema $schema, array $input, 
  * @param Schema $schema GraphQL schema to execute
  *
  * @return Closure ServerRequestInterface -> IO
+ *
+ * @psalm-return Closure(ServerRequestInterface):\Zend\Diactoros\Response\JsonResponse
  */
 function psr7(Schema $schema): Closure
 {

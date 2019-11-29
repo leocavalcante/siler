@@ -14,7 +14,9 @@ use function Siler\array_get;
  *
  * @param string $path Directory name of the .env file location
  *
- * @return array
+ * @return (null|string)[]
+ *
+ * @psalm-return array<array-key, null|string>
  */
 function init(string $path): array
 {
@@ -30,9 +32,11 @@ function init(string $path): array
  *
  * @return string|null
  */
-function env(?string $key = null, $default = null)
+function env(?string $key = null, string $default = null): ?string
 {
-    return strval(array_get($_SERVER, $key, $default));
+    /** @var string|null $val */
+    $val = array_get($_SERVER, $key, $default);
+    return $val;
 }
 
 /**
@@ -90,7 +94,7 @@ function bool_val(string $key, bool $default = null): ?bool
  *
  * @param string $key
  *
- * @return bool
+ * @return true
  */
 function requires(string $key): bool
 {

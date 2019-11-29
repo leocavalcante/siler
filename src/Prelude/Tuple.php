@@ -1,7 +1,4 @@
-<?php
-
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 /*
  * Tuple module.
  */
@@ -31,6 +28,7 @@ function tuple(...$values)
  */
 final class Tuple implements ArrayAccess, Countable
 {
+    /** @var array */
     private $values;
 
     /**
@@ -41,16 +39,6 @@ final class Tuple implements ArrayAccess, Countable
     public function __construct(array $values)
     {
         $this->values = $values;
-    }
-
-    /**
-     * Returns Tuple values, useful for `list()`.
-     *
-     * @return array
-     */
-    public function values(): array
-    {
-        return $this->values;
     }
 
     /**
@@ -90,8 +78,6 @@ final class Tuple implements ArrayAccess, Countable
      * @param mixed $value
      *
      * @throws RuntimeException
-     *
-     * @suppress PhanUnusedPublicFinalMethodParameter
      */
     public function offsetSet($offset, $value)
     {
@@ -104,8 +90,6 @@ final class Tuple implements ArrayAccess, Countable
      * @param mixed $offset
      *
      * @throws RuntimeException
-     *
-     * @suppress PhanUnusedPublicFinalMethodParameter
      */
     public function offsetUnset($offset)
     {
@@ -113,9 +97,13 @@ final class Tuple implements ArrayAccess, Countable
     }
 
     /**
-     * @return int
-     * @internal Count elements of the Tuple.
-     *
+     * Count elements of an object
+     * @link https://php.net/manual/en/countable.count.php
+     * @return int The custom count as an integer.
+     * </p>
+     * <p>
+     * The return value is cast to an integer.
+     * @since 5.1.0
      */
     public function count()
     {
