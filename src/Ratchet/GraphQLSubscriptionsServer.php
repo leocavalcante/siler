@@ -16,7 +16,7 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
 {
     /** @var SubscriptionsManager */
     private $manager;
-    /** @var SplObjectStorage */
+    /** @var SplObjectStorage<ConnectionInterface, SubscriptionsConnection> */
     private $connections;
 
     /**
@@ -27,34 +27,28 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
     public function __construct(SubscriptionsManager $manager)
     {
         $this->manager = $manager;
+        /** @var SplObjectStorage<ConnectionInterface, SubscriptionsConnection> connections */
         $this->connections = new SplObjectStorage();
     }
 
     /**
      * @override
-     *
      * @param ConnectionInterface $conn
-     *
-     * @suppress PhanUnusedPublicMethodParameter
-     *
      * @return void
      */
-    public function onOpen(ConnectionInterface $conn)
+    public function onOpen(ConnectionInterface $conn): void
     {
         $this->connections->offsetSet($conn, new GraphQLSubscriptionsConnection($conn, uniqid()));
     }
 
     /**
      * @override
-     *
      * @param ConnectionInterface $conn
      * @param string $message
-     *
      * @return void
      * @throws Exception
-     *
      */
-    public function onMessage(ConnectionInterface $conn, $message)
+    public function onMessage(ConnectionInterface $conn, $message): void
     {
         /** @var SubscriptionsConnection $conn */
         $conn = $this->connections->offsetGet($conn);
@@ -65,39 +59,38 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
 
     /**
      * @override
-     *
-     * @param ConnectionInterface $conn
-     *
-     * @suppress PhanUnusedPublicMethodParameter
-     *
+     * @param ConnectionInterface $conn     *
      * @return void
      */
-    public function onClose(ConnectionInterface $conn)
+    public function onClose(ConnectionInterface $conn): void
     {
         $this->connections->offsetUnset($conn);
     }
 
     /**
      * @override
-     *
      * @param ConnectionInterface $conn
      * @param Exception $exception
-     *
-     * @suppress PhanUnusedPublicMethodParameter
-     *
      * @return void
      */
-    public function onError(ConnectionInterface $conn, Exception $exception)
+    public function onError(ConnectionInterface $conn, Exception $exception): void
     {
     }
 
     /**
-     * @return string[]
-     *
-     * @psalm-return array{0: string}
+     * @return array<int, string>
      */
     public function getSubProtocols(): array
     {
         return [WEBSOCKET_SUB_PROTOCOL];
+    }
+
+    /**
+     * @param ConnectionInterface $conn
+     * @return SubscriptionsConnection
+     */
+    public function getSubscriptionsConnection(ConnectionInterface $conn): SubscriptionsConnection
+    {
+        return $this->connections->offsetGet($conn);
     }
 }

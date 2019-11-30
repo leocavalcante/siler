@@ -59,9 +59,20 @@ function recur_iter_dir(string $dirname, string $regex = '/.*/', $mode = RegexIt
  */
 function concat_files(array $files, string $separator = "\n"): string
 {
-    $files = array_map('strval', $files);
+    $files = array_filter($files, 'is_file');
     $files = array_map('file_get_contents', $files);
 
     $contents = array_reduce($files, concat($separator), '');
+
     return trim($contents);
+}
+
+/**
+ * @param array<string> ...$segments
+ *
+ * @return string
+ */
+function join_dir(...$segments): string
+{
+    return join(DIRECTORY_SEPARATOR, $segments);
 }

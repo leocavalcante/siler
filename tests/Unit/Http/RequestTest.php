@@ -43,8 +43,8 @@ class RequestTest extends TestCase
         $this->assertArrayHasKey('foo', $params);
         $this->assertSame('bar', $params['foo']);
 
-        $params = Request\json();
-        $this->assertEmpty($params);
+        $this->expectException(\JsonException::class);
+        Request\json();
     }
 
     public function testHeaders()

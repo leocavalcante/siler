@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Siler\Result;
 
@@ -12,13 +10,15 @@ use JsonSerializable;
 abstract class Result implements JsonSerializable
 {
     /** @var T|null */
-    protected $data;
+    private $data;
     /** @var int */
-    protected $code;
+    private $code;
     /** @var string */
-    protected $id;
+    private $id;
 
     /**
+     * Result constructor.
+     *
      * @param T|null $data
      * @param int $code
      * @param string|null $id
@@ -31,6 +31,19 @@ abstract class Result implements JsonSerializable
     }
 
     /**
+     * @return string
+     */
+    public function id(): string
+    {
+        return $this->id;
+    }
+
+    public function code(): int
+    {
+        return $this->code;
+    }
+
+    /**
      * @return T|null
      */
     public function unwrap()
@@ -38,17 +51,64 @@ abstract class Result implements JsonSerializable
         return $this->data;
     }
 
+    /**
+     * @param callable(T|null): Result $fn
+     * @return $this
+     */
+    public function bind(callable $fn): self
+    {
+        if ($this instanceof Success) {
+            return $fn($this->unwrap());
+        }
+
+        return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        $json = [
+            'error' => $this->isFailure() && !$this->isSuccess(),
+            'id' => $this->id
+        ];
+
+        if (is_null($this->data)) {
+            return $json;
+        }
+
+        if (is_string($this->data)) {
+            $json['message'] = $this->data;
+            return $json;
+        }
+
+        if (is_array($this->data)) {
+            return array_merge($json, $this->data);
+        }
+
+        $json['data'] = $this->data;
+        return $json;
+    }
+
+    /**
+     * @return bool
+     */
     abstract public function isFailure(): bool;
 
+    /**
+     * @return bool
+     */
     abstract public function isSuccess(): bool;
 }
 
 /**
+ * Creates a new Success result monad.
+ *
  * @template T
+ *
  * @param T|null $data
  * @param int $code
  * @param string|null $id
- * @return Success<T>
+ *
+ * @return Success
  */
 function success($data = null, int $code = 0, string $id = null): Success
 {
@@ -56,11 +116,15 @@ function success($data = null, int $code = 0, string $id = null): Success
 }
 
 /**
+ * Creates a new Failure result monad.
+ *
  * @template T
+ *
  * @param T|null $data
  * @param int $code
  * @param string|null $id
- * @return Failure<T>
+ *
+ * @return Failure
  */
 function failure($data = null, int $code = 1, string $id = null): Failure
 {

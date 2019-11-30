@@ -35,13 +35,4 @@ final class Success extends Result
     {
         return false;
     }
-
-    public function jsonSerialize()
-    {
-        return [
-            'id' => $this->id,
-            'code' => $this->code,
-            'data' => $this->data,
-        ];
-    }
 }

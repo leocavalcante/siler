@@ -52,11 +52,11 @@ function int_val(string $key, ?int $default = null): ?int
         return $default;
     }
 
-    if (!is_numeric($val)) {
-        return $default;
+    if (is_numeric($val)) {
+        return intval($val);
     }
 
-    return intval($default);
+    return $default;
 }
 
 /**

@@ -47,7 +47,6 @@ function params(string $input = 'php://input'): array
  *
  * @param string $input The input file to check on
  * @return array|string|int|float|object|bool
- * @throws Exception
  */
 function json(string $input = 'php://input')
 {
@@ -168,9 +167,9 @@ function input(?string $key = null, $default = null)
  *
  * @param string|null $key
  * @param mixed $default The default value to be returned when the key don't exists
- * @return array|null
+ * @return array|null|string
  */
-function file(?string $key = null, $default = null): ?array
+function file(?string $key = null, $default = null)
 {
     /** @var array<string, array> $_FILES */
     return array_get($_FILES, $key, $default);

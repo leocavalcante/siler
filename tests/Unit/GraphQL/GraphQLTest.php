@@ -21,17 +21,13 @@ class GraphQLTest extends TestCase
 
         $_POST = ['query' => '{ foo }'];
 
-        $root = GraphQL\type('Root')([
-            GraphQL\str('foo')(function ($root, $args) {
-                return 'bar';
-            })
-        ]);
-
-        $schema = new Schema(['query' => $root()]);
+        $schema = GraphQL\schema('type Query { foo: String }', ['Query' => ['foo' => 'bar']]);
 
         GraphQL\init($schema);
 
-        $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
+        if (function_exists('xdebug_get_headers')) {
+            $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
+        }
     }
 
     /**
@@ -43,17 +39,13 @@ class GraphQLTest extends TestCase
 
         $_SERVER['HTTP_CONTENT_TYPE'] = 'application/json';
 
-        $root = GraphQL\type('Root')([
-            GraphQL\str('foo')(function ($root, $args) {
-                return 'bar';
-            })
-        ]);
-
-        $schema = new Schema(['query' => $root()]);
+        $schema = GraphQL\schema('type Query { foo: String }', ['Query' => ['foo' => 'bar']]);
 
         GraphQL\init($schema, null, null, __DIR__ . '/../../fixtures/graphql_input.json');
 
-        $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
+        if (function_exists('xdebug_get_headers')) {
+            $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
+        }
     }
 
     /**
@@ -65,17 +57,15 @@ class GraphQLTest extends TestCase
 
         $_POST = ['query' => '{ foo }'];
 
-        $root = GraphQL\type('Root')([
-            GraphQL\str('foo')(function ($root, $args) {
-                throw new Error('error_message');
-            })
-        ]);
-
-        $schema = new Schema(['query' => $root()]);
+        $schema = GraphQL\schema('type Query { foo: String }', ['Query' => ['foo' => function () {
+            throw new Error('error_message');
+        }]]);
 
         GraphQL\init($schema, null, null, __DIR__ . '/../../fixtures/graphql_input.json');
 
-        $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
+        if (function_exists('xdebug_get_headers')) {
+            $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
+        }
     }
 
     public function testSchema()
@@ -92,14 +82,8 @@ class GraphQLTest extends TestCase
     {
         $_POST = ['query' => '{ foo }'];
 
-        $root = GraphQL\type('Root')([
-            GraphQL\str('foo')(function ($root, $args) {
-                return 'bar';
-            })
-        ]);
-
+        $schema = GraphQL\schema('type Query { foo: String }', ['Query' => ['foo' => 'bar']]);
         $adapter = new SyncPromiseAdapter();
-        $schema = new Schema(['query' => $root()]);
         $promise = GraphQL\promise_execute($adapter, $schema, GraphQL\input());
         $result = $adapter->wait($promise);
 
@@ -111,5 +95,14 @@ class GraphQLTest extends TestCase
         GraphQL\debug();
         $this->assertSame(Debug::INCLUDE_DEBUG_MESSAGE, Container\get(GraphQL\GRAPHQL_DEBUG));
         GraphQL\debug(0);
+    }
+
+    public function testDebugging()
+    {
+        $this->assertSame(0, GraphQL\debugging());
+        GraphQL\debug();
+        $this->assertSame(1, GraphQL\debugging());
+        GraphQL\debug(0);
+        $this->assertSame(0, GraphQL\debugging());
     }
 }

@@ -97,16 +97,18 @@ final class Tuple implements ArrayAccess, Countable
     }
 
     /**
-     * Count elements of an object
-     * @link https://php.net/manual/en/countable.count.php
-     * @return int The custom count as an integer.
-     * </p>
-     * <p>
-     * The return value is cast to an integer.
-     * @since 5.1.0
+     * @return int
      */
     public function count()
     {
         return count($this->values);
+    }
+
+    /**
+     * @return array
+     */
+    public function values(): array
+    {
+        return $this->values;
     }
 }

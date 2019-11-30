@@ -36,10 +36,13 @@ class SubscriptionsManager
     /**
      * SubscriptionsManager constructor.
      *
+     * @template RootValue
+     * @template Context
+     *
      * @param Schema $schema
      * @param array $filters
-     * @param mixed $rootValue
-     * @param mixed $context
+     * @param RootValue $rootValue
+     * @param Context $context
      */
     public function __construct(Schema $schema, array $filters = [], $rootValue = [], $context = [])
     {
@@ -315,5 +318,21 @@ class SubscriptionsManager
         }
 
         return null;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConnStorage(): array
+    {
+        return $this->connStorage;
+    }
+
+    /**
+     * @return array<string, array>
+     */
+    public function getSubscriptions(): array
+    {
+        return $this->subscriptions;
     }
 }

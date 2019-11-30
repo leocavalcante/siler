@@ -10,7 +10,7 @@ namespace Siler\Http\Response;
 
 use Siler\Http;
 use Siler\Http\Request;
-use UnexpectedValueException;
+use function Siler\Encoder\Json\encode;
 
 /**
  * Outputs the given parameters based on a HTTP response.
@@ -83,13 +83,7 @@ function jsonstr(string $content, int $code = 200, string $charset = 'utf-8'): i
  */
 function json($content, int $code = 200, string $charset = 'utf-8'): int
 {
-    $body = json_encode($content);
-
-    if (false === $body) {
-        throw new UnexpectedValueException('Could not encode content');
-    }
-
-    return jsonstr($body, $code, $charset);
+    return jsonstr(encode($content), $code, $charset);
 }
 
 /**
