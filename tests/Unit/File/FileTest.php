@@ -31,6 +31,7 @@ class FileTest extends TestCase
         $basedir = dirname(__DIR__, 2);
         $result = concat_files(recur_iter_dir(join_dir($basedir, 'fixtures', 'concat')), '');
 
-        $this->assertSame("barfoo", $result);
+        // Note: file order is arbitrary
+        $this->assertTrue($result === 'foobar' || $result === 'barfoo');
     }
 }
