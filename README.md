@@ -4,7 +4,7 @@
     <br><br><br><br><br><br>
 </p>
 
-![Build](https://github.com/leocavalcante/siler/workflows/ci/badge.svg)
+![Build](https://github.com/leocavalcante/siler/workflows/CI/badge.svg)
 ![Psalm coverage](https://shepherd.dev/github/leocavalcante/siler/coverage.svg?)
 [![Latest Stable Version](https://poser.pugx.org/leocavalcante/siler/v/stable)](https://packagist.org/packages/leocavalcante/siler)
 [![Total Downloads](https://poser.pugx.org/leocavalcante/siler/downloads)](https://packagist.org/packages/leocavalcante/siler)
