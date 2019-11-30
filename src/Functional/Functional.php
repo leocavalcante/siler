@@ -104,34 +104,34 @@ function greater_than($right): Closure
 /**
  * It allows for conditional execution of code fragments.
  *
- * @param callable $cond
+ * @param callable(mixed): bool $cond
  *
- * @return Closure(callable):Closure(callable):Closure(mixed):mixed
+ * @return Closure(callable): Closure(callable): Closure(mixed): mixed
  */
 function if_else(callable $cond): Closure
 {
-    return /**
-     * @return Closure
-     *
-     * @return Closure(callable):\Closure(mixed):mixed
-     */
-    static function (callable $then) use ($cond): Closure {
-        return /**
-         * @return Closure
-         *
-         * @return Closure(mixed):mixed
+    return
+        /**
+         * @param callable(mixed): mixed $then
+         * @return Closure(callable): Closure(mixed): mixed
          */
-        static function (callable $else) use ($cond, $then): Closure {
+        static function (callable $then) use ($cond): Closure {
             return
                 /**
-                 * @param mixed $value
-                 * @return mixed
+                 * @param callable(mixed): mixed $else
+                 * @return Closure(mixed): mixed
                  */
-                static function ($value) use ($cond, $then, $else) {
-                    return $cond($value) ? $then($value) : $else($value);
+                static function (callable $else) use ($cond, $then): Closure {
+                    return
+                        /**
+                         * @param mixed $value
+                         * @return mixed
+                         */
+                        static function ($value) use ($cond, $then, $else) {
+                            return $cond($value) ? $then($value) : $else($value);
+                        };
                 };
         };
-    };
 }
 
 /**

@@ -269,8 +269,8 @@ function resource(string $basePath, string $resourcesPath, ?string $identityPara
  * Maps a filename to a route method-path pair.
  *
  * @param string $filename
- * @return array<string|null>
- * @return array{0: null|string, 1: string}
+ *
+ * @return array{0: string, 1: string}
  */
 function routify(string $filename): array
 {
