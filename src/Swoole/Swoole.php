@@ -355,6 +355,7 @@ function graphql_subscriptions(SubscriptionsManager $manager, int $port = 3000, 
         $handle($message, intval($frame->fd));
 
         if ($message['type'] === GQL_DATA) {
+            /** @var array{id: int} $worker */
             foreach ($workers as $worker) {
                 /** @psalm-suppress MissingPropertyType */
                 if ($worker['id'] !== $server->worker_id) {

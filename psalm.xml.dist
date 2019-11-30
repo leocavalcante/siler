@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <psalm
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        totallyTyped="true"
-        resolveFromConfigFile="true"
-        xmlns="https://getpsalm.org/schema/config"
-        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
->
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    totallyTyped="true"
+    resolveFromConfigFile="true"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd">
+
     <projectFiles>
         <directory name="src"/>
         <ignoreFiles>
@@ -13,21 +13,14 @@
         </ignoreFiles>
     </projectFiles>
 
-    <issueHandlers>
-        <UndefinedDocblockClass>
-            <errorLevel type="info">
-                <file name="src/Swoole/Swoole.php"/>
-            </errorLevel>
-        </UndefinedDocblockClass>
-        <UndefinedClass>
-            <errorLevel type="info">
-                <file name="src/Swoole/Swoole.php"/>
-            </errorLevel>
-        </UndefinedClass>
-        <MixedInferredReturnType>
-            <errorLevel type="info">
-                <file name="src/Swoole/Swoole.php"/>
-            </errorLevel>
-        </MixedInferredReturnType>
-    </issueHandlers>
+    <stubs>
+        <file name="vendor/swoole/ide-helper/output/swoole/namespace/Table.php"/>
+        <file name="vendor/swoole/ide-helper/output/swoole/namespace/Server.php"/>
+        <file name="vendor/swoole/ide-helper/output/swoole/namespace/Server/Port.php"/>
+        <file name="vendor/swoole/ide-helper/output/swoole/namespace/Http/Server.php"/>
+        <file name="vendor/swoole/ide-helper/output/swoole/namespace/Http/Request.php"/>
+        <file name="vendor/swoole/ide-helper/output/swoole/namespace/Http/Response.php"/>
+        <file name="vendor/swoole/ide-helper/output/swoole/namespace/WebSocket/Server.php"/>
+        <file name="vendor/swoole/ide-helper/output/swoole/namespace/WebSocket/Frame.php"/>
+    </stubs>
 </psalm>

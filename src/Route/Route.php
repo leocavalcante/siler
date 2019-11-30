@@ -32,7 +32,7 @@ const CANCEL = 'route_cancel';
  *
  * @param string $path The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -46,7 +46,7 @@ function get(string $path, $callback, $request = null)
  *
  * @param string $path The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -60,7 +60,7 @@ function post(string $path, $callback, $request = null)
  *
  * @param string $path The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -74,7 +74,7 @@ function put(string $path, $callback, $request = null)
  *
  * @param string $path The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -88,7 +88,7 @@ function delete(string $path, $callback, $request = null)
  *
  * @param string $path The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -102,7 +102,7 @@ function options(string $path, $callback, $request = null)
  *
  * @param string $path The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -117,7 +117,7 @@ function any(string $path, $callback, $request = null)
  * @param string|array $method The HTTP request method to listen on
  * @param string $path The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request Null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -137,13 +137,13 @@ function route($method, string $path, $callback, $request = null)
         $callback = require_fn($callback);
     }
 
-    $methodPath = method_path($request);
+    $method_path = method_path($request);
 
     if (
-        count($methodPath) >= 2 &&
-        (Request\method_is($method, strval($methodPath[0])) ||
+        count($method_path) >= 2 &&
+        (Request\method_is($method, strval($method_path[0])) ||
             $method == 'any') &&
-        preg_match($path, strval($methodPath[1]), $params)
+        preg_match($path, strval($method_path[1]), $params)
     ) {
         Container\set(DID_MATCH, true);
         return $callback($params);
@@ -153,15 +153,13 @@ function route($method, string $path, $callback, $request = null)
 }
 
 /**
- * @param mixed $request null, array[method, path], PSR-7 Request Message or Swoole HTTP request.
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
- * @return array
- *
- * @psalm-suppress UndefinedDocblockClass
+ * @return array{0: string, 1: string}
  * @internal Used to guess the given request method and path.
  *
  */
-function method_path($request): array
+function method_path($request = null): array
 {
     if (is_array($request)) {
         return $request;
@@ -174,7 +172,10 @@ function method_path($request): array
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
         /** @var SwooleRequest $request */
         $request = Container\get(SWOOLE_HTTP_REQUEST);
-        /** @var array<string, string> $request_server */
+        /**
+         * @psalm-suppress MissingPropertyType
+         * @var array<string, string> $request_server
+         */
         $request_server = $request->server;
         return [$request_server['request_method'], $request_server['request_uri']];
     }
@@ -206,7 +207,7 @@ function regexify(string $path): string
  * @param string $basePath The base for the resource
  * @param string $resourcesPath The base path name for the corresponding PHP files
  * @param string|null $identityParam
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -302,7 +303,7 @@ function routify(string $filename): array
  *
  * @param string $basePath
  * @param string $prefix
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -359,7 +360,7 @@ function files(string $basePath, string $prefix = '', $request = null)
  *
  * @param string $basePath The prefix for all routes
  * @param class-string|object $className The qualified class name
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return void
  * @throws ReflectionException
