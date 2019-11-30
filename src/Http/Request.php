@@ -12,6 +12,7 @@ use Exception;
 use Psr\Http\Message\ServerRequestInterface;
 use Siler\Container;
 use Siler\Swoole\RequestInterface;
+use Swoole\Http\Request;
 use function locale_get_default;
 use function Siler\array_get;
 use function Siler\Encoder\Json\decode;
@@ -361,7 +362,7 @@ function bearer($request = null): ?string
 function authorization_header($request = null): ?string
 {
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
-        /** @var RequestInterface $request */
+        /** @var Request $request */
         $request = Container\get(SWOOLE_HTTP_REQUEST);
         /** @var string|null */
         return $request->header['authorization'] ?? null;

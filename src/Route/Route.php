@@ -19,7 +19,7 @@ use RegexIterator;
 use Siler\Container;
 use Siler\Http;
 use Siler\Http\Request;
-use Siler\Swoole\RequestInterface;
+use Swoole\Http\Request as SwooleRequest;
 use function Siler\require_fn;
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
@@ -170,9 +170,14 @@ function method_path($request): array
     }
 
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
-        /** @var RequestInterface $request */
+        /** @var SwooleRequest $request */
         $request = Container\get(SWOOLE_HTTP_REQUEST);
-        return [$request->server['request_method'], $request->server['request_uri']];
+        /**
+         * @psalm-suppress MissingPropertyType
+         * @var array<string, string> $request_server
+         */
+        $request_server = $request->server;
+        return [$request_server['request_method'], $request_server['request_uri']];
     }
 
     return [Request\method(), Http\path()];

@@ -431,21 +431,21 @@ function puts($value): Closure
 /**
  * Flats a multi-dimensional array.
  *
- * @param array $list
- * @psalm-param list<mixed> $list
- * @psalm-return list<mixed>
- * @return array
+ * @template T
+ * @psalm-param list<T> $list
+ * @psalm-return list<T>
  */
 function flatten(array $list): array
 {
-    /** @psalm-var list<mixed> $flat */
+    /** @psalm-var list<T> $flat */
     $flat = [];
 
     array_walk_recursive($list, /** @param mixed $value */ static function ($value) use (&$flat): void {
-        /** @var mixed */
+        /** @psalm-var T $value */
         $flat[] = $value;
     });
 
+    /** @psalm-var list<T> */
     return $flat;
 }
 

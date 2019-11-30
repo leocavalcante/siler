@@ -9,13 +9,10 @@
 >
     <projectFiles>
         <directory name="src"/>
+        <directory name="vendor/swoole/ide-helper/output/swoole/namespace"/>
+        <file name="vendor/swoole/ide-helper/output/swoole/constants.php"/>
         <ignoreFiles>
-            <directory name="vendor"/>
             <file name="src/GraphQL/BuildSchema.php"/>
         </ignoreFiles>
     </projectFiles>
-
-    <issueHandlers>
-        <LessSpecificReturnType errorLevel="info"/>
-    </issueHandlers>
 </psalm>

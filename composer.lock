@@ -1,20 +1,20 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
-        "This file is @generated automatically"
-    ],
-    "content-hash": "3a016b5fe8cccfdc12f1d63481ff067d",
-    "packages": [],
-    "packages-dev": [
-        {
-            "name": "amphp/amp",
-            "version": "v2.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/amphp/amp.git",
-                "reference": "13930a582947831bb66ff1aeac28672fd91c38ea"
-            },
+  "_readme": [
+    "This file locks the dependencies of your project to a known state",
+    "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+    "This file is @generated automatically"
+  ],
+  "content-hash": "b7a538369233423c00272ae28bfacee9",
+  "packages": [],
+  "packages-dev": [
+    {
+      "name": "amphp/amp",
+      "version": "v2.4.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/amphp/amp.git",
+        "reference": "13930a582947831bb66ff1aeac28672fd91c38ea"
+      },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/amphp/amp/zipball/13930a582947831bb66ff1aeac28672fd91c38ea",
@@ -1001,36 +1001,37 @@
             ],
             "time": "2019-11-08T13:50:10+00:00"
         },
-        {
-            "name": "ocramius/package-versions",
-            "version": "1.4.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Ocramius/PackageVersions.git",
-                "reference": "44af6f3a2e2e04f2af46bcb302ad9600cba41c7d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/44af6f3a2e2e04f2af46bcb302ad9600cba41c7d",
-                "reference": "44af6f3a2e2e04f2af46bcb302ad9600cba41c7d",
-                "shasum": ""
-            },
+    {
+      "name": "ocramius/package-versions",
+      "version": "1.5.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/Ocramius/PackageVersions.git",
+        "reference": "1d32342b8c1eb27353c8887c366147b4c2da673c"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/1d32342b8c1eb27353c8887c366147b4c2da673c",
+        "reference": "1d32342b8c1eb27353c8887c366147b4c2da673c",
+        "shasum": ""
+      },
             "require": {
                 "composer-plugin-api": "^1.0.0",
-                "php": "^7.1.0"
+              "php": "^7.3.0"
             },
             "require-dev": {
-                "composer/composer": "^1.6.3",
-                "doctrine/coding-standard": "^5.0.1",
-                "ext-zip": "*",
-                "infection/infection": "^0.7.1",
-                "phpunit/phpunit": "^7.5.17"
+              "composer/composer": "^1.8.6",
+              "doctrine/coding-standard": "^6.0.0",
+              "ext-zip": "*",
+              "infection/infection": "^0.13.4",
+              "phpunit/phpunit": "^8.2.5",
+              "vimeo/psalm": "^3.4.9"
             },
             "type": "composer-plugin",
             "extra": {
                 "class": "PackageVersions\\Installer",
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                  "dev-master": "1.6.x-dev"
                 }
             },
             "autoload": {
@@ -1049,7 +1050,7 @@
                 }
             ],
             "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
-            "time": "2019-11-15T16:17:10+00:00"
+      "time": "2019-07-17T15:49:50+00:00"
         },
         {
             "name": "openlss/lib-array2xml",
@@ -4671,7 +4672,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.2"
+      "php": ">=7.3"
     },
     "platform-dev": []
 }
