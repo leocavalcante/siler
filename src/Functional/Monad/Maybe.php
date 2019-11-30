@@ -15,17 +15,12 @@ class Maybe extends Identity
         return $this->bind($function);
     }
 
-    public function bind(callable $function)
+    public function bind(callable $function): self
     {
         if (is_null($this->value)) {
             return new self(null);
         }
 
         return new self($function($this->value));
-    }
-
-    public function return()
-    {
-        return $this->value;
     }
 }

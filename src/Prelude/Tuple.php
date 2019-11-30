@@ -1,7 +1,4 @@
-<?php
-
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 /*
  * Tuple module.
  */
@@ -31,6 +28,7 @@ function tuple(...$values)
  */
 final class Tuple implements ArrayAccess, Countable
 {
+    /** @var array */
     private $values;
 
     /**
@@ -44,19 +42,9 @@ final class Tuple implements ArrayAccess, Countable
     }
 
     /**
-     * Returns Tuple values, useful for `list()`.
-     *
-     * @return array
-     */
-    public function values(): array
-    {
-        return $this->values;
-    }
-
-    /**
      * @override
      *
-     * @param mixed $offset
+     * @param string|int $offset
      *
      * @return bool
      */
@@ -68,7 +56,7 @@ final class Tuple implements ArrayAccess, Countable
     /**
      * @override
      *
-     * @param mixed $offset
+     * @param string|int $offset
      *
      * @return mixed
      * @throws OutOfBoundsException
@@ -90,8 +78,6 @@ final class Tuple implements ArrayAccess, Countable
      * @param mixed $value
      *
      * @throws RuntimeException
-     *
-     * @suppress PhanUnusedPublicFinalMethodParameter
      */
     public function offsetSet($offset, $value)
     {
@@ -104,8 +90,6 @@ final class Tuple implements ArrayAccess, Countable
      * @param mixed $offset
      *
      * @throws RuntimeException
-     *
-     * @suppress PhanUnusedPublicFinalMethodParameter
      */
     public function offsetUnset($offset)
     {
@@ -114,11 +98,17 @@ final class Tuple implements ArrayAccess, Countable
 
     /**
      * @return int
-     * @internal Count elements of the Tuple.
-     *
      */
     public function count()
     {
         return count($this->values);
+    }
+
+    /**
+     * @return array
+     */
+    public function values(): array
+    {
+        return $this->values;
     }
 }

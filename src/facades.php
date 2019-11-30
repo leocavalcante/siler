@@ -9,40 +9,6 @@ const inject = '\Siler\Container\inject';
 const retrieve = '\Siler\Container\retrieve';
 
 
-namespace Siler\Db;
-const connect = '\Siler\Db\connect';
-const query = '\Siler\Db\query';
-const prepare = '\Siler\Db\prepare';
-const error = '\Siler\Db\error';
-const fetch_all = '\Siler\Db\fetch_all';
-const fetch = '\Siler\Db\fetch';
-const mysql_dsn = '\Siler\Db\mysql_dsn';
-
-
-namespace Siler\Mongo;
-const connect = '\Siler\Mongo\connect';
-const database = '\Siler\Mongo\database';
-const collection = '\Siler\Mongo\collection';
-const oid = '\Siler\Mongo\oid';
-const using = '\Siler\Mongo\using';
-const find = '\Siler\Mongo\find';
-const find_one = '\Siler\Mongo\find_one';
-const insert_many = '\Siler\Mongo\insert_many';
-const insert_one = '\Siler\Mongo\insert_one';
-const update_one = '\Siler\Mongo\update_one';
-const update_many = '\Siler\Mongo\update_many';
-const delete_one = '\Siler\Mongo\delete_one';
-const delete_many = '\Siler\Mongo\delete_many';
-const __get_dbname_or_throw = '\Siler\Mongo\__get_dbname_or_throw';
-
-
-namespace Siler\Redis;
-const connect = '\Siler\Redis\connect';
-const get = '\Siler\Redis\get';
-const set = '\Siler\Redis\set';
-const has = '\Siler\Redis\has';
-
-
 namespace Siler\Diactoros;
 const request = '\Siler\Diactoros\request';
 const response = '\Siler\Diactoros\response';
@@ -70,6 +36,7 @@ namespace Siler\File;
 const recursively_iterated_directory = '\Siler\File\recursively_iterated_directory';
 const recur_iter_dir = '\Siler\File\recur_iter_dir';
 const concat_files = '\Siler\File\concat_files';
+const join_dir = '\Siler\File\join_dir';
 
 
 namespace Siler\Functional;
@@ -115,6 +82,7 @@ const maybe = '\Siler\Functional\Monad\maybe';
 
 namespace Siler\GraphQL;
 const debug = '\Siler\GraphQL\debug';
+const debugging = '\Siler\GraphQL\debugging';
 const init = '\Siler\GraphQL\init';
 const input = '\Siler\GraphQL\input';
 const execute = '\Siler\GraphQL\execute';
@@ -127,17 +95,6 @@ const subscriptions = '\Siler\GraphQL\subscriptions';
 const subscriptions_at = '\Siler\GraphQL\subscriptions_at';
 const publish = '\Siler\GraphQL\publish';
 const listen = '\Siler\GraphQL\listen';
-const val = '\Siler\GraphQL\val';
-const enum = '\Siler\GraphQL\enum';
-const field = '\Siler\GraphQL\field';
-const str = '\Siler\GraphQL\str';
-const int = '\Siler\GraphQL\int';
-const float = '\Siler\GraphQL\float';
-const bool = '\Siler\GraphQL\bool';
-const list_of = '\Siler\GraphQL\list_of';
-const id = '\Siler\GraphQL\id';
-const itype = '\Siler\GraphQL\itype';
-const type = '\Siler\GraphQL\type';
 
 
 namespace Siler\Http;

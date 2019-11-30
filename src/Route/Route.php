@@ -1,13 +1,11 @@
-<?php
-
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 /*
  * Siler routing facilities.
  */
 
 namespace Siler\Route;
 
+use Closure;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use RecursiveDirectoryIterator;
@@ -21,9 +19,8 @@ use RegexIterator;
 use Siler\Container;
 use Siler\Http;
 use Siler\Http\Request;
-
+use Swoole\Http\Request as SwooleRequest;
 use function Siler\require_fn;
-
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 const DID_MATCH = 'route_did_match';
@@ -144,9 +141,9 @@ function route($method, string $path, $callback, $request = null)
 
     if (
         count($methodPath) >= 2 &&
-        (Request\method_is($method, $methodPath[0]) ||
-        $method == 'any') &&
-        preg_match($path, $methodPath[1], $params)
+        (Request\method_is($method, strval($methodPath[0])) ||
+            $method == 'any') &&
+        preg_match($path, strval($methodPath[1]), $params)
     ) {
         Container\set(DID_MATCH, true);
         return $callback($params);
@@ -159,6 +156,8 @@ function route($method, string $path, $callback, $request = null)
  * @param mixed $request null, array[method, path], PSR-7 Request Message or Swoole HTTP request.
  *
  * @return array
+ *
+ * @psalm-suppress UndefinedDocblockClass
  * @internal Used to guess the given request method and path.
  *
  */
@@ -173,9 +172,11 @@ function method_path($request): array
     }
 
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
+        /** @var SwooleRequest $request */
         $request = Container\get(SWOOLE_HTTP_REQUEST);
-
-        return [$request->server['request_method'], $request->server['request_uri']];
+        /** @var array<string, string> $request_server */
+        $request_server = $request->server;
+        return [$request_server['request_method'], $request_server['request_uri']];
     }
 
     return [Request\method(), Http\path()];
@@ -218,31 +219,41 @@ function resource(string $basePath, string $resourcesPath, ?string $identityPara
         $identityParam = 'id';
     }
 
+    /** @var array<Closure(): mixed> $routes */
     $routes = [
-        function () use ($basePath, $resourcesPath, $request) {
+        /** @return mixed */
+        static function () use ($basePath, $resourcesPath, $request) {
             return get($basePath, $resourcesPath . '/index.php', $request);
         },
-        function () use ($basePath, $resourcesPath, $request) {
+        /** @return mixed */
+        static function () use ($basePath, $resourcesPath, $request) {
             return get($basePath . '/create', $resourcesPath . '/create.php', $request);
         },
-        function () use ($basePath, $resourcesPath, $request, $identityParam) {
+        /** @return mixed */
+        static function () use ($basePath, $resourcesPath, $request, $identityParam) {
             return get($basePath . '/{' . $identityParam . '}/edit', $resourcesPath . '/edit.php', $request);
         },
-        function () use ($basePath, $resourcesPath, $request, $identityParam) {
+        /** @return mixed */
+        static function () use ($basePath, $resourcesPath, $request, $identityParam) {
             return get($basePath . '/{' . $identityParam . '}', $resourcesPath . '/show.php', $request);
         },
-        function () use ($basePath, $resourcesPath, $request) {
+        /** @return mixed */
+        static function () use ($basePath, $resourcesPath, $request) {
             return post($basePath, $resourcesPath . '/store.php', $request);
         },
-        function () use ($basePath, $resourcesPath, $request, $identityParam) {
+        /** @return mixed */
+        static function () use ($basePath, $resourcesPath, $request, $identityParam) {
             return put($basePath . '/{' . $identityParam . '}', $resourcesPath . '/update.php', $request);
         },
-        function () use ($basePath, $resourcesPath, $request, $identityParam) {
+        /** @return mixed */
+        static function () use ($basePath, $resourcesPath, $request, $identityParam) {
             return delete($basePath . '/{' . $identityParam . '}', $resourcesPath . '/destroy.php', $request);
         },
     ];
 
+    /** @var callable(): mixed $route */
     foreach ($routes as $route) {
+        /** @var mixed $result */
         $result = $route();
 
         if (!is_null($result)) {
@@ -257,8 +268,8 @@ function resource(string $basePath, string $resourcesPath, ?string $identityPara
  * Maps a filename to a route method-path pair.
  *
  * @param string $filename
- *
- * @return array [HTTP_METHOD, HTTP_PATH]
+ * @return array<string|null>
+ * @psalm-return array{0: null|string, 1: string}
  */
 function routify(string $filename): array
 {
@@ -321,6 +332,7 @@ function files(string $basePath, string $prefix = '', $request = null)
             continue;
         }
 
+        /** @var string $method */
         list($method, $path) = routify($cutFilename);
 
         if ('/' === $path) {
@@ -331,9 +343,10 @@ function files(string $basePath, string $prefix = '', $request = null)
             $path = $prefix . $path;
         }
 
+        /** @var mixed|null $result */
         $result = route($method, $path, (string)$filename, $request);
 
-        if (!is_null($result)) {
+        if ($result !== null) {
             return $result;
         }
     }
@@ -345,12 +358,14 @@ function files(string $basePath, string $prefix = '', $request = null)
  * Uses a class name to create routes based on its public methods.
  *
  * @param string $basePath The prefix for all routes
- * @param string $className The qualified class name
+ * @param class-string|object $className The qualified class name
  * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
  *
+ * @return void
  * @throws ReflectionException
+ *
  */
-function class_name(string $basePath, string $className, $request = null)
+function class_name(string $basePath, $className, $request = null): void
 {
     $reflection = new ReflectionClass($className);
     $object = $reflection->newInstance();
@@ -394,16 +409,20 @@ function class_name(string $basePath, string $className, $request = null)
 
 /**
  * Avoids routes to be called after the first match.
+ *
+ * @return void
  */
-function stop_propagation()
+function stop_propagation(): void
 {
     Container\set(STOP_PROPAGATION, true);
 }
 
 /**
  * Avoids routes to be called even on a match.
+ *
+ * @return void
  */
-function cancel()
+function cancel(): void
 {
     Container\set(CANCEL, true);
 }
@@ -415,13 +434,15 @@ function cancel()
  */
 function canceled(): bool
 {
-    return Container\get(CANCEL, false);
+    return boolval(Container\get(CANCEL, false));
 }
 
 /**
  * Resets default routing behaviour.
+ *
+ * @return void
  */
-function resume()
+function resume(): void
 {
     Container\set(STOP_PROPAGATION, false);
     Container\set(CANCEL, false);
@@ -430,14 +451,14 @@ function resume()
 /**
  * Returns the first non-null route result.
  *
- * @param array $routes The route results to br tested
- *
+ * @param array<mixed|null> $routes The route results to br tested
  * @return mixed|null
  */
 function match(array $routes)
 {
+    /** @var mixed|null $route */
     foreach ($routes as $route) {
-        if (!is_null($route)) {
+        if ($route !== null) {
             return $route;
         }
     }
@@ -452,7 +473,7 @@ function match(array $routes)
  */
 function did_match(): bool
 {
-    return Container\get(DID_MATCH, false);
+    return boolval(Container\get(DID_MATCH, false));
 }
 
 /**

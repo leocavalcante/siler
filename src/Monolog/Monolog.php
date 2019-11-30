@@ -45,8 +45,10 @@ function stream(
  * @param string $message The log message.
  * @param array $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return void
  */
-function log(int $level, string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+function log(int $level, string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL): void
 {
     $logger = Loggers::getLogger($channel);
     $logger->log($level, $message, $context);
@@ -73,8 +75,10 @@ function handler(HandlerInterface $handler, string $channel = MONOLOG_DEFAULT_CH
  * @param string $message The log message.
  * @param array $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return void
  */
-function debug(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+function debug(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL): void
 {
     log(Logger::DEBUG, $message, $context, $channel);
 }
@@ -85,8 +89,10 @@ function debug(string $message, array $context = [], string $channel = MONOLOG_D
  * @param string $message The log message.
  * @param array $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return void
  */
-function info(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+function info(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL): void
 {
     log(Logger::INFO, $message, $context, $channel);
 }
@@ -97,8 +103,10 @@ function info(string $message, array $context = [], string $channel = MONOLOG_DE
  * @param string $message The log message.
  * @param array $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return void
  */
-function notice(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+function notice(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL): void
 {
     log(Logger::NOTICE, $message, $context, $channel);
 }
@@ -109,8 +117,10 @@ function notice(string $message, array $context = [], string $channel = MONOLOG_
  * @param string $message The log message.
  * @param array $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return void
  */
-function warning(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+function warning(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL): void
 {
     log(Logger::WARNING, $message, $context, $channel);
 }
@@ -121,8 +131,10 @@ function warning(string $message, array $context = [], string $channel = MONOLOG
  * @param string $message The log message.
  * @param array $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return void
  */
-function error(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+function error(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL): void
 {
     log(Logger::ERROR, $message, $context, $channel);
 }
@@ -133,8 +145,10 @@ function error(string $message, array $context = [], string $channel = MONOLOG_D
  * @param string $message The log message.
  * @param array $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return void
  */
-function critical(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+function critical(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL): void
 {
     log(Logger::CRITICAL, $message, $context, $channel);
 }
@@ -145,8 +159,10 @@ function critical(string $message, array $context = [], string $channel = MONOLO
  * @param string $message The log message.
  * @param array $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return void
  */
-function alert(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+function alert(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL): void
 {
     log(Logger::ALERT, $message, $context, $channel);
 }
@@ -157,8 +173,10 @@ function alert(string $message, array $context = [], string $channel = MONOLOG_D
  * @param string $message The log message.
  * @param array $context The log context.
  * @param string $channel The log channel.
+ *
+ * @return void
  */
-function emergency(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL)
+function emergency(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL): void
 {
     log(Logger::EMERGENCY, $message, $context, $channel);
 }

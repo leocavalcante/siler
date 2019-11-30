@@ -1,11 +1,8 @@
-<?php
-
+<?php declare(strict_types=1);
 /**
  * Borrowed from https://github.com/webonyx/graphql-php/blob/master/src/Utils/BuildSchema.php
  * Added the type resolver feature.
  */
-
-declare(strict_types=1);
 
 namespace Siler\GraphQL;
 
@@ -18,7 +15,6 @@ use GraphQL\Language\Parser;
 use GraphQL\Type\Definition\Directive;
 use GraphQL\Type\Schema;
 use GraphQL\Utils\ASTDefinitionBuilder;
-
 use function array_map;
 use function array_reduce;
 use function sprintf;
@@ -52,7 +48,7 @@ class BuildSchema
         $this->resolvers = $resolvers;
     }
 
-    public static function build($source, ?callable $typeConfigDecorator = null, array $options = [], array $resolvers = [])
+    public static function build($source, ?callable $typeConfigDecorator = null, array $options = [], array $resolvers = []): Schema
     {
         $doc = $source instanceof DocumentNode ? $source : Parser::parse($source);
         return self::buildAST($doc, $typeConfigDecorator, $options, $resolvers);

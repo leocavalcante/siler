@@ -1,7 +1,4 @@
-<?php
-
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 /*
  * Helpers functions to work with vlucas/phpdotenv.
  */
@@ -10,21 +7,19 @@ namespace Siler\Dotenv;
 
 use Dotenv\Dotenv;
 use UnexpectedValueException;
-
 use function Siler\array_get;
 
 /**
  * Load the .env file contents into the environment.
  *
- * @param string $path Directory name of the .env file location
- *
+ * @param string $path Directory name of the .env file location *
+ * @psalm-return array<array-key, null|string>
  * @return array
  */
 function init(string $path): array
 {
-    $dotenv = Dotenv::create($path);
-
-    return $dotenv->load();
+    $dot_env = Dotenv::create($path);
+    return $dot_env->load();
 }
 
 /**
@@ -33,10 +28,11 @@ function init(string $path): array
  * @param string|null $key
  * @param mixed $default A default when the key do not exists
  *
- * @return mixed
+ * @return string|null|array<string, string>
  */
-function env(?string $key = null, $default = null)
+function env(?string $key = null, ?string $default = null)
 {
+    /** @var array<string, string> $_SERVER */
     return array_get($_SERVER, $key, $default);
 }
 
@@ -48,9 +44,13 @@ function env(?string $key = null, $default = null)
  *
  * @return int|null
  */
-function int_val(string $key, int $default = null): ?int
+function int_val(string $key, ?int $default = null): ?int
 {
-    $val = env($key, $default);
+    $val = env($key);
+
+    if ($val === null) {
+        return $default;
+    }
 
     if (is_numeric($val)) {
         return intval($val);
@@ -67,7 +67,7 @@ function int_val(string $key, int $default = null): ?int
  *
  * @return bool|null
  */
-function bool_val(string $key, bool $default = null): ?bool
+function bool_val(string $key, ?bool $default = null): ?bool
 {
     $val = env($key, $default);
 
@@ -95,7 +95,7 @@ function bool_val(string $key, bool $default = null): ?bool
  *
  * @param string $key
  *
- * @return bool
+ * @return true
  */
 function requires(string $key): bool
 {

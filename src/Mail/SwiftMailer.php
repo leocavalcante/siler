@@ -30,6 +30,7 @@ function send(Swift_Message $message)
         throw new UnderflowException('You should call mailer() before send()');
     }
 
+    /** @var Swift_Mailer $mailer */
     $mailer = Container\get(SWIFT_MAILER);
 
     return $mailer->send($message);
@@ -68,9 +69,9 @@ function message(
  * @param string|null $username
  * @param string|null $password
  *
- * @return Swift_Transport
+ * @return Swift_SmtpTransport
  */
-function smtp(string $host, int $port, ?string $username = null, ?string $password = null): Swift_Transport
+function smtp(string $host, int $port, ?string $username = null, ?string $password = null): Swift_SmtpTransport
 {
     $transport = new Swift_SmtpTransport($host, $port);
 
