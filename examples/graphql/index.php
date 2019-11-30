@@ -19,8 +19,6 @@ debug();
 subscriptions_at('ws://localhost:8001');
 
 listen(ON_CONNECT, function (array $connParams): array {
-    var_dump($connParams);
-
     if (empty($connParams['authToken'])) {
         throw new UserError('Unauthenticated', 401);
     }
@@ -58,9 +56,7 @@ $root_value = [];
 $context = [];
 $manager = subscriptions_manager($schema, $filters, $root_value, $context);
 $server = graphql_subscriptions($manager, 8001);
+
 http_server_port($server, graphql_handler($schema, $root_value, $context), 8000);
 
 $server->start();
-
-
-

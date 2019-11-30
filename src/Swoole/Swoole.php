@@ -108,7 +108,7 @@ function emit(string $content, int $status = 200, array $headers = []): void
         return;
     }
 
-    response()->status(strval($status));
+    response()->status($status);
 
     foreach ($headers as $key => $value) {
         response()->header($key, $value);
@@ -221,7 +221,7 @@ function push(string $message, int $fd): void
 
     /** @var WebsocketServer $server */
     $server = Container\get(SWOOLE_WEBSOCKET_SERVER);
-    $server->push(strval($fd), $message);
+    $server->push($fd, $message);
 }
 
 /**
@@ -331,9 +331,8 @@ function not_found(string $content = '', array $headers = []): void
 function graphql_subscriptions(SubscriptionsManager $manager, int $port = 3000, string $host = '0.0.0.0'): WebsocketServer
 {
     $workers = new Table(1024);
-    $workers->column('id', strval(Table::TYPE_INT));
+    $workers->column('id', Table::TYPE_INT);
     $workers->create();
-
 
     $handle =
         /**
