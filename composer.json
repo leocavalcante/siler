@@ -80,7 +80,7 @@
         "generate-facades": "php bin/generate-facades.php",
         "fix": "phpcbf",
         "lint": "phpcs",
-        "analyze": "psalm",
+        "analyze": "psalm --shepherd",
         "test": "phpunit",
         "build": [
             "@composer generate-facades",
