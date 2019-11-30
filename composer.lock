@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "b7a538369233423c00272ae28bfacee9",
+  "content-hash": "106531f0da9ab614f7b28f35e39d526c",
   "packages": [],
   "packages-dev": [
     {
@@ -15,16 +15,16 @@
         "url": "https://github.com/amphp/amp.git",
         "reference": "13930a582947831bb66ff1aeac28672fd91c38ea"
       },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/amphp/amp/zipball/13930a582947831bb66ff1aeac28672fd91c38ea",
-                "reference": "13930a582947831bb66ff1aeac28672fd91c38ea",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7"
-            },
-            "require-dev": {
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/amphp/amp/zipball/13930a582947831bb66ff1aeac28672fd91c38ea",
+        "reference": "13930a582947831bb66ff1aeac28672fd91c38ea",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=7"
+      },
+      "require-dev": {
                 "amphp/php-cs-fixer-config": "dev-master",
                 "amphp/phpunit-util": "^1",
                 "ext-json": "*",
@@ -991,15 +991,15 @@
             ],
             "authors": [
                 {
-                    "name": "Nikita Popov"
+                  "name": "Nikita Popov"
                 }
             ],
-            "description": "A PHP parser written in PHP",
-            "keywords": [
-                "parser",
-                "php"
-            ],
-            "time": "2019-11-08T13:50:10+00:00"
+          "description": "A PHP parser written in PHP",
+          "keywords": [
+            "parser",
+            "php"
+          ],
+          "time": "2019-11-08T13:50:10+00:00"
         },
     {
       "name": "ocramius/package-versions",
@@ -1015,18 +1015,18 @@
         "reference": "1d32342b8c1eb27353c8887c366147b4c2da673c",
         "shasum": ""
       },
-            "require": {
-                "composer-plugin-api": "^1.0.0",
-              "php": "^7.3.0"
-            },
-            "require-dev": {
-              "composer/composer": "^1.8.6",
-              "doctrine/coding-standard": "^6.0.0",
-              "ext-zip": "*",
-              "infection/infection": "^0.13.4",
-              "phpunit/phpunit": "^8.2.5",
-              "vimeo/psalm": "^3.4.9"
-            },
+      "require": {
+        "composer-plugin-api": "^1.0.0",
+        "php": "^7.3.0"
+      },
+      "require-dev": {
+        "composer/composer": "^1.8.6",
+        "doctrine/coding-standard": "^6.0.0",
+        "ext-zip": "*",
+        "infection/infection": "^0.13.4",
+        "phpunit/phpunit": "^8.2.5",
+        "vimeo/psalm": "^3.4.9"
+      },
             "type": "composer-plugin",
             "extra": {
                 "class": "PackageVersions\\Installer",
@@ -3466,19 +3466,19 @@
             ],
             "time": "2019-11-18T17:27:11+00:00"
         },
-        {
-            "name": "symfony/polyfill-ctype",
-            "version": "v1.13.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
-                "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
-                "shasum": ""
+    {
+      "name": "symfony/polyfill-ctype",
+      "version": "v1.13.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/symfony/polyfill-ctype.git",
+        "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
+        "reference": "f8f0b461be3385e56d6de3dbb5a0df24c0c275e3",
+        "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
@@ -3524,19 +3524,19 @@
             ],
             "time": "2019-11-27T13:56:44+00:00"
         },
-        {
-            "name": "symfony/polyfill-iconv",
-            "version": "v1.13.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-iconv.git",
-                "reference": "a019efccc03f1a335af6b4f20c30f5ea8060be36"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-iconv/zipball/a019efccc03f1a335af6b4f20c30f5ea8060be36",
-                "reference": "a019efccc03f1a335af6b4f20c30f5ea8060be36",
-                "shasum": ""
+    {
+      "name": "symfony/polyfill-iconv",
+      "version": "v1.13.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/symfony/polyfill-iconv.git",
+        "reference": "a019efccc03f1a335af6b4f20c30f5ea8060be36"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/symfony/polyfill-iconv/zipball/a019efccc03f1a335af6b4f20c30f5ea8060be36",
+        "reference": "a019efccc03f1a335af6b4f20c30f5ea8060be36",
+        "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
@@ -3583,19 +3583,19 @@
             ],
             "time": "2019-11-27T13:56:44+00:00"
         },
-        {
-            "name": "symfony/polyfill-intl-idn",
-            "version": "v1.13.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-intl-idn.git",
-                "reference": "6f9c239e61e1b0c9229a28ff89a812dc449c3d46"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/6f9c239e61e1b0c9229a28ff89a812dc449c3d46",
-                "reference": "6f9c239e61e1b0c9229a28ff89a812dc449c3d46",
-                "shasum": ""
+    {
+      "name": "symfony/polyfill-intl-idn",
+      "version": "v1.13.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/symfony/polyfill-intl-idn.git",
+        "reference": "6f9c239e61e1b0c9229a28ff89a812dc449c3d46"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/symfony/polyfill-intl-idn/zipball/6f9c239e61e1b0c9229a28ff89a812dc449c3d46",
+        "reference": "6f9c239e61e1b0c9229a28ff89a812dc449c3d46",
+        "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
@@ -3645,19 +3645,19 @@
             ],
             "time": "2019-11-27T13:56:44+00:00"
         },
-        {
-            "name": "symfony/polyfill-mbstring",
-            "version": "v1.13.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "7b4aab9743c30be783b73de055d24a39cf4b954f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/7b4aab9743c30be783b73de055d24a39cf4b954f",
-                "reference": "7b4aab9743c30be783b73de055d24a39cf4b954f",
-                "shasum": ""
+    {
+      "name": "symfony/polyfill-mbstring",
+      "version": "v1.13.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/symfony/polyfill-mbstring.git",
+        "reference": "7b4aab9743c30be783b73de055d24a39cf4b954f"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/7b4aab9743c30be783b73de055d24a39cf4b954f",
+        "reference": "7b4aab9743c30be783b73de055d24a39cf4b954f",
+        "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
@@ -3704,19 +3704,19 @@
             ],
             "time": "2019-11-27T14:18:11+00:00"
         },
-        {
-            "name": "symfony/polyfill-php72",
-            "version": "v1.13.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-php72.git",
-                "reference": "66fea50f6cb37a35eea048d75a7d99a45b586038"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/66fea50f6cb37a35eea048d75a7d99a45b586038",
-                "reference": "66fea50f6cb37a35eea048d75a7d99a45b586038",
-                "shasum": ""
+    {
+      "name": "symfony/polyfill-php72",
+      "version": "v1.13.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/symfony/polyfill-php72.git",
+        "reference": "66fea50f6cb37a35eea048d75a7d99a45b586038"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/symfony/polyfill-php72/zipball/66fea50f6cb37a35eea048d75a7d99a45b586038",
+        "reference": "66fea50f6cb37a35eea048d75a7d99a45b586038",
+        "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
@@ -3759,19 +3759,19 @@
             ],
             "time": "2019-11-27T13:56:44+00:00"
         },
-        {
-            "name": "symfony/polyfill-php73",
-            "version": "v1.13.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-php73.git",
-                "reference": "4b0e2222c55a25b4541305a053013d5647d3a25f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php73/zipball/4b0e2222c55a25b4541305a053013d5647d3a25f",
-                "reference": "4b0e2222c55a25b4541305a053013d5647d3a25f",
-                "shasum": ""
+    {
+      "name": "symfony/polyfill-php73",
+      "version": "v1.13.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/symfony/polyfill-php73.git",
+        "reference": "4b0e2222c55a25b4541305a053013d5647d3a25f"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/symfony/polyfill-php73/zipball/4b0e2222c55a25b4541305a053013d5647d3a25f",
+        "reference": "4b0e2222c55a25b4541305a053013d5647d3a25f",
+        "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
@@ -3893,23 +3893,23 @@
             ],
             "time": "2019-11-20T13:44:34+00:00"
         },
-        {
-            "name": "symfony/service-contracts",
-            "version": "v2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/service-contracts.git",
-                "reference": "9d99e1556417bf227a62e14856d630672bf10eaf"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/9d99e1556417bf227a62e14856d630672bf10eaf",
-                "reference": "9d99e1556417bf227a62e14856d630672bf10eaf",
-                "shasum": ""
-            },
+    {
+      "name": "symfony/service-contracts",
+      "version": "v2.0.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/symfony/service-contracts.git",
+        "reference": "144c5e51266b281231e947b51223ba14acf1a749"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/symfony/service-contracts/zipball/144c5e51266b281231e947b51223ba14acf1a749",
+        "reference": "144c5e51266b281231e947b51223ba14acf1a749",
+        "shasum": ""
+      },
             "require": {
-                "php": "^7.2.9",
-                "psr/container": "^1.0"
+              "php": "^7.2.5",
+              "psr/container": "^1.0"
             },
             "suggest": {
                 "symfony/service-implementation": ""
@@ -3949,7 +3949,7 @@
                 "interoperability",
                 "standards"
             ],
-            "time": "2019-11-09T09:18:34+00:00"
+      "time": "2019-11-18T17:27:11+00:00"
         },
         {
             "name": "textalk/websocket",
