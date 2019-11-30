@@ -156,6 +156,8 @@ function route($method, string $path, $callback, $request = null)
  * @param mixed $request null, array[method, path], PSR-7 Request Message or Swoole HTTP request.
  *
  * @return array
+ *
+ * @psalm-suppress UndefinedDocblockClass
  * @internal Used to guess the given request method and path.
  *
  */
@@ -172,10 +174,7 @@ function method_path($request): array
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
         /** @var SwooleRequest $request */
         $request = Container\get(SWOOLE_HTTP_REQUEST);
-        /**
-         * @psalm-suppress MissingPropertyType
-         * @var array<string, string> $request_server
-         */
+        /** @var array<string, string> $request_server */
         $request_server = $request->server;
         return [$request_server['request_method'], $request_server['request_uri']];
     }

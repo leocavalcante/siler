@@ -1,7 +1,4 @@
-<?php
-
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 /*
  * Helpers functions for HTTP requests.
  */
@@ -362,7 +359,10 @@ function bearer($request = null): ?string
 function authorization_header($request = null): ?string
 {
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
-        /** @var Request $request */
+        /**
+         * @psalm-suppress UndefinedDocblockClass
+         * @var Request $request
+         */
         $request = Container\get(SWOOLE_HTTP_REQUEST);
         /** @var string|null */
         return $request->header['authorization'] ?? null;

@@ -5,14 +5,29 @@
         resolveFromConfigFile="true"
         xmlns="https://getpsalm.org/schema/config"
         xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
-        throwExceptionOnError="true"
 >
     <projectFiles>
         <directory name="src"/>
-        <directory name="vendor/swoole/ide-helper/output/swoole/namespace"/>
-        <file name="vendor/swoole/ide-helper/output/swoole/constants.php"/>
         <ignoreFiles>
             <file name="src/GraphQL/BuildSchema.php"/>
         </ignoreFiles>
     </projectFiles>
+
+    <issueHandlers>
+        <UndefinedDocblockClass>
+            <errorLevel type="info">
+                <file name="src/Swoole/Swoole.php"/>
+            </errorLevel>
+        </UndefinedDocblockClass>
+        <UndefinedClass>
+            <errorLevel type="info">
+                <file name="src/Swoole/Swoole.php"/>
+            </errorLevel>
+        </UndefinedClass>
+        <MixedInferredReturnType>
+            <errorLevel type="info">
+                <file name="src/Swoole/Swoole.php"/>
+            </errorLevel>
+        </MixedInferredReturnType>
+    </issueHandlers>
 </psalm>
