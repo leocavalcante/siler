@@ -5,7 +5,7 @@
 </p>
 
 [![Build Status](https://travis-ci.org/leocavalcante/siler.svg?branch=master)](https://travis-ci.org/leocavalcante/siler)
-[![Phan](https://img.shields.io/badge/phan-level%201-9cf.svg)](https://github.com/phan/phan)
+![Psalm coverage](https://shepherd.dev/github/leocavalcante/siler/coverage.svg?)
 [![codecov](https://codecov.io/gh/leocavalcante/siler/branch/master/graph/badge.svg)](https://codecov.io/gh/leocavalcante/siler)
 [![Latest Stable Version](https://poser.pugx.org/leocavalcante/siler/v/stable)](https://packagist.org/packages/leocavalcante/siler)
 [![Total Downloads](https://poser.pugx.org/leocavalcante/siler/downloads)](https://packagist.org/packages/leocavalcante/siler)
@@ -182,18 +182,6 @@ $resolvers = [
 ];
 
 Graphql\init(Graphql\schema($typeDefs, $resolvers));
-```
-
-## Testing
-
-Build the development environment image:
-```bash
-docker build -t siler-dev .
-```
-Then run `composer` commands using it:
-```bash
-docker run --rm -v "$(pwd):/opt/siler" siler-dev composer install
-docker run --rm -v "$(pwd):/opt/siler" siler-dev composer test
 ```
 
 ---
