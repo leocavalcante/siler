@@ -42,7 +42,7 @@ function array_get(?array $array, ?string $key = null, $default = null, bool $ca
  *
  * @return Closure
  *
- * @psalm-return Closure(array=):(false|mixed|null)
+ * @return Closure(array=):(false|mixed|null)
  */
 function require_fn(string $filename): Closure
 {

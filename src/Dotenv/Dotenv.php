@@ -13,7 +13,7 @@ use function Siler\array_get;
  * Load the .env file contents into the environment.
  *
  * @param string $path Directory name of the .env file location *
- * @psalm-return array<array-key, null|string>
+ * @return array<array-key, null|string>
  * @return array
  */
 function init(string $path): array

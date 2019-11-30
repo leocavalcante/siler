@@ -304,7 +304,7 @@ class SubscriptionsManager
     /**
      * @param string $eventName
      * @param array $withArgs
-     * @psalm-param array<int, mixed> $withArgs
+     * @param array<int, mixed> $withArgs
      *
      * @return mixed|null
      */

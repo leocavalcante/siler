@@ -21,7 +21,7 @@ const DEFAULT_STRATIGILITY_PIPELINE = 'default_stratigility_pipeline';
  *
  * @return Closure
  *
- * @psalm-return Closure(callable):Closure(array):ResponseInterface
+ * @return Closure(callable):Closure(array):ResponseInterface
  */
 function process(ServerRequestInterface $request, string $name = DEFAULT_STRATIGILITY_PIPELINE): Closure
 {

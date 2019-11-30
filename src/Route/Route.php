@@ -270,7 +270,7 @@ function resource(string $basePath, string $resourcesPath, ?string $identityPara
  *
  * @param string $filename
  * @return array<string|null>
- * @psalm-return array{0: null|string, 1: string}
+ * @return array{0: null|string, 1: string}
  */
 function routify(string $filename): array
 {

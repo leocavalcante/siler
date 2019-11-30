@@ -5,7 +5,6 @@
 
 namespace Siler\Http\Request;
 
-use Exception;
 use Psr\Http\Message\ServerRequestInterface;
 use Siler\Container;
 use Siler\Swoole\RequestInterface;
@@ -358,10 +357,7 @@ function bearer($request = null): ?string
 function authorization_header($request = null): ?string
 {
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
-        /**
-         * @psalm-suppress UndefinedDocblockClass
-         * @var Request $request
-         */
+        /** @var Request $request */
         $request = Container\get(SWOOLE_HTTP_REQUEST);
         /** @var string|null */
         return $request->header['authorization'] ?? null;

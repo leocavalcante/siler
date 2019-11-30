@@ -35,9 +35,7 @@ function slugify(string $input, ?array $opts = null): string
  *
  * @param string $input
  *
- * @return string[]
- *
- * @psalm-return array<int, string>
+ * @return array<int, string>
  */
 function lines(string $input): array
 {

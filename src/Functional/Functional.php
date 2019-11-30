@@ -20,8 +20,8 @@ function identity(): Closure
 {
     return
         /**
-         * @psalm-param T $value
-         * @psalm-return T
+         * @param T $value
+         * @return T
          */
         static function ($value) {
             return $value;
@@ -32,13 +32,13 @@ function identity(): Closure
  * Is a unary function which evaluates to $value for all inputs.
  *
  * @template T
- * @psalm-param T $value
+ * @param T $value
  * @return Closure(): mixed
  */
 function always($value): Closure
 {
     return
-        /** @psalm-return T */
+        /** @return T */
         static function () use ($value) {
             return $value;
         };
@@ -113,13 +113,13 @@ function if_else(callable $cond): Closure
     return /**
      * @return Closure
      *
-     * @psalm-return \Closure(callable):\Closure(mixed):mixed
+     * @return Closure(callable):\Closure(mixed):mixed
      */
     static function (callable $then) use ($cond): Closure {
         return /**
          * @return Closure
          *
-         * @psalm-return \Closure(mixed):mixed
+         * @return Closure(mixed):mixed
          */
         static function (callable $else) use ($cond, $then): Closure {
             return
@@ -141,7 +141,7 @@ function if_else(callable $cond): Closure
  *
  * @return Closure
  *
- * @psalm-return Closure(mixed):mixed
+ * @return Closure(mixed):mixed
  */
 function match(array $matches): Closure
 {
@@ -245,15 +245,15 @@ function not(callable $function): Closure
 /**
  * Sum of $left and $right.
  *
- * @psalm-param numeric $right
+ * @param numeric $right
  * @return Closure(numeric): numeric
  */
 function add($right): Closure
 {
     return
         /**
-         * @psalm-param numeric $left
-         * @psalm-return numeric
+         * @param numeric $left
+         * @return numeric
          */
         static function ($left) use ($right) {
             return $left + $right;
@@ -263,15 +263,15 @@ function add($right): Closure
 /**
  * Product of $left and $right.
  *
- * @psalm-param numeric $right
+ * @param numeric $right
  * @return Closure(numeric): numeric
  */
 function mul($right): Closure
 {
     return
         /**
-         * @psalm-param numeric $left
-         * @psalm-return numeric
+         * @param numeric $left
+         * @return numeric
          */
         static function ($left) use ($right) {
             return $left * $right;
@@ -281,7 +281,7 @@ function mul($right): Closure
 /**
  * Difference of $left and $right.
  *
- * @psalm-param numeric $right
+ * @param numeric $right
  *
  * @return Closure(numeric): numeric
  */
@@ -289,8 +289,8 @@ function sub($right): Closure
 {
     return
         /**
-         * @psalm-param numeric $left
-         * @psalm-return numeric
+         * @param numeric $left
+         * @return numeric
          */
         static function ($left) use ($right) {
             return $left - $right;
@@ -300,7 +300,7 @@ function sub($right): Closure
 /**
  * Quotient of $left and $right.
  *
- * @psalm-param numeric $right
+ * @param numeric $right
  *
  * @return Closure(numeric): numeric
  */
@@ -308,8 +308,8 @@ function div($right): Closure
 {
     return
         /**
-         * @psalm-param numeric $left
-         * @psalm-return numeric
+         * @param numeric $left
+         * @return numeric
          */
         static function ($left) use ($right) {
             return $left / $right;
@@ -319,16 +319,16 @@ function div($right): Closure
 /**
  * Remainder of $left divided by $right.
  *
- * @psalm-param numeric $right
+ * @param numeric $right
  * @return Closure(numeric): numeric
  */
 function mod($right): Closure
 {
     return
         /**
-         * @psalm-param numeric $left
+         * @param numeric $left
          *
-         * @psalm-return numeric
+         * @return numeric
          * @return int
          */
         static function ($left) use ($right): int {
@@ -432,8 +432,8 @@ function puts($value): Closure
  * Flats a multi-dimensional array.
  *
  * @template T
- * @psalm-param list<T> $list
- * @psalm-return list<T>
+ * @param list<T> $list
+ * @return list<T>
  */
 function flatten(array $list): array
 {
@@ -514,7 +514,7 @@ function init(array $list): array
  *
  * @return (array|mixed)[] [head, [tail]]
  *
- * @psalm-return array{0: mixed, 1: array}
+ * @return array{0: mixed, 1: array}
  */
 function uncons(array $list): array
 {
@@ -528,7 +528,7 @@ function uncons(array $list): array
  *
  * @return array
  *
- * @psalm-return list<mixed>
+ * @return list<mixed>
  */
 function non_null(array $list): array
 {
@@ -546,7 +546,7 @@ function non_null(array $list): array
  *
  * @return array
  *
- * @psalm-return list<mixed>
+ * @return list<mixed>
  */
 function non_empty(array $list): array
 {
@@ -584,7 +584,7 @@ function partial(callable $callable, ...$partial): Closure
  *
  * @return Closure
  *
- * @psalm-return Closure(callable):mixed
+ * @return Closure(callable):mixed
  */
 function if_then(callable $predicate): Closure
 {
@@ -602,7 +602,7 @@ function if_then(callable $predicate): Closure
  *
  * @return Closure
  *
- * @psalm-return Closure():bool
+ * @return Closure():bool
  */
 function is_empty($var): Closure
 {
@@ -618,7 +618,7 @@ function is_empty($var): Closure
  *
  * @return Closure
  *
- * @psalm-return Closure():bool
+ * @return Closure():bool
  */
 function isnull($var): Closure
 {

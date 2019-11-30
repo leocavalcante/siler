@@ -21,7 +21,7 @@ class FileTest extends TestCase
     public function testRecursivelyIteratedDirectoryWithPattern()
     {
         $basedir = dirname(__DIR__, 2);
-        $dir = recursively_iterated_directory(join_dir($basedir, 'fixtures'), '/\.txt$/');
+        $dir = recur_iter_dir(join_dir($basedir, 'fixtures'), '/\.txt$/');
 
         $this->assertContains(join_dir($basedir, 'fixtures', 'php_input.txt'), $dir);
     }

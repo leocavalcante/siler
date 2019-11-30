@@ -12,7 +12,7 @@ class Identity
     /** @psalm-var T */
     protected $value;
 
-    /** @psalm-param T $value */
+    /** @param T $value */
     public function __construct($value)
     {
         $this->value = $value;
@@ -20,7 +20,7 @@ class Identity
 
     /**
      * @param callable|null $function
-     * @psalm-return self|T
+     * @return self|T
      * @return mixed
      */
     public function __invoke(callable $function = null)
@@ -33,7 +33,7 @@ class Identity
     }
 
     /**
-     * @psalm-return T
+     * @return T
      */
     public function return()
     {

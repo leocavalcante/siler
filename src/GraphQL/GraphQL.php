@@ -159,7 +159,7 @@ function promise_execute(PromiseAdapter $adapter, Schema $schema, array $input, 
  *
  * @return Closure ServerRequestInterface -> IO
  *
- * @psalm-return Closure(ServerRequestInterface): JsonResponse
+ * @return Closure(ServerRequestInterface): JsonResponse
  */
 function psr7(Schema $schema): Closure
 {
