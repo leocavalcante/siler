@@ -4,13 +4,11 @@
     <br><br><br><br><br><br>
 </p>
 
-[![Build Status](https://travis-ci.org/leocavalcante/siler.svg?branch=master)](https://travis-ci.org/leocavalcante/siler)
+![Build](https://github.com/leocavalcante/siler/workflows/ci/badge.svg)
 ![Psalm coverage](https://shepherd.dev/github/leocavalcante/siler/coverage.svg?)
-[![codecov](https://codecov.io/gh/leocavalcante/siler/branch/master/graph/badge.svg)](https://codecov.io/gh/leocavalcante/siler)
 [![Latest Stable Version](https://poser.pugx.org/leocavalcante/siler/v/stable)](https://packagist.org/packages/leocavalcante/siler)
 [![Total Downloads](https://poser.pugx.org/leocavalcante/siler/downloads)](https://packagist.org/packages/leocavalcante/siler)
 [![License](https://poser.pugx.org/leocavalcante/siler/license)](https://packagist.org/packages/leocavalcante/siler)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0/mini.png)](https://insight.sensiolabs.com/projects/703f233e-0738-4bf3-9d47-09d3c6de19b0)
 
 Siler is a set of general purpose high-level abstractions aiming an API for declarative programming in PHP.
 
@@ -25,8 +23,6 @@ Flat files and plain-old PHP functions rocking on a production-grade, high-perfo
 [Read the tutorial.](https://siler.leocavalcante.com/swoole)
 
 ## Getting Started
-
-[![Join the chat at https://gitter.im/leocavalcante/siler](https://badges.gitter.im/leocavalcante/siler.svg)](https://gitter.im/leocavalcante/siler?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### Installation
 
