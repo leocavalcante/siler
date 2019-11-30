@@ -3,4 +3,7 @@
 /.idea/
 /coverage-*
 /issues/
+/phpcs.xml
+/phpunit.xml
+/psalm.xml
 /vendor/
