@@ -19,6 +19,10 @@ class RequestHandlerDecorator implements RequestHandlerInterface
     /** @var array */
     private $pathParams;
 
+    /**
+     * @param callable $handler
+     * @param array $pathParams
+     */
     public function __construct(callable $handler, array $pathParams = [])
     {
         $this->handler = $handler;

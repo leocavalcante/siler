@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Siler\Test\Unit\Stratigility;
 
@@ -8,16 +6,19 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Siler\Diactoros;
-use Siler\Stratigility\RequesthandlerDecorator;
+use Siler\Stratigility\RequestHandlerDecorator;
 use Zend\Diactoros\ServerRequest;
 
+/**
+ * @package Siler\Test\Unit\Stratigility
+ */
 class RequestHandlerDecoratorTest extends TestCase
 {
     public function testHandle()
     {
         $request = new ServerRequest();
         $response = Diactoros\response();
-        $pathParams = ['foo' => 'bar'];
+        $params = ['foo' => 'bar'];
 
         $handler = function (
             ServerRequestInterface $_request,
@@ -25,17 +26,17 @@ class RequestHandlerDecoratorTest extends TestCase
         ) use (
             $request,
             $response,
-            $pathParams
+            $params
         ): ResponseInterface {
             $this->assertSame($request, $_request);
-            $this->assertSame($pathParams, $_pathParams);
+            $this->assertSame($params, $_pathParams);
 
             return $response;
         };
 
-        $decorator = new RequestHandlerDecorator($handler, $pathParams);
-        $_response = $decorator->handle($request);
+        $decorator = new RequestHandlerDecorator($handler, $params);
+        $decorator_response = $decorator->handle($request);
 
-        $this->assertSame($response, $_response);
+        $this->assertSame($response, $decorator_response);
     }
 }
