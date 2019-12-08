@@ -1,3 +1,6 @@
+# dev-master
+- Fix string callable on route
+
 # 1.7.0
 
 - Drops PHP 7.2 support and adds PHP 7.4 support

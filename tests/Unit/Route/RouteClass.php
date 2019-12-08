@@ -29,4 +29,9 @@ class RouteClass
         echo "className.$baz.$qux";
         Route\stop_propagation();
     }
+
+    public static function staticMethod(): string
+    {
+        return 'static_method';
+    }
 }
