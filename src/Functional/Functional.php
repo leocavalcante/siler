@@ -632,17 +632,21 @@ function isnull($var): Closure
  *
  * @param string $separator
  *
- * @return Closure(string, string|false): string
+ * @return Closure(string, string|false|null): string
  */
 function concat(string $separator = ''): Closure
 {
     return
         /**
          * @param string $a
-         * @param string|false $b
+         * @param string|false|null $b
          * @return string
          */
         static function (string $a, $b) use ($separator): string {
+            if ($b === false || $b === null) {
+                return $a;
+            }
+
             return "{$a}{$separator}{$b}";
         };
 }
