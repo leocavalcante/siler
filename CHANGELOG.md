@@ -1,8 +1,8 @@
-# dev-master
-- Fix string callable on route
+# 1.8.0
+- Fix trailing separator on `concat`
+- Add `lazy` constructor and call_user_func alias `call`
 
 # 1.7.0
-
 - Drops PHP 7.2 support and adds PHP 7.4 support
 - Statically-typed Psalm support 
 - GraphQL Subscriptions with Swoole's WebSocket
