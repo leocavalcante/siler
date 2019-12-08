@@ -16,8 +16,7 @@ Siler doesn't have direct dependencies, to stay fit, it favors peer dependencies
 
 Now let's define our Schema. We're going to use a chat-like domain:
 
-{% code-tabs %}
-{% code-tabs-item title="schema.graphql" %}
+{% code title="schema.graphql" %}
 ```graphql
 type Message {
   id: Int
@@ -42,15 +41,13 @@ type Mutation {
   chat(roomName: String, body: String): Message
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 Very simple, but if it's not familiar to you, take a look at [GraphQL](http://graphql.org/) first since this docs will not cover what is it, but how to use it.
 
 For each Query and Mutation we can define our resolver functions. We'll be using [RedBean](http://www.redbeanphp.com/index.php) to help us as a simple SQLite storage ORM.
 
-{% code-tabs %}
-{% code-tabs-item title="resolvers.php" %}
+{% code title="resolvers.php" %}
 ```php
 <?php
 
@@ -115,13 +112,11 @@ return [
     'Mutation' => $mutationType,
 ];
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 Awesome. We have type definitions and resolver functions. Let's put them together in a Schema:
 
-{% code-tabs %}
-{% code-tabs-item title="schema.php" %}
+{% code title="schema.php" %}
 ```php
 <?php
 
@@ -132,16 +127,14 @@ $resolvers = include __DIR__.'/resolvers.php';
 
 return GraphQL\schema($typeDefs, $resolvers);
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 Yeah, that simple! And it's exactly where Siler does it magic happen.  
 Thanks to `webonyx/graphql-php` we can parse the `schema.graphql` into an actual Schema and Siler will override the default field resolver to work with the given `$resolvers`.
 
 Now, let's create our HTTP endpoint:
 
-{% code-tabs %}
-{% code-tabs-item title="api.php" %}
+{% code title="api.php" %}
 ```php
 <?php
 
@@ -164,8 +157,7 @@ if (Request\method_is('post')) {
     GraphQL\init($schema);
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 #### **That's it!**
 
@@ -381,8 +373,7 @@ $ composer require ratchet/pawl
 
 First, let's add our **Subscription** type to our Schema:
 
-{% code-tabs %}
-{% code-tabs-item title="schema.graphql" %}
+{% code title="schema.graphql" %}
 ```graphql
 # (...previous work...)
 
@@ -390,15 +381,13 @@ type Subscription {
   inbox(roomName: String): Message
 }
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 Simple like that. We can subscribe to inboxes to receive new messages.
 
 And our resolver will look like that:
 
-{% code-tabs %}
-{% code-tabs-item title="resolvers.php" %}
+{% code title="resolvers.php" %}
 ```php
 # (...previous work...)
 
@@ -408,8 +397,7 @@ $subscriptionType = [
     },
 ];
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 Yeap, it is just resolving to the message that it receives.
 
@@ -440,8 +428,7 @@ It's first argument is the **Subscription** that will be triggered and the secon
 
 Our `resolvers.php` will look like this:
 
-{% code-tabs %}
-{% code-tabs-item title="resolvers.php" %}
+{% code title="resolvers.php" %}
 ```php
 <?php
 
@@ -521,15 +508,13 @@ return [
     'Subscription' => $subscriptionType, // Add to the resolver functions array
 ];
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 ### Starting the server
 
 As in `api.php` endpoint we need to setup the Subscriptions server:
 
-{% code-tabs %}
-{% code-tabs-item title="subscriptions.php" %}
+{% code title="subscriptions.php" %}
 ```php
 <?php
 
@@ -540,8 +525,7 @@ require 'vendor/autoload.php';
 $schema = include __DIR__.'/schema.php';
 GraphQL\subscriptions($schema, [], '0.0.0.0', 3000)->run();
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 Yeah, easy like that. Let Siler do the boring stuff. You just give a Schema to the `subscriptions` function. This function will return an `IoServer` where you can call the `run` method.
 
@@ -621,8 +605,7 @@ Now go back to the subscription tab and see the update!
 
 Filters are part of **Siler** and based on Apollo's setup functions. Filter functions receives the published payload data as the first argument and the subscription variables as the second, so you can use them to perform matches:
 
-{% code-tabs %}
-{% code-tabs-item title="subscriptions.php" %}
+{% code title="subscriptions.php" %}
 ```php
 <?php
 
@@ -639,8 +622,7 @@ $filters = [
 $schema = include __DIR__.'/schema.php';
 GraphQL\subscriptions($schema, $filters)->run();
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 As you can see, we have extend our Subscriptions endpoint adding filters. The filters array keys should match corresponding Subscription names, in our case: `inbox`. We are just checking if the given payload `room_name` is the same as the provided by the Subscription variable `roomName`. **Siler** will perform this checks for each subscription before trying to resolve and broadcast them.
 

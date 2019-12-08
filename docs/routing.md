@@ -134,21 +134,17 @@ Route\get('/', new Hello());
 
 Handlers can be a String representing the filename of another PHP file, route parameters will be available at the global `$params` variable:
 
-{% code-tabs %}
-{% code-tabs-item title="index.php" %}
+{% code title="index.php" %}
 ```php
 Route\get('/hello/{name}', 'pages/home.php');
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
-{% code-tabs %}
-{% code-tabs-item title="pages/home.php" %}
+{% code title="pages/home.php" %}
 ```php
 echo 'Hello '.$params['name'];
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 #### Resources
 

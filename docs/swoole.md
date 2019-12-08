@@ -48,21 +48,19 @@ The differences between Swoole with PHP-FPM the traditional PHP model are:
 
 Swoole prerequisites operation system are: Linux, FreeBSD or MacOS, but **don't worry Windows-people**, _we_ have [Docker](https://www.docker.com)! And I got us covered with [Dwoole](https://github.com/leocavalcante/dwoole):
 
-{% code-tabs %}
-{% code-tabs-item title="docker-compose.yml" %}
+{% code title="docker-compose.yml" %}
 ```yaml
 version: '3'
 services:
   swoole:
     container_name: siler_swoole
-    image: leocavalcante/dwoole:1.0-development
+    image: leocavalcante/dwoole:dev
     ports:
       - '9501:9501'
     volumes:
       - ./:/app
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 {% hint style="info" %}
 Beyond being cross-platform, Dwoole helps with others features like Composer and hot-restart that Unix people would also like.
@@ -76,22 +74,19 @@ The `Siler\Swoole` namespace get you covered.
 
 ### Hello World
 
-{% code-tabs %}
-{% code-tabs-item title="index.php" %}
+{% code title="index.php" %}
 ```php
 <?php declare(strict_types=1);
+
 require_once 'vendor/autoload.php';
 
 use Siler\Swoole;
 
-$server = function () {
-    Swoole\emit('Hello World');
-};
+$server = fn() => Swoole\emit('Hello World');
 
 Swoole\http($server)->start();
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 That's it! This attaches a callback handler that always emits "Hello World" on every request and starts a HTTP server on port 9501. Run it using `docker-compose up` or just `php index.php` if you're not using Docker.
 
@@ -101,8 +96,7 @@ Go to `http://localhost:9051` or `http://<docker_machine_ip>:9051` and you shoul
 
 You know, Siler can do a lot more, it abstracts things like [Routing](routing.md) and [Twig Templating](twig-templating.md). Let's add this to our **Swoole** server:
 
-{% code-tabs %}
-{% code-tabs-item title="index.php" %}
+{% code title="index.php" %}
 ```php
 <?php declare(strict_types=1);
 require_once 'vendor/autoload.php';
@@ -117,24 +111,19 @@ $handler = function ($req) {
 
 Swoole\http($handler)->start();
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 Now we are forwarding **GET** requests from path `/` to file `pages/home.php`.
 
-{% code-tabs %}
-{% code-tabs-item title="pages/home.php" %}
+{% code title="pages/home.php" %}
 ```php
 <?php declare(strict_types=1);
 
 use Siler\Swoole;
 
-return function () {
-    Swoole\emit('Hello World');
-};
+return fn() => Swoole\emit('Hello World');
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 {% hint style="info" %}
 When using Swoole, routes that uses files should return a function to ensure a re-computation. Siler will require the file **only** on the first match, then on the next matches it will only re-execute the returned function. This makes possible the use of `require_once` while maintaining a way to re-execute something.
@@ -150,21 +139,19 @@ Go ahead, restart the server and go to [http://localhost:9501/](http://localhost
 
 Twig should work exactly the same as there is no Swoole behind it:
 
-{% code-tabs %}
-{% code-tabs-item title="pages/home.php" %}
+{% tabs %}
+{% tab title="pages/home.php" %}
 ```php
 <?php declare(strict_types=1);
 
 use Siler\Swoole;
 use Siler\Twig;
 
-return function () {
-    Swoole\emit(Twig\render('home.twig'));
-};
+return fn() => Swoole\emit(Twig\render('home.twig'));
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="index.php" %}
+{% tab title="index.php" %}
 ```php
 <?php declare(strict_types=1);
 require_once 'vendor/autoload.php';
@@ -182,9 +169,9 @@ $handler = function ($req) {
 
 Swoole\http($handler)->start();
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="pages/home.twig" %}
+{% tab title="pages/home.twig" %}
 ```python
 {% extends "_layout.twig" %}
 
@@ -192,9 +179,9 @@ Swoole\http($handler)->start();
     <p>Hello World</p>
 {% endblock %}
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="pages/\_layout.twig" %}
+{% tab title="pages/\_layout.twig" %}
 ```markup
 <!DOCTYPE html>
 <html lang="en">
@@ -209,8 +196,8 @@ Swoole\http($handler)->start();
 </body>
 </html>
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 {% hint style="info" %}
 Swoole's HTTP server will auto-magically outputs the Response header Content-type as text/html instead of text/plain now.
@@ -218,8 +205,7 @@ Swoole's HTTP server will auto-magically outputs the Response header Content-typ
 
 If you're sure that your template doesn't depends on the request, you can render it once:
 
-{% code-tabs %}
-{% code-tabs-item title="pages/home.php" %}
+{% code title="pages/home.php" %}
 ```php
 <?php declare(strict_types=1);
 
@@ -228,12 +214,9 @@ use Siler\Twig;
 
 $html = Twig\render('home.twig');
 
-return function () use ($html) {
-    Swoole\emit($html);
-};
+return fn() => Swoole\emit($html);
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 This avoids the template to be re-rendered on each request unnecessarily.
 
@@ -243,8 +226,8 @@ Since there is no web server module or CGI layer, things like $\_GET won't work 
 
 Instead of always printing "Hello World", let's print the name that came from the URL parameter:
 
-{% code-tabs %}
-{% code-tabs-item title="pages/home.php" %}
+{% tabs %}
+{% tab title="pages/home.php" %}
 ```php
 <?php declare(strict_types=1);
 
@@ -256,9 +239,9 @@ return function () {
     Swoole\emit(Twig\render('home.twig', ['name' => $name]));
 };
 ```
-{% endcode-tabs-item %}
+{% endtab %}
 
-{% code-tabs-item title="pages/home.twig" %}
+{% tab title="pages/home.twig" %}
 ```python
 {% extends "_layout.twig" %}
 
@@ -266,8 +249,8 @@ return function () {
     <p>Hello {{ name }}</p>
 {% endblock %}
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endtab %}
+{% endtabs %}
 
 Go to [http://localhost:9501/?name=Leo](http://localhost:9501/?name=Leo), you should be seeing "Hello Leo" now.
 
@@ -280,8 +263,7 @@ You can find more about Swoole's Request and Response objects at: [swoole.co.uk/
 This is as simple as **Siler** gets.  
 We can add a new route/API endpoint to **GET** all of our `Todos`:
 
-{% code-tabs %}
-{% code-tabs-item title="index.php" %}
+{% code title="index.php" %}
 ```php
 <?php declare(strict_types=1);
 require_once 'vendor/autoload.php';
@@ -302,13 +284,11 @@ $handler = function ($req, $res) {
 
 Swoole\http($handler)->start();
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 Then you can return your JSON and within `json()`, Siler will automatically add the Content-type: application/json response header. Also you can enable CORS.
 
-{% code-tabs %}
-{% code-tabs-item title="api/todos.php" %}
+{% code title="api/todos.php" %}
 ```php
 <?php declare(strict_types=1);
 
@@ -325,8 +305,7 @@ return function () {
     Swoole\json($todos);
 };
 ```
-{% endcode-tabs-item %}
-{% endcode-tabs %}
+{% endcode %}
 
 Head to [http://localhost:9501/todos](http://localhost:9501/todos). There we go!  
 A **Siler** ❤️ **Swoole** powered API.
