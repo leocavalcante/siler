@@ -249,4 +249,13 @@ class FunctionalTest extends TestCase
         $this->assertTrue(f\isnull(null)());
         $this->assertFalse(f\isnull([])());
     }
+
+    public function testConcat()
+    {
+        $concat = f\concat('|');
+
+        $this->assertSame('foo|bar', $concat('foo', 'bar'));
+        $this->assertSame('foo', $concat('foo', false));
+        $this->assertSame('foo', $concat('foo', null));
+    }
 }
