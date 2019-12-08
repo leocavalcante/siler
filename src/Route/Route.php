@@ -133,7 +133,7 @@ function route($method, string $path, $callback, $request = null)
 
     $path = regexify($path);
 
-    if (is_string($callback)) {
+    if (is_string($callback) && !is_callable($callback)) {
         $callback = require_fn($callback);
     }
 
