@@ -655,26 +655,31 @@ function concat(string $separator = ''): Closure
  * Lazily evaluate a function.
  *
  * @template T
- * @param callable(...mixed): T $callable
- * @param array $args
+ * @param callable(): T $callable
+ * @param array<int, mixed> ...$args
  * @return Closure(): T
  */
 function lazy(callable $callable, ...$args): Closure
 {
-    return function () use ($callable, $args) {
-        return call($callable, ...$args);
-    };
+    return
+        /**
+         * @return T
+         */
+        function () use ($callable, $args) {
+            return call($callable, ...$args);
+        };
 }
 
 /**
  * A call_user_func alias.
  *
  * @template T
- * @param callable(...mixed): T $callable
+ * @param callable(): T $callable
  * @param array<int, mixed> ...$args
  * @return T
  */
 function call(callable $callable, ...$args)
 {
+    /** @var T */
     return call_user_func_array($callable, $args);
 }
