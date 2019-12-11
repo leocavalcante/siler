@@ -73,6 +73,8 @@ const if_then = '\Siler\Functional\if_then';
 const is_empty = '\Siler\Functional\is_empty';
 const isnull = '\Siler\Functional\isnull';
 const concat = '\Siler\Functional\concat';
+const lazy = '\Siler\Functional\lazy';
+const call = '\Siler\Functional\call';
 
 
 namespace Siler\Functional\Monad;
