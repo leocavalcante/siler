@@ -1,5 +1,6 @@
 # 1.7.2
 - Add `Swoole\redirect()` sugar
+- New `Siler\Env` API
 
 # 1.7.1
 - Fix string callable on route
