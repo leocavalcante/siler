@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Siler\Result\Failure;
 use Siler\Result\Result;
 use Siler\Result\Success;
-
+use TypeError;
 use function Siler\Result\failure;
 use function Siler\Result\success;
 
@@ -54,7 +54,7 @@ class ResultTest extends TestCase
 
     public function testBindThrows()
     {
-        $this->expectException(\TypeError::class);
+        $this->expectException(TypeError::class);
 
         success(1)->bind(function (int $n): int {
             return $n;

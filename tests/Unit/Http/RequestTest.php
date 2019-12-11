@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
+use JsonException;
 use PHPUnit\Framework\TestCase;
 use Siler\Container;
 use Siler\Http\Request;
 use Siler\Test\Unit\Route\SwooleHttpRequestMock;
 use Zend\Diactoros\ServerRequest;
-
 use function locale_get_default;
-
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 class RequestTest extends TestCase
@@ -43,7 +42,7 @@ class RequestTest extends TestCase
         $this->assertArrayHasKey('foo', $params);
         $this->assertSame('bar', $params['foo']);
 
-        $this->expectException(\JsonException::class);
+        $this->expectException(JsonException::class);
         Request\json();
     }
 

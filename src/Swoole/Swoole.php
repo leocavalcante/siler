@@ -484,3 +484,16 @@ function graphql_handler(Schema $schema, $rootValue = null, $context = null): Cl
         }
     };
 }
+
+/**
+ * HTTP redirect sugar.
+ *
+ * @param string $location
+ * @param int $status
+ * @param array<string, string> $headers
+ * @param string $content
+ */
+function redirect(string $location = '/', int $status = 302, array $headers = [], string $content = 'Redirect'): void
+{
+    emit($content, $status, array_merge($headers, ['Location' => $location]));
+}
