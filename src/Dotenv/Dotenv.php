@@ -10,11 +10,11 @@ use UnexpectedValueException;
 use function Siler\array_get;
 
 /**
- * Load the .env file contents into the environment.
- *
  * @param string $path Directory name of the .env file location *
  * @return array<array-key, null|string>
  * @return array
+ * @deprecated Will be removed on the next release.
+ *
  */
 function init(string $path): array
 {
@@ -23,7 +23,7 @@ function init(string $path): array
 }
 
 /**
- * Get an environment value or fallback to the given default.
+ * @deprecated Use function Siler\Env\env_var.
  *
  * @param string|null $key
  * @param mixed $default A default when the key do not exists
@@ -37,7 +37,7 @@ function env(?string $key = null, ?string $default = null)
 }
 
 /**
- * Returns an environment variable as an integer.
+ * @deprecated Use function Siler\Env\env_int.
  *
  * @param string $key
  * @param int|null $default
@@ -60,7 +60,7 @@ function int_val(string $key, ?int $default = null): ?int
 }
 
 /**
- * Returns an environment variable as an boolean.
+ * @deprecated Use function Siler\Env\env_bool.
  *
  * @param string $key
  * @param bool|null $default
@@ -91,7 +91,7 @@ function bool_val(string $key, ?bool $default = null): ?bool
 }
 
 /**
- * Checks for the presence of an environment variable.
+ * @deprecated Environment vars getters already checks if there no default.
  *
  * @param string $key
  *
