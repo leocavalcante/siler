@@ -249,4 +249,19 @@ class FunctionalTest extends TestCase
         $this->assertTrue(f\isnull(null)());
         $this->assertFalse(f\isnull([])());
     }
+
+    public function testConcat()
+    {
+        $concat = f\concat('|');
+
+        $this->assertSame('foo|bar', $concat('foo', 'bar'));
+        $this->assertSame('foo', $concat('foo', false));
+        $this->assertSame('foo', $concat('foo', null));
+    }
+
+    public function testLazy()
+    {
+        $will_trim = f\lazy('trim', ' foo ');
+        $this->assertSame('foo', $will_trim());
+    }
 }

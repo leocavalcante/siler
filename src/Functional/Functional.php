@@ -632,17 +632,54 @@ function isnull($var): Closure
  *
  * @param string $separator
  *
- * @return Closure(string, string|false): string
+ * @return Closure(string, string|false|null): string
  */
 function concat(string $separator = ''): Closure
 {
     return
         /**
          * @param string $a
-         * @param string|false $b
+         * @param string|false|null $b
          * @return string
          */
         static function (string $a, $b) use ($separator): string {
+            if ($b === false || $b === null) {
+                return $a;
+            }
+
             return "{$a}{$separator}{$b}";
         };
+}
+
+/**
+ * Lazily evaluate a function.
+ *
+ * @template T
+ * @param callable(): T $callable
+ * @param array<int, mixed> ...$args
+ * @return Closure(): T
+ */
+function lazy(callable $callable, ...$args): Closure
+{
+    return
+        /**
+         * @return T
+         */
+        function () use ($callable, $args) {
+            return call($callable, ...$args);
+        };
+}
+
+/**
+ * A call_user_func alias.
+ *
+ * @template T
+ * @param callable(): T $callable
+ * @param array<int, mixed> ...$args
+ * @return T
+ */
+function call(callable $callable, ...$args)
+{
+    /** @var T */
+    return call_user_func_array($callable, $args);
 }
