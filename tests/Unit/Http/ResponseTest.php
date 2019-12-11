@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
+use JsonException;
 use PHPUnit\Framework\TestCase;
 use Siler\Http\Response;
-use UnexpectedValueException;
 
 /**
  * @runTestsInSeparateProcesses
@@ -67,7 +67,7 @@ class ResponseTest extends TestCase
 
     public function testJsonError()
     {
-        $this->expectException(\JsonException::class);
+        $this->expectException(JsonException::class);
 
         Response\json(fopen('php://input', 'r'));
     }

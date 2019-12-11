@@ -1,3 +1,6 @@
+# 1.7.2
+- Add `Swoole\redirect()` sugar
+
 # 1.7.1
 - Fix string callable on route
 - Fix trailing separator on `concat`
