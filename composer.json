@@ -48,8 +48,8 @@
             "src/Container/Container.php",
             "src/Diactoros/Diactoros.php",
             "src/Dotenv/Dotenv.php",
+            "src/Env/Env.php",
             "src/Encoder/Json.php",
-            "src/facades.php",
             "src/File/File.php",
             "src/Functional/Functional.php",
             "src/Functional/Monad/Monad.php",
@@ -65,10 +65,11 @@
             "src/Ratchet/Ratchet.php",
             "src/Result/Result.php",
             "src/Route/Route.php",
-            "src/Siler.php",
             "src/Stratigility/Stratigility.php",
             "src/Swoole/Swoole.php",
-            "src/Twig/Twig.php"
+            "src/Twig/Twig.php",
+            "src/Siler.php",
+            "src/facades.php"
         ]
     },
     "autoload-dev": {

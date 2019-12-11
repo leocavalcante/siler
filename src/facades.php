@@ -32,6 +32,12 @@ const encode = '\Siler\Encoder\Json\encode';
 const decode = '\Siler\Encoder\Json\decode';
 
 
+namespace Siler\Env;
+const env_var = '\Siler\Env\env_var';
+const env_int = '\Siler\Env\env_int';
+const env_bool = '\Siler\Env\env_bool';
+
+
 namespace Siler\File;
 const recursively_iterated_directory = '\Siler\File\recursively_iterated_directory';
 const recur_iter_dir = '\Siler\File\recur_iter_dir';
