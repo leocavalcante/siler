@@ -158,7 +158,7 @@ type Mutation {
 
 <sub>index.php</sub>
 ```php
-use Siler\Graphql;
+use Siler\GraphQL;
 use Siler\Http\Response;
 
 // Enable CORS for GraphiQL
@@ -178,7 +178,7 @@ $resolvers = [
     ],
 ];
 
-Graphql\init(Graphql\schema($typeDefs, $resolvers));
+GraphQL\init(GraphQL\schema($typeDefs, $resolvers));
 ```
 
 ---
