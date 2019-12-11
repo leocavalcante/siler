@@ -1,6 +1,5 @@
 {
     "name": "leocavalcante/siler",
-    "version": "1.7.0",
     "type": "library",
     "description": "Siler is a set of general purpose high-level abstractions aiming an API for declarative programming in PHP.",
     "keywords": [
