@@ -3,6 +3,7 @@
 namespace Siler\Test\Unit\Env;
 
 use PHPUnit\Framework\TestCase;
+use UnexpectedValueException;
 use function Siler\Env\env_bool;
 use function Siler\Env\env_int;
 use function Siler\Env\env_var;
@@ -22,7 +23,7 @@ class EnvTest extends TestCase
 
     public function testEnvVarThrows()
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(UnexpectedValueException::class);
         env_var('BAR');
     }
 

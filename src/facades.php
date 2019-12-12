@@ -243,6 +243,7 @@ const bearer = '\Siler\Swoole\bearer';
 const http_server_port = '\Siler\Swoole\http_server_port';
 const graphql_handler = '\Siler\Swoole\graphql_handler';
 const redirect = '\Siler\Swoole\redirect';
+const middleware = '\Siler\Swoole\middleware';
 
 
 namespace Siler\Twig;

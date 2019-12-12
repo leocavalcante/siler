@@ -497,3 +497,33 @@ function redirect(string $location = '/', int $status = 302, array $headers = []
 {
     emit($content, $status, array_merge($headers, ['Location' => $location]));
 }
+
+/**
+ * Calls each callback in the pipeline until one returns null.
+ * The value of previous callback is given to the next, starting with null.
+ *
+ * @template T
+ * @param array<callable(Request, Response, T|null): (T|null)> $pipeline
+ * @return Closure(Request, Response): (T|null)
+ */
+function middleware(array $pipeline): Closure
+{
+    return
+        /**
+         * @param Request $request
+         * @param Response $response
+         * @return T|null
+         */
+        static function (Request $request, Response $response) use ($pipeline) {
+            /** @var T|null $value */
+            $value = null;
+
+            foreach ($pipeline as $callback) {
+                if (($value = $callback($request, $response, $value)) === null) {
+                    return $value;
+                }
+            }
+
+            return $value;
+        };
+}
