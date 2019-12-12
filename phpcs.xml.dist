@@ -8,10 +8,12 @@
         <exclude name="PSR12.Properties.ConstantVisibility.NotFound"/>
         <exclude name="PSR12.Files.FileHeader"/>
         <exclude name="PSR12.Files.OpenTag"/>
+        <exclude name="PSR1.Files.SideEffects">
+            <file>tests/Swoole/Swoole.php</file>
+        </exclude>
     </rule>
 
     <file>src</file>
     <file>tests</file>
-
     <exclude-pattern>src/facades.php</exclude-pattern>
 </ruleset>

@@ -1,4 +1,5 @@
 # 1.7.2
+- Support middleware-like pipelines in Swoole with `Swoole\middleware`
 - Add `Swoole\redirect()` sugar
 - New `Siler\Env` API
 
