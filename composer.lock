@@ -180,9 +180,9 @@
             ],
             "authors": [
                 {
-                  "name": "Chris Boden",
-                  "role": "Developer",
-                  "email": "cboden@gmail.com"
+                    "name": "Chris Boden",
+                    "email": "cboden@gmail.com",
+                    "role": "Developer"
                 }
             ],
             "description": "PHP WebSocket library",
@@ -939,12 +939,12 @@
                 "OSL-3.0"
             ],
             "authors": [
-              {
-                "name": "Christian Weiske",
-                "role": "Developer",
-                "email": "cweiske@cweiske.de",
-                "homepage": "http://github.com/cweiske/jsonmapper/"
-              }
+                {
+                    "name": "Christian Weiske",
+                    "email": "cweiske@cweiske.de",
+                    "homepage": "http://github.com/cweiske/jsonmapper/",
+                    "role": "Developer"
+                }
             ],
             "description": "Map nested JSON structures onto PHP classes",
             "time": "2019-08-15T19:41:25+00:00"
@@ -1137,21 +1137,21 @@
                 "BSD-3-Clause"
             ],
             "authors": [
-              {
-                "name": "Arne Blankerts",
-                "role": "Developer",
-                "email": "arne@blankerts.de"
-              },
-              {
-                "name": "Sebastian Heuer",
-                "role": "Developer",
-                "email": "sebastian@phpeople.de"
-              },
-              {
-                "name": "Sebastian Bergmann",
-                "role": "Developer",
-                "email": "sebastian@phpunit.de"
-              }
+                {
+                    "name": "Arne Blankerts",
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian Heuer",
+                    "email": "sebastian@phpeople.de",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "Developer"
+                }
             ],
             "description": "Component for reading phar.io manifest information from a PHP Archive (PHAR)",
             "time": "2018-07-08T19:23:20+00:00"
@@ -1184,21 +1184,21 @@
                 "BSD-3-Clause"
             ],
             "authors": [
-              {
-                "name": "Arne Blankerts",
-                "role": "Developer",
-                "email": "arne@blankerts.de"
-              },
-              {
-                "name": "Sebastian Heuer",
-                "role": "Developer",
-                "email": "sebastian@phpeople.de"
-              },
-              {
-                "name": "Sebastian Bergmann",
-                "role": "Developer",
-                "email": "sebastian@phpunit.de"
-              }
+                {
+                    "name": "Arne Blankerts",
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian Heuer",
+                    "email": "sebastian@phpeople.de",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "Developer"
+                }
             ],
             "description": "Library for handling version information and constraints",
             "time": "2018-07-08T19:19:57+00:00"
@@ -1353,30 +1353,31 @@
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "time": "2019-08-22T18:11:29+00:00"
         },
-      {
-        "name": "phpoption/phpoption",
-        "version": "1.6.1",
-        "source": {
-          "type": "git",
-          "url": "https://github.com/schmittjoh/php-option.git",
-          "reference": "a8593bf5176bf3d3f2966942c530be19b44ec87c"
-        },
-        "dist": {
-          "type": "zip",
-          "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/a8593bf5176bf3d3f2966942c530be19b44ec87c",
-          "reference": "a8593bf5176bf3d3f2966942c530be19b44ec87c",
-          "shasum": ""
-        },
+        {
+            "name": "phpoption/phpoption",
+            "version": "1.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmittjoh/php-option.git",
+                "reference": "318ad673ba36e53e10ca510aec1c54b4f2a5f2ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/318ad673ba36e53e10ca510aec1c54b4f2a5f2ae",
+                "reference": "318ad673ba36e53e10ca510aec1c54b4f2a5f2ae",
+                "shasum": ""
+            },
             "require": {
                 "php": "^5.5.9 || ^7.0"
             },
             "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.3",
                 "phpunit/phpunit": "^4.8.35 || ^5.0 || ^6.0 || ^7.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6-dev"
+                    "dev-master": "1.7-dev"
                 }
             },
             "autoload": {
@@ -1405,7 +1406,7 @@
                 "php",
                 "type"
             ],
-        "time": "2019-12-11T13:45:14+00:00"
+            "time": "2019-12-13T00:10:22+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -1569,11 +1570,11 @@
                 "BSD-3-Clause"
             ],
             "authors": [
-              {
-                "name": "Sebastian Bergmann",
-                "role": "lead",
-                "email": "sebastian@phpunit.de"
-              }
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
             ],
             "description": "FilterIterator implementation that filters files based on a list of suffixes.",
             "homepage": "https://github.com/sebastianbergmann/php-file-iterator/",
@@ -1611,11 +1612,11 @@
                 "BSD-3-Clause"
             ],
             "authors": [
-              {
-                "name": "Sebastian Bergmann",
-                "role": "lead",
-                "email": "sebastian@phpunit.de"
-              }
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
             ],
             "description": "Simple template engine.",
             "homepage": "https://github.com/sebastianbergmann/php-text-template/",
@@ -1660,11 +1661,11 @@
                 "BSD-3-Clause"
             ],
             "authors": [
-              {
-                "name": "Sebastian Bergmann",
-                "role": "lead",
-                "email": "sebastian@phpunit.de"
-              }
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
             ],
             "description": "Utility class for timing",
             "homepage": "https://github.com/sebastianbergmann/php-timer/",
@@ -2183,11 +2184,11 @@
                 "MIT"
             ],
             "authors": [
-              {
-                "name": "Chris Boden",
-                "role": "Developer",
-                "email": "cboden@gmail.com"
-              }
+                {
+                    "name": "Chris Boden",
+                    "email": "cboden@gmail.com",
+                    "role": "Developer"
+                }
             ],
             "description": "RFC6455 WebSocket protocol handler",
             "homepage": "http://socketo.me",
@@ -3078,11 +3079,11 @@
                 "BSD-3-Clause"
             ],
             "authors": [
-              {
-                "name": "Sebastian Bergmann",
-                "role": "lead",
-                "email": "sebastian@phpunit.de"
-              }
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
             ],
             "description": "Collection of value objects that represent the types of the PHP type system",
             "homepage": "https://github.com/sebastianbergmann/type",
@@ -3121,11 +3122,11 @@
                 "BSD-3-Clause"
             ],
             "authors": [
-              {
-                "name": "Sebastian Bergmann",
-                "role": "lead",
-                "email": "sebastian@phpunit.de"
-              }
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
@@ -4025,11 +4026,11 @@
                 "BSD-3-Clause"
             ],
             "authors": [
-              {
-                "name": "Arne Blankerts",
-                "role": "Developer",
-                "email": "arne@blankerts.de"
-              }
+                {
+                    "name": "Arne Blankerts",
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
+                }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
             "time": "2019-06-13T22:48:21+00:00"

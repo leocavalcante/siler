@@ -264,4 +264,36 @@ class FunctionalTest extends TestCase
         $will_trim = f\lazy('trim', ' foo ');
         $this->assertSame('foo', $will_trim());
     }
+
+    public function testMap()
+    {
+        $double = function (int $i): int {
+            return $i * 2;
+        };
+
+        $iterator = function (): \Iterator {
+            $i = 1;
+
+            while ($i <= 3) {
+                yield $i++;
+            }
+        };
+
+        $keys = function (int $_, int $key): int {
+            return $key;
+        };
+
+        $this->assertSame([2, 4, 6], f\map([1, 2, 3], $double));
+        $this->assertSame([2, 4, 6], f\map($iterator(), $double));
+        $this->assertSame([0, 1, 2], f\map(range(1, 3), $keys));
+    }
+
+    public function testLmap()
+    {
+        $double = f\lmap(function (int $i): int {
+            return $i * 2;
+        });
+
+        $this->assertSame([2, 4, 6], $double([1, 2, 3]));
+    }
 }
