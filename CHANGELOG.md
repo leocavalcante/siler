@@ -2,7 +2,7 @@
 - Support middleware-like pipelines in Swoole with `Swoole\middleware`
 - Add `Swoole\redirect()` sugar
 - New `Siler\Env` API
-- Add `map` and `lmap` functions
+- Add `map`, `lmap`, `pipe`, `conduit` and `lconcat` functions
 
 # 1.7.1
 - Fix string callable on route
