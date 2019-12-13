@@ -83,6 +83,9 @@ const lazy = '\Siler\Functional\lazy';
 const call = '\Siler\Functional\call';
 const map = '\Siler\Functional\map';
 const lmap = '\Siler\Functional\lmap';
+const pipe = '\Siler\Functional\pipe';
+const conduit = '\Siler\Functional\conduit';
+const lconcat = '\Siler\Functional\lconcat';
 
 
 namespace Siler\Functional\Monad;

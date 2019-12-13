@@ -296,4 +296,27 @@ class FunctionalTest extends TestCase
 
         $this->assertSame([2, 4, 6], $double([1, 2, 3]));
     }
+
+    public function testPipe()
+    {
+        $pipe = f\pipe([
+            f\add(1),
+            f\add(1),
+            f\add(1),
+        ]);
+
+        $this->assertSame(3, $pipe(0));
+    }
+
+    public function testConduit()
+    {
+        $this->assertSame('foo', f\conduit([f\always(null)])('foo'));
+
+        $this->assertSame(
+            'foobar',
+            f\conduit([
+                f\lconcat()('bar')
+            ])('foo')
+        );
+    }
 }
