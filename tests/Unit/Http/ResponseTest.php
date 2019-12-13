@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
+use JsonException;
 use PHPUnit\Framework\TestCase;
 use Siler\Http\Response;
-use UnexpectedValueException;
 
 /**
  * @runTestsInSeparateProcesses
@@ -20,7 +20,10 @@ class ResponseTest extends TestCase
         Response\output();
 
         $this->assertSame(204, http_response_code());
-        $this->assertContains('Content-Type: text/plain;charset=utf-8', xdebug_get_headers());
+
+        if (function_exists('xdebug_get_headers')) {
+            $this->assertContains('Content-Type: text/plain;charset=utf-8', xdebug_get_headers());
+        }
     }
 
     public function testText()
@@ -30,7 +33,10 @@ class ResponseTest extends TestCase
         Response\text('foo');
 
         $this->assertSame(200, http_response_code());
-        $this->assertContains('Content-Type: text/plain;charset=utf-8', xdebug_get_headers());
+
+        if (function_exists('xdebug_get_headers')) {
+            $this->assertContains('Content-Type: text/plain;charset=utf-8', xdebug_get_headers());
+        }
     }
 
     public function testHtml()
@@ -40,7 +46,10 @@ class ResponseTest extends TestCase
         Response\html('<a href="#"></a>');
 
         $this->assertSame(200, http_response_code());
-        $this->assertContains('Content-Type: text/html;charset=utf-8', xdebug_get_headers());
+
+        if (function_exists('xdebug_get_headers')) {
+            $this->assertContains('Content-Type: text/html;charset=utf-8', xdebug_get_headers());
+        }
     }
 
     public function testJson()
@@ -50,12 +59,15 @@ class ResponseTest extends TestCase
         Response\json(['foo' => 'bar', 'baz' => true, 'qux' => 2]);
 
         $this->assertSame(200, http_response_code());
-        $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
+
+        if (function_exists('xdebug_get_headers')) {
+            $this->assertContains('Content-Type: application/json;charset=utf-8', xdebug_get_headers());
+        }
     }
 
     public function testJsonError()
     {
-        $this->expectException(UnexpectedValueException::class);
+        $this->expectException(JsonException::class);
 
         Response\json(fopen('php://input', 'r'));
     }
@@ -75,11 +87,15 @@ class ResponseTest extends TestCase
         Response\header('X-Bar', 'bar');
         Response\header('X-Bar', 'baz', false);
 
-        $headers = xdebug_get_headers();
+        if (function_exists('xdebug_get_headers')) {
+            $headers = xdebug_get_headers();
 
-        $this->assertContains('X-Foo: foo', $headers);
-        $this->assertContains('X-Bar: bar', $headers);
-        $this->assertContains('X-Bar: baz', $headers);
+            $this->assertContains('X-Foo: foo', $headers);
+            $this->assertContains('X-Bar: bar', $headers);
+            $this->assertContains('X-Bar: baz', $headers);
+        } else {
+            $this->assertTrue(true);
+        }
     }
 
     public function testRedirect()
@@ -88,8 +104,33 @@ class ResponseTest extends TestCase
 
         Response\redirect('/bar');
 
-        $headers = xdebug_get_headers();
+        if (function_exists('xdebug_get_headers')) {
+            $headers = xdebug_get_headers();
+            $this->assertContains('Location: /foo/bar', $headers);
+        } else {
+            $this->assertTrue(true);
+        }
+    }
 
-        $this->assertContains('Location: /foo/bar', $headers);
+    public function testNoContent()
+    {
+        $this->expectOutputString('');
+        Response\no_content();
+        $this->assertSame(204, http_response_code());
+    }
+
+    public function testCors()
+    {
+        Response\cors();
+
+        if (function_exists('xdebug_get_headers')) {
+            $headers = xdebug_get_headers();
+
+            $this->assertContains('Access-Control-Allow-Origin: *', $headers);
+            $this->assertContains('Access-Control-Allow-Headers: Content-Type', $headers);
+            $this->assertContains('Access-Control-Allow-Methods: GET, POST, PUT, DELETE', $headers);
+        } else {
+            $this->assertTrue(true);
+        }
     }
 }

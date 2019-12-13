@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * Adds a layer of helper functions to work with Zend Diactoros.
  */

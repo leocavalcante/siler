@@ -9,9 +9,14 @@ class Maybe extends Identity
     public function __invoke(callable $function = null)
     {
         if (is_null($function)) {
-            return $this->value;
+            return $this->return();
         }
 
+        return $this->bind($function);
+    }
+
+    public function bind(callable $function): self
+    {
         if (is_null($this->value)) {
             return new self(null);
         }

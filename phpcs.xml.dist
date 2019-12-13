@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Ads Warehouse"
+         xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
+    <description>Siler's Code Style</description>
+
+    <rule ref="PSR12">
+        <exclude name="Generic.Files.LineLength"/>
+        <exclude name="PSR12.Properties.ConstantVisibility.NotFound"/>
+        <exclude name="PSR12.Files.FileHeader"/>
+        <exclude name="PSR12.Files.OpenTag"/>
+        <exclude name="PSR1.Files.SideEffects">
+            <file>tests/Swoole/Swoole.php</file>
+        </exclude>
+    </rule>
+
+    <file>src</file>
+    <file>tests</file>
+    <exclude-pattern>src/facades.php</exclude-pattern>
+</ruleset>

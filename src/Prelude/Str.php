@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * String module. Functions to operate on strings.
  */
@@ -24,15 +25,17 @@ function slugify(string $input, ?array $opts = null): string
         Container\set('slugify', new Slugify());
     }
 
-    return Container\get('slugify')->slugify($input, $opts);
+    /** @var Slugify $slugify */
+    $slugify = Container\get('slugify');
+    return $slugify->slugify($input, $opts);
 }
 
 /**
- *  Breaks a string into lines.
+ * Breaks a string into lines.
  *
  * @param string $input
  *
- * @return array
+ * @return array<int, string>
  */
 function lines(string $input): array
 {

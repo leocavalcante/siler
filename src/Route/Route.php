@@ -1,13 +1,11 @@
-<?php
-
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 /*
  * Siler routing facilities.
  */
 
 namespace Siler\Route;
 
+use Closure;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use RecursiveDirectoryIterator;
@@ -21,18 +19,20 @@ use RegexIterator;
 use Siler\Container;
 use Siler\Http;
 use Siler\Http\Request;
+use Swoole\Http\Request as SwooleRequest;
 use function Siler\require_fn;
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 const DID_MATCH = 'route_did_match';
 const STOP_PROPAGATION = 'route_stop_propagation';
+const CANCEL = 'route_cancel';
 
 /**
  * Define a new route using the GET HTTP method.
  *
  * @param string $path The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -46,7 +46,7 @@ function get(string $path, $callback, $request = null)
  *
  * @param string $path The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -60,7 +60,7 @@ function post(string $path, $callback, $request = null)
  *
  * @param string $path The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -74,7 +74,7 @@ function put(string $path, $callback, $request = null)
  *
  * @param string $path The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -88,7 +88,7 @@ function delete(string $path, $callback, $request = null)
  *
  * @param string $path The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -102,7 +102,7 @@ function options(string $path, $callback, $request = null)
  *
  * @param string $path The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -117,27 +117,33 @@ function any(string $path, $callback, $request = null)
  * @param string|array $method The HTTP request method to listen on
  * @param string $path The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
- * @param array|ServerRequestInterface|null $request Null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
 function route($method, string $path, $callback, $request = null)
 {
+    if (canceled()) {
+        return null;
+    }
+
     if (did_match() && Container\get(STOP_PROPAGATION, true)) {
         return null;
     }
 
     $path = regexify($path);
 
-    if (is_string($callback)) {
+    if (is_string($callback) && !is_callable($callback)) {
         $callback = require_fn($callback);
     }
 
-    $methodPath = method_path($request);
+    $method_path = method_path($request);
 
-    if (count($methodPath) >= 2 &&
-        (Request\method_is($method, $methodPath[0]) || $method == 'any') &&
-        preg_match($path, $methodPath[1], $params)
+    if (
+        count($method_path) >= 2 &&
+        (Request\method_is($method, strval($method_path[0])) ||
+            $method == 'any') &&
+        preg_match($path, strval($method_path[1]), $params)
     ) {
         Container\set(DID_MATCH, true);
         return $callback($params);
@@ -147,13 +153,13 @@ function route($method, string $path, $callback, $request = null)
 }
 
 /**
- * @param mixed $request null, array[method, path], PSR-7 Request Message or Swoole HTTP request.
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
- * @return array
+ * @return array{0: string, 1: string}
  * @internal Used to guess the given request method and path.
  *
  */
-function method_path($request): array
+function method_path($request = null): array
 {
     if (is_array($request)) {
         return $request;
@@ -164,9 +170,14 @@ function method_path($request): array
     }
 
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
+        /** @var SwooleRequest $request */
         $request = Container\get(SWOOLE_HTTP_REQUEST);
-
-        return [$request->server['request_method'], $request->server['request_uri']];
+        /**
+         * @psalm-suppress MissingPropertyType
+         * @var array<string, string> $request_server
+         */
+        $request_server = $request->server;
+        return [$request_server['request_method'], $request_server['request_uri']];
     }
 
     return [Request\method(), Http\path()];
@@ -181,10 +192,13 @@ function method_path($request): array
  */
 function regexify(string $path): string
 {
-    $path = preg_replace('/\{([A-z-]+)\}/', '(?<$1>[A-z0-9_-]+)', $path);
-    $path = "#^{$path}/?$#";
+    $patterns = [
+        '/{([A-z-]+)}/' => '(?<$1>[A-z0-9_-]+)',
+        '/{([A-z-]+):(.*)}/' => '(?<$1>$2)',
+    ];
 
-    return $path;
+    $path = preg_replace(array_keys($patterns), array_values($patterns), $path);
+    return "#^{$path}/?$#";
 }
 
 /**
@@ -193,7 +207,7 @@ function regexify(string $path): string
  * @param string $basePath The base for the resource
  * @param string $resourcesPath The base path name for the corresponding PHP files
  * @param string|null $identityParam
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -206,31 +220,41 @@ function resource(string $basePath, string $resourcesPath, ?string $identityPara
         $identityParam = 'id';
     }
 
+    /** @var array<Closure(): mixed> $routes */
     $routes = [
-        function () use ($basePath, $resourcesPath, $request) {
+        /** @return mixed */
+        static function () use ($basePath, $resourcesPath, $request) {
             return get($basePath, $resourcesPath . '/index.php', $request);
         },
-        function () use ($basePath, $resourcesPath, $request) {
+        /** @return mixed */
+        static function () use ($basePath, $resourcesPath, $request) {
             return get($basePath . '/create', $resourcesPath . '/create.php', $request);
         },
-        function () use ($basePath, $resourcesPath, $request, $identityParam) {
+        /** @return mixed */
+        static function () use ($basePath, $resourcesPath, $request, $identityParam) {
             return get($basePath . '/{' . $identityParam . '}/edit', $resourcesPath . '/edit.php', $request);
         },
-        function () use ($basePath, $resourcesPath, $request, $identityParam) {
+        /** @return mixed */
+        static function () use ($basePath, $resourcesPath, $request, $identityParam) {
             return get($basePath . '/{' . $identityParam . '}', $resourcesPath . '/show.php', $request);
         },
-        function () use ($basePath, $resourcesPath, $request) {
+        /** @return mixed */
+        static function () use ($basePath, $resourcesPath, $request) {
             return post($basePath, $resourcesPath . '/store.php', $request);
         },
-        function () use ($basePath, $resourcesPath, $request, $identityParam) {
+        /** @return mixed */
+        static function () use ($basePath, $resourcesPath, $request, $identityParam) {
             return put($basePath . '/{' . $identityParam . '}', $resourcesPath . '/update.php', $request);
         },
-        function () use ($basePath, $resourcesPath, $request, $identityParam) {
+        /** @return mixed */
+        static function () use ($basePath, $resourcesPath, $request, $identityParam) {
             return delete($basePath . '/{' . $identityParam . '}', $resourcesPath . '/destroy.php', $request);
         },
     ];
 
+    /** @var callable(): mixed $route */
     foreach ($routes as $route) {
+        /** @var mixed $result */
         $result = $route();
 
         if (!is_null($result)) {
@@ -246,7 +270,7 @@ function resource(string $basePath, string $resourcesPath, ?string $identityPara
  *
  * @param string $filename
  *
- * @return array [HTTP_METHOD, HTTP_PATH]
+ * @return array{0: string, 1: string}
  */
 function routify(string $filename): array
 {
@@ -279,7 +303,7 @@ function routify(string $filename): array
  *
  * @param string $basePath
  * @param string $prefix
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
@@ -309,6 +333,7 @@ function files(string $basePath, string $prefix = '', $request = null)
             continue;
         }
 
+        /** @var string $method */
         list($method, $path) = routify($cutFilename);
 
         if ('/' === $path) {
@@ -319,9 +344,10 @@ function files(string $basePath, string $prefix = '', $request = null)
             $path = $prefix . $path;
         }
 
+        /** @var mixed|null $result */
         $result = route($method, $path, (string)$filename, $request);
 
-        if (!is_null($result)) {
+        if ($result !== null) {
             return $result;
         }
     }
@@ -333,12 +359,14 @@ function files(string $basePath, string $prefix = '', $request = null)
  * Uses a class name to create routes based on its public methods.
  *
  * @param string $basePath The prefix for all routes
- * @param string $className The qualified class name
- * @param array|ServerRequestInterface|null $request null, array[method, path] or Psr7 Request Message
+ * @param class-string|object $className The qualified class name
+ * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
+ * @return void
  * @throws ReflectionException
+ *
  */
-function class_name(string $basePath, string $className, $request = null)
+function class_name(string $basePath, $className, $request = null): void
 {
     $reflection = new ReflectionClass($className);
     $object = $reflection->newInstance();
@@ -382,31 +410,56 @@ function class_name(string $basePath, string $className, $request = null)
 
 /**
  * Avoids routes to be called after the first match.
+ *
+ * @return void
  */
-function stop_propagation()
+function stop_propagation(): void
 {
     Container\set(STOP_PROPAGATION, true);
 }
 
 /**
- * Resets default routing behaviour.
+ * Avoids routes to be called even on a match.
+ *
+ * @return void
  */
-function resume()
+function cancel(): void
+{
+    Container\set(CANCEL, true);
+}
+
+/**
+ * Returns true if routing is canceled.
+ *
+ * @return bool
+ */
+function canceled(): bool
+{
+    return boolval(Container\get(CANCEL, false));
+}
+
+/**
+ * Resets default routing behaviour.
+ *
+ * @return void
+ */
+function resume(): void
 {
     Container\set(STOP_PROPAGATION, false);
+    Container\set(CANCEL, false);
 }
 
 /**
  * Returns the first non-null route result.
  *
- * @param array $routes The route results to br tested
- *
+ * @param array<mixed|null> $routes The route results to br tested
  * @return mixed|null
  */
 function match(array $routes)
 {
+    /** @var mixed|null $route */
     foreach ($routes as $route) {
-        if (!is_null($route)) {
+        if ($route !== null) {
             return $route;
         }
     }
@@ -421,7 +474,7 @@ function match(array $routes)
  */
 function did_match(): bool
 {
-    return Container\get(DID_MATCH, false);
+    return boolval(Container\get(DID_MATCH, false));
 }
 
 /**

@@ -1,5 +1,10 @@
 *.cache
+*.log
 /*.phar
 /.idea/
 /coverage-*
-vendor/
+/issues/
+/phpcs.xml
+/phpunit.xml
+/psalm.xml
+/vendor/

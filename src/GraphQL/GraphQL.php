@@ -1,71 +1,70 @@
 <?php
 
 declare(strict_types=1);
-/*
- * Helper functions for webonyx/graphql-php GraphQL implementation.
- */
 
 namespace Siler\GraphQL;
 
 use Closure;
+use Exception;
+use GraphQL\Error\Debug;
 use GraphQL\Executor\Executor;
 use GraphQL\Executor\Promise\Promise;
+use GraphQL\Executor\Promise\PromiseAdapter;
 use GraphQL\GraphQL;
-use GraphQL\Type\Definition\BooleanType;
-use GraphQL\Type\Definition\EnumType;
-use GraphQL\Type\Definition\FloatType;
-use GraphQL\Type\Definition\IDType;
-use GraphQL\Type\Definition\InterfaceType;
-use GraphQL\Type\Definition\IntType;
-use GraphQL\Type\Definition\ListOfType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
-use GraphQL\Type\Definition\StringType;
-use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
-use GraphQL\Utils\BuildSchema;
 use Psr\Http\Message\ServerRequestInterface;
-use Ratchet\Client;
-use Ratchet\Client\WebSocket;
-use Ratchet\Http\HttpServer;
 use Ratchet\Server\IoServer;
-use Ratchet\WebSocket\WsServer;
 use Siler\Container;
 use Siler\Diactoros;
 use Siler\Http\Request;
 use Siler\Http\Response;
 use UnexpectedValueException;
+use WebSocket\BadOpcodeException;
+use WebSocket\Client;
+use Zend\Diactoros\Response\JsonResponse;
 use function Siler\array_get;
+use function Siler\Encoder\Json\decode;
+use function Siler\Encoder\Json\encode;
+use function Siler\Ratchet\graphql_subscriptions;
 
-/**
- * Protocol messages.
- *
- * @see https://github.com/apollographql/subscriptions-transport-ws/blob/master/src/message-types.ts
- */
-const GQL_CONNECTION_INIT = 'connection_init';
-// Client -> Server
-const GQL_CONNECTION_ACK = 'connection_ack';
-// Server -> Client
-const GQL_CONNECTION_ERROR = 'connection_error';
-// Server -> Client
-const GQL_CONNECTION_KEEP_ALIVE = 'ka';
-// Server -> Client
-const GQL_CONNECTION_TERMINATE = 'connection_terminate';
-// Client -> Server
-const GQL_START = 'start';
-// Client -> Server
-const GQL_DATA = 'data';
-// Server -> Client
-const GQL_ERROR = 'error';
-// Server -> Client
-const GQL_COMPLETE = 'complete';
-// Server -> Client
-const GQL_STOP = 'stop';
-// Client -> Server
+// Protocol messages.
+// @see https://github.com/apollographql/subscriptions-transport-ws/blob/master/src/message-types.ts
+const GQL_CONNECTION_INIT = 'connection_init'; // Client -> Server
+const GQL_CONNECTION_ACK = 'connection_ack'; // Server -> Client
+const GQL_CONNECTION_ERROR = 'connection_error'; // Server -> Client
+const GQL_CONNECTION_KEEP_ALIVE = 'ka'; // Server -> Client
+const GQL_CONNECTION_TERMINATE = 'connection_terminate'; // Client -> Server
+const GQL_START = 'start'; // Client -> Server
+const GQL_DATA = 'data'; // Server -> Client
+const GQL_ERROR = 'error'; // Server -> Client
+const GQL_COMPLETE = 'complete'; // Server -> Client
+const GQL_STOP = 'stop'; // Client -> Server
+
 const ON_OPERATION = 'graphql_on_operation';
 const ON_OPERATION_COMPLETE = 'graphql_on_operation_complete';
 const ON_CONNECT = 'graphql_on_connect';
 const ON_DISCONNECT = 'graphql_on_disconnect';
+
+const GRAPHQL_DEBUG = 'graphql_debug';
+const WEBSOCKET_SUB_PROTOCOL = 'graphql-ws';
+
+/**
+ * Sets GraphQL debug level.
+ *
+ * @param int $level GraphQL debug level
+ * @see https://webonyx.github.io/graphql-php/error-handling
+ */
+function debug(int $level = Debug::INCLUDE_DEBUG_MESSAGE): void
+{
+    Container\set(GRAPHQL_DEBUG, $level);
+}
+
+function debugging(): int
+{
+    return intval(Container\get(GRAPHQL_DEBUG, 0));
+}
 
 /**
  * Initializes a new GraphQL endpoint.
@@ -74,43 +73,83 @@ const ON_DISCONNECT = 'graphql_on_disconnect';
  * @param mixed $rootValue Some optional GraphQL root value
  * @param mixed $context Some optional GraphQL context
  * @param string $input JSON file input, for testing
- *
- * @return void
+ * @throws Exception
  */
-function init(Schema $schema, $rootValue = null, $context = null, string $input = 'php://input')
+function init(Schema $schema, $rootValue = null, $context = null, string $input = 'php://input'): void
 {
-    if (Request\header('Content-Type') == 'application/json') {
+    $result = execute($schema, input($input), $rootValue, $context);
+    Response\json($result);
+}
+
+/**
+ * Retrieves the GraphQL input from SAPI.
+ *
+ * @param string $input
+ * @return array<string, mixed>
+ * @throws Exception
+ */
+function input(string $input = 'php://input'): array
+{
+    /** @var string|null $contentType */
+    $contentType = Request\header('Content-Type');
+
+    if ($contentType !== null && preg_match('#application/json(;charset=utf-8)?#', $contentType)) {
         $data = Request\json($input);
     } else {
         $data = Request\post();
     }
 
-    if (!is_array($data)) {
-        throw new UnexpectedValueException('Input should be a JSON object');
+    if (!is_array($data) || !array_key_exists('query', $data)) {
+        throw new UnexpectedValueException('Input should be a JSON object with a query field');
     }
 
-    $result = execute($schema, $data, $rootValue, $context);
-
-    Response\json($result);
+    /** @var array<string, mixed> */
+    return $data;
 }
 
 /**
  * Executes a GraphQL query over a schema.
  *
  * @param Schema $schema The application root Schema
- * @param array $input Incoming query, operation and variables
+ * @param array<string, mixed> $input Incoming query, operation and variables
  * @param mixed $rootValue Some optional GraphQL root value
  * @param mixed $context Some optional GraphQL context
  *
- * @return array<mixed, mixed>|Promise
+ * @return array
  */
 function execute(Schema $schema, array $input, $rootValue = null, $context = null)
 {
+    /** @var string $query */
     $query = array_get($input, 'query');
+    /** @var string $operation */
     $operation = array_get($input, 'operationName');
+    /** @var array $variables */
     $variables = array_get($input, 'variables');
 
-    return GraphQL::executeQuery($schema, $query, $rootValue, $context, $variables, $operation)->toArray();
+    return GraphQL::executeQuery($schema, $query, $rootValue, $context, $variables, $operation)->toArray(debugging());
+}
+
+/**
+ * Same as execute(), but allows passing a custom Promise adapter.
+ *
+ * @param PromiseAdapter $adapter
+ * @param Schema $schema
+ * @param array<string, mixed> $input
+ * @param null $rootValue
+ * @param null $context
+ *
+ * @return Promise
+ */
+function promise_execute(PromiseAdapter $adapter, Schema $schema, array $input, $rootValue = null, $context = null): Promise
+{
+    /** @var string $query */
+    $query = array_get($input, 'query');
+    /** @var string $operation */
+    $operation = array_get($input, 'operationName');
+    /** @var array $variables */
+    $variables = array_get($input, 'variables');
+
+    return GraphQL::promiseToExecute($adapter, $schema, $query, $rootValue, $context, $variables, $operation);
 }
 
 /**
@@ -119,16 +158,14 @@ function execute(Schema $schema, array $input, $rootValue = null, $context = nul
  * @param Schema $schema GraphQL schema to execute
  *
  * @return Closure ServerRequestInterface -> IO
+ *
+ * @return Closure(ServerRequestInterface): JsonResponse
  */
 function psr7(Schema $schema): Closure
 {
-    return function (ServerRequestInterface $request) use ($schema) {
-        $input = json_decode((string)$request->getBody(), true);
-
-        if (!is_array($input)) {
-            throw new UnexpectedValueException('Input should be a JSON object');
-        }
-
+    return function (ServerRequestInterface $request) use ($schema): JsonResponse {
+        /** @var array<string, mixed> $input */
+        $input = decode($request->getBody()->getContents());
         $data = execute($schema, $input);
 
         return Diactoros\json($data);
@@ -141,16 +178,17 @@ function psr7(Schema $schema): Closure
  *
  * @param string $typeDefs
  * @param array $resolvers
- *
+ * @param callable|null $typeConfigDecorator
+ * @param array $options
  * @return Schema
  */
-function schema(string $typeDefs, array $resolvers = []): Schema
+function schema(string $typeDefs, array $resolvers = [], ?callable $typeConfigDecorator = null, array $options = []): Schema
 {
     if (!empty($resolvers)) {
         resolvers($resolvers);
     }
 
-    return BuildSchema::build($typeDefs);
+    return BuildSchema::build($typeDefs, $typeConfigDecorator, $options, $resolvers);
 }
 
 /**
@@ -162,46 +200,74 @@ function schema(string $typeDefs, array $resolvers = []): Schema
  */
 function resolvers(array $resolvers)
 {
-    Executor::setDefaultFieldResolver(function ($source, $args, $context, ResolveInfo $info) use ($resolvers) {
-        $fieldName = $info->fieldName;
+    Executor::setDefaultFieldResolver(
+        /**
+        * @param mixed $source
+        * @param mixed $context
+        */
+        static function ($source, array $args, $context, ResolveInfo $info) use ($resolvers) {
+            /** @var string|null $fieldName */
+            $fieldName = $info->fieldName;
 
-        if (is_null($fieldName)) {
-            throw new UnexpectedValueException('Could not get $fieldName from ResolveInfo');
-        }
+            if ($fieldName === null) {
+                throw new UnexpectedValueException('Could not get $fieldName from ResolveInfo');
+            }
 
-        if (is_null($info->parentType)) {
-            throw new UnexpectedValueException('Could not get $parentType from ResolveInfo');
-        }
+            /** @var ObjectType|null $parentType */
+            $parentType = $info->parentType;
 
-        $parentTypeName = $info->parentType->name;
+            if ($parentType === null) {
+                throw new UnexpectedValueException('Could not get $parentType from ResolveInfo');
+            }
 
-        if (isset($resolvers[$parentTypeName])) {
-            $resolver = $resolvers[$parentTypeName];
+            $parentTypeName = $parentType->name;
 
-            if (is_array($resolver)) {
-                if (array_key_exists($fieldName, $resolver)) {
-                    $value = $resolver[$fieldName];
+            if (isset($resolvers[$parentTypeName])) {
+                /** @var array|object $resolver */
+                $resolver = $resolvers[$parentTypeName];
 
-                    return is_callable($value) ? $value($source, $args, $context, $info) : $value;
+                if (is_array($resolver)) {
+                    if (array_key_exists($fieldName, $resolver)) {
+                        /** @var callable|mixed $value */
+                        $value = $resolver[$fieldName];
+                        return is_callable($value) ? $value($source, $args, $context, $info) : $value;
+                    }
+                }
+
+                if (is_object($resolver)) {
+                    if (isset($resolver->{$fieldName})) {
+                        /** @var callable|mixed $value */
+                        $value = $resolver->{$fieldName};
+                        return is_callable($value) ? $value($source, $args, $context, $info) : $value;
+                    }
                 }
             }
 
-            if (is_object($resolver)) {
-                if (isset($resolver->{$fieldName})) {
-                    $value = $resolver->{$fieldName};
-
-                    return is_callable($value) ? $value($source, $args, $context, $info) : $value;
-                }
-            }
+            return Executor::defaultFieldResolver($source, $args, $context, $info);
         }
-
-        return Executor::defaultFieldResolver($source, $args, $context, $info);
-    });
+    );
 }
 
 /**
- * Returns a new websocket server bootstrapped for GraphQL.
+ * Returns a GraphQL Subscriptions Manager.
  *
+ * @param Schema $schema
+ * @param array $filters
+ * @param array $rootValue
+ * @param array $context
+ *
+ * @return SubscriptionsManager
+ */
+function subscriptions_manager(
+    Schema $schema,
+    array $filters = [],
+    $rootValue = [],
+    $context = []
+): SubscriptionsManager {
+    return new SubscriptionsManager($schema, $filters, $rootValue, $context);
+}
+
+/**
  * @param Schema $schema
  * @param array $filters
  * @param string $host
@@ -210,6 +276,8 @@ function resolvers(array $resolvers)
  * @param array $context
  *
  * @return IoServer
+ * @deprecated Returns a new websocket server bootstrapped for GraphQL.
+ *
  */
 function subscriptions(
     Schema $schema,
@@ -219,12 +287,8 @@ function subscriptions(
     array $rootValue = [],
     array $context = []
 ): IoServer {
-    $manager = new SubscriptionsManager($schema, $filters, $rootValue, $context);
-    $server = new SubscriptionsServer($manager);
-    $websocket = new WsServer($server);
-    $http = new HttpServer($websocket);
-
-    return IoServer::factory($http, $port, $host);
+    $manager = subscriptions_manager($schema, $filters, $rootValue, $context);
+    return graphql_subscriptions($manager, $port, $host);
 }
 
 /**
@@ -246,220 +310,24 @@ function subscriptions_at(string $url)
  * @param mixed $payload
  *
  * @return void
+ * @throws BadOpcodeException
  */
-function publish(string $subscriptionName, $payload = null)
+function publish(string $subscriptionName, $payload = null): void
 {
+    $message = [
+        'type' => GQL_DATA,
+        'subscription' => $subscriptionName,
+        'payload' => $payload
+    ];
+
+    /** @var string $wsEndpoint */
     $wsEndpoint = Container\get('graphql_subscriptions_endpoint');
 
-    Client\connect($wsEndpoint, ['graphql-ws'])->then(function (WebSocket $conn) use ($subscriptionName, $payload) {
-        $request = [
-            'type' => GQL_DATA,
-            'subscription' => $subscriptionName,
-            'payload' => $payload
-        ];
-
-        $conn->send(json_encode($request));
-        $conn->close();
-    });
+    $client = new Client($wsEndpoint);
+    $client->send(encode($message));
 }
 
-function listen(string $eventName, callable $listener)
+function listen(string $eventName, callable $listener): void
 {
     Container\set($eventName, $listener);
-}
-
-/**
- * Returns a GraphQL value definition.
- *
- * @param string $name
- * @param string|null $description
- * @return Closure -> value -> array
- */
-function val(string $name, ?string $description = null): Closure
-{
-    return function ($value) use ($name, $description): array {
-        return [
-            'name' => $name,
-            'description' => $description,
-            'value' => $value
-        ];
-    };
-}
-
-/**
- *  Returns a GraphQL Enum type.
- *
- * @param string $name
- * @param string|null $description
- * @return Closure -> values -> EnumType
- */
-function enum(string $name, ?string $description = null): Closure
-{
-    return function (array $values) use ($name, $description): EnumType {
-        return new EnumType(['name' => $name, 'description' => $description, 'values' => $values]);
-    };
-}
-
-/**
- * Returns an evaluable field definition.
- *
- * @param Type $type
- * @param string $name
- * @param string|null $description
- * @return Closure -> (resolve, args) -> array
- */
-function field(Type $type, string $name, ?string $description = null): Closure
-{
-    return function ($resolve = null, array $args = null) use ($type, $name, $description) {
-        if (is_string($resolve)) {
-            $resolve = function () use ($resolve) {
-                return new $resolve();
-            };
-        }
-
-        return [
-            'type' => $type,
-            'name' => $name,
-            'description' => $description,
-            'resolve' => $resolve,
-            'args' => $args
-        ];
-    };
-}
-
-/**
- * Returns an evaluable String field definition.
- *
- * @param string|null $name
- * @param string|null $description
- * @return StringType|Closure -> (resolve, args) -> array
- */
-function str(?string $name = null, ?string $description = null)
-{
-    if (is_null($name)) {
-        return Type::string();
-    }
-
-    return field(Type::string(), $name, $description);
-}
-
-/**
- * Returns an evaluable Integer field definition.
- *
- * @param string|null $name
- * @param string|null $description
- * @return IntType|Closure -> (resolve, args) -> array
- */
-function int(?string $name = null, ?string $description = null)
-{
-    if (is_null($name)) {
-        return Type::int();
-    }
-
-    return field(Type::int(), $name, $description);
-}
-
-/**
- * Returns an evaluable Float field definition.
- *
- * @param string|null $name
- * @param string|null $description
- * @return FloatType|Closure -> (resolve, args) -> array
- */
-function float(?string $name = null, ?string $description = null)
-{
-    if (is_null($name)) {
-        return Type::float();
-    }
-
-    return field(Type::float(), $name, $description);
-}
-
-/**
- * Returns an evaluable Boolean field definition.
- *
- * @param string|null $name
- * @param string|null $description
- * @return BooleanType|Closure -> (resolve, args) -> array
- */
-function bool(?string $name = null, ?string $description = null)
-{
-    if (is_null($name)) {
-        return Type::boolean();
-    }
-
-    return field(Type::boolean(), $name, $description);
-}
-
-/**
- * @param Type $type
- * @param string|null $name
- * @param string|null $description
- * @return ListOfType|Closure -> (resolve, args) -> array
- */
-function list_of(Type $type, ?string $name = null, ?string $description = null)
-{
-    if (is_null($name)) {
-        return Type::listOf($type);
-    }
-
-    return field(Type::listOf($type), $name, $description);
-}
-
-/**
- * Returns an evaluable Id field definition.
- *
- * @param string|null $name
- * @param string|null $description
- * @return IDType|Closure -> (resolve, args) -> array
- */
-function id(?string $name = null, ?string $description = null)
-{
-    if (is_null($name)) {
-        return Type::id();
-    }
-
-    return field(Type::id(), $name, $description);
-}
-
-/**
- * Returns an InterfaceType factory function.
- *
- * @param string $name
- * @param string|null $description
- * @return Closure -> fields -> resolve -> InterfaceType
- */
-function itype(string $name, ?string $description = null)
-{
-    return function (array $fields = []) use ($name, $description) {
-        return function (callable $resolveType) use ($name, $description, $fields) {
-            return new InterfaceType([
-                'name' => $name,
-                'description' => $description,
-                'fields' => $fields,
-                'resolveType' => $resolveType
-            ]);
-        };
-    };
-}
-
-/**
- * Returns an ObjectType factory function.
- *
- * @param string $name
- * @param string|null $description
- * @return Closure -> fields -> resolve -> ObjectType
- */
-function type(string $name, ?string $description = null): Closure
-{
-    return function (array $fields = []) use ($name, $description): Closure {
-        return function (callable $resolve = null) use ($name, $description, $fields): ObjectType {
-            return new ObjectType([
-                'name' => $name,
-                'description' => $description,
-                'fields' => $fields,
-                'resolve' => $resolve
-            ]);
-        };
-    };
 }

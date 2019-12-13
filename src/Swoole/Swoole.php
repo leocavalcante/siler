@@ -1,19 +1,32 @@
-<?php
-
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 /*
  * Siler module to work with Swoole.
  */
 
 namespace Siler\Swoole;
 
+use Closure;
+use GraphQL\Error\FormattedError;
+use GraphQL\Type\Schema;
 use OutOfBoundsException;
 use Siler\Container;
+use Siler\Encoder\Json;
+use Siler\GraphQL\SubscriptionsManager;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
-use Swoole\Http\Server;
+use Swoole\Http\Server as HttpServer;
+use Swoole\Server;
+use Swoole\Server\Port as ServerPort;
+use Swoole\Table;
+use Swoole\WebSocket\Frame;
+use Swoole\WebSocket\Server as WebsocketServer;
+use Throwable;
 use UnexpectedValueException;
+use function Siler\array_get;
+use function Siler\GraphQL\execute;
+use const Siler\GraphQL\GQL_DATA;
+use const Siler\GraphQL\GRAPHQL_DEBUG;
+use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
 use const Siler\Route\DID_MATCH;
 
 const SWOOLE_HTTP_REQUEST = 'swoole_http_request';
@@ -24,26 +37,42 @@ const SWOOLE_WEBSOCKET_ONOPEN = 'swoole_websocket_onopen';
 const SWOOLE_WEBSOCKET_ONCLOSE = 'swoole_websocket_onclose';
 
 /**
+ * @template T
+ * @param callable(Request, Response): T $handler
+ * @return Closure(Request, Response): T
+ */
+function http_handler(callable $handler): Closure
+{
+    return
+        /**
+         * @param Request $request
+         * @param Response $response
+         * @return T
+         */
+        function (Request $request, Response $response) use ($handler) {
+            Container\set(DID_MATCH, false);
+            Container\set(SWOOLE_HTTP_REQUEST_ENDED, false);
+            Container\set(SWOOLE_HTTP_REQUEST, $request);
+            Container\set(SWOOLE_HTTP_RESPONSE, $response);
+
+            /** @var T */
+            return $handler($request, $response);
+        };
+}
+
+/**
  * Returns a Swoole HTTP server.
  *
- * @param callable $handler The callable to call on each request.
+ * @template T
+ * @param callable(Request, Response): T $handler The callable to call on each request.
  * @param int $port The port binding (defaults to 9501).
  * @param string $host The host binding (defaults to 0.0.0.0).
- *
- * @return Server
+ * @return HttpServer
  */
-function http(callable $handler, int $port = 9501, string $host = '0.0.0.0'): Server
+function http(callable $handler, int $port = 9501, string $host = '0.0.0.0'): HttpServer
 {
-    $server = new Server($host, $port);
-
-    $server->on('request', function ($request, $response) use ($handler) {
-        Container\set(DID_MATCH, false);
-        Container\set(SWOOLE_HTTP_REQUEST_ENDED, false);
-        Container\set(SWOOLE_HTTP_REQUEST, $request);
-        Container\set(SWOOLE_HTTP_RESPONSE, $response);
-
-        return $handler($request, $response);
-    });
+    $server = new HttpServer($host, $port);
+    $server->on('request', http_handler($handler));
 
     return $server;
 }
@@ -53,6 +82,7 @@ function http(callable $handler, int $port = 9501, string $host = '0.0.0.0'): Se
  */
 function request(): Request
 {
+    /** @var Request */
     return Container\get(SWOOLE_HTTP_REQUEST);
 }
 
@@ -61,6 +91,7 @@ function request(): Request
  */
 function response(): Response
 {
+    /** @var Response */
     return Container\get(SWOOLE_HTTP_RESPONSE);
 }
 
@@ -69,14 +100,12 @@ function response(): Response
  *
  * @param string $content Content for the output.
  * @param int $status HTTP response status code.
- * @param array $headers HTTP response headers.
- *
- * @return null
+ * @param array<string, string> $headers HTTP response headers.
  */
-function emit(string $content, int $status = 200, array $headers = [])
+function emit(string $content, int $status = 200, array $headers = []): void
 {
     if (Container\get(SWOOLE_HTTP_REQUEST_ENDED) === true) {
-        return null;
+        return;
     }
 
     response()->status($status);
@@ -88,8 +117,6 @@ function emit(string $content, int $status = 200, array $headers = [])
     Container\set(SWOOLE_HTTP_REQUEST_ENDED, true);
 
     response()->end($content);
-
-    return null;
 }
 
 /**
@@ -97,33 +124,26 @@ function emit(string $content, int $status = 200, array $headers = [])
  *
  * @param mixed $data
  * @param int $status
- * @param array $headers
- *
- * @return null
+ * @param array<string, string> $headers
  */
-function json($data, int $status = 200, array $headers = [])
+function json($data, int $status = 200, array $headers = []): void
 {
-    $content = json_encode($data);
-
-    if (false === $content) {
-        $error = json_last_error_msg();
-
-        throw new UnexpectedValueException($error);
-    }
-
+    $content = Json\encode($data);
     $headers = array_merge(['Content-Type' => 'application/json'], $headers);
 
-    return emit($content, $status, $headers);
+    emit($content, $status, $headers);
 }
 
 /**
- * Attach hooks for Swoole WebSocket server events.
- * `open` => Called when a client connects to the server.
- * `close` => Called when a client disconnects from the server.
+ *  Attach hooks for Swoole WebSocket server events.
+ *  `open` => Called when a client connects to the server.
+ *  `close` => Called when a client disconnects from the server.
  *
  * @param array $hooks The hooks to be attached.
+ *
+ * @return void
  */
-function websocket_hooks(array $hooks)
+function websocket_hooks(array $hooks): void
 {
     if (array_key_exists('open', $hooks)) {
         Container\set(SWOOLE_WEBSOCKET_ONOPEN, $hooks['open']);
@@ -137,34 +157,48 @@ function websocket_hooks(array $hooks)
 /**
  * Returns a Swoole\WebSocket\Server.
  *
- * @param callable $handler The handler to call on each message.
+ * @template T
+ *
+ * @param callable(Frame, WebsocketServer): T $handler The handler to call on each message.
  * @param int $port The port binding (defaults to 9502).
  * @param string $host The host binding (defaults to 0.0.0.0).
  *
- * @return \Swoole\WebSocket\Server
+ * @return WebsocketServer
+ *
  */
-function websocket(callable $handler, int $port = 9502, string $host = '0.0.0.0'): \Swoole\WebSocket\Server
+function websocket(callable $handler, int $port = 9502, string $host = '0.0.0.0'): WebsocketServer
 {
-    $server = new \Swoole\WebSocket\Server($host, $port);
+    $server = new WebsocketServer($host, $port);
     Container\set(SWOOLE_WEBSOCKET_SERVER, $server);
 
-    $server->on('open', function ($server, $request) {
-        $onOpen = Container\get(SWOOLE_WEBSOCKET_ONOPEN);
+    $server->on('open', static function (WebsocketServer $server, Request $request): void {
+        /** @var callable|null $onopen */
+        $onopen = Container\get(SWOOLE_WEBSOCKET_ONOPEN);
 
-        if (!is_null($onOpen)) {
-            $onOpen($request, $server);
+        if (is_callable($onopen)) {
+            $onopen($request, $server);
         }
     });
 
-    $server->on('message', function ($server, $frame) use ($handler) {
-        return $handler($frame, $server);
-    });
+    $server->on(
+        'message',
+        /**
+         * @param WebsocketServer $server
+         * @param Frame $frame
+         *
+         * @return T
+         */
+        static function (WebsocketServer $server, Frame $frame) use ($handler) {
+            return $handler($frame, $server);
+        }
+    );
 
-    $server->on('close', function ($server, $fd) {
-        $onClose = Container\get(SWOOLE_WEBSOCKET_ONCLOSE);
+    $server->on('close', function (WebsocketServer $server, int $fd): void {
+        /** @var callable|null $onclose */
+        $onclose = Container\get(SWOOLE_WEBSOCKET_ONCLOSE);
 
-        if (!is_null($onClose)) {
-            $onClose($fd, $server);
+        if (is_callable($onclose)) {
+            $onclose($fd, $server);
         }
     });
 
@@ -177,79 +211,319 @@ function websocket(callable $handler, int $port = 9502, string $host = '0.0.0.0'
  * @param string $message
  * @param int $fd
  *
- * @return mixed
+ * @return void
  */
-function push(string $message, int $fd)
+function push(string $message, int $fd): void
 {
     if (!Container\has(SWOOLE_WEBSOCKET_SERVER)) {
         throw new OutOfBoundsException('There is no server to push.');
     }
 
+    /** @var WebsocketServer $server */
     $server = Container\get(SWOOLE_WEBSOCKET_SERVER);
-
-    return $server->push($fd, $message);
+    $server->push($fd, $message);
 }
 
 /**
- * Broadcasts a message to every websocket client.
+ *  Broadcasts a message to every websocket client.
  *
  * @param string $message
  */
-function broadcast(string $message)
+function broadcast(string $message): void
 {
     if (!Container\has(SWOOLE_WEBSOCKET_SERVER)) {
         throw new OutOfBoundsException('There is no server to broadcast.');
     }
 
+    /** @var WebsocketServer $server */
     $server = Container\get(SWOOLE_WEBSOCKET_SERVER);
 
+    /**
+     * @psalm-suppress MissingPropertyType
+     * @var int $fd
+     */
     foreach ($server->connections as $fd) {
         push($message, $fd);
     }
 }
 
 /**
- * Enable CORS in a Swoole Response.
+ *  Enable CORS in a Swoole Response.
  *
  * @param string $origin Comma-separated list of allowed origins, defaults to "*".
- * @param string $headers Comma-separated list of allowed headers, defaults to "Content-Type".
+ * @param string $headers Comma-separated list of allowed headers, defaults to "Content-Type, Authorization".
  * @param string $methods Comma-separated list of allowed methods, defaults to "GET, POST, PUT, DELETE".
+ *
+ * @return void
  */
-function cors(string $origin = '*', string $headers = 'Content-Type', string $methods = 'GET, POST, PUT, DELETE')
+function cors(string $origin = '*', string $headers = 'Content-Type, Authorization', string $methods = 'GET, POST, PUT, DELETE'): void
 {
+    /** @var Response $response */
     $response = Container\get(SWOOLE_HTTP_RESPONSE);
 
     $response->header('Access-Control-Allow-Origin', $origin);
     $response->header('Access-Control-Allow-Headers', $headers);
     $response->header('Access-Control-Allow-Methods', $methods);
 
+    /** @var Request $request */
     $request = Container\get(SWOOLE_HTTP_REQUEST);
 
-    if ('OPTIONS' === $request->server['request_method']) {
-        emit('');
+    /**
+     * @psalm-suppress MissingPropertyType
+     * @var array<string, string> $request_server
+     */
+    $request_server = $request->server;
+
+    if ('OPTIONS' === $request_server['request_method']) {
+        no_content();
     }
 }
 
 /**
  * Sugar to Swoole`s Http Request rawContent().
- *
- * @return string
  */
-function raw(): string
+function raw(): ?string
 {
-    $content = Container\get(SWOOLE_HTTP_REQUEST)->rawContent();
+    /** @var mixed|null $content */
+    $content = request()->rawContent();
 
-    if (empty($content)) {
-        return '';
+    if ($content === null) {
+        return null;
     }
 
-    return $content;
+    return strval($content);
 }
 
 /**
- * Sugar for HTTP 204 No Content.
+ *  Sugar for HTTP 204 No Content.
+ *
+ * @param array<string, string> $headers
+ *
+ * @return void
  */
-function no_content()
+function no_content(array $headers = []): void
 {
-    emit('', 204);
+    emit('', 204, $headers);
+}
+
+/**
+ *  Sugar for HTTP 404 Not Found.
+ *
+ * @param string $content
+ * @param array<string, string> $headers
+ *
+ * @return void
+ */
+function not_found(string $content = '', array $headers = []): void
+{
+    emit($content, 404, $headers);
+}
+
+/**
+ * Creates and handles GraphQL subscriptions messages over Swoole WebSockets.
+ *
+ * @param SubscriptionsManager $manager
+ * @param int $port
+ * @param string $host
+ *
+ * @return WebsocketServer
+ */
+function graphql_subscriptions(SubscriptionsManager $manager, int $port = 3000, string $host = '0.0.0.0'): WebsocketServer
+{
+    $workers = new Table(1024);
+    $workers->column('id', Table::TYPE_INT);
+    $workers->create();
+
+    $handle =
+        /**
+         * @param array<string, string> $message
+         * @param int $fd
+         */
+        static function (array $message, int $fd) use ($manager): void {
+            $conn = new GraphQLSubscriptionsConnection($fd);
+            $manager->handle($conn, $message);
+        };
+
+    $handler = static function (Frame $frame, WebsocketServer $server) use ($workers, $handle): void {
+        /**
+         * @psalm-suppress MissingPropertyType
+         * @var array<string, string> $message
+         */
+        $message = Json\decode(strval($frame->data));
+        /** @psalm-suppress MissingPropertyType */
+        $handle($message, intval($frame->fd));
+
+        if ($message['type'] === GQL_DATA) {
+            /** @var array{id: int} $worker */
+            foreach ($workers as $worker) {
+                /** @psalm-suppress MissingPropertyType */
+                if ($worker['id'] !== $server->worker_id) {
+                    /** @var int $encoded_frame */
+                    $encoded_frame = Frame::pack($frame);
+                    /** @var string $worker_id */
+                    $worker_id = $worker['id'];
+                    $server->sendMessage($encoded_frame, $worker_id);
+                }
+            }
+        }
+    };
+
+    $server = websocket($handler, $port, $host);
+    $server->set(['websocket_subprotocol' => WEBSOCKET_SUB_PROTOCOL]);
+
+    $server->on('workerStart', function (WebsocketServer $unusedServer, int $workerId) use ($workers) {
+        $workers[$workerId] = ['id' => $workerId];
+    });
+
+    $server->on('pipeMessage', function (WebsocketServer $unusedServer, int $unusedFromWorkerId, string $message) use ($handle) {
+        /** @var Frame $frame */
+        $frame = Frame::unpack($message);
+
+        /**
+         * @psalm-suppress MissingPropertyType
+         * @var string $frame_data
+         */
+        $frame_data = $frame->data;
+
+        /**
+         * @psalm-suppress MissingPropertyType
+         * @var int $frame_fd
+         */
+        $frame_fd = $frame->fd;
+
+        /** @var array<string, string> $decoded_frame_data */
+        $decoded_frame_data = Json\decode($frame_data);
+
+        $handle($decoded_frame_data, $frame_fd);
+    });
+
+    return $server;
+}
+
+/**
+ * Gets the Bearer token from the Authorization request header.
+ *
+ * @return string|null
+ */
+function bearer(): ?string
+{
+    /**
+     * @psalm-suppress MissingPropertyType
+     * @var array<string, string> $header
+     */
+    $header = request()->header;
+    /** @var string|null $token */
+    $token = array_get($header, 'authorization');
+
+    if ($token === null) {
+        return null;
+    }
+
+    $token = substr($token, 7);
+
+    if ($token === false) {
+        return null;
+    }
+
+    return $token;
+}
+
+/**
+ * Creates a HTTP server from a server port.
+ *
+ * @param Server $server
+ * @param callable $handler
+ * @param int $port
+ * @param string $host
+ *
+ * @return ServerPort
+ */
+function http_server_port(Server $server, callable $handler, int $port = 80, string $host = '0.0.0.0'): ServerPort
+{
+    /**
+     * @psalm-suppress UndefinedConstant
+     * @var string $sock_type
+     */
+    $sock_type = SWOOLE_SOCK_TCP;
+
+    /** @var ServerPort $server_port */
+    $server_port = $server->addlistener($host, $port, $sock_type);
+    $server_port->set(['open_http_protocol' => true]);
+    $server_port->on('request', http_handler($handler));
+
+    return $server_port;
+}
+
+/**
+ * @template RootValue
+ * @template Context
+ *
+ * @param Schema $schema
+ * @param RootValue $rootValue
+ * @param Context $context
+ *
+ * @return Closure(): void
+ */
+function graphql_handler(Schema $schema, $rootValue = null, $context = null): Closure
+{
+    return static function () use ($schema, $rootValue, $context): void {
+        try {
+            $raw = raw();
+
+            if ($raw === null) {
+                throw new UnexpectedValueException('Request without content');
+            }
+
+            /** @var array<string, mixed> $input */
+            $input = Json\decode($raw);
+            $result = execute($schema, $input, $rootValue, $context);
+        } catch (Throwable $exception) {
+            $result = FormattedError::createFromException($exception, Container\get(GRAPHQL_DEBUG, 0) > 0);
+        } finally {
+            json($result);
+        }
+    };
+}
+
+/**
+ * HTTP redirect sugar.
+ *
+ * @param string $location
+ * @param int $status
+ * @param array<string, string> $headers
+ * @param string $content
+ */
+function redirect(string $location = '/', int $status = 302, array $headers = [], string $content = 'Redirect'): void
+{
+    emit($content, $status, array_merge($headers, ['Location' => $location]));
+}
+
+/**
+ * Calls each callback in the pipeline until one returns null.
+ * The value of previous callback is given to the next, starting with null.
+ *
+ * @template T
+ * @param array<callable(Request, Response, T|null): (T|null)> $pipeline
+ * @return Closure(Request, Response): (T|null)
+ */
+function middleware(array $pipeline): Closure
+{
+    return
+        /**
+         * @param Request $request
+         * @param Response $response
+         * @return T|null
+         */
+        static function (Request $request, Response $response) use ($pipeline) {
+            /** @var T|null $value */
+            $value = null;
+
+            foreach ($pipeline as $callback) {
+                if (($value = $callback($request, $response, $value)) === null) {
+                    return $value;
+                }
+            }
+
+            return $value;
+        };
 }

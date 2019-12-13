@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 /*
  * Helpers functions for HTTP requests.
  */
@@ -9,7 +7,11 @@ namespace Siler\Http\Request;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Siler\Container;
+use Siler\Swoole\RequestInterface;
+use Swoole\Http\Request;
+use function locale_get_default;
 use function Siler\array_get;
+use function Siler\Encoder\Json\decode;
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 /**
@@ -43,40 +45,34 @@ function params(string $input = 'php://input'): array
  * Returns JSON decoded raw request body.
  *
  * @param string $input The input file to check on
- *
- * @return array|bool|float|int|string
+ * @return array|string|int|float|object|bool
  */
 function json(string $input = 'php://input')
 {
-    $params = json_decode(raw($input), true);
-
-    if (is_null($params)) {
-        return [];
-    }
-
-    return $params;
+    return decode(raw($input));
 }
 
 /**
  * Returns all the HTTP headers.
  *
- * @return string[]
+ * @return array<string, string>
  */
 function headers(): array
 {
+    /** @var array<string> $serverKeys */
     $serverKeys = array_keys($_SERVER);
     $httpHeaders = array_reduce(
         $serverKeys,
-        function (array $headers, $key): array {
-            if ($key == 'CONTENT_TYPE') {
+        function (array $headers, string $key): array {
+            if ($key === 'CONTENT_TYPE') {
                 $headers[] = $key;
             }
 
-            if ($key == 'CONTENT_LENGTH') {
+            if ($key === 'CONTENT_LENGTH') {
                 $headers[] = $key;
             }
 
-            if (substr($key, 0, 5) == 'HTTP_') {
+            if (substr($key, 0, 5) === 'HTTP_') {
                 $headers[] = $key;
             }
 
@@ -85,8 +81,8 @@ function headers(): array
         []
     );
 
-    $values = array_map(function (string $header) {
-        return $_SERVER[$header];
+    $values = array_map(function (string $header): string {
+        return strval($_SERVER[$header]);
     }, $httpHeaders);
 
     $headers = array_map(function (string $header) {
@@ -108,13 +104,19 @@ function headers(): array
  * Returns the request header or the given default.
  *
  * @param string $key The header name
- * @param mixed $default The default value when header isnt present
+ * @param string|null $default The default value when header isn't present
  *
- * @return mixed
+ * @return string|null
  */
-function header(string $key, $default = null)
+function header(string $key, ?string $default = null)
 {
-    return array_get(headers(), $key, $default, true);
+    $val = array_get(headers(), $key, $default, true);
+
+    if (is_array($val)) {
+        return null;
+    }
+
+    return $val;
 }
 
 /**
@@ -127,6 +129,7 @@ function header(string $key, $default = null)
  */
 function get(?string $key = null, $default = null)
 {
+    /** @var array<string, string> $_GET */
     return array_get($_GET, $key, $default);
 }
 
@@ -136,10 +139,11 @@ function get(?string $key = null, $default = null)
  * @param string|null $key
  * @param mixed $default The default value to be returned when the key don't exists
  *
- * @return mixed
+ * @return string|array<string, string>|null
  */
-function post(?string $key = null, $default = null)
+function post(?string $key = null, string $default = null)
 {
+    /** @var array<string, string> $_POST */
     return array_get($_POST, $key, $default);
 }
 
@@ -149,10 +153,11 @@ function post(?string $key = null, $default = null)
  * @param string|null $key
  * @param mixed $default The default value to be returned when the key don't exists
  *
- * @return mixed
+ * @return string|null|array
  */
 function input(?string $key = null, $default = null)
 {
+    /** @var array<string, string> $_REQUEST */
     return array_get($_REQUEST, $key, $default);
 }
 
@@ -161,11 +166,11 @@ function input(?string $key = null, $default = null)
  *
  * @param string|null $key
  * @param mixed $default The default value to be returned when the key don't exists
- *
- * @return mixed
+ * @return array|null|string
  */
 function file(?string $key = null, $default = null)
 {
+    /** @var array<string, array> $_FILES */
     return array_get($_FILES, $key, $default);
 }
 
@@ -177,16 +182,30 @@ function file(?string $key = null, $default = null)
  */
 function method(): string
 {
-    if ($method = header('X-Http-Method-Override')) {
+    $method = header('X-Http-Method-Override');
+
+    if ($method !== null) {
         return $method;
     }
 
-    if ($method = array_get($_POST, '_method')) {
-        return $method;
+    /**
+     * @var array<string, string> $_POST
+     * @var string|null $method
+     */
+    $method = array_get($_POST, '_method');
+
+    if ($method !== null) {
+        return strval($method);
     }
 
-    if ($method = array_get($_SERVER, 'REQUEST_METHOD')) {
-        return $method;
+    /**
+     * @var array<string, string> $_SERVER
+     * @var string|null $method
+     */
+    $method = array_get($_SERVER, 'REQUEST_METHOD');
+
+    if ($method !== null) {
+        return strval($method);
     }
 
     return 'GET';
@@ -222,32 +241,41 @@ function method_is($method, ?string $requestMethod = null): bool
  */
 function accepted_locales(): array
 {
-    $langs = [];
+    $languages = [];
 
     if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         // break up string into pieces (languages and q factors)
         preg_match_all(
             '/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i',
-            $_SERVER['HTTP_ACCEPT_LANGUAGE'],
+            strval($_SERVER['HTTP_ACCEPT_LANGUAGE']),
             $lang_parse
         );
 
-        if (count($lang_parse[1])) {
+        if (is_countable($lang_parse[1]) && count($lang_parse[1]) > 0) {
             // create a list like "en" => 0.8
-            $langs = array_combine($lang_parse[1], $lang_parse[4]);
+            /** @var array<mixed, array-key> $lang_parse_1 */
+            $lang_parse_1 = $lang_parse[1];
+            /** @var array<mixed, mixed> $lang_parse_4 */
+            $lang_parse_4 = $lang_parse[4];
+            $languages = array_combine($lang_parse_1, $lang_parse_4);
 
-            // set default to 1 for any without q factor
-            foreach ($langs as $lang => $val) {
+            /**
+             * Set default to 1 for any without q factor
+             *
+             * @var string $lang
+             * @var string $val
+             */
+            foreach ($languages as $lang => $val) {
                 if ($val === '') {
-                    $langs[$lang] = 1;
+                    $languages[$lang] = 1;
                 }
             }
 
-            arsort($langs, SORT_NUMERIC | SORT_DESC);
+            arsort($languages, SORT_NUMERIC | SORT_DESC);
         }
     } //end if
 
-    return $langs;
+    return $languages;
 }
 
 /**
@@ -267,10 +295,12 @@ function accepted_locales(): array
  */
 function recommended_locale(string $default = ''): string
 {
-    $locale = array_get($_GET, 'lang', '');
+    /** @var array<string, string> $_GET */
+    $locale = strval(array_get($_GET, 'lang', ''));
 
     if (empty($locale)) {
-        $locale = array_get($_SESSION, 'lang', '');
+        /** @var array<string, string> $_SESSION */
+        $locale = strval(array_get($_SESSION, 'lang', ''));
     }
 
     if (empty($locale)) {
@@ -283,10 +313,7 @@ function recommended_locale(string $default = ''): string
     }
 
     if (empty($locale) && function_exists('locale_get_default')) {
-        /* @phan-suppress-next-line PhanUndeclaredFunction */
-        /** @noinspection PhpFullyQualifiedNameUsageInspection */
-        /** @noinspection PhpComposerExtensionStubsInspection */
-        $locale = \locale_get_default();
+        $locale = locale_get_default();
     }
 
     return $locale;
@@ -330,13 +357,15 @@ function bearer($request = null): ?string
 function authorization_header($request = null): ?string
 {
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
+        /** @var Request $request */
         $request = Container\get(SWOOLE_HTTP_REQUEST);
+        /** @var string|null */
         return $request->header['authorization'] ?? null;
     }
 
     if ($request instanceof ServerRequestInterface) {
-        return $request->getHeaderLine('Authorization') ?? null;
+        return $request->getHeaderLine('Authorization');
     }
 
-    return header('Authorization') ?? null;
+    return header('Authorization');
 }

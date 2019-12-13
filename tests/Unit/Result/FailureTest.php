@@ -6,6 +6,7 @@ namespace Siler\Test\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Siler\Result\Failure;
+use function Siler\Encoder\Json\encode;
 
 class FailureTest extends TestCase
 {
@@ -27,15 +28,15 @@ class FailureTest extends TestCase
     public function testJson()
     {
         $failure = new Failure(null, 1, 'test');
-        $this->assertSame('{"error":true,"id":"test"}', json_encode($failure));
+        $this->assertSame('{"error":true,"id":"test"}', encode($failure));
 
         $failure = new Failure('foo', 1, 'test');
-        $this->assertSame('{"error":true,"id":"test","message":"foo"}', json_encode($failure));
+        $this->assertSame('{"error":true,"id":"test","message":"foo"}', encode($failure));
 
         $failure = new Failure(['foo' => 'bar'], 1, 'test');
-        $this->assertSame('{"error":true,"id":"test","foo":"bar"}', json_encode($failure));
+        $this->assertSame('{"error":true,"id":"test","foo":"bar"}', encode($failure));
 
         $failure = new Failure(true, 1, 'test');
-        $this->assertSame('{"error":true,"id":"test","data":true}', json_encode($failure));
+        $this->assertSame('{"error":true,"id":"test","data":true}', encode($failure));
     }
 }

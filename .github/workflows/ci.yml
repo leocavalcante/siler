@@ -1,0 +1,27 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:      
+      matrix:
+        php-versions: ['7.3', '7.4']
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Validate
+      run: composer validate
+
+    - name: Install
+      run: composer install --prefer-dist --no-progress --no-suggest
+
+    - name: Build
+      run: composer build
+    
+    - uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}

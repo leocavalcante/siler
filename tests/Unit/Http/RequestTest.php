@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
+use JsonException;
 use PHPUnit\Framework\TestCase;
 use Siler\Container;
 use Siler\Http\Request;
@@ -41,8 +42,8 @@ class RequestTest extends TestCase
         $this->assertArrayHasKey('foo', $params);
         $this->assertSame('bar', $params['foo']);
 
-        $params = Request\json();
-        $this->assertEmpty($params);
+        $this->expectException(JsonException::class);
+        Request\json();
     }
 
     public function testHeaders()

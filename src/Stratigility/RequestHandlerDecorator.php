@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 /*
  * Siler's internal MessageComponent.
  */
@@ -16,9 +14,15 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class RequestHandlerDecorator implements RequestHandlerInterface
 {
+    /** @var callable(ServerRequestInterface, array): ResponseInterface */
     private $handler;
+    /** @var array */
     private $pathParams;
 
+    /**
+     * @param callable $handler
+     * @param array $pathParams
+     */
     public function __construct(callable $handler, array $pathParams = [])
     {
         $this->handler = $handler;
@@ -31,7 +35,6 @@ class RequestHandlerDecorator implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $handler = $this->handler;
-
         return $handler($request, $this->pathParams);
     }
 }
