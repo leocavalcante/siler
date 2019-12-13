@@ -245,15 +245,15 @@ function not(callable $function): Closure
 /**
  * Sum of $left and $right.
  *
- * @param numeric $right
- * @return Closure(numeric): numeric
+ * @param int|float $right
+ * @return Closure(int|float): (int|float)
  */
 function add($right): Closure
 {
     return
         /**
-         * @param numeric $left
-         * @return numeric
+         * @param int|float $left
+         * @return int|float
          */
         static function ($left) use ($right) {
             return $left + $right;
@@ -263,15 +263,15 @@ function add($right): Closure
 /**
  * Product of $left and $right.
  *
- * @param numeric $right
- * @return Closure(numeric): numeric
+ * @param int|float $right
+ * @return Closure(int|float): (int|float)
  */
 function mul($right): Closure
 {
     return
         /**
-         * @param numeric $left
-         * @return numeric
+         * @param int|float $left
+         * @return int|float
          */
         static function ($left) use ($right) {
             return $left * $right;
@@ -281,16 +281,16 @@ function mul($right): Closure
 /**
  * Difference of $left and $right.
  *
- * @param numeric $right
+ * @param int|float $right
  *
- * @return Closure(numeric): numeric
+ * @return Closure(int|float): (int|float)
  */
 function sub($right): Closure
 {
     return
         /**
-         * @param numeric $left
-         * @return numeric
+         * @param int|float $left
+         * @return int|float
          */
         static function ($left) use ($right) {
             return $left - $right;
@@ -300,16 +300,16 @@ function sub($right): Closure
 /**
  * Quotient of $left and $right.
  *
- * @param numeric $right
+ * @param int|float $right
  *
- * @return Closure(numeric): numeric
+ * @return Closure(int|float): (int|float)
  */
 function div($right): Closure
 {
     return
         /**
-         * @param numeric $left
-         * @return numeric
+         * @param int|float $left
+         * @return int|float
          */
         static function ($left) use ($right) {
             return $left / $right;
@@ -319,16 +319,16 @@ function div($right): Closure
 /**
  * Remainder of $left divided by $right.
  *
- * @param numeric $right
- * @return Closure(numeric): numeric
+ * @param int|float $right
+ * @return Closure(int|float): (int|float)
  */
 function mod($right): Closure
 {
     return
         /**
-         * @param numeric $left
+         * @param int|float $left
          *
-         * @return numeric
+         * @return int|float
          * @return int
          */
         static function ($left) use ($right): int {
@@ -725,5 +725,91 @@ function lmap(callable $callback): Closure
          */
         function ($list) use ($callback): array {
             return map($list, $callback);
+        };
+}
+
+/**
+ * Pipes functions calls.
+ *
+ * @param callable[] $callbacks
+ * @return Closure
+ */
+function pipe(array $callbacks): Closure
+{
+    return
+        /**
+         * @param mixed|null $initial
+         * @return mixed
+         */
+        static function ($initial = null) use ($callbacks) {
+            return array_reduce(
+                $callbacks,
+                /**
+                 * @param mixed $result
+                 * @param callable $callback
+                 * @return mixed
+                 */
+                static function ($result, callable $callback) {
+                    return $callback($result);
+                },
+                $initial
+            );
+        };
+}
+
+/**
+ * Pipes callbacks until null is reached,
+ * it returns the last non-null value
+ *
+ * @param callable[] $callbacks
+ * @return Closure
+ */
+function conduit(array $callbacks): Closure
+{
+    return
+        /**
+         * @param mixed|null $initial
+         * @return mixed
+         */
+        static function ($initial = null) use ($callbacks) {
+            /** @var mixed $value */
+            $value = $initial;
+            /** @var mixed $last */
+            $last = $value;
+
+            foreach ($callbacks as $callback) {
+                /** @var mixed $value */
+                $value = $callback($value);
+
+                if ($value === null) {
+                    return $last;
+                }
+
+                /** @var mixed $last */
+                $last = $value;
+            }
+
+            return $last;
+        };
+}
+
+/**
+ * Returns a lazy version of concat.
+ *
+ * @param string $separator
+ *
+ * @return Closure(string|false|null): Closure(string): string
+ */
+function lconcat(string $separator = ''): Closure
+{
+    return
+        /**
+         * @param string|false|null $b
+         * @return Closure(string): string
+         */
+        static function ($b) use ($separator): Closure {
+            return static function (string $a) use ($separator, $b) {
+                return concat($separator)($a, $b);
+            };
         };
 }
