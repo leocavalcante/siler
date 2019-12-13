@@ -81,6 +81,8 @@ const isnull = '\Siler\Functional\isnull';
 const concat = '\Siler\Functional\concat';
 const lazy = '\Siler\Functional\lazy';
 const call = '\Siler\Functional\call';
+const map = '\Siler\Functional\map';
+const lmap = '\Siler\Functional\lmap';
 
 
 namespace Siler\Functional\Monad;
