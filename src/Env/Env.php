@@ -2,6 +2,8 @@
 
 namespace Siler\Env;
 
+use UnexpectedValueException;
+
 /**
  * Gets a variable from the environment.
  *
@@ -16,7 +18,7 @@ function env_var(string $key, ?string $default = null): string
 
     if ($value === false) {
         if ($default === null) {
-            throw new \UnexpectedValueException("Environment variable $key not found");
+            throw new UnexpectedValueException("Environment variable $key not found");
         }
 
         return $default;

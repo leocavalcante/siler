@@ -683,3 +683,47 @@ function call(callable $callable, ...$args)
     /** @var T */
     return call_user_func_array($callable, $args);
 }
+
+/**
+ * An universal array_map for any Traversable
+ * and with a "fixed" argument order.
+ *
+ * @template I
+ * @template O
+ * @param \Traversable<I> $list
+ * @param callable(I, array-key): O $callback
+ * @return O[]
+ */
+function map($list, callable $callback): array
+{
+    $agg = [];
+
+    /**
+     * @var array-key $key
+     */
+    foreach ($list as $key => $value) {
+        $agg[$key] = $callback($value, $key);
+    }
+
+    return $agg;
+}
+
+/**
+ * Lazy version of map.
+ *
+ * @template I
+ * @template O
+ * @param callable(I, array-key): O $callback
+ * @return Closure(\Traversable<I>): O[]
+ */
+function lmap(callable $callback): Closure
+{
+    return
+        /**
+         * @param \Traversable<I> $list
+         * @return O[]
+         */
+        function ($list) use ($callback): array {
+            return map($list, $callback);
+        };
+}

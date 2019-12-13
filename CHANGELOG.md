@@ -1,8 +1,10 @@
 # 1.8.0
 
 # 1.7.2
+- Support middleware-like pipelines in Swoole with `Swoole\middleware`
 - Add `Swoole\redirect()` sugar
 - New `Siler\Env` API
+- Add `map` and `lmap` functions
 
 # 1.7.1
 - Fix string callable on route
