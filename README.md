@@ -33,26 +33,14 @@ $ composer require leocavalcante/siler
 
 That is it. Actually, Siler is a library, not a framework (maybe a micro-framework), the overall program flow of control is dictated by you. So, no hidden configs or predefined directory structures.
 
-#### Or you can start by bootstrapping
-
-```bash
-$ composer create-project siler/project hello-siler
-```
-It's a minimal project template, just with Siler and a convenient `serve` script:
-```bash
-$ cd hello-siler/
-$ composer serve
-```
-
 ### Hello World
 
 ```php
-use Siler\Functional as λ;
-use Siler\Route;
+use function Siler\{Functional\puts, Route\get};
 
-Route\get('/', λ\puts('Hello World'));
+get('/', puts('hello world'));
 ```
-Nothing more, nothing less. You don't need even tell Siler to `run` or something like that.
+Nothing more, nothing less. You don't need even tell Siler to `run` or something like that (`puts` works like a lazily evaluated `echo`).
 
 As said before, Siler aims to use PHP files and functions as first-class citizens, so no Controllers here. If you want to call something more self-container instead of a Closure, you can simply give a PHP filename then Siler will require it for you.
 
