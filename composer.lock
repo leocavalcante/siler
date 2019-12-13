@@ -1,20 +1,20 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
-        "This file is @generated automatically"
-    ],
-    "content-hash": "b7a538369233423c00272ae28bfacee9",
-    "packages": [],
-    "packages-dev": [
-        {
-            "name": "amphp/amp",
-            "version": "v2.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/amphp/amp.git",
-                "reference": "13930a582947831bb66ff1aeac28672fd91c38ea"
-            },
+  "_readme": [
+    "This file locks the dependencies of your project to a known state",
+    "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+    "This file is @generated automatically"
+  ],
+  "content-hash": "3a556550a5120ef068998c312dd4eac8",
+  "packages": [],
+  "packages-dev": [
+    {
+      "name": "amphp/amp",
+      "version": "v2.4.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/amphp/amp.git",
+        "reference": "13930a582947831bb66ff1aeac28672fd91c38ea"
+      },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/amphp/amp/zipball/13930a582947831bb66ff1aeac28672fd91c38ea",
@@ -179,11 +179,11 @@
                 "MIT"
             ],
             "authors": [
-                {
-                  "name": "Chris Boden",
-                  "role": "Developer",
-                  "email": "cboden@gmail.com"
-                }
+              {
+                "name": "Chris Boden",
+                "role": "Developer",
+                "email": "cboden@gmail.com"
+              }
             ],
             "description": "PHP WebSocket library",
             "homepage": "http://socketo.me",
@@ -696,24 +696,106 @@
                     "homepage": "https://redbeanphp.com"
                 }
             ],
-            "description": "RedBeanPHP ORM",
-            "homepage": "https://redbeanphp.com/",
-            "keywords": [
-                "orm"
-            ],
-            "time": "2019-11-30T16:55:12+00:00"
+          "description": "RedBeanPHP ORM",
+          "homepage": "https://redbeanphp.com/",
+          "keywords": [
+            "orm"
+          ],
+          "time": "2019-11-30T16:55:12+00:00"
         },
-        {
-            "name": "guzzlehttp/psr7",
-            "version": "1.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/guzzle/psr7.git",
-                "reference": "239400de7a173fe9901b9ac7c06497751f00727a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/239400de7a173fe9901b9ac7c06497751f00727a",
+    {
+      "name": "google/protobuf",
+      "version": "v3.11.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/protocolbuffers/protobuf-php.git",
+        "reference": "418f1b96c2020918a11dcd3709b7b6d01dbf025a"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/418f1b96c2020918a11dcd3709b7b6d01dbf025a",
+        "reference": "418f1b96c2020918a11dcd3709b7b6d01dbf025a",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=5.5.0"
+      },
+      "require-dev": {
+        "phpunit/phpunit": ">=4.8.0"
+      },
+      "suggest": {
+        "ext-bcmath": "Need to support JSON deserialization"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "Google\\Protobuf\\": "src/Google/Protobuf",
+          "GPBMetadata\\Google\\Protobuf\\": "src/GPBMetadata/Google/Protobuf"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "BSD-3-Clause"
+      ],
+      "description": "proto library for PHP",
+      "homepage": "https://developers.google.com/protocol-buffers/",
+      "keywords": [
+        "proto"
+      ],
+      "time": "2019-12-03T06:32:14+00:00"
+    },
+    {
+      "name": "grpc/grpc",
+      "version": "1.25.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/grpc/grpc-php.git",
+        "reference": "bdb165d6712db0cfcc35edae2d14fb2b00cabc88"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/grpc/grpc-php/zipball/bdb165d6712db0cfcc35edae2d14fb2b00cabc88",
+        "reference": "bdb165d6712db0cfcc35edae2d14fb2b00cabc88",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=5.5.0"
+      },
+      "require-dev": {
+        "google/auth": "^v1.3.0"
+      },
+      "suggest": {
+        "ext-protobuf": "For better performance, install the protobuf C extension.",
+        "google/protobuf": "To get started using grpc quickly, install the native protobuf library."
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "Grpc\\": "src/lib/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "Apache-2.0"
+      ],
+      "description": "gRPC library for PHP",
+      "homepage": "https://grpc.io",
+      "keywords": [
+        "rpc"
+      ],
+      "time": "2019-11-07T00:47:40+00:00"
+    },
+    {
+      "name": "guzzlehttp/psr7",
+      "version": "1.6.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/guzzle/psr7.git",
+        "reference": "239400de7a173fe9901b9ac7c06497751f00727a"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/guzzle/psr7/zipball/239400de7a173fe9901b9ac7c06497751f00727a",
                 "reference": "239400de7a173fe9901b9ac7c06497751f00727a",
                 "shasum": ""
             },

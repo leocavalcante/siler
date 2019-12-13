@@ -38,7 +38,9 @@
         "webonyx/graphql-php": "^0.13",
         "zendframework/zend-diactoros": "^2.2",
         "zendframework/zend-httphandlerrunner": "^1.1",
-        "zendframework/zend-stratigility": "^3.2"
+        "zendframework/zend-stratigility": "^3.2",
+        "grpc/grpc": "^1.25",
+        "google/protobuf": "^3.11"
     },
     "autoload": {
         "psr-4": {
@@ -54,6 +56,7 @@
             "src/Functional/Functional.php",
             "src/Functional/Monad/Monad.php",
             "src/GraphQL/GraphQL.php",
+            "src/Grpc/Grpc.php",
             "src/Http/Http.php",
             "src/Http/Request.php",
             "src/Http/Response.php",

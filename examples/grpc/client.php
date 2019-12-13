@@ -19,8 +19,8 @@ go(function () {
     $request = new HelloRequest();
     $request->setName('Siler');
 
-    /** @var $reply string|HelloReply */
-    /** @var $status int */
+    /** @var string|HelloReply $reply */
+    /** @var int $status */
     list($reply, $status) = $greeter->sayHello($request);
     $greeter->close();
 
