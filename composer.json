@@ -26,6 +26,8 @@
         "cboden/ratchet": "^0.4.1",
         "cocur/slugify": "^3.2",
         "gabordemooij/redbean": "^5.4",
+        "google/protobuf": "^3.11",
+        "grpc/grpc": "^1.25",
         "monolog/monolog": "^2.0",
         "phpunit/phpunit": "^8.4",
         "squizlabs/php_codesniffer": "^3.5",
@@ -38,9 +40,7 @@
         "webonyx/graphql-php": "^0.13",
         "zendframework/zend-diactoros": "^2.2",
         "zendframework/zend-httphandlerrunner": "^1.1",
-        "zendframework/zend-stratigility": "^3.2",
-        "grpc/grpc": "^1.25",
-        "google/protobuf": "^3.11"
+        "zendframework/zend-stratigility": "^3.2"
     },
     "autoload": {
         "psr-4": {

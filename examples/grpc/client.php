@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
 
+use Grpc\ChannelCredentials;
 use Helloworld\GreeterClient;
 use Helloworld\HelloReply;
 use Helloworld\HelloRequest;
@@ -13,23 +14,20 @@ require_once $base_path . '/examples/grpc/vendor/autoload.php';
 Runtime::enableCoroutine();
 
 go(function () {
-    $greeter = new GreeterClient('localhost:9090', []);
-    $greeter->start();
+    $greeter = new GreeterClient('localhost:9090', [
+        'credentials' => ChannelCredentials::createInsecure(),
+    ]);
 
     $request = new HelloRequest();
     $request->setName('Siler');
 
-    /** @var string|HelloReply $reply */
-    /** @var int $status */
-    list($reply, $status) = $greeter->sayHello($request);
-    $greeter->close();
+    /** @var HelloReply|null $reply */
+    list($reply, $status) = $greeter->sayHello($request)->wait();
 
-    echo "Status: $status\n";
-
-    if (is_string($reply)) {
-        echo "$reply\n";
-        exit(1);
-    } else {
-        echo $reply->getMessage() . "\n";
+    if ($reply === null) {
+        echo $status->details, PHP_EOL;
+        return;
     }
+
+    echo $reply->getMessage(), PHP_EOL;
 });

@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "3a556550a5120ef068998c312dd4eac8",
+  "content-hash": "95ebbb9d2f1bd8e42f3eef85219ebda6",
   "packages": [],
   "packages-dev": [
     {
@@ -15,16 +15,16 @@
         "url": "https://github.com/amphp/amp.git",
         "reference": "13930a582947831bb66ff1aeac28672fd91c38ea"
       },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/amphp/amp/zipball/13930a582947831bb66ff1aeac28672fd91c38ea",
-                "reference": "13930a582947831bb66ff1aeac28672fd91c38ea",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7"
-            },
-            "require-dev": {
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/amphp/amp/zipball/13930a582947831bb66ff1aeac28672fd91c38ea",
+        "reference": "13930a582947831bb66ff1aeac28672fd91c38ea",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=7"
+      },
+      "require-dev": {
                 "amphp/php-cs-fixer-config": "dev-master",
                 "amphp/phpunit-util": "^1",
                 "ext-json": "*",
@@ -181,8 +181,8 @@
             "authors": [
               {
                 "name": "Chris Boden",
-                "role": "Developer",
-                "email": "cboden@gmail.com"
+                "email": "cboden@gmail.com",
+                "role": "Developer"
               }
             ],
             "description": "PHP WebSocket library",
@@ -686,16 +686,16 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Gabor de Mooij",
-                    "email": "gabor@redbeanphp.com",
-                    "homepage": "https://redbeanphp.com"
-                }
-            ],
+          "license": [
+            "BSD-3-Clause"
+          ],
+          "authors": [
+            {
+              "name": "Gabor de Mooij",
+              "email": "gabor@redbeanphp.com",
+              "homepage": "https://redbeanphp.com"
+            }
+          ],
           "description": "RedBeanPHP ORM",
           "homepage": "https://redbeanphp.com/",
           "keywords": [
@@ -705,16 +705,16 @@
         },
     {
       "name": "google/protobuf",
-      "version": "v3.11.1",
+      "version": "v3.11.2",
       "source": {
         "type": "git",
         "url": "https://github.com/protocolbuffers/protobuf-php.git",
-        "reference": "418f1b96c2020918a11dcd3709b7b6d01dbf025a"
+        "reference": "0864882396746542ead01fc002e1644b9490dbe8"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/418f1b96c2020918a11dcd3709b7b6d01dbf025a",
-        "reference": "418f1b96c2020918a11dcd3709b7b6d01dbf025a",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/0864882396746542ead01fc002e1644b9490dbe8",
+        "reference": "0864882396746542ead01fc002e1644b9490dbe8",
         "shasum": ""
       },
       "require": {
@@ -742,7 +742,7 @@
       "keywords": [
         "proto"
       ],
-      "time": "2019-12-03T06:32:14+00:00"
+      "time": "2019-12-14T00:45:36+00:00"
     },
     {
       "name": "grpc/grpc",
@@ -796,16 +796,16 @@
       "dist": {
         "type": "zip",
         "url": "https://api.github.com/repos/guzzle/psr7/zipball/239400de7a173fe9901b9ac7c06497751f00727a",
-                "reference": "239400de7a173fe9901b9ac7c06497751f00727a",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0",
-                "psr/http-message": "~1.0",
-                "ralouphie/getallheaders": "^2.0.5 || ^3.0.0"
-            },
-            "provide": {
-                "psr/http-message-implementation": "1.0"
+        "reference": "239400de7a173fe9901b9ac7c06497751f00727a",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=5.4.0",
+        "psr/http-message": "~1.0",
+        "ralouphie/getallheaders": "^2.0.5 || ^3.0.0"
+      },
+      "provide": {
+        "psr/http-message-implementation": "1.0"
             },
             "require-dev": {
                 "ext-zlib": "*",
@@ -1023,9 +1023,9 @@
             "authors": [
               {
                 "name": "Christian Weiske",
-                "role": "Developer",
                 "email": "cweiske@cweiske.de",
-                "homepage": "http://github.com/cweiske/jsonmapper/"
+                "homepage": "http://github.com/cweiske/jsonmapper/",
+                "role": "Developer"
               }
             ],
             "description": "Map nested JSON structures onto PHP classes",
@@ -1221,18 +1221,18 @@
             "authors": [
               {
                 "name": "Arne Blankerts",
-                "role": "Developer",
-                "email": "arne@blankerts.de"
+                "email": "arne@blankerts.de",
+                "role": "Developer"
               },
               {
                 "name": "Sebastian Heuer",
-                "role": "Developer",
-                "email": "sebastian@phpeople.de"
+                "email": "sebastian@phpeople.de",
+                "role": "Developer"
               },
               {
                 "name": "Sebastian Bergmann",
-                "role": "Developer",
-                "email": "sebastian@phpunit.de"
+                "email": "sebastian@phpunit.de",
+                "role": "Developer"
               }
             ],
             "description": "Component for reading phar.io manifest information from a PHP Archive (PHAR)",
@@ -1268,18 +1268,18 @@
             "authors": [
               {
                 "name": "Arne Blankerts",
-                "role": "Developer",
-                "email": "arne@blankerts.de"
+                "email": "arne@blankerts.de",
+                "role": "Developer"
               },
               {
                 "name": "Sebastian Heuer",
-                "role": "Developer",
-                "email": "sebastian@phpeople.de"
+                "email": "sebastian@phpeople.de",
+                "role": "Developer"
               },
               {
                 "name": "Sebastian Bergmann",
-                "role": "Developer",
-                "email": "sebastian@phpunit.de"
+                "email": "sebastian@phpunit.de",
+                "role": "Developer"
               }
             ],
             "description": "Library for handling version information and constraints",
@@ -1654,8 +1654,8 @@
             "authors": [
               {
                 "name": "Sebastian Bergmann",
-                "role": "lead",
-                "email": "sebastian@phpunit.de"
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
               }
             ],
             "description": "FilterIterator implementation that filters files based on a list of suffixes.",
@@ -1696,8 +1696,8 @@
             "authors": [
               {
                 "name": "Sebastian Bergmann",
-                "role": "lead",
-                "email": "sebastian@phpunit.de"
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
               }
             ],
             "description": "Simple template engine.",
@@ -1745,8 +1745,8 @@
             "authors": [
               {
                 "name": "Sebastian Bergmann",
-                "role": "lead",
-                "email": "sebastian@phpunit.de"
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
               }
             ],
             "description": "Utility class for timing",
@@ -2268,8 +2268,8 @@
             "authors": [
               {
                 "name": "Chris Boden",
-                "role": "Developer",
-                "email": "cboden@gmail.com"
+                "email": "cboden@gmail.com",
+                "role": "Developer"
               }
             ],
             "description": "RFC6455 WebSocket protocol handler",
@@ -3163,8 +3163,8 @@
             "authors": [
               {
                 "name": "Sebastian Bergmann",
-                "role": "lead",
-                "email": "sebastian@phpunit.de"
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
               }
             ],
             "description": "Collection of value objects that represent the types of the PHP type system",
@@ -3206,8 +3206,8 @@
             "authors": [
               {
                 "name": "Sebastian Bergmann",
-                "role": "lead",
-                "email": "sebastian@phpunit.de"
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
               }
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
@@ -4110,8 +4110,8 @@
             "authors": [
               {
                 "name": "Arne Blankerts",
-                "role": "Developer",
-                "email": "arne@blankerts.de"
+                "email": "arne@blankerts.de",
+                "role": "Developer"
               }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",

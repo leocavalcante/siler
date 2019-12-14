@@ -4,8 +4,6 @@ namespace Siler\Grpc;
 
 use Closure;
 use Google\Protobuf\Internal\Message;
-use Grpc\Client;
-use Grpc\Parser;
 use ReflectionObject;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
@@ -25,20 +23,17 @@ const CONTENT_TYPE = 'application/grpc';
  */
 function server(array $services, int $port = 9090, string $host = '0.0.0.0'): Server
 {
-    $server = new Server($host, $port, SWOOLE_BASE);
-    $server->set(['open_http2_protocol' => true]);
+    $server = new Server($host, $port);
+    $server->set([
+        'enable_coroutine' => true,
+        'open_http2_protocol' => true,
+    ]);
 
     $server->on('request', function (Request $request, Response $response) use ($services) {
         $finish = finisher($response);
 
         try {
             $path = $request->server['request_uri'];
-            var_dump($path);
-
-            if ($path == Client::CLOSE_KEYWORD) {
-                return $finish(0);
-            }
-
             $path = trim($path, '/');
 
             list($serviceName, $method) = explode('/', $path);
@@ -61,6 +56,7 @@ function server(array $services, int $port = 9090, string $host = '0.0.0.0'): Se
 
             return $finish(0, '', Parser::serializeMessage($reply));
         } catch (Throwable $exception) {
+            var_dump($exception->getMessage());
             return $finish(2, $exception->getMessage());
         }
     });
@@ -79,8 +75,8 @@ function finisher(Response $response): Closure
 {
     $response->status(200);
 
-    $response->header(':status', '200');
     $response->header('content-type', CONTENT_TYPE);
+    $response->header('content-encoding', 'identity');
     $response->header('trailer', implode(', ', [STATUS_TRAILER, MESSAGE_TRAILER]));
 
     return function (int $status, string $message = '', string $content = '') use ($response) {
