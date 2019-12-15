@@ -1,6 +1,6 @@
 {
     "name": "siler/grpc",
-    "description": "Siler gRPC example",
+    "description": "Siler gRPC PHP client example",
     "type": "project",
     "license": "MIT",
     "authors": [

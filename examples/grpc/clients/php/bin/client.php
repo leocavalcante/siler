@@ -6,10 +6,8 @@ use Helloworld\HelloReply;
 use Helloworld\HelloRequest;
 use Swoole\Runtime;
 
-$base_path = realpath(__DIR__ . '/../..');
-
-require_once $base_path . '/vendor/autoload.php';
-require_once $base_path . '/examples/grpc/vendor/autoload.php';
+require_once __DIR__ . '/../../../../../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 Runtime::enableCoroutine();
 

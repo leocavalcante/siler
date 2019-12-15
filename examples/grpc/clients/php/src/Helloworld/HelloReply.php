@@ -27,7 +27,7 @@ class HelloReply extends Message
      * @type string $message
      * }
      */
-    public function __construct($data = null)
+    public function __construct($data = NULL)
     {
         Helloworld::initOnce();
         parent::__construct($data);
@@ -49,9 +49,11 @@ class HelloReply extends Message
      */
     public function setMessage($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->message = $var;
 
         return $this;
     }
+
 }
+

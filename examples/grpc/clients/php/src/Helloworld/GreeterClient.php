@@ -26,17 +26,13 @@ class GreeterClient extends BaseStub
      * @param array $metadata metadata
      * @param array $options call options
      */
-    public function sayHello(
-        HelloRequest $argument,
-        $metadata = [],
-        $options = []
-    ) {
-        return $this->_simpleRequest(
-            '/helloworld.Greeter/sayHello',
+    public function sayHello(HelloRequest $argument,
+                             $metadata = [], $options = [])
+    {
+        return $this->_simpleRequest('/helloworld.Greeter/sayHello',
             $argument,
             ['\Helloworld\HelloReply', 'decode'],
-            $metadata,
-            $options
-        );
+            $metadata, $options);
     }
+
 }

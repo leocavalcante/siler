@@ -1,15 +1,24 @@
 <?php declare(strict_types=1);
 
-use Helloworld\Greeter;
+namespace Helloworld;
+
 use Siler\Grpc;
 use Swoole\Runtime;
 
-$base_path = realpath(__DIR__ . '/../..');
-
-require_once $base_path . '/vendor/autoload.php';
-require_once $base_path . '/examples/grpc/vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/clients/php/vendor/autoload.php';
 
 Runtime::enableCoroutine();
+
+class Greeter
+{
+    public function sayHello(HelloRequest $request): HelloReply
+    {
+        $reply = new HelloReply();
+        $reply->setMessage('Hello ' . $request->getName());
+        return $reply;
+    }
+}
 
 $services = ['helloworld.Greeter' => new Greeter()];
 $server = Grpc\server($services);
