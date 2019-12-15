@@ -1,8 +1,14 @@
-const client = new hello_proto.Greeter('localhost:9090', grpc.credentials.createInsecure());
+const grpc = require('grpc');
 
-client.sayHello({name: 'you'}, function (err, response) {
-  console.log('Greeting:', response.message);
-});
-client.sayHelloAgain({name: 'you'}, function (err, response) {
-  console.log('Greeting:', response.message);
+const messages = require('./helloworld_pb');
+const services = require('./helloworld_grpc_pb');
+
+const client = new services.GreeterClient('localhost:9090',
+  grpc.credentials.createInsecure());
+
+const request = new messages.HelloRequest();
+request.setName('Siler');
+
+client.sayHello(request, function (err, response) {
+  console.log('Greeting:', response.getMessage());
 });

@@ -54,33 +54,37 @@ class HelloRequest extends $pb.GeneratedMessage {
   set name($core.String v) {
     $_setString(0, v);
   }
-
   @$pb.TagNumber(1)
   $core.bool hasName() => $_has(0);
-
   @$pb.TagNumber(1)
   void clearName() => clearField(1);
 }
 
 class HelloReply extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('HelloReply',
-      package: const $pb.PackageName('helloworld'), createEmptyInstance: create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      'HelloReply', package: const $pb.PackageName('helloworld'),
+      createEmptyInstance: create)
     ..aOS(1, 'message')
-    ..hasRequiredFields = false;
+    ..hasRequiredFields = false
+  ;
 
   HelloReply._() : super();
 
   factory HelloReply() => create();
 
   factory HelloReply.fromBuffer($core.List<$core.int> i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromBuffer(i, r);
+      [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()
+        ..mergeFromBuffer(i, r);
 
   factory HelloReply.fromJson($core.String i,
-          [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
-      create()..mergeFromJson(i, r);
+      [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) =>
+      create()
+        ..mergeFromJson(i, r);
 
-  HelloReply clone() => HelloReply()..mergeFromMessage(this);
+  HelloReply clone() =>
+      HelloReply()
+        ..mergeFromMessage(this);
 
   HelloReply copyWith(void Function(HelloReply) updates) =>
       super.copyWith((message) => updates(message as HelloReply));
@@ -106,10 +110,9 @@ class HelloReply extends $pb.GeneratedMessage {
   set message($core.String v) {
     $_setString(0, v);
   }
-
   @$pb.TagNumber(1)
   $core.bool hasMessage() => $_has(0);
-
   @$pb.TagNumber(1)
   void clearMessage() => clearField(1);
 }
+
