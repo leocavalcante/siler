@@ -9,6 +9,7 @@
 namespace Siler\Functional;
 
 use Closure;
+use Traversable;
 
 /**
  * Identity function.
@@ -690,7 +691,7 @@ function call(callable $callable, ...$args)
  *
  * @template I
  * @template O
- * @param \Traversable<I> $list
+ * @param Traversable<I> $list
  * @param callable(I, array-key): O $callback
  * @return O[]
  */
@@ -720,7 +721,7 @@ function lmap(callable $callback): Closure
 {
     return
         /**
-         * @param \Traversable<I> $list
+         * @param Traversable<I> $list
          * @return O[]
          */
         function ($list) use ($callback): array {

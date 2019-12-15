@@ -17,9 +17,8 @@
         <whitelist>
             <directory>src</directory>
             <exclude>
-                <!-- Needs implementations, there are only stubs -->
+                <directory>src/Grpc</directory>
                 <directory>src/Swoole</directory>
-                <!-- They are just consts -->
                 <file>src/facades.php</file>
             </exclude>
         </whitelist>

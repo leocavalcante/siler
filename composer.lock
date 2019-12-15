@@ -25,16 +25,16 @@
         "php": ">=7"
       },
       "require-dev": {
-                "amphp/php-cs-fixer-config": "dev-master",
-                "amphp/phpunit-util": "^1",
-                "ext-json": "*",
-                "phpstan/phpstan": "^0.8.5",
-                "phpunit/phpunit": "^6.0.9 | ^7",
-                "react/promise": "^2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
+        "amphp/php-cs-fixer-config": "dev-master",
+        "amphp/phpunit-util": "^1",
+        "ext-json": "*",
+        "phpstan/phpstan": "^0.8.5",
+        "phpunit/phpunit": "^6.0.9 | ^7",
+        "react/promise": "^2"
+      },
+      "type": "library",
+      "extra": {
+        "branch-alias": {
                     "dev-master": "2.0.x-dev"
                 }
             },
@@ -676,16 +676,16 @@
                 "reference": "cf1c4e63e64d7d34f88e7ebe77cb0d10f68fb9be",
                 "shasum": ""
             },
-            "require": {
-                "php": ">=5.3.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "RedBeanPHP\\": "RedBeanPHP"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
+          "require": {
+            "php": ">=5.3.4"
+          },
+          "type": "library",
+          "autoload": {
+            "psr-4": {
+              "RedBeanPHP\\": "RedBeanPHP"
+            }
+          },
+          "notification-url": "https://packagist.org/downloads/",
           "license": [
             "BSD-3-Clause"
           ],
@@ -806,16 +806,16 @@
       },
       "provide": {
         "psr/http-message-implementation": "1.0"
-            },
-            "require-dev": {
-                "ext-zlib": "*",
-                "phpunit/phpunit": "~4.8.36 || ^5.7.27 || ^6.5.8"
-            },
-            "suggest": {
-                "zendframework/zend-httphandlerrunner": "Emit PSR-7 responses"
-            },
-            "type": "library",
-            "extra": {
+      },
+      "require-dev": {
+        "ext-zlib": "*",
+        "phpunit/phpunit": "~4.8.36 || ^5.7.27 || ^6.5.8"
+      },
+      "suggest": {
+        "zendframework/zend-httphandlerrunner": "Emit PSR-7 responses"
+      },
+      "type": "library",
+      "extra": {
                 "branch-alias": {
                     "dev-master": "1.6-dev"
                 }
@@ -937,20 +937,20 @@
             ],
             "time": "2019-11-13T10:27:43+00:00"
         },
-        {
-            "name": "myclabs/deep-copy",
-            "version": "1.9.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "007c053ae6f31bba39dfa19a7726f56e9763bbea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/007c053ae6f31bba39dfa19a7726f56e9763bbea",
-                "reference": "007c053ae6f31bba39dfa19a7726f56e9763bbea",
-                "shasum": ""
-            },
+    {
+      "name": "myclabs/deep-copy",
+      "version": "1.9.4",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/myclabs/DeepCopy.git",
+        "reference": "579bb7356d91f9456ccd505f24ca8b667966a0a7"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/579bb7356d91f9456ccd505f24ca8b667966a0a7",
+        "reference": "579bb7356d91f9456ccd505f24ca8b667966a0a7",
+        "shasum": ""
+      },
             "require": {
                 "php": "^7.1"
             },
@@ -983,7 +983,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2019-08-09T12:45:53+00:00"
+      "time": "2019-12-15T19:12:40+00:00"
         },
         {
             "name": "netresearch/jsonmapper",
@@ -1435,20 +1435,20 @@
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "time": "2019-08-22T18:11:29+00:00"
         },
-        {
-            "name": "phpoption/phpoption",
-            "version": "1.7.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/schmittjoh/php-option.git",
-                "reference": "318ad673ba36e53e10ca510aec1c54b4f2a5f2ae"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/318ad673ba36e53e10ca510aec1c54b4f2a5f2ae",
-                "reference": "318ad673ba36e53e10ca510aec1c54b4f2a5f2ae",
-                "shasum": ""
-            },
+    {
+      "name": "phpoption/phpoption",
+      "version": "1.7.2",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/schmittjoh/php-option.git",
+        "reference": "77f7c4d2e65413aff5b5a8cc8b3caf7a28d81959"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/77f7c4d2e65413aff5b5a8cc8b3caf7a28d81959",
+        "reference": "77f7c4d2e65413aff5b5a8cc8b3caf7a28d81959",
+        "shasum": ""
+      },
             "require": {
                 "php": "^5.5.9 || ^7.0"
             },
@@ -1488,7 +1488,7 @@
                 "php",
                 "type"
             ],
-            "time": "2019-12-13T00:10:22+00:00"
+      "time": "2019-12-15T19:35:24+00:00"
         },
         {
             "name": "phpspec/prophecy",

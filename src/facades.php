@@ -110,6 +110,11 @@ const publish = '\Siler\GraphQL\publish';
 const listen = '\Siler\GraphQL\listen';
 
 
+namespace Siler\Grpc;
+const server = '\Siler\Grpc\server';
+const finisher = '\Siler\Grpc\finisher';
+
+
 namespace Siler\Http;
 const cookie = '\Siler\Http\cookie';
 const session = '\Siler\Http\session';

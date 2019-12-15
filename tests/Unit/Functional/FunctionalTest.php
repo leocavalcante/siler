@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
+use Iterator;
 use PHPUnit\Framework\TestCase;
 use Siler\Functional as f;
 
@@ -271,7 +272,7 @@ class FunctionalTest extends TestCase
             return $i * 2;
         };
 
-        $iterator = function (): \Iterator {
+        $iterator = function (): Iterator {
             $i = 1;
 
             while ($i <= 3) {

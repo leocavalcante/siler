@@ -2,25 +2,16 @@
 
 namespace Siler\Grpc;
 
+use Exception;
 use Google\Protobuf\Internal\Message;
-use Grpc\StringifyAble;
-use swoole_http2_response;
+use ReflectionClass;
 
 class Parser
 {
-    private const GRPC_ERROR_NO_RESPONSE = -1;
 
-    public static function serializeMessage($data)
+    public static function serialize(Message $message): string
     {
-        if (method_exists($data, 'encode')) {
-            $data = $data->encode();
-        } elseif (method_exists($data, 'serializeToString')) {
-            $data = $data->serializeToString();
-        } elseif (method_exists($data, 'serialize')) {
-            /** @noinspection PhpUndefinedMethodInspection */
-            $data = $data->serialize();
-        }
-        return self::pack((string)$data);
+        return self::pack($message->serializeToString());
     }
 
     public static function pack(string $data): string
@@ -29,49 +20,24 @@ class Parser
     }
 
     /**
-     * @param null|swoole_http2_response $response
-     * @param $deserialize
-     * @return StringifyAble[]|Message[]|swoole_http2_response[]
+     * @param ReflectionClass $message_class
+     * @param string $value
+     * @return Message|null
+     * @throws Exception
      */
-    public static function parseResponse($response, $deserialize): array
-    {
-        if (!$response) {
-            return ['No response', self::GRPC_ERROR_NO_RESPONSE, $response];
-        }
-        if ($response->statusCode !== 200) {
-            $message = $response->headers['grpc-message'] ?? 'Http status Error';
-            $code = $response->headers['grpc-status'] ?? ($response->errCode ?: $response->statusCode);
-            return [$message, (int)$code, $response];
-        }
-        $grpc_status = (int)($response->headers['grpc-status'] ?? 0);
-        if ($grpc_status !== 0) {
-            return [$response->headers['grpc-message'] ?? 'Unknown error', $grpc_status, $response];
-        }
-        $data = $response->data;
-        $reply = self::deserializeMessage($deserialize, $data);
-        $status = (int)($response->headers['grpc-status'] ?? 0 ?: 0);
-        return [$reply, $status, $response];
-    }
-
-    public static function deserializeMessage($deserialize, string $value)
+    public static function deserialize(ReflectionClass $message_class, string $value): ?Message
     {
         if (empty($value)) {
             return null;
         }
+
         $value = self::unpack($value);
-        if (is_array($deserialize)) {
-            [$className, $deserializeFunc] = $deserialize;
-            /** @var Message $object */
-            $object = new $className();
-            if ($deserializeFunc && method_exists($object, $deserializeFunc)) {
-                $object->{$deserializeFunc}($value);
-            } else {
-                // @noinspection PhpUndefinedMethodInspection
-                $object->mergeFromString($value);
-            }
-            return $object;
-        }
-        return call_user_func($deserialize, $value);
+
+        /** @var Message $object */
+        $object = $message_class->newInstance();
+        $object->mergeFromString($value);
+
+        return $object;
     }
 
     public static function unpack(string $data): string
