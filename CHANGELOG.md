@@ -1,4 +1,5 @@
 # 1.7.2
+- Experimental support for gRPC servers
 - Support middleware-like pipelines in Swoole with `Swoole\middleware`
 - Add `Swoole\redirect()` sugar
 - New `Siler\Env` API
@@ -11,7 +12,7 @@
 
 # 1.7.0
 - Drops PHP 7.2 support and adds PHP 7.4 support
-- Statically-typed Psalm support 
+- Statically-typed Psalm support
 - GraphQL Subscriptions with Swoole's WebSocket
 - Fix initial data on GraphQL subscriptions
 - GraphQL Enum resolvers

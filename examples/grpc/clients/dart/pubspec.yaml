@@ -1,0 +1,10 @@
+name: helloworld
+description: Dart gRPC sample client.
+
+environment:
+  sdk: '>=2.2.0 <3.0.0'
+
+dependencies:
+  async:
+  grpc:
+  protobuf:

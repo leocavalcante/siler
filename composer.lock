@@ -1,40 +1,40 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
-        "This file is @generated automatically"
-    ],
-    "content-hash": "b7a538369233423c00272ae28bfacee9",
-    "packages": [],
-    "packages-dev": [
-        {
-            "name": "amphp/amp",
-            "version": "v2.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/amphp/amp.git",
-                "reference": "13930a582947831bb66ff1aeac28672fd91c38ea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/amphp/amp/zipball/13930a582947831bb66ff1aeac28672fd91c38ea",
-                "reference": "13930a582947831bb66ff1aeac28672fd91c38ea",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7"
-            },
-            "require-dev": {
-                "amphp/php-cs-fixer-config": "dev-master",
-                "amphp/phpunit-util": "^1",
-                "ext-json": "*",
-                "phpstan/phpstan": "^0.8.5",
-                "phpunit/phpunit": "^6.0.9 | ^7",
-                "react/promise": "^2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
+  "_readme": [
+    "This file locks the dependencies of your project to a known state",
+    "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+    "This file is @generated automatically"
+  ],
+  "content-hash": "95ebbb9d2f1bd8e42f3eef85219ebda6",
+  "packages": [],
+  "packages-dev": [
+    {
+      "name": "amphp/amp",
+      "version": "v2.4.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/amphp/amp.git",
+        "reference": "13930a582947831bb66ff1aeac28672fd91c38ea"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/amphp/amp/zipball/13930a582947831bb66ff1aeac28672fd91c38ea",
+        "reference": "13930a582947831bb66ff1aeac28672fd91c38ea",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=7"
+      },
+      "require-dev": {
+        "amphp/php-cs-fixer-config": "dev-master",
+        "amphp/phpunit-util": "^1",
+        "ext-json": "*",
+        "phpstan/phpstan": "^0.8.5",
+        "phpunit/phpunit": "^6.0.9 | ^7",
+        "react/promise": "^2"
+      },
+      "type": "library",
+      "extra": {
+        "branch-alias": {
                     "dev-master": "2.0.x-dev"
                 }
             },
@@ -179,11 +179,11 @@
                 "MIT"
             ],
             "authors": [
-                {
-                  "name": "Chris Boden",
-                  "role": "Developer",
-                  "email": "cboden@gmail.com"
-                }
+              {
+                "name": "Chris Boden",
+                "email": "cboden@gmail.com",
+                "role": "Developer"
+              }
             ],
             "description": "PHP WebSocket library",
             "homepage": "http://socketo.me",
@@ -676,64 +676,146 @@
                 "reference": "cf1c4e63e64d7d34f88e7ebe77cb0d10f68fb9be",
                 "shasum": ""
             },
-            "require": {
-                "php": ">=5.3.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "RedBeanPHP\\": "RedBeanPHP"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Gabor de Mooij",
-                    "email": "gabor@redbeanphp.com",
-                    "homepage": "https://redbeanphp.com"
-                }
-            ],
-            "description": "RedBeanPHP ORM",
-            "homepage": "https://redbeanphp.com/",
-            "keywords": [
-                "orm"
-            ],
-            "time": "2019-11-30T16:55:12+00:00"
+          "require": {
+            "php": ">=5.3.4"
+          },
+          "type": "library",
+          "autoload": {
+            "psr-4": {
+              "RedBeanPHP\\": "RedBeanPHP"
+            }
+          },
+          "notification-url": "https://packagist.org/downloads/",
+          "license": [
+            "BSD-3-Clause"
+          ],
+          "authors": [
+            {
+              "name": "Gabor de Mooij",
+              "email": "gabor@redbeanphp.com",
+              "homepage": "https://redbeanphp.com"
+            }
+          ],
+          "description": "RedBeanPHP ORM",
+          "homepage": "https://redbeanphp.com/",
+          "keywords": [
+            "orm"
+          ],
+          "time": "2019-11-30T16:55:12+00:00"
         },
-        {
-            "name": "guzzlehttp/psr7",
-            "version": "1.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/guzzle/psr7.git",
-                "reference": "239400de7a173fe9901b9ac7c06497751f00727a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/239400de7a173fe9901b9ac7c06497751f00727a",
-                "reference": "239400de7a173fe9901b9ac7c06497751f00727a",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0",
-                "psr/http-message": "~1.0",
-                "ralouphie/getallheaders": "^2.0.5 || ^3.0.0"
-            },
-            "provide": {
-                "psr/http-message-implementation": "1.0"
-            },
-            "require-dev": {
-                "ext-zlib": "*",
-                "phpunit/phpunit": "~4.8.36 || ^5.7.27 || ^6.5.8"
-            },
-            "suggest": {
-                "zendframework/zend-httphandlerrunner": "Emit PSR-7 responses"
-            },
-            "type": "library",
-            "extra": {
+    {
+      "name": "google/protobuf",
+      "version": "v3.11.2",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/protocolbuffers/protobuf-php.git",
+        "reference": "0864882396746542ead01fc002e1644b9490dbe8"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/0864882396746542ead01fc002e1644b9490dbe8",
+        "reference": "0864882396746542ead01fc002e1644b9490dbe8",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=5.5.0"
+      },
+      "require-dev": {
+        "phpunit/phpunit": ">=4.8.0"
+      },
+      "suggest": {
+        "ext-bcmath": "Need to support JSON deserialization"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "Google\\Protobuf\\": "src/Google/Protobuf",
+          "GPBMetadata\\Google\\Protobuf\\": "src/GPBMetadata/Google/Protobuf"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "BSD-3-Clause"
+      ],
+      "description": "proto library for PHP",
+      "homepage": "https://developers.google.com/protocol-buffers/",
+      "keywords": [
+        "proto"
+      ],
+      "time": "2019-12-14T00:45:36+00:00"
+    },
+    {
+      "name": "grpc/grpc",
+      "version": "1.25.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/grpc/grpc-php.git",
+        "reference": "bdb165d6712db0cfcc35edae2d14fb2b00cabc88"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/grpc/grpc-php/zipball/bdb165d6712db0cfcc35edae2d14fb2b00cabc88",
+        "reference": "bdb165d6712db0cfcc35edae2d14fb2b00cabc88",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=5.5.0"
+      },
+      "require-dev": {
+        "google/auth": "^v1.3.0"
+      },
+      "suggest": {
+        "ext-protobuf": "For better performance, install the protobuf C extension.",
+        "google/protobuf": "To get started using grpc quickly, install the native protobuf library."
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "Grpc\\": "src/lib/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "Apache-2.0"
+      ],
+      "description": "gRPC library for PHP",
+      "homepage": "https://grpc.io",
+      "keywords": [
+        "rpc"
+      ],
+      "time": "2019-11-07T00:47:40+00:00"
+    },
+    {
+      "name": "guzzlehttp/psr7",
+      "version": "1.6.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/guzzle/psr7.git",
+        "reference": "239400de7a173fe9901b9ac7c06497751f00727a"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/guzzle/psr7/zipball/239400de7a173fe9901b9ac7c06497751f00727a",
+        "reference": "239400de7a173fe9901b9ac7c06497751f00727a",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=5.4.0",
+        "psr/http-message": "~1.0",
+        "ralouphie/getallheaders": "^2.0.5 || ^3.0.0"
+      },
+      "provide": {
+        "psr/http-message-implementation": "1.0"
+      },
+      "require-dev": {
+        "ext-zlib": "*",
+        "phpunit/phpunit": "~4.8.36 || ^5.7.27 || ^6.5.8"
+      },
+      "suggest": {
+        "zendframework/zend-httphandlerrunner": "Emit PSR-7 responses"
+      },
+      "type": "library",
+      "extra": {
                 "branch-alias": {
                     "dev-master": "1.6-dev"
                 }
@@ -855,20 +937,20 @@
             ],
             "time": "2019-11-13T10:27:43+00:00"
         },
-        {
-            "name": "myclabs/deep-copy",
-            "version": "1.9.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "007c053ae6f31bba39dfa19a7726f56e9763bbea"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/007c053ae6f31bba39dfa19a7726f56e9763bbea",
-                "reference": "007c053ae6f31bba39dfa19a7726f56e9763bbea",
-                "shasum": ""
-            },
+    {
+      "name": "myclabs/deep-copy",
+      "version": "1.9.4",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/myclabs/DeepCopy.git",
+        "reference": "579bb7356d91f9456ccd505f24ca8b667966a0a7"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/579bb7356d91f9456ccd505f24ca8b667966a0a7",
+        "reference": "579bb7356d91f9456ccd505f24ca8b667966a0a7",
+        "shasum": ""
+      },
             "require": {
                 "php": "^7.1"
             },
@@ -901,7 +983,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2019-08-09T12:45:53+00:00"
+      "time": "2019-12-15T19:12:40+00:00"
         },
         {
             "name": "netresearch/jsonmapper",
@@ -941,9 +1023,9 @@
             "authors": [
               {
                 "name": "Christian Weiske",
-                "role": "Developer",
                 "email": "cweiske@cweiske.de",
-                "homepage": "http://github.com/cweiske/jsonmapper/"
+                "homepage": "http://github.com/cweiske/jsonmapper/",
+                "role": "Developer"
               }
             ],
             "description": "Map nested JSON structures onto PHP classes",
@@ -1139,18 +1221,18 @@
             "authors": [
               {
                 "name": "Arne Blankerts",
-                "role": "Developer",
-                "email": "arne@blankerts.de"
+                "email": "arne@blankerts.de",
+                "role": "Developer"
               },
               {
                 "name": "Sebastian Heuer",
-                "role": "Developer",
-                "email": "sebastian@phpeople.de"
+                "email": "sebastian@phpeople.de",
+                "role": "Developer"
               },
               {
                 "name": "Sebastian Bergmann",
-                "role": "Developer",
-                "email": "sebastian@phpunit.de"
+                "email": "sebastian@phpunit.de",
+                "role": "Developer"
               }
             ],
             "description": "Component for reading phar.io manifest information from a PHP Archive (PHAR)",
@@ -1186,18 +1268,18 @@
             "authors": [
               {
                 "name": "Arne Blankerts",
-                "role": "Developer",
-                "email": "arne@blankerts.de"
+                "email": "arne@blankerts.de",
+                "role": "Developer"
               },
               {
                 "name": "Sebastian Heuer",
-                "role": "Developer",
-                "email": "sebastian@phpeople.de"
+                "email": "sebastian@phpeople.de",
+                "role": "Developer"
               },
               {
                 "name": "Sebastian Bergmann",
-                "role": "Developer",
-                "email": "sebastian@phpunit.de"
+                "email": "sebastian@phpunit.de",
+                "role": "Developer"
               }
             ],
             "description": "Library for handling version information and constraints",
@@ -1353,20 +1435,20 @@
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "time": "2019-08-22T18:11:29+00:00"
         },
-        {
-            "name": "phpoption/phpoption",
-            "version": "1.7.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/schmittjoh/php-option.git",
-                "reference": "318ad673ba36e53e10ca510aec1c54b4f2a5f2ae"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/318ad673ba36e53e10ca510aec1c54b4f2a5f2ae",
-                "reference": "318ad673ba36e53e10ca510aec1c54b4f2a5f2ae",
-                "shasum": ""
-            },
+    {
+      "name": "phpoption/phpoption",
+      "version": "1.7.2",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/schmittjoh/php-option.git",
+        "reference": "77f7c4d2e65413aff5b5a8cc8b3caf7a28d81959"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/77f7c4d2e65413aff5b5a8cc8b3caf7a28d81959",
+        "reference": "77f7c4d2e65413aff5b5a8cc8b3caf7a28d81959",
+        "shasum": ""
+      },
             "require": {
                 "php": "^5.5.9 || ^7.0"
             },
@@ -1406,7 +1488,7 @@
                 "php",
                 "type"
             ],
-            "time": "2019-12-13T00:10:22+00:00"
+      "time": "2019-12-15T19:35:24+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -1572,8 +1654,8 @@
             "authors": [
               {
                 "name": "Sebastian Bergmann",
-                "role": "lead",
-                "email": "sebastian@phpunit.de"
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
               }
             ],
             "description": "FilterIterator implementation that filters files based on a list of suffixes.",
@@ -1614,8 +1696,8 @@
             "authors": [
               {
                 "name": "Sebastian Bergmann",
-                "role": "lead",
-                "email": "sebastian@phpunit.de"
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
               }
             ],
             "description": "Simple template engine.",
@@ -1663,8 +1745,8 @@
             "authors": [
               {
                 "name": "Sebastian Bergmann",
-                "role": "lead",
-                "email": "sebastian@phpunit.de"
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
               }
             ],
             "description": "Utility class for timing",
@@ -2186,8 +2268,8 @@
             "authors": [
               {
                 "name": "Chris Boden",
-                "role": "Developer",
-                "email": "cboden@gmail.com"
+                "email": "cboden@gmail.com",
+                "role": "Developer"
               }
             ],
             "description": "RFC6455 WebSocket protocol handler",
@@ -3081,8 +3163,8 @@
             "authors": [
               {
                 "name": "Sebastian Bergmann",
-                "role": "lead",
-                "email": "sebastian@phpunit.de"
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
               }
             ],
             "description": "Collection of value objects that represent the types of the PHP type system",
@@ -3124,8 +3206,8 @@
             "authors": [
               {
                 "name": "Sebastian Bergmann",
-                "role": "lead",
-                "email": "sebastian@phpunit.de"
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
               }
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
@@ -4028,8 +4110,8 @@
             "authors": [
               {
                 "name": "Arne Blankerts",
-                "role": "Developer",
-                "email": "arne@blankerts.de"
+                "email": "arne@blankerts.de",
+                "role": "Developer"
               }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
