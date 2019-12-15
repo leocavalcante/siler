@@ -1,9 +1,9 @@
 Docker-powered `protoc` and gRPC plugins.
 
-```bash
+```powershell
 docker build -t proto_gen .
 ```
 
-```bash
-docker run --rm -v $(pwd):/gen -w /gen proto_gen sh ./proto_gen.sh
+```powershell
+docker run --rm -v "$(pwd):/gen" -w /gen proto_gen bash -l ./proto_gen.sh
 ```

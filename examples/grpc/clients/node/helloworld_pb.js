@@ -57,6 +57,7 @@ if (goog.DEBUG && !COMPILED) {
 }
 
 
+
 if (jspb.Message.GENERATE_TO_OBJECT) {
   /**
    * Creates an object representation of this proto.
