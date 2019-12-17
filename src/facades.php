@@ -87,6 +87,8 @@ const pipe = '\Siler\Functional\pipe';
 const conduit = '\Siler\Functional\conduit';
 const lconcat = '\Siler\Functional\lconcat';
 const ljoin = '\Siler\Functional\ljoin';
+const filter = '\Siler\Functional\filter';
+const lfilter = '\Siler\Functional\lfilter';
 
 
 namespace Siler\Functional\Monad;
