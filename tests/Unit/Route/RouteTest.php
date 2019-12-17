@@ -9,10 +9,7 @@ use Siler\Container;
 use Siler\Route;
 use Siler\Test\Unit\Route\SwooleHttpRequestMock;
 use Zend\Diactoros\ServerRequest;
-
 use function Siler\Functional\always;
-use function Siler\Functional\Monad\identity;
-
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 class RouteTest extends TestCase

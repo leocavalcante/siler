@@ -22,7 +22,6 @@ use GraphQL\Type\Definition\UnionType;
 use GraphQL\Utils\SchemaPrinter;
 use PHPUnit\Framework\TestCase;
 use Siler\GraphQL\BuildSchema;
-
 use function array_keys;
 use function count;
 
@@ -446,13 +445,13 @@ type WorldTwo {
             type Query {
               fruits: [Fruit]
             }
-            
+
             union Fruit = Apple | Banana
-            
+
             type Apple {
               color: String
             }
-            
+
             type Banana {
               length: Int
             }
@@ -503,16 +502,16 @@ type WorldTwo {
             type Query {
               characters: [Character]
             }
-            
+
             interface Character {
               name: String!
             }
-            
+
             type Human implements Character {
               name: String!
               totalCredits: Int
             }
-            
+
             type Droid implements Character {
               name: String!
               primaryFunction: String
@@ -793,7 +792,7 @@ type Query {
       type TestType implements TestInterface {
         interfaceField: String
       }
-      
+
       scalar TestScalar
 
       directive @test(arg: TestScalar) on FIELD
@@ -1122,7 +1121,7 @@ type Wat {
           schema {
             query: Foo
           }
-    
+
           directive @Foo on QUERY
         ';
         $doc = Parser::parse($body);

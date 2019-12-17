@@ -320,4 +320,12 @@ class FunctionalTest extends TestCase
             ])('foo')
         );
     }
+
+    public function testLjoin()
+    {
+        $pieces = ['foo', 'bar', 'baz'];
+
+        $this->assertSame('foobarbaz', f\ljoin()($pieces));
+        $this->assertSame('foo,bar,baz', f\ljoin(',')($pieces));
+    }
 }

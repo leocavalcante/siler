@@ -5,7 +5,6 @@ namespace Siler\Test\Unit\Ratchet;
 use PHPUnit\Framework\TestCase;
 use Ratchet\Server\IoServer;
 use Siler\GraphQL\SubscriptionsManager;
-
 use function Siler\Ratchet\graphql_subscriptions;
 
 class RatchetTest extends TestCase

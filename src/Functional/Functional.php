@@ -814,3 +814,16 @@ function lconcat(string $separator = ''): Closure
             };
         };
 }
+
+/**
+ * Lazy version of join().
+ *
+ * @param string $glue
+ * @return Closure(array): string
+ */
+function ljoin(string $glue = ''): Closure
+{
+    return static function (array $pieces) use ($glue): string {
+        return join($glue, $pieces);
+    };
+}
