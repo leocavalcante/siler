@@ -827,3 +827,30 @@ function ljoin(string $glue = ''): Closure
         return join($glue, $pieces);
     };
 }
+
+/**
+ * An array_filter that dont preserve keys
+ *
+ * @template T
+ * @param T[] $input
+ * @param callable(T):bool $callback
+ * @return T[]
+ */
+function filter(array $input, callable $callback): array
+{
+    return array_values(array_filter($input, $callback));
+}
+
+/**
+ * Lazy version of filter.
+ *
+ * @template T
+ * @param callable(T):bool $callback
+ * @return Closure(T[]):T[]
+ */
+function lfilter(callable $callback): Closure
+{
+    return function (array $input) use ($callback): array {
+        return filter($input, $callback);
+    };
+}

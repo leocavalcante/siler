@@ -321,11 +321,31 @@ class FunctionalTest extends TestCase
         );
     }
 
-    public function testLjoin()
+    public function testLazyJoin()
     {
         $pieces = ['foo', 'bar', 'baz'];
 
         $this->assertSame('foobarbaz', f\ljoin()($pieces));
         $this->assertSame('foo,bar,baz', f\ljoin(',')($pieces));
+    }
+
+    public function testFilter()
+    {
+        $input = ['foo', 'bar', 'baz'];
+
+        $this->assertSame(['foo'], f\filter($input, function (string $value): bool {
+            return $value === 'foo';
+        }));
+    }
+
+    public function testLazyFilter()
+    {
+        $input = [1, 2, 3, 4];
+
+        $even = function (int $n): bool {
+            return ($n % 2) === 0;
+        };
+
+        $this->assertSame([2, 4], f\lfilter($even)($input));
     }
 }
