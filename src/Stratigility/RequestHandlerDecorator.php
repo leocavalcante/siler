@@ -20,7 +20,7 @@ class RequestHandlerDecorator implements RequestHandlerInterface
     private $pathParams;
 
     /**
-     * @param callable $handler
+     * @param callable(ServerRequestInterface, array): ResponseInterface $handler
      * @param array $pathParams
      */
     public function __construct(callable $handler, array $pathParams = [])

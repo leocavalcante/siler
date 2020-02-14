@@ -10,6 +10,7 @@ use Closure;
 /**
  * Get a value from an array checking if the key exists and returning a default value if not.
  *
+ * @psalm-suppress LessSpecificReturnType
  * @template T
  * @param array<string, T>|null $array
  * @param string|null $key The key to be searched
@@ -42,7 +43,7 @@ function array_get(?array $array, ?string $key = null, $default = null, bool $ca
  *
  * @return Closure
  *
- * @return Closure(array=):(false|mixed|null)
+ * @return Closure(string[]):(false|mixed|null)
  */
 function require_fn(string $filename): Closure
 {

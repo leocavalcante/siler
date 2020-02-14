@@ -15,7 +15,7 @@ use Traversable;
  * Identity function.
  *
  * @template T
- * @return Closure(mixed): mixed
+ * @return Closure(T): T
  */
 function identity(): Closure
 {
@@ -34,7 +34,7 @@ function identity(): Closure
  *
  * @template T
  * @param T $value
- * @return Closure(): mixed
+ * @return Closure(): T
  */
 function always($value): Closure
 {
@@ -107,14 +107,14 @@ function greater_than($right): Closure
  *
  * @param callable(mixed): bool $cond
  *
- * @return Closure(callable): Closure(callable): Closure(mixed): mixed
+ * @return Closure(callable(mixed):mixed):Closure(callable(mixed):mixed):Closure(mixed):mixed
  */
 function if_else(callable $cond): Closure
 {
     return
         /**
          * @param callable(mixed): mixed $then
-         * @return Closure(callable): Closure(mixed): mixed
+         * @return Closure(callable(mixed):mixed):Closure(mixed):mixed
          */
         static function (callable $then) use ($cond): Closure {
             return
@@ -156,7 +156,7 @@ function match(array $matches): Closure
                 return null;
             }
 
-            /** @var array<callable> $match */
+            /** @var array<callable(mixed):bool> $match */
             $match = $matches[0];
             $if_else = if_else($match[0])($match[1])(match(array_slice($matches, 1)));
 

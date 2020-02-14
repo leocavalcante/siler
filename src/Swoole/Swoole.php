@@ -432,7 +432,7 @@ function bearer(): ?string
  * Creates a HTTP server from a server port.
  *
  * @param Server $server
- * @param callable $handler
+ * @param callable(Request, Response):mixed $handler
  * @param int $port
  * @param string $host
  *
