@@ -227,6 +227,10 @@ const purge_match = '\Siler\Route\purge_match';
 
 namespace Siler;
 const array_get = '\Siler\array_get';
+const array_get_str = '\Siler\array_get_str';
+const array_get_int = '\Siler\array_get_int';
+const array_get_float = '\Siler\array_get_float';
+const array_get_bool = '\Siler\array_get_bool';
 const require_fn = '\Siler\require_fn';
 
 
