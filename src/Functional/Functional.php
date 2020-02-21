@@ -663,10 +663,8 @@ function concat(string $separator = ''): Closure
 function lazy(callable $callable, ...$args): Closure
 {
     return
-        /**
-         * @return T
-         */
-        function () use ($callable, $args) {
+        /** @return T */
+        static function () use ($callable, $args) {
             return call($callable, ...$args);
         };
 }
@@ -681,7 +679,10 @@ function lazy(callable $callable, ...$args): Closure
  */
 function call(callable $callable, ...$args)
 {
-    /** @var T */
+    /**
+     * @var T
+     * @psalm-suppress TooManyArguments
+     */
     return call_user_func_array($callable, $args);
 }
 
