@@ -23,12 +23,12 @@ function init(string $path): array
 }
 
 /**
- * @deprecated Use function Siler\Env\env_var.
- *
  * @param string|null $key
  * @param mixed $default A default when the key do not exists
  *
  * @return string|null|array<string, string>
+ * @deprecated Use function Siler\Env\env_var.
+ *
  */
 function env(?string $key = null, ?string $default = null)
 {
@@ -37,16 +37,17 @@ function env(?string $key = null, ?string $default = null)
 }
 
 /**
- * @deprecated Use function Siler\Env\env_int.
- *
  * @param string $key
  * @param int|null $default
  *
  * @return int|null
+ * @deprecated Use function Siler\Env\env_int.
+ *
  */
 function int_val(string $key, ?int $default = null): ?int
 {
-    $val = env($key);
+    /** @var array<string, string> $_SERVER */
+    $val = array_get($_SERVER, $key, $default);
 
     if ($val === null) {
         return $default;
@@ -60,16 +61,17 @@ function int_val(string $key, ?int $default = null): ?int
 }
 
 /**
- * @deprecated Use function Siler\Env\env_bool.
- *
  * @param string $key
  * @param bool|null $default
  *
  * @return bool|null
+ * @deprecated Use function Siler\Env\env_bool.
+ *
  */
 function bool_val(string $key, ?bool $default = null): ?bool
 {
-    $val = env($key, $default);
+    /** @var array<string, string> $_SERVER */
+    $val = array_get($_SERVER, $key, $default);
 
     if ($val === null) {
         return $default;
@@ -91,11 +93,11 @@ function bool_val(string $key, ?bool $default = null): ?bool
 }
 
 /**
- * @deprecated Environment vars getters already checks if there no default.
- *
  * @param string $key
  *
  * @return true
+ * @deprecated Environment vars getters already checks if there no default.
+ *
  */
 function requires(string $key): bool
 {

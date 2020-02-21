@@ -18,7 +18,7 @@ function env_var(string $key, ?string $default = null): string
 
     if ($value === false) {
         if ($default === null) {
-            throw new UnexpectedValueException("Environment variable $key not found");
+            throw new UnexpectedValueException("Environment variable $key not found and no default was set.");
         }
 
         return $default;
