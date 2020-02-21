@@ -26,6 +26,7 @@ use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 const DID_MATCH = 'route_did_match';
 const STOP_PROPAGATION = 'route_stop_propagation';
 const CANCEL = 'route_cancel';
+const BASE_PATH = 'route_base_path';
 
 /**
  * Define a new route using the GET HTTP method.
@@ -198,7 +199,10 @@ function regexify(string $path): string
     ];
 
     $path = preg_replace(array_keys($patterns), array_values($patterns), $path);
-    return "#^{$path}/?$#";
+    /** @var string $base */
+    $base = Container\get(BASE_PATH, '');
+
+    return "#^{$base}{$path}/?$#";
 }
 
 /**
@@ -483,4 +487,14 @@ function did_match(): bool
 function purge_match(): void
 {
     Container\set(DID_MATCH, false);
+}
+
+/**
+ * Defines a base path for all routes.
+ *
+ * @param string $path
+ */
+function base(string $path): void
+{
+    Container\set(BASE_PATH, $path);
 }
