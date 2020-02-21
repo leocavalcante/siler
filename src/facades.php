@@ -223,6 +223,7 @@ const resume = '\Siler\Route\resume';
 const match = '\Siler\Route\match';
 const did_match = '\Siler\Route\did_match';
 const purge_match = '\Siler\Route\purge_match';
+const base = '\Siler\Route\base';
 
 
 namespace Siler;
