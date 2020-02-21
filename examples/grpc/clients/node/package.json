@@ -1,0 +1,29 @@
+{
+  "name": "@siler/grpc-node-client",
+  "version": "1.0.0",
+  "description": "Siler gRPC Node.js client example.",
+  "main": "client.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leocavalcante/siler.git"
+  },
+  "keywords": [
+    "siler",
+    "grpc",
+    "node",
+    "protobuf"
+  ],
+  "author": "leocavalcante <lc@leocavalcante.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/leocavalcante/siler/issues"
+  },
+  "homepage": "https://github.com/leocavalcante/siler#readme",
+  "dependencies": {
+    "google-protobuf": "^3.11.2",
+    "grpc": "^1.24.2"
+  }
+}

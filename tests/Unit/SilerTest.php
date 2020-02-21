@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Siler\Test\Unit;
 
 use PHPUnit\Framework\TestCase;
-
+use UnexpectedValueException;
 use function Siler\array_get;
+use function Siler\array_get_bool;
+use function Siler\array_get_float;
+use function Siler\array_get_int;
+use function Siler\array_get_str;
 use function Siler\require_fn;
 
 class SilerTest extends TestCase
@@ -36,6 +40,70 @@ class SilerTest extends TestCase
     {
         $fixture = ['Foo' => 'bar'];
         $this->assertSame('bar', array_get($fixture, 'foo', null, true));
+    }
+
+    public function testArrayGetStr()
+    {
+        $fixture = ['foo' => 'bar'];
+        $this->assertSame('bar', array_get_str($fixture, 'foo'));
+
+        $fixture = ['foo' => 1];
+        $this->assertSame('1', array_get_str($fixture, 'foo'));
+
+        $fixture = [];
+        $this->assertSame('bar', array_get_str($fixture, 'foo', 'bar'));
+
+        $this->expectException(UnexpectedValueException::class);
+        $fixture = [];
+        array_get_str($fixture, 'foo');
+    }
+
+    public function testArrayGetInt()
+    {
+        $fixture = ['foo' => 1];
+        $this->assertSame(1, array_get_int($fixture, 'foo'));
+
+        $fixture = ['foo' => '1'];
+        $this->assertSame(1, array_get_int($fixture, 'foo'));
+
+        $fixture = [];
+        $this->assertSame(1, array_get_int($fixture, 'foo', 1));
+
+        $this->expectException(UnexpectedValueException::class);
+        $fixture = [];
+        array_get_int($fixture, 'foo');
+    }
+
+    public function testArrayGetFloat()
+    {
+        $fixture = ['foo' => 1.1];
+        $this->assertSame(1.1, array_get_float($fixture, 'foo'));
+
+        $fixture = ['foo' => '1.1'];
+        $this->assertSame(1.1, array_get_float($fixture, 'foo'));
+
+        $fixture = [];
+        $this->assertSame(1.1, array_get_float($fixture, 'foo', 1.1));
+
+        $this->expectException(UnexpectedValueException::class);
+        $fixture = [];
+        array_get_float($fixture, 'foo');
+    }
+
+    public function testArrayGetBool()
+    {
+        $fixture = ['foo' => true];
+        $this->assertSame(true, array_get_bool($fixture, 'foo'));
+
+        $fixture = ['foo' => 'true'];
+        $this->assertSame(true, array_get_bool($fixture, 'foo'));
+
+        $fixture = [];
+        $this->assertSame(true, array_get_bool($fixture, 'foo', true));
+
+        $this->expectException(UnexpectedValueException::class);
+        $fixture = [];
+        array_get_bool($fixture, 'foo');
     }
 
     public function testRequireFn()

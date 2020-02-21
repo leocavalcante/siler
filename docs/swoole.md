@@ -126,10 +126,10 @@ return fn() => Swoole\emit('Hello World');
 {% endcode %}
 
 {% hint style="info" %}
-When using Swoole, routes that uses files should return a function to ensure a re-computation. Siler will require the file **only** on the first match, then on the next matches it will only re-execute the returned function. This makes possible the use of `require_once` while maintaining a way to re-execute something.
+When using Swoole, routes that use files should return a function to ensure a re-computation. Siler will require the file **only** on the first match, then on the next matches it will only re-execute the returned function. This makes possible the use of `require_once` while maintaining a way to re-execute something.
 {% endhint %}
 
-You may ask: **"What about** `Swoole\emit('Not found', 404)` **on the end?"**.
+You may ask: **"What about** `Swoole\emit('Not found', 404)` **at the end?"**.
 
 Nice question! `Siler\Swoole\emit()` function will **short-circuit** further emit attempts, so it will work exactly like you have imagined, when a route matches a path like `/` it will emit the proper response, but when no route matches and this means: no route will emit something, then `Swoole\emit('Not found', 404)` will emit a **404 Not found** response.
 
@@ -200,10 +200,10 @@ Swoole\http($handler)->start();
 {% endtabs %}
 
 {% hint style="info" %}
-Swoole's HTTP server will auto-magically outputs the Response header Content-type as text/html instead of text/plain now.
+Swoole's HTTP server will auto-magically output the Response header Content-type as text/html instead of text/plain now.
 {% endhint %}
 
-If you're sure that your template doesn't depends on the request, you can render it once:
+If you're sure that your template doesn't depend on the request, you can render it once:
 
 {% code title="pages/home.php" %}
 ```php

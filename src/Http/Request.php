@@ -23,7 +23,8 @@ use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
  */
 function raw(string $input = 'php://input'): string
 {
-    return (string)file_get_contents($input);
+    $contents = file_get_contents($input);
+    return $contents === false ? '' : $contents;
 }
 
 /**
@@ -359,8 +360,12 @@ function authorization_header($request = null): ?string
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
         /** @var Request $request */
         $request = Container\get(SWOOLE_HTTP_REQUEST);
-        /** @var string|null */
-        return $request->header['authorization'] ?? null;
+        /**
+         * @psalm-suppress MissingPropertyType
+         * @var array<string, string> $request_header
+         */
+        $request_header = $request->header;
+        return $request_header['authorization'] ?? null;
     }
 
     if ($request instanceof ServerRequestInterface) {

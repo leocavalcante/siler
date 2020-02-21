@@ -20,6 +20,7 @@
         <file name="vendor/swoole/ide-helper/output/swoole/namespace/Http/Server.php"/>
         <file name="vendor/swoole/ide-helper/output/swoole/namespace/Http/Request.php"/>
         <file name="vendor/swoole/ide-helper/output/swoole/namespace/Http/Response.php"/>
+        <file name="vendor/swoole/ide-helper/output/swoole/namespace/Http2/Response.php"/>
         <file name="vendor/swoole/ide-helper/output/swoole/namespace/WebSocket/Server.php"/>
         <file name="vendor/swoole/ide-helper/output/swoole/namespace/WebSocket/Frame.php"/>
     </stubs>

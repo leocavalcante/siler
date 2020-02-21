@@ -6,12 +6,11 @@ namespace Siler\Test\Unit;
 
 use PHPUnit\Framework\TestCase;
 use UnexpectedValueException;
-
-use function Siler\Dotenv\env as env;
 use function Siler\Dotenv\bool_val;
+use function Siler\Dotenv\env as env;
+use function Siler\Dotenv\init;
 use function Siler\Dotenv\int_val;
 use function Siler\Dotenv\requires;
-use function Siler\Dotenv\init;
 
 class DotenvTest extends TestCase
 {

@@ -86,6 +86,9 @@ const lmap = '\Siler\Functional\lmap';
 const pipe = '\Siler\Functional\pipe';
 const conduit = '\Siler\Functional\conduit';
 const lconcat = '\Siler\Functional\lconcat';
+const ljoin = '\Siler\Functional\ljoin';
+const filter = '\Siler\Functional\filter';
+const lfilter = '\Siler\Functional\lfilter';
 
 
 namespace Siler\Functional\Monad;
@@ -108,6 +111,11 @@ const subscriptions = '\Siler\GraphQL\subscriptions';
 const subscriptions_at = '\Siler\GraphQL\subscriptions_at';
 const publish = '\Siler\GraphQL\publish';
 const listen = '\Siler\GraphQL\listen';
+
+
+namespace Siler\Grpc;
+const server = '\Siler\Grpc\server';
+const finisher = '\Siler\Grpc\finisher';
 
 
 namespace Siler\Http;
@@ -219,6 +227,10 @@ const purge_match = '\Siler\Route\purge_match';
 
 namespace Siler;
 const array_get = '\Siler\array_get';
+const array_get_str = '\Siler\array_get_str';
+const array_get_int = '\Siler\array_get_int';
+const array_get_float = '\Siler\array_get_float';
+const array_get_bool = '\Siler\array_get_bool';
 const require_fn = '\Siler\require_fn';
 
 

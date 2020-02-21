@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
+use Iterator;
 use PHPUnit\Framework\TestCase;
 use Siler\Functional as f;
 
@@ -271,7 +272,7 @@ class FunctionalTest extends TestCase
             return $i * 2;
         };
 
-        $iterator = function (): \Iterator {
+        $iterator = function (): Iterator {
             $i = 1;
 
             while ($i <= 3) {
@@ -318,5 +319,33 @@ class FunctionalTest extends TestCase
                 f\lconcat()('bar')
             ])('foo')
         );
+    }
+
+    public function testLazyJoin()
+    {
+        $pieces = ['foo', 'bar', 'baz'];
+
+        $this->assertSame('foobarbaz', f\ljoin()($pieces));
+        $this->assertSame('foo,bar,baz', f\ljoin(',')($pieces));
+    }
+
+    public function testFilter()
+    {
+        $input = ['foo', 'bar', 'baz'];
+
+        $this->assertSame(['foo'], f\filter($input, function (string $value): bool {
+            return $value === 'foo';
+        }));
+    }
+
+    public function testLazyFilter()
+    {
+        $input = [1, 2, 3, 4];
+
+        $even = function (int $n): bool {
+            return ($n % 2) === 0;
+        };
+
+        $this->assertSame([2, 4], f\lfilter($even)($input));
     }
 }

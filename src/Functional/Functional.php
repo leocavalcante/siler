@@ -9,12 +9,13 @@
 namespace Siler\Functional;
 
 use Closure;
+use Traversable;
 
 /**
  * Identity function.
  *
  * @template T
- * @return Closure(mixed): mixed
+ * @return Closure(T): T
  */
 function identity(): Closure
 {
@@ -33,7 +34,7 @@ function identity(): Closure
  *
  * @template T
  * @param T $value
- * @return Closure(): mixed
+ * @return Closure(): T
  */
 function always($value): Closure
 {
@@ -106,14 +107,14 @@ function greater_than($right): Closure
  *
  * @param callable(mixed): bool $cond
  *
- * @return Closure(callable): Closure(callable): Closure(mixed): mixed
+ * @return Closure(callable(mixed):mixed):Closure(callable(mixed):mixed):Closure(mixed):mixed
  */
 function if_else(callable $cond): Closure
 {
     return
         /**
          * @param callable(mixed): mixed $then
-         * @return Closure(callable): Closure(mixed): mixed
+         * @return Closure(callable(mixed):mixed):Closure(mixed):mixed
          */
         static function (callable $then) use ($cond): Closure {
             return
@@ -155,7 +156,7 @@ function match(array $matches): Closure
                 return null;
             }
 
-            /** @var array<callable> $match */
+            /** @var array<callable(mixed):bool> $match */
             $match = $matches[0];
             $if_else = if_else($match[0])($match[1])(match(array_slice($matches, 1)));
 
@@ -662,10 +663,8 @@ function concat(string $separator = ''): Closure
 function lazy(callable $callable, ...$args): Closure
 {
     return
-        /**
-         * @return T
-         */
-        function () use ($callable, $args) {
+        /** @return T */
+        static function () use ($callable, $args) {
             return call($callable, ...$args);
         };
 }
@@ -680,7 +679,10 @@ function lazy(callable $callable, ...$args): Closure
  */
 function call(callable $callable, ...$args)
 {
-    /** @var T */
+    /**
+     * @var T
+     * @psalm-suppress TooManyArguments
+     */
     return call_user_func_array($callable, $args);
 }
 
@@ -690,7 +692,7 @@ function call(callable $callable, ...$args)
  *
  * @template I
  * @template O
- * @param \Traversable<I> $list
+ * @param Traversable<I> $list
  * @param callable(I, array-key): O $callback
  * @return O[]
  */
@@ -720,7 +722,7 @@ function lmap(callable $callback): Closure
 {
     return
         /**
-         * @param \Traversable<I> $list
+         * @param Traversable<I> $list
          * @return O[]
          */
         function ($list) use ($callback): array {
@@ -812,4 +814,44 @@ function lconcat(string $separator = ''): Closure
                 return concat($separator)($a, $b);
             };
         };
+}
+
+/**
+ * Lazy version of join().
+ *
+ * @param string $glue
+ * @return Closure(array): string
+ */
+function ljoin(string $glue = ''): Closure
+{
+    return static function (array $pieces) use ($glue): string {
+        return join($glue, $pieces);
+    };
+}
+
+/**
+ * An array_filter that dont preserve keys
+ *
+ * @template T
+ * @param T[] $input
+ * @param callable(T):bool $callback
+ * @return T[]
+ */
+function filter(array $input, callable $callback): array
+{
+    return array_values(array_filter($input, $callback));
+}
+
+/**
+ * Lazy version of filter.
+ *
+ * @template T
+ * @param callable(T):bool $callback
+ * @return Closure(T[]):T[]
+ */
+function lfilter(callable $callback): Closure
+{
+    return function (array $input) use ($callback): array {
+        return filter($input, $callback);
+    };
 }

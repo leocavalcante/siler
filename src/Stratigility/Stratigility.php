@@ -32,11 +32,16 @@ function process(ServerRequestInterface $request, string $name = DEFAULT_STRATIG
         throw new UnexpectedValueException("MiddlewarePipe with name $name not found");
     }
 
-    return function (callable $handler) use ($pipeline, $request) {
-        return function (array $pathParams) use ($pipeline, $request, $handler) {
-            return $pipeline->process($request, new RequestHandlerDecorator($handler, $pathParams));
+    return
+        /**
+         * @param callable(ServerRequestInterface, array): ResponseInterface $handler
+         * @return Closure
+         */
+        static function (callable $handler) use ($pipeline, $request) {
+            return static function (array $pathParams) use ($pipeline, $request, $handler) {
+                return $pipeline->process($request, new RequestHandlerDecorator($handler, $pathParams));
+            };
         };
-    };
 }
 
 /**

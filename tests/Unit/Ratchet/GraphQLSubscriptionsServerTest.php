@@ -11,7 +11,6 @@ use Siler\GraphQL\SubscriptionsConnection;
 use Siler\GraphQL\SubscriptionsManager;
 use Siler\GraphQL\SubscriptionsServer;
 use Siler\Ratchet\GraphQLSubscriptionsServer;
-
 use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
 
 class GraphQLSubscriptionsServerTest extends TestCase
