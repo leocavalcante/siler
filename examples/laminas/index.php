@@ -3,13 +3,13 @@
 declare(strict_types=1);
 require_once __DIR__ . '/../../vendor/autoload.php';
 
+use function Laminas\Stratigility\middleware;
 use function Siler\Diactoros\json;
 use function Siler\Diactoros\request;
 use function Siler\Http\Request\get;
 use function Siler\HttpHandlerRunner\sapi_emit;
 use function Siler\Stratigility\handle;
 use function Siler\Stratigility\pipe;
-use function Zend\Stratigility\middleware;
 
 // A PSR-15 Middleware
 $greet = function ($req, $handler) {
