@@ -3,19 +3,19 @@
 declare(strict_types=1);
 
 /*
- * Adds a layer of helper functions to work with Zend Diactoros.
+ * Adds a layer of helper functions to work with Laminas Diactoros.
  */
 
 namespace Siler\Diactoros;
 
-use Zend\Diactoros\Response;
-use Zend\Diactoros\Response\EmptyResponse;
-use Zend\Diactoros\Response\HtmlResponse;
-use Zend\Diactoros\Response\JsonResponse;
-use Zend\Diactoros\Response\RedirectResponse;
-use Zend\Diactoros\Response\TextResponse;
-use Zend\Diactoros\ServerRequest;
-use Zend\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\Response;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\Response\HtmlResponse;
+use Laminas\Diactoros\Response\JsonResponse;
+use Laminas\Diactoros\Response\RedirectResponse;
+use Laminas\Diactoros\Response\TextResponse;
+use Laminas\Diactoros\ServerRequest;
+use Laminas\Diactoros\ServerRequestFactory;
 
 /**
  * Returns a new ServerRequest from globals.

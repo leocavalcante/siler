@@ -2,12 +2,12 @@
 
 namespace Siler\Test\Unit\Stratigility;
 
+use Laminas\Diactoros\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Siler\Diactoros;
 use Siler\Stratigility\RequestHandlerDecorator;
-use Zend\Diactoros\ServerRequest;
 
 /**
  * @package Siler\Test\Unit\Stratigility

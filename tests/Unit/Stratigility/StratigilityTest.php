@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit\Stratigility;
 
+use Laminas\Diactoros\ServerRequest;
+use Laminas\Stratigility\MiddlewarePipe;
 use PHPUnit\Framework\TestCase;
 use Siler\Container;
 use Siler\Diactoros;
 use Siler\Stratigility;
 use UnexpectedValueException;
-use Zend\Diactoros\ServerRequest;
-use Zend\Stratigility\MiddlewarePipe;
 
 class StratigilityTest extends TestCase
 {

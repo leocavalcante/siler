@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
+use Laminas\Diactoros\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Siler\Container;
 use Siler\Route;
 use Siler\Test\Unit\Route\SwooleHttpRequestMock;
-use Zend\Diactoros\ServerRequest;
 use function Siler\Functional\always;
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
