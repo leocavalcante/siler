@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Siler\Test\Unit;
 
+use Laminas\Diactoros\ServerRequestFactory;
 use PHPUnit\Framework\TestCase;
 use Siler\Route;
-use Zend\Diactoros\ServerRequestFactory;
 
 class RoutePsr7Test extends TestCase
 {

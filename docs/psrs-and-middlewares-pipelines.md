@@ -1,6 +1,6 @@
 # PSRs & Middlewares Pipelines
 
-This interfaces are already \(and amazingly\) implemented by Zend at projects: [Diactoros](https://github.com/zendframework/zend-diactoros) and [Stratigility](https://github.com/zendframework/zend-stratigility). Siler wraps them and exposes a function-friendly API handling state internally while achieving a fully-featured and declarative way for: **Middleware Pipelining**.
+This interfaces are already \(and amazingly\) implemented by Laminas at projects: [Diactoros](https://github.com/laminas/laminas-diactoros) and [Stratigility](https://github.com/laminas/laminas-stratigility). Siler wraps them and exposes a function-friendly API handling state internally while achieving a fully-featured and declarative way for: **Middleware Pipelining**.
 
 ### PSR-7 HTTP Messages
 
@@ -9,7 +9,7 @@ Siler doesn't have direct dependencies, to stay fit, it favors peer dependencies
 {% endhint %}
 
 ```bash
-composer require zendframework/zend-diactoros
+composer require laminas/laminas-diactoros
 ```
 
 You can create a _superglobals_ seeded `ServerRequest` with `Siler\Diactoros\request()`:
@@ -35,10 +35,10 @@ $response = Diactoros\response();
 $response->getBody()->write('something');
 ```
 
-To emit a Response, there is no big deal, if you got Siler, you already imagined that is about one or two function calls, but this time we get the help from [HttpHandlerRunner](https://github.com/zendframework/zend-httphandlerrunner):
+To emit a Response, there is no big deal, if you got Siler, you already imagined that is about one or two function calls, but this time we get the help from [HttpHandlerRunner](https://github.com/laminas/laminas-httphandlerrunner):
 
 ```bash
-composer require zendframework/zend-httphandlerrunner
+composer require laminas/laminas-httphandlerrunner
 ```
 
 Then
@@ -82,7 +82,7 @@ HttpHandlerRunner\sapi_emit($response);
 ### PSR-15 Middleware Pipelining
 
 ```bash
-composer require zendframework/zend-stratigility
+composer require laminas/laminas-stratigility
 ```
 
 {% hint style="info" %}

@@ -3,13 +3,13 @@
 namespace Siler\Stratigility;
 
 use Closure;
+use Laminas\Stratigility\MiddlewarePipe;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Siler\Container;
 use UnexpectedValueException;
-use Zend\Stratigility\MiddlewarePipe;
-use function Zend\Stratigility\middleware;
+use function Laminas\Stratigility\middleware;
 
 const DEFAULT_STRATIGILITY_PIPELINE = 'default_stratigility_pipeline';
 
