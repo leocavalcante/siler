@@ -6,6 +6,7 @@
 - Add `map`, `lmap`, `pipe`, `conduit`, `lconcat`, `ljoin`, `filter` and `lfilter` functions
 - Typed array-gets: `array_get_str`, `array_get_int`, `array_get_float` and `array_get_bool`.
 - Switch from Zend to Laminas
+- Add `Swoole\http2` to create HTTP/2 enabled servers
 
 # 1.7.1
 - Fix string callable on route
