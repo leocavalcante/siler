@@ -14,6 +14,7 @@
     </projectFiles>
 
     <stubs>
+        <file name="vendor/swoole/ide-helper/output/swoole/constants.php"/>
         <file name="vendor/swoole/ide-helper/output/swoole/namespace/Table.php"/>
         <file name="vendor/swoole/ide-helper/output/swoole/namespace/Server.php"/>
         <file name="vendor/swoole/ide-helper/output/swoole/namespace/Server/Port.php"/>

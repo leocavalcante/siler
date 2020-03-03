@@ -244,6 +244,7 @@ const handle = '\Siler\Stratigility\handle';
 namespace Siler\Swoole;
 const http_handler = '\Siler\Swoole\http_handler';
 const http = '\Siler\Swoole\http';
+const http2 = '\Siler\Swoole\http2';
 const request = '\Siler\Swoole\request';
 const response = '\Siler\Swoole\response';
 const emit = '\Siler\Swoole\emit';
