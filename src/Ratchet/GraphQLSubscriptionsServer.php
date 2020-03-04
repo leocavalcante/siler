@@ -9,14 +9,17 @@ use Ratchet\WebSocket\WsServerInterface;
 use Siler\Encoder\Json;
 use Siler\GraphQL\SubscriptionsConnection;
 use Siler\GraphQL\SubscriptionsManager;
-use SplObjectStorage;
 use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
 
+/**
+ * Class GraphQLSubscriptionsServer
+ * @package Siler\Ratchet
+ */
 class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerInterface
 {
     /** @var SubscriptionsManager */
     private $manager;
-    /** @var SplObjectStorage<ConnectionInterface, SubscriptionsConnection> */
+    /** @var \SplObjectStorage<ConnectionInterface, SubscriptionsConnection> */
     private $connections;
 
     /**
@@ -27,8 +30,8 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
     public function __construct(SubscriptionsManager $manager)
     {
         $this->manager = $manager;
-        /** @var SplObjectStorage<ConnectionInterface, SubscriptionsConnection> connections */
-        $this->connections = new SplObjectStorage();
+        /** @var \SplObjectStorage<ConnectionInterface, SubscriptionsConnection> connections */
+        $this->connections = new \SplObjectStorage();
     }
 
     /**

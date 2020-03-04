@@ -5,17 +5,7 @@
 
 namespace Siler\Route;
 
-use Closure;
-use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use RecursiveRegexIterator;
-use ReflectionClass;
-use ReflectionException;
-use ReflectionMethod;
-use ReflectionParameter;
-use RegexIterator;
 use Siler\Container;
 use Siler\Http;
 use Siler\Http\Request;
@@ -208,51 +198,51 @@ function regexify(string $path): string
 /**
  * Creates a resource route path mapping.
  *
- * @param string $basePath The base for the resource
- * @param string $resourcesPath The base path name for the corresponding PHP files
- * @param string|null $identityParam
+ * @param string $base_path The base for the resource
+ * @param string $resources_path The base path name for the corresponding PHP files
+ * @param string|null $identity_param
  * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return mixed|null
  */
-function resource(string $basePath, string $resourcesPath, ?string $identityParam = null, $request = null)
+function resource(string $base_path, string $resources_path, ?string $identity_param = null, $request = null)
 {
-    $basePath = '/' . trim($basePath, '/');
-    $resourcesPath = rtrim($resourcesPath, '/');
+    $base_path = '/' . trim($base_path, '/');
+    $resources_path = rtrim($resources_path, '/');
 
-    if (is_null($identityParam)) {
-        $identityParam = 'id';
+    if (is_null($identity_param)) {
+        $identity_param = 'id';
     }
 
-    /** @var array<Closure(): mixed> $routes */
+    /** @var array<\Closure(): mixed> $routes */
     $routes = [
         /** @return mixed */
-        static function () use ($basePath, $resourcesPath, $request) {
-            return get($basePath, $resourcesPath . '/index.php', $request);
+        static function () use ($base_path, $resources_path, $request) {
+            return get($base_path, $resources_path . '/index.php', $request);
         },
         /** @return mixed */
-        static function () use ($basePath, $resourcesPath, $request) {
-            return get($basePath . '/create', $resourcesPath . '/create.php', $request);
+        static function () use ($base_path, $resources_path, $request) {
+            return get($base_path . '/create', $resources_path . '/create.php', $request);
         },
         /** @return mixed */
-        static function () use ($basePath, $resourcesPath, $request, $identityParam) {
-            return get($basePath . '/{' . $identityParam . '}/edit', $resourcesPath . '/edit.php', $request);
+        static function () use ($base_path, $resources_path, $request, $identity_param) {
+            return get($base_path . '/{' . $identity_param . '}/edit', $resources_path . '/edit.php', $request);
         },
         /** @return mixed */
-        static function () use ($basePath, $resourcesPath, $request, $identityParam) {
-            return get($basePath . '/{' . $identityParam . '}', $resourcesPath . '/show.php', $request);
+        static function () use ($base_path, $resources_path, $request, $identity_param) {
+            return get($base_path . '/{' . $identity_param . '}', $resources_path . '/show.php', $request);
         },
         /** @return mixed */
-        static function () use ($basePath, $resourcesPath, $request) {
-            return post($basePath, $resourcesPath . '/store.php', $request);
+        static function () use ($base_path, $resources_path, $request) {
+            return post($base_path, $resources_path . '/store.php', $request);
         },
         /** @return mixed */
-        static function () use ($basePath, $resourcesPath, $request, $identityParam) {
-            return put($basePath . '/{' . $identityParam . '}', $resourcesPath . '/update.php', $request);
+        static function () use ($base_path, $resources_path, $request, $identity_param) {
+            return put($base_path . '/{' . $identity_param . '}', $resources_path . '/update.php', $request);
         },
         /** @return mixed */
-        static function () use ($basePath, $resourcesPath, $request, $identityParam) {
-            return delete($basePath . '/{' . $identityParam . '}', $resourcesPath . '/destroy.php', $request);
+        static function () use ($base_path, $resources_path, $request, $identity_param) {
+            return delete($base_path . '/{' . $identity_param . '}', $resources_path . '/destroy.php', $request);
         },
     ];
 
@@ -316,12 +306,12 @@ function files(string $basePath, string $prefix = '', $request = null)
     $realpath = realpath($basePath);
 
     if (false === $realpath) {
-        throw new InvalidArgumentException("{$basePath} does not exists");
+        throw new \InvalidArgumentException("{$basePath} does not exists");
     }
 
-    $directory = new RecursiveDirectoryIterator($realpath);
-    $iterator = new RecursiveIteratorIterator($directory);
-    $regex = new RegexIterator($iterator, '/^.+\.php$/i', RecursiveRegexIterator::GET_MATCH);
+    $directory = new \RecursiveDirectoryIterator($realpath);
+    $iterator = new \RecursiveIteratorIterator($directory);
+    $regex = new \RegexIterator($iterator, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
 
     $files = array_keys(iterator_to_array($regex));
 
@@ -331,14 +321,14 @@ function files(string $basePath, string $prefix = '', $request = null)
     $prefix = rtrim($prefix, '/');
 
     foreach ($files as $filename) {
-        $cutFilename = substr((string)$filename, $cut);
+        $cut_filename = substr((string)$filename, $cut);
 
-        if (false === $cutFilename) {
+        if (false === $cut_filename) {
             continue;
         }
 
         /** @var string $method */
-        list($method, $path) = routify($cutFilename);
+        list($method, $path) = routify($cut_filename);
 
         if ('/' === $path) {
             if ($prefix) {
@@ -367,36 +357,36 @@ function files(string $basePath, string $prefix = '', $request = null)
  * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return void
- * @throws ReflectionException
+ * @throws \ReflectionException
  *
  */
 function class_name(string $basePath, $className, $request = null): void
 {
-    $reflection = new ReflectionClass($className);
+    $reflection = new \ReflectionClass($className);
     $object = $reflection->newInstance();
 
-    $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
+    $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
 
     foreach ($methods as $method) {
         $specs = preg_split('/(?=[A-Z])/', $method->name);
 
-        $pathSegments = array_map('strtolower', array_slice($specs, 1));
+        $path_segments = array_map('strtolower', array_slice($specs, 1));
 
-        $pathSegments = array_filter($pathSegments, function (string $segment): bool {
+        $path_segments = array_filter($path_segments, function (string $segment): bool {
             return $segment != 'index';
         });
 
-        $pathParams = array_map(function (ReflectionParameter $param) {
+        $path_params = array_map(function (\ReflectionParameter $param) {
             return "{{$param->name}}";
         }, $method->getParameters());
 
-        $pathSegments = array_merge($pathSegments, $pathParams);
+        $path_segments = array_merge($path_segments, $path_params);
 
-        array_unshift($pathSegments, $basePath);
+        array_unshift($path_segments, $basePath);
 
         route(
             $specs[0],
-            join('/', $pathSegments),
+            join('/', $path_segments),
             function (array $params) use ($method, $object) {
                 foreach (array_keys($params) as $key) {
                     if (!is_int($key)) {

@@ -9,10 +9,16 @@ namespace Siler\Functional\Monad;
  */
 class Identity
 {
-    /** @psalm-var T */
+    /**
+     * @var mixed
+     * @psalm-var T
+     */
     protected $value;
 
-    /** @param T $value */
+    /**
+     * @param mixed $value
+     * @psalm-param T $value
+     */
     public function __construct($value)
     {
         $this->value = $value;
@@ -20,8 +26,8 @@ class Identity
 
     /**
      * @param callable|null $function
-     * @return self|T
-     * @return mixed
+     * @return self|mixed
+     * @psalm-return self|T
      */
     public function __invoke(callable $function = null)
     {
@@ -33,7 +39,8 @@ class Identity
     }
 
     /**
-     * @return T
+     * @return mixed
+     * @psalm-return T
      */
     public function return()
     {

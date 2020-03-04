@@ -41,8 +41,10 @@ class SubscriptionsManager
      *
      * @param Schema $schema
      * @param array $filters
-     * @param RootValue $rootValue
-     * @param Context $context
+     * @param mixed $rootValue
+     * @psalm-param RootValue $rootValue
+     * @param mixed $context
+     * @psalm-param Context $context
      */
     public function __construct(Schema $schema, array $filters = [], $rootValue = [], $context = [])
     {
@@ -142,12 +144,12 @@ class SubscriptionsManager
                 end($this->subscriptions[$data['name']]);
                 $data['index'] = key($this->subscriptions[$data['name']]);
 
-                /** @var array $connSubscriptions */
-                $connSubscriptions = array_key_exists($conn->key(), $this->connStorage)
+                /** @var array $conn_subs */
+                $conn_subs = array_key_exists($conn->key(), $this->connStorage)
                     ? $this->connStorage[$conn->key()]
                     : [];
-                $connSubscriptions[strval($data['id'])] = $data;
-                $this->connStorage[$conn->key()] = $connSubscriptions;
+                $conn_subs[strval($data['id'])] = $data;
+                $this->connStorage[$conn->key()] = $conn_subs;
 
                 $this->callListener(ON_OPERATION, [$data, $this->rootValue, $this->context]);
             } else {
@@ -202,6 +204,46 @@ class SubscriptionsManager
         return GraphQL::executeQuery($this->schema, $query, $payload, $this->context, $variables)->toArray(debugging());
     }
 
+    /**
+     * @param DocumentNode $document
+     * @return string
+     */
+    /**
+     * @param DocumentNode $document
+     * @return string
+     */
+    /**
+     * @param DocumentNode $document
+     * @return string
+     */
+    /**
+     * @param DocumentNode $document
+     * @return string
+     */
+    /**
+     * @param DocumentNode $document
+     * @return string
+     */
+    /**
+     * @param DocumentNode $document
+     * @return string
+     */
+    /**
+     * @param DocumentNode $document
+     * @return string
+     */
+    /**
+     * @param DocumentNode $document
+     * @return string
+     */
+    /**
+     * @param DocumentNode $document
+     * @return string
+     */
+    /**
+     * @param DocumentNode $document
+     * @return string
+     */
     public function getSubscriptionName(DocumentNode $document): string
     {
         /** @var OperationDefinitionNode $definition */
@@ -219,10 +261,10 @@ class SubscriptionsManager
      */
     public function handleData(array $data)
     {
-        /** @var string $subscriptionName */
-        $subscriptionName = $data['subscription'];
+        /** @var string $subs_name */
+        $subs_name = $data['subscription'];
         /** @var array<array>|null $subscriptions */
-        $subscriptions = array_get($this->subscriptions, $subscriptionName);
+        $subscriptions = array_get($this->subscriptions, $subs_name);
 
         if (is_null($subscriptions)) {
             return;
@@ -282,10 +324,10 @@ class SubscriptionsManager
      */
     public function handleStop(SubscriptionsConnection $conn, array $data)
     {
-        /** @var array<string, mixed> $connSubscriptions */
-        $connSubscriptions = $this->connStorage[$conn->key()];
+        /** @var array<string, mixed> $conn_subs */
+        $conn_subs = $this->connStorage[$conn->key()];
         /** @var array|null $subscription */
-        $subscription = array_get($connSubscriptions, strval($data['id']));
+        $subscription = array_get($conn_subs, strval($data['id']));
 
         if (!is_null($subscription)) {
             /** @var string subscription_name */
@@ -295,15 +337,14 @@ class SubscriptionsManager
             /** @var int|string $subscription_id */
             $subscription_id = $subscription['id'];
             unset($this->subscriptions[$subscription_name][$subscription_index]);
-            unset($connSubscriptions[$subscription_id]);
-            $this->connStorage[$conn->key()] = $connSubscriptions;
+            unset($conn_subs[$subscription_id]);
+            $this->connStorage[$conn->key()] = $conn_subs;
             $this->callListener(ON_DISCONNECT, [$subscription, $this->rootValue, $this->context]);
         }
     }
 
     /**
      * @param string $eventName
-     * @param array $withArgs
      * @param array<int, mixed> $withArgs
      *
      * @return mixed|null

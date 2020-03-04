@@ -1,15 +1,10 @@
-<?php declare(strict_types=1);
+<?php /** @noinspection PhpIllegalPsrClassPathInspection */
+declare(strict_types=1);
 /*
  * Tuple module.
  */
 
 namespace Siler\Tuple;
-
-use ArrayAccess;
-use Countable;
-use OutOfBoundsException;
-use OutOfRangeException;
-use RuntimeException;
 
 /**
  * Creates a new Tuple.
@@ -26,7 +21,7 @@ function tuple(...$values)
 /**
  * A class representing a Tuple.
  */
-final class Tuple implements ArrayAccess, Countable
+final class Tuple implements \ArrayAccess, \Countable
 {
     /** @var array */
     private $values;
@@ -59,7 +54,7 @@ final class Tuple implements ArrayAccess, Countable
      * @param string|int $offset
      *
      * @return mixed
-     * @throws OutOfBoundsException
+     * @throws \OutOfBoundsException
      *
      */
     public function offsetGet($offset)
@@ -68,7 +63,7 @@ final class Tuple implements ArrayAccess, Countable
             return $this->values[$offset];
         }
 
-        throw new OutOfRangeException('Invalid tuple position');
+        throw new \OutOfRangeException('Invalid tuple position');
     }
 
     /**
@@ -77,11 +72,11 @@ final class Tuple implements ArrayAccess, Countable
      * @param mixed $offset
      * @param mixed $value
      *
-     * @throws RuntimeException
+     * @throws \RuntimeException
      */
     public function offsetSet($offset, $value)
     {
-        throw new RuntimeException('Tuples are immutable!');
+        throw new \RuntimeException('Tuples are immutable!');
     }
 
     /**
@@ -89,11 +84,11 @@ final class Tuple implements ArrayAccess, Countable
      *
      * @param mixed $offset
      *
-     * @throws RuntimeException
+     * @throws \RuntimeException
      */
     public function offsetUnset($offset)
     {
-        throw new RuntimeException('Tuples are immutable!');
+        throw new \RuntimeException('Tuples are immutable!');
     }
 
     /**

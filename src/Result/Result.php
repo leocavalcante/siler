@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php /** @noinspection PhpComposerExtensionStubsInspection */
+declare(strict_types=1);
 
 namespace Siler\Result;
 
@@ -9,7 +10,10 @@ use JsonSerializable;
  */
 abstract class Result implements JsonSerializable
 {
-    /** @var T|null */
+    /**
+     * @var mixed
+     * @psalm-var T|null
+     */
     private $data;
     /** @var int */
     private $code;
@@ -19,7 +23,8 @@ abstract class Result implements JsonSerializable
     /**
      * Result constructor.
      *
-     * @param T|null $data
+     * @psalm-param T|null $data
+     * @param null $data
      * @param int $code
      * @param string|null $id
      */
@@ -38,13 +43,16 @@ abstract class Result implements JsonSerializable
         return $this->id;
     }
 
+    /**
+     * @return int
+     */
     public function code(): int
     {
         return $this->code;
     }
 
     /**
-     * @return T|null
+     * @psalm-return T|null
      */
     public function unwrap()
     {
@@ -64,6 +72,13 @@ abstract class Result implements JsonSerializable
         return $this;
     }
 
+    /**
+     * Specify data which should be serialized to JSON
+     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4
+     */
     public function jsonSerialize()
     {
         $json = [
@@ -104,7 +119,8 @@ abstract class Result implements JsonSerializable
  *
  * @template T
  *
- * @param T|null $data
+ * @param mixed|null $data
+ * @psalm-param T|null $data
  * @param int $code
  * @param string|null $id
  *
@@ -120,7 +136,8 @@ function success($data = null, int $code = 0, string $id = null): Success
  *
  * @template T
  *
- * @param T|null $data
+ * @param mixed|null $data
+ * @psalm-param T|null $data
  * @param int $code
  * @param string|null $id
  *

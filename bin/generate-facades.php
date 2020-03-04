@@ -27,5 +27,15 @@ $facades = array_map(function (string $content): array {
 }, $contents);
 
 $lines = flatten($facades);
-array_unshift($lines, "<?php declare(strict_types=1);\n");
+$head = <<<HEAD
+<?php
+/**
+ * @noinspection PhpConstantNamingConventionInspection
+ * @noinspection PhpUnused
+ */
+
+declare(strict_types=1);\n
+HEAD;
+
+array_unshift($lines, $head);
 file_put_contents("$basedir/src/facades.php", join("\n", $lines));

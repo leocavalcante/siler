@@ -11,7 +11,8 @@ namespace Siler\Result;
 final class Success extends Result
 {
     /**
-     * @param T|null $data
+     * @param mixed|null $data
+     * @psalm-param T|null $data
      * @param int $code
      * @param string|null $id
      */

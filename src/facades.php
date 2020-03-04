@@ -1,4 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+/**
+ * @noinspection PhpConstantNamingConventionInspection
+ * @noinspection PhpUnused
+ */
+
+declare(strict_types=1);
 
 namespace Siler\Container;
 const get = '\Siler\Container\get';
