@@ -170,4 +170,4 @@ GraphQL\init(GraphQL\schema($typeDefs, $resolvers));
 ```
 
 ---
-MIT 2019
+MIT &copy; 2020
