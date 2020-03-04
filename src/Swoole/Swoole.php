@@ -47,7 +47,8 @@ function http_handler(callable $handler): Closure
         /**
          * @param Request $request
          * @param Response $response
-         * @return T
+         * @return mixed
+         * @psalm-return T
          */
         function (Request $request, Response $response) use ($handler) {
             Container\set(DID_MATCH, false);
@@ -55,7 +56,10 @@ function http_handler(callable $handler): Closure
             Container\set(SWOOLE_HTTP_REQUEST, $request);
             Container\set(SWOOLE_HTTP_RESPONSE, $response);
 
-            /** @var T */
+            /**
+             * @var mixed
+             * @psalm-var T
+             */
             return $handler($request, $response);
         };
 }
@@ -206,7 +210,8 @@ function websocket(callable $handler, int $port = 9502, string $host = '0.0.0.0'
          * @param WebsocketServer $server
          * @param Frame $frame
          *
-         * @return T
+         * @return mixed
+         * @psalm-return T
          */
         static function (WebsocketServer $server, Frame $frame) use ($handler) {
             return $handler($frame, $server);
@@ -479,14 +484,16 @@ function http_server_port(Server $server, callable $handler, int $port = 80, str
  * @template Context
  *
  * @param Schema $schema
- * @param RootValue $rootValue
- * @param Context $context
+ * @param mixed $root_value
+ * @psalm-param RootValue $root_value
+ * @param mixed $context
+ * @psalm-param Context $context
  *
  * @return Closure(): void
  */
-function graphql_handler(Schema $schema, $rootValue = null, $context = null): Closure
+function graphql_handler(Schema $schema, $root_value = null, $context = null): Closure
 {
-    return static function () use ($schema, $rootValue, $context): void {
+    return static function () use ($schema, $root_value, $context): void {
         try {
             $raw = raw();
 
@@ -496,7 +503,7 @@ function graphql_handler(Schema $schema, $rootValue = null, $context = null): Cl
 
             /** @var array<string, mixed> $input */
             $input = Json\decode($raw);
-            $result = execute($schema, $input, $rootValue, $context);
+            $result = execute($schema, $input, $root_value, $context);
         } catch (Throwable $exception) {
             $result = FormattedError::createFromException($exception, Container\get(GRAPHQL_DEBUG, 0) > 0);
         } finally {
@@ -532,10 +539,14 @@ function middleware(array $pipeline): Closure
         /**
          * @param Request $request
          * @param Response $response
-         * @return T|null
+         * @return mixed|null
+         * @psalm-return T|null
          */
         static function (Request $request, Response $response) use ($pipeline) {
-            /** @var T|null $value */
+            /**
+             * @var mixed|null $value
+             * @psalm-var T|null $value
+             */
             $value = null;
 
             foreach ($pipeline as $callback) {

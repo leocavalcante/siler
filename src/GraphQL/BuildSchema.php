@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php /** @noinspection PhpMissingDocCommentInspection */
+/** @noinspection PhpVariableNamingConventionInspection */
+declare(strict_types=1);
 /**
  * Borrowed from https://github.com/webonyx/graphql-php/blob/master/src/Utils/BuildSchema.php
  * Added the type resolver feature.

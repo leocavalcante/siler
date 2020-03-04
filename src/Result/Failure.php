@@ -9,7 +9,8 @@ namespace Siler\Result;
 final class Failure extends Result
 {
     /**
-     * @param T $data
+     * @param mixed $data
+     * @psalm-param T $data
      * @param int $code
      * @param string|null $id
      */

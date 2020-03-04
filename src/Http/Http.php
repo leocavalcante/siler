@@ -92,11 +92,11 @@ function url(?string $path = null): string
 
     /**
      * @var array<string, string> $_SERVER
-     * @var string $scriptName
+     * @var string $script_name
      */
-    $scriptName = array_get($_SERVER, 'SCRIPT_NAME', '');
+    $script_name = array_get($_SERVER, 'SCRIPT_NAME', '');
 
-    return rtrim(str_replace('\\', '/', dirname($scriptName)), '/') . '/' . ltrim($path, '/');
+    return rtrim(str_replace('\\', '/', dirname($script_name)), '/') . '/' . ltrim($path, '/');
 }
 
 /**
@@ -108,21 +108,21 @@ function path(): string
 {
     /**
      * @var array<string, string> $_SERVER
-     * @var string $scriptName
+     * @var string $script_name
      */
-    $scriptName = array_get($_SERVER, 'SCRIPT_NAME', '');
-    /** @var string $queryString */
-    $queryString = array_get($_SERVER, 'QUERY_STRING', '');
-    /** @var string $requestUri */
-    $requestUri = array_get($_SERVER, 'REQUEST_URI', '');
+    $script_name = array_get($_SERVER, 'SCRIPT_NAME', '');
+    /** @var string $query_string */
+    $query_string = array_get($_SERVER, 'QUERY_STRING', '');
+    /** @var string $request_uri */
+    $request_uri = array_get($_SERVER, 'REQUEST_URI', '');
 
-    $requestUri = str_replace('?' . $queryString, '', $requestUri);
-    $scriptPath = str_replace('\\', '/', dirname($scriptName));
+    $request_uri = str_replace('?' . $query_string, '', $request_uri);
+    $script_path = str_replace('\\', '/', dirname($script_name));
 
-    if (!strlen(str_replace('/', '', $scriptPath))) {
-        return '/' . ltrim($requestUri, '/');
+    if (!strlen(str_replace('/', '', $script_path))) {
+        return '/' . ltrim($request_uri, '/');
     } else {
-        return '/' . ltrim(preg_replace("#^$scriptPath#", '', $requestUri, 1), '/');
+        return '/' . ltrim(preg_replace("#^$script_path#", '', $request_uri, 1), '/');
     }
 }
 
@@ -144,8 +144,8 @@ function uri(?string $protocol = null): string
         $protocol = empty($https) ? 'http' : 'https';
     }
 
-    /** @var string $httpHost */
-    $httpHost = array_get($_SERVER, 'HTTP_HOST', '');
+    /** @var string $http_host */
+    $http_host = array_get($_SERVER, 'HTTP_HOST', '');
 
-    return $protocol . '://' . $httpHost . path();
+    return $protocol . '://' . $http_host . path();
 }
