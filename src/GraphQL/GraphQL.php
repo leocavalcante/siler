@@ -61,6 +61,27 @@ function debug(int $level = Debug::INCLUDE_DEBUG_MESSAGE): void
     Container\set(GRAPHQL_DEBUG, $level);
 }
 
+/**
+ * @return int
+ */
+/**
+ * @return int
+ */
+/**
+ * @return int
+ */
+/**
+ * @return int
+ */
+/**
+ * @return int
+ */
+/**
+ * @return int
+ */
+/**
+ * @return int
+ */
 function debugging(): int
 {
     return intval(Container\get(GRAPHQL_DEBUG, 0));
@@ -90,10 +111,10 @@ function init(Schema $schema, $rootValue = null, $context = null, string $input 
  */
 function input(string $input = 'php://input'): array
 {
-    /** @var string|null $contentType */
-    $contentType = Request\header('Content-Type');
+    /** @var string|null $content_type */
+    $content_type = Request\header('Content-Type');
 
-    if ($contentType !== null && preg_match('#application/json(;charset=utf-8)?#', $contentType)) {
+    if ($content_type !== null && preg_match('#application/json(;charset=utf-8)?#', $content_type)) {
         $data = Request\json($input);
     } else {
         $data = Request\post();
@@ -206,38 +227,38 @@ function resolvers(array $resolvers)
         * @param mixed $context
         */
         static function ($source, array $args, $context, ResolveInfo $info) use ($resolvers) {
-            /** @var string|null $fieldName */
-            $fieldName = $info->fieldName;
+            /** @var string|null $field_name */
+            $field_name = $info->fieldName;
 
-            if ($fieldName === null) {
-                throw new UnexpectedValueException('Could not get $fieldName from ResolveInfo');
+            if ($field_name === null) {
+                throw new UnexpectedValueException('Could not get fieldName from ResolveInfo');
             }
 
-            /** @var ObjectType|null $parentType */
-            $parentType = $info->parentType;
+            /** @var ObjectType|null $parent_type */
+            $parent_type = $info->parentType;
 
-            if ($parentType === null) {
-                throw new UnexpectedValueException('Could not get $parentType from ResolveInfo');
+            if ($parent_type === null) {
+                throw new UnexpectedValueException('Could not get parentType from ResolveInfo');
             }
 
-            $parentTypeName = $parentType->name;
+            $parent_type_name = $parent_type->name;
 
-            if (isset($resolvers[$parentTypeName])) {
+            if (isset($resolvers[$parent_type_name])) {
                 /** @var array|object $resolver */
-                $resolver = $resolvers[$parentTypeName];
+                $resolver = $resolvers[$parent_type_name];
 
                 if (is_array($resolver)) {
-                    if (array_key_exists($fieldName, $resolver)) {
+                    if (array_key_exists($field_name, $resolver)) {
                         /** @var callable|mixed $value */
-                        $value = $resolver[$fieldName];
+                        $value = $resolver[$field_name];
                         return is_callable($value) ? $value($source, $args, $context, $info) : $value;
                     }
                 }
 
                 if (is_object($resolver)) {
-                    if (isset($resolver->{$fieldName})) {
+                    if (isset($resolver->{$field_name})) {
                         /** @var callable|mixed $value */
-                        $value = $resolver->{$fieldName};
+                        $value = $resolver->{$field_name};
                         return is_callable($value) ? $value($source, $args, $context, $info) : $value;
                     }
                 }
@@ -278,6 +299,7 @@ function subscriptions_manager(
  * @return IoServer
  * @deprecated Returns a new websocket server bootstrapped for GraphQL.
  *
+ * @noinspection PhpTooManyParametersInspection
  */
 function subscriptions(
     Schema $schema,
@@ -320,13 +342,37 @@ function publish(string $subscriptionName, $payload = null): void
         'payload' => $payload
     ];
 
-    /** @var string $wsEndpoint */
-    $wsEndpoint = Container\get('graphql_subscriptions_endpoint');
+    /** @var string $ws_endpoint */
+    $ws_endpoint = Container\get('graphql_subscriptions_endpoint');
 
-    $client = new Client($wsEndpoint);
+    $client = new Client($ws_endpoint);
     $client->send(encode($message));
 }
 
+/**
+ * @param string $eventName
+ * @param callable $listener
+ */
+/**
+ * @param string $eventName
+ * @param callable $listener
+ */
+/**
+ * @param string $eventName
+ * @param callable $listener
+ */
+/**
+ * @param string $eventName
+ * @param callable $listener
+ */
+/**
+ * @param string $eventName
+ * @param callable $listener
+ */
+/**
+ * @param string $eventName
+ * @param callable $listener
+ */
 function listen(string $eventName, callable $listener): void
 {
     Container\set($eventName, $listener);

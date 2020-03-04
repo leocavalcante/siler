@@ -2,30 +2,40 @@
 
 namespace Siler\Grpc;
 
-use Exception;
 use Google\Protobuf\Internal\Message;
-use ReflectionClass;
 
+/**
+ * Class Parser
+ * @package Siler\Grpc
+ */
 class Parser
 {
 
+    /**
+     * @param Message $message
+     * @return string
+     */
     public static function serialize(Message $message): string
     {
         return self::pack($message->serializeToString());
     }
 
+    /**
+     * @param string $data
+     * @return string
+     */
     public static function pack(string $data): string
     {
         return $data = pack('CN', 0, strlen($data)) . $data;
     }
 
     /**
-     * @param ReflectionClass $message_class
+     * @param \ReflectionClass $message_class
      * @param string $value
      * @return Message|null
-     * @throws Exception
+     * @throws \Exception
      */
-    public static function deserialize(ReflectionClass $message_class, string $value): ?Message
+    public static function deserialize(\ReflectionClass $message_class, string $value): ?Message
     {
         if (empty($value)) {
             return null;
@@ -40,6 +50,10 @@ class Parser
         return $object;
     }
 
+    /**
+     * @param string $data
+     * @return string
+     */
     public static function unpack(string $data): string
     {
         // it's the way to verify the package length

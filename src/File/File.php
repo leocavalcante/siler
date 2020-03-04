@@ -15,7 +15,7 @@ use function Siler\Functional\concat;
  * @param string $regex
  * @param int $mode
  *
- * @return list<SplFileInfo>
+ * @psalm-return list<SplFileInfo>
  * @return SplFileInfo[]
  */
 function recursively_iterated_directory(string $dirname, string $regex = '/.*/', $mode = RegexIterator::MATCH): array
@@ -41,7 +41,7 @@ function recursively_iterated_directory(string $dirname, string $regex = '/.*/',
  * @param string $regex
  * @param int $mode
  *
- * @return list<SplFileInfo>
+ * @psalm-return list<SplFileInfo>
  * @return SplFileInfo[]
  */
 function recur_iter_dir(string $dirname, string $regex = '/.*/', $mode = RegexIterator::MATCH): array

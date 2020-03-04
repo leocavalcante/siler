@@ -91,6 +91,10 @@ function retrieve(string $serviceName)
     return $container->values[$serviceName];
 }
 
+/**
+ * @internal Class Container
+ * @package Siler\Container
+ */
 final class Container
 {
     /** @var array<string, mixed> */
@@ -100,6 +104,9 @@ final class Container
     {
     }
 
+    /**
+     * @return static
+     */
     public static function getInstance(): self
     {
         /** @var Container|null */

@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php /** @noinspection PhpComposerExtensionStubsInspection */
+declare(strict_types=1);
 /*
  * Helpers functions for HTTP requests.
  */
@@ -7,7 +8,6 @@ namespace Siler\Http\Request;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Siler\Container;
-use Siler\Swoole\RequestInterface;
 use Swoole\Http\Request;
 use function locale_get_default;
 use function Siler\array_get;
@@ -60,10 +60,10 @@ function json(string $input = 'php://input')
  */
 function headers(): array
 {
-    /** @var array<string> $serverKeys */
-    $serverKeys = array_keys($_SERVER);
-    $httpHeaders = array_reduce(
-        $serverKeys,
+    /** @var array<string> $server_keys */
+    $server_keys = array_keys($_SERVER);
+    $http_headers = array_reduce(
+        $server_keys,
         function (array $headers, string $key): array {
             if ($key === 'CONTENT_TYPE') {
                 $headers[] = $key;
@@ -84,7 +84,7 @@ function headers(): array
 
     $values = array_map(function (string $header): string {
         return strval($_SERVER[$header]);
-    }, $httpHeaders);
+    }, $http_headers);
 
     $headers = array_map(function (string $header) {
         if (substr($header, 0, 5) == 'HTTP_') {
@@ -96,7 +96,7 @@ function headers(): array
         }
 
         return str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', $header))));
-    }, $httpHeaders);
+    }, $http_headers);
 
     return array_combine($headers, $values);
 }
@@ -216,22 +216,22 @@ function method(): string
  * Checks for the current HTTP request method.
  *
  * @param string|array $method The given method to check on
- * @param string|null $requestMethod
+ * @param string|null $request_method
  * @return bool
  */
-function method_is($method, ?string $requestMethod = null): bool
+function method_is($method, ?string $request_method = null): bool
 {
-    if (is_null($requestMethod)) {
-        $requestMethod = method();
+    if (is_null($request_method)) {
+        $request_method = method();
     }
 
     if (is_array($method)) {
         $method = array_map('strtolower', $method);
 
-        return in_array(strtolower($requestMethod), $method);
+        return in_array(strtolower($request_method), $method);
     }
 
-    return strtolower($method) == strtolower($requestMethod);
+    return strtolower($method) == strtolower($request_method);
 }
 
 /**

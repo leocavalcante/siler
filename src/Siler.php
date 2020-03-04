@@ -8,18 +8,21 @@ namespace Siler;
 use Closure;
 use UnexpectedValueException;
 
-const __ARRY_GET_ERROR_MESSAGE = "Key not found in array and no default was provided.";
+const ARRAY_GET_ERROR_MESSAGE = "Key not found in array and no default was provided.";
 
 /**
  * Get a value from an array checking if the key exists and returning a default value if not.
  *
  * @psalm-suppress LessSpecificReturnType
  * @template T
- * @param array<string, T>|null $array
+ * @param array<string, mixed>|null $array
+ * @psalm-param array<string, T>|null $array
  * @param string|null $key The key to be searched
- * @param T|null $default The default value to be returned when the key don't exists
+ * @param mixed|null $default The default value to be returned when the key don't exists
+ * @psalm-param T|null $default The default value to be returned when the key don't exists
  * @param bool $caseInsensitive Ignore key case, default false
- * @return T|null|array<string, T>
+ * @return mixed|null|array<string, mixed>
+ * @psalm-return T|null|array<string, T>
  */
 function array_get(?array $array, ?string $key = null, $default = null, bool $caseInsensitive = false)
 {
@@ -43,7 +46,8 @@ function array_get(?array $array, ?string $key = null, $default = null, bool $ca
  * Type-safe array_get for strings.
  *
  * @template T
- * @param array<string, T> $array
+ * @param array<string, mixed> $array
+ * @psalm-param array<string, T> $array
  * @param string $key
  * @param string|null $default
  * @return string
@@ -53,7 +57,7 @@ function array_get_str(array $array, string $key, ?string $default = null): stri
     $value = array_get($array, $key);
 
     if ($value === null && $default === null) {
-        throw new UnexpectedValueException(__ARRY_GET_ERROR_MESSAGE);
+        throw new UnexpectedValueException(ARRAY_GET_ERROR_MESSAGE);
     }
 
     if ($value === null) {
@@ -67,7 +71,8 @@ function array_get_str(array $array, string $key, ?string $default = null): stri
  * Type-safe array_get for integers.
  *
  * @template T
- * @param array<string, T> $array
+ * @param array<string, mixed> $array
+ * @psalm-param array<string, T> $array
  * @param string $key
  * @param int|null $default
  * @return int
@@ -77,7 +82,7 @@ function array_get_int(array $array, string $key, ?int $default = null): int
     $value = array_get($array, $key);
 
     if ($value === null && $default === null) {
-        throw new UnexpectedValueException(__ARRY_GET_ERROR_MESSAGE);
+        throw new UnexpectedValueException(ARRAY_GET_ERROR_MESSAGE);
     }
 
     if ($value === null) {
@@ -91,7 +96,8 @@ function array_get_int(array $array, string $key, ?int $default = null): int
  * Type-safe array_get for floats.
  *
  * @template T
- * @param array<string, T> $array
+ * @param array<string, mixed> $array
+ * @psalm-param array<string, T> $array
  * @param string $key
  * @param float|null $default
  * @return float
@@ -101,7 +107,7 @@ function array_get_float(array $array, string $key, ?float $default = null): flo
     $value = array_get($array, $key);
 
     if ($value === null && $default === null) {
-        throw new UnexpectedValueException(__ARRY_GET_ERROR_MESSAGE);
+        throw new UnexpectedValueException(ARRAY_GET_ERROR_MESSAGE);
     }
 
     if ($value === null) {
@@ -115,7 +121,8 @@ function array_get_float(array $array, string $key, ?float $default = null): flo
  * Type-safe array_get for booleans.
  *
  * @template T
- * @param array<string, T> $array
+ * @param array<string, mixed> $array
+ * @psalm-param array<string, T> $array
  * @param string $key
  * @param bool|null $default
  * @return bool
@@ -125,7 +132,7 @@ function array_get_bool(array $array, string $key, ?bool $default = null): bool
     $value = array_get($array, $key);
 
     if ($value === null && $default === null) {
-        throw new UnexpectedValueException(__ARRY_GET_ERROR_MESSAGE);
+        throw new UnexpectedValueException(ARRAY_GET_ERROR_MESSAGE);
     }
 
     if ($value === null) {

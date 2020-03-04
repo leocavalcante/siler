@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php /** @noinspection PhpComposerExtensionStubsInspection */
+declare(strict_types=1);
 
 namespace Siler\Encoder\Json;
 
