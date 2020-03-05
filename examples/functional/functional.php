@@ -1,16 +1,14 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use Siler\Functional as λ;
+use Siler\Functional as λ; // Just to be cool, don't use non-ASCII identifiers ;)
 
-$nameOf = λ\match([[λ\equal(1), λ\always('one')], [λ\equal(2), λ\always('two')], [λ\equal(3), λ\always('three')]]);
+$pipeline = λ\pipe([
+    λ\lmap(fn(string $s): string => trim($s)),
+    λ\lfilter(λ\not(λ\equal('baz'))),
+    λ\non_empty,
+    λ\ljoin(',')
+]);
 
-echo $nameOf(1);
-// one
-echo $nameOf(2);
-// two
-echo $nameOf(3);
-// three
+echo $pipeline(['foo', ' ', 'bar', 'baz']); // foo,bar
