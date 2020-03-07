@@ -66,24 +66,6 @@ function debug(int $level = Debug::INCLUDE_DEBUG_MESSAGE): void
 /**
  * @return int
  */
-/**
- * @return int
- */
-/**
- * @return int
- */
-/**
- * @return int
- */
-/**
- * @return int
- */
-/**
- * @return int
- */
-/**
- * @return int
- */
 function debugging(): int
 {
     return intval(Container\get(GRAPHQL_DEBUG, 0));
@@ -179,10 +161,7 @@ function promise_execute(PromiseAdapter $adapter, Schema $schema, array $input, 
  * Returns a PSR-7 complaint ServerRequestInterface handler.
  *
  * @param Schema $schema GraphQL schema to execute
- *
- * @return Closure ServerRequestInterface -> IO
- *
- * @return Closure(ServerRequestInterface): JsonResponse
+ * @return Closure(ServerRequestInterface):JsonResponse
  */
 function psr7(Schema $schema): Closure
 {
@@ -218,7 +197,6 @@ function schema(string $typeDefs, array $resolvers = [], ?callable $typeConfigDe
  * Sets a Siler's default field resolver based on the given $resolvers array.
  *
  * @param array $resolvers
- *
  * @return void
  */
 function resolvers(array $resolvers)
@@ -307,7 +285,6 @@ function resolvers(array $resolvers)
  * @param array $filters
  * @param array $rootValue
  * @param array $context
- *
  * @return SubscriptionsManager
  */
 function subscriptions_manager(
@@ -326,10 +303,8 @@ function subscriptions_manager(
  * @param int $port
  * @param array $rootValue
  * @param array $context
- *
  * @return IoServer
  * @deprecated Returns a new websocket server bootstrapped for GraphQL.
- *
  * @noinspection PhpTooManyParametersInspection
  */
 function subscriptions(
@@ -348,7 +323,6 @@ function subscriptions(
  * Sets the GraphQL server endpoint where publish should connect to.
  *
  * @param string $url
- *
  * @return void
  */
 function subscriptions_at(string $url)
@@ -361,7 +335,6 @@ function subscriptions_at(string $url)
  *
  * @param string $subscriptionName
  * @param mixed $payload
- *
  * @return void
  * @throws BadOpcodeException
  */
@@ -380,26 +353,6 @@ function publish(string $subscriptionName, $payload = null): void
     $client->send(encode($message));
 }
 
-/**
- * @param string $eventName
- * @param callable $listener
- */
-/**
- * @param string $eventName
- * @param callable $listener
- */
-/**
- * @param string $eventName
- * @param callable $listener
- */
-/**
- * @param string $eventName
- * @param callable $listener
- */
-/**
- * @param string $eventName
- * @param callable $listener
- */
 /**
  * @param string $eventName
  * @param callable $listener
