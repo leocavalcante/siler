@@ -1,26 +1,29 @@
+directive @upper on FIELD
+
 type Message {
-  id: Int
-  roomId: Int
-  body: String
-  timestamp: String
+  id: ID!
+  roomId: Int!
+  body: String!
+  timestamp: String!
 }
 
 type Room {
-  id: Int
-  name: String
-  messages: [Message]
+  id: ID!
+  name: String!
+  messages: [Message!]!
 }
 
 type Query {
-  messages(roomName: String): [Message]
-  rooms: [Room]
+  messages(roomName: String!): [Message!]!
+  rooms: [Room!]!
 }
 
 type Mutation {
-  start(roomName: String): Room
-  chat(roomName: String, body: String): Message
+  start(roomName: String!): Room!
+  chat(roomName: String!, body: String!): Message!
+  close(roomName: String!): Boolean!
 }
 
 type Subscription {
-  inbox(roomName: String): Message
+  inbox(roomName: String!): Message!
 }

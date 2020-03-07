@@ -59,4 +59,5 @@ $server = graphql_subscriptions($manager, 8001);
 
 http_server_port($server, graphql_handler($schema, $root_value, $context), 8000);
 
-$server->start();
+@$server->start();
+

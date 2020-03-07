@@ -11,6 +11,8 @@ use GraphQL\Executor\Executor;
 use GraphQL\Executor\Promise\Promise;
 use GraphQL\Executor\Promise\PromiseAdapter;
 use GraphQL\GraphQL;
+use GraphQL\Language\AST\DirectiveNode;
+use GraphQL\Language\AST\NodeList;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Schema;
@@ -221,50 +223,79 @@ function schema(string $typeDefs, array $resolvers = [], ?callable $typeConfigDe
  */
 function resolvers(array $resolvers)
 {
+    /**
+     * @param mixed $source
+     * @param array $args
+     * @param mixed $context
+     * @param ResolveInfo $info
+     * @return callable|mixed|null
+     */
+    $resolver = static function ($source, array $args, $context, ResolveInfo $info) use ($resolvers) {
+        /** @var string|null $field_name */
+        $field_name = $info->fieldName;
+
+        if ($field_name === null) {
+            throw new UnexpectedValueException('Could not get fieldName from ResolveInfo');
+        }
+
+        /** @var ObjectType|null $parent_type */
+        $parent_type = $info->parentType;
+
+        if ($parent_type === null) {
+            throw new UnexpectedValueException('Could not get parentType from ResolveInfo');
+        }
+
+        $parent_type_name = $parent_type->name;
+
+        if (isset($resolvers[$parent_type_name])) {
+            /** @var array|object $resolver */
+            $resolver = $resolvers[$parent_type_name];
+            $value = null;
+
+            if (is_array($resolver)) {
+                if (array_key_exists($field_name, $resolver)) {
+                    /** @var callable|mixed $value */
+                    $value = $resolver[$field_name];
+                }
+            }
+
+            if (is_object($resolver)) {
+                if (isset($resolver->{$field_name})) {
+                    /** @var callable|mixed $value */
+                    $value = $resolver->{$field_name};
+                }
+            }
+
+            if (is_callable($value)) {
+                return $value($source, $args, $context, $info);
+            }
+
+            if ($value !== null) {
+                return $value;
+            }
+        }
+
+        return Executor::defaultFieldResolver($source, $args, $context, $info);
+    };
+
     Executor::setDefaultFieldResolver(
-        /**
-        * @param mixed $source
-        * @param mixed $context
-        */
-        static function ($source, array $args, $context, ResolveInfo $info) use ($resolvers) {
-            /** @var string|null $field_name */
-            $field_name = $info->fieldName;
+        static function ($source, array $args, $context, ResolveInfo $info) use ($resolvers, $resolver) {
+            $field_node = $info->fieldNodes[0];
+            /** @var NodeList $directives */
+            $directives = $field_node->directives;
 
-            if ($field_name === null) {
-                throw new UnexpectedValueException('Could not get fieldName from ResolveInfo');
-            }
+            if (!empty($directives)) {
+                /** @var DirectiveNode $directive */
+                foreach ($directives as $directive) {
+                    $directive_name = "@{$directive->name->value}";
 
-            /** @var ObjectType|null $parent_type */
-            $parent_type = $info->parentType;
-
-            if ($parent_type === null) {
-                throw new UnexpectedValueException('Could not get parentType from ResolveInfo');
-            }
-
-            $parent_type_name = $parent_type->name;
-
-            if (isset($resolvers[$parent_type_name])) {
-                /** @var array|object $resolver */
-                $resolver = $resolvers[$parent_type_name];
-
-                if (is_array($resolver)) {
-                    if (array_key_exists($field_name, $resolver)) {
-                        /** @var callable|mixed $value */
-                        $value = $resolver[$field_name];
-                        return is_callable($value) ? $value($source, $args, $context, $info) : $value;
-                    }
-                }
-
-                if (is_object($resolver)) {
-                    if (isset($resolver->{$field_name})) {
-                        /** @var callable|mixed $value */
-                        $value = $resolver->{$field_name};
-                        return is_callable($value) ? $value($source, $args, $context, $info) : $value;
+                    if (array_key_exists($directive_name, $resolvers)) {
+                        $resolver = $resolvers[$directive_name]($resolver);
                     }
                 }
             }
 
-            return Executor::defaultFieldResolver($source, $args, $context, $info);
+            return $resolver($source, $args, $context, $info);
         }
     );
 }
