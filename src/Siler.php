@@ -145,7 +145,9 @@ function array_get_bool(array $array, string $key, ?bool $default = null): bool
 /**
  * Type-safe array_get for arrays.
  *
- * @param array $array
+ * @template T
+ * @param array<string, mixed> $array
+ * @psalm-param array<string, T> $array
  * @param string $key
  * @param array|null $default
  * @return array
