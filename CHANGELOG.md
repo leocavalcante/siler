@@ -1,4 +1,5 @@
 # 1.7.3
+- GraphQL's Custom Directives
 - Better error message for `array_get`'s
 - Add `array_get_arr` function
 - PHPUnit 9
