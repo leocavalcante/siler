@@ -15,6 +15,10 @@ class FileTest extends TestCase
         $basedir = dirname(__DIR__, 2);
         $dir = recursively_iterated_directory(join_dir($basedir, 'fixtures'));
 
+        $dir = array_map(function (\SplFileInfo $info): string {
+            return $info->getPathname();
+        }, $dir);
+
         $this->assertContains(join_dir($basedir, 'fixtures', 'foo.php'), $dir);
     }
 
@@ -22,6 +26,10 @@ class FileTest extends TestCase
     {
         $basedir = dirname(__DIR__, 2);
         $dir = recur_iter_dir(join_dir($basedir, 'fixtures'), '/\.txt$/');
+
+        $dir = array_map(function (\SplFileInfo $info): string {
+            return $info->getPathname();
+        }, $dir);
 
         $this->assertContains(join_dir($basedir, 'fixtures', 'php_input.txt'), $dir);
     }
