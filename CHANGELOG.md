@@ -1,6 +1,7 @@
 # 1.7.3
 - Better error message for `array_get`'s
 - Add `array_get_arr` function
+- PHPUnit 9
 
 # 1.7.2
 - Experimental support for gRPC servers

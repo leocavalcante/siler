@@ -12,9 +12,8 @@ use function Siler\array_get;
 /**
  * Load the .env file contents into the environment.
  *
- * @param string $path Directory name of the .env file location *
+ * @param string $path Directory name where .env file is located
  * @return array<array-key, null|string>
- * @return array
  */
 function init(string $path): array
 {
@@ -27,7 +26,6 @@ function init(string $path): array
  *
  * @param string|null $key
  * @param mixed $default A default when the key do not exists
- *
  * @return string|null|array<string, string>
  */
 function env(?string $key = null, ?string $default = null)
