@@ -8,12 +8,11 @@ namespace Siler;
 use Closure;
 use UnexpectedValueException;
 
-const ARRAY_GET_ERROR_MESSAGE = "Key not found in array and no default was provided.";
+const ARRAY_GET_ERROR_MESSAGE = "Key (%s) not found in array and no default was provided.";
 
 /**
  * Get a value from an array checking if the key exists and returning a default value if not.
  *
- * @psalm-suppress LessSpecificReturnType
  * @template T
  * @param array<string, mixed>|null $array
  * @psalm-param array<string, T>|null $array
@@ -23,6 +22,7 @@ const ARRAY_GET_ERROR_MESSAGE = "Key not found in array and no default was provi
  * @param bool $caseInsensitive Ignore key case, default false
  * @return mixed|null|array<string, mixed>
  * @psalm-return T|null|array<string, T>
+ * @psalm-suppress LessSpecificReturnType
  */
 function array_get(?array $array, ?string $key = null, $default = null, bool $caseInsensitive = false)
 {
@@ -57,7 +57,7 @@ function array_get_str(array $array, string $key, ?string $default = null): stri
     $value = array_get($array, $key);
 
     if ($value === null && $default === null) {
-        throw new UnexpectedValueException(ARRAY_GET_ERROR_MESSAGE);
+        throw new UnexpectedValueException(sprintf(ARRAY_GET_ERROR_MESSAGE, $key));
     }
 
     if ($value === null) {
@@ -79,10 +79,11 @@ function array_get_str(array $array, string $key, ?string $default = null): stri
  */
 function array_get_int(array $array, string $key, ?int $default = null): int
 {
+    /** @var mixed $value */
     $value = array_get($array, $key);
 
     if ($value === null && $default === null) {
-        throw new UnexpectedValueException(ARRAY_GET_ERROR_MESSAGE);
+        throw new UnexpectedValueException(sprintf(ARRAY_GET_ERROR_MESSAGE, $key));
     }
 
     if ($value === null) {
@@ -104,10 +105,11 @@ function array_get_int(array $array, string $key, ?int $default = null): int
  */
 function array_get_float(array $array, string $key, ?float $default = null): float
 {
+    /** @var mixed $value */
     $value = array_get($array, $key);
 
     if ($value === null && $default === null) {
-        throw new UnexpectedValueException(ARRAY_GET_ERROR_MESSAGE);
+        throw new UnexpectedValueException(sprintf(ARRAY_GET_ERROR_MESSAGE, $key));
     }
 
     if ($value === null) {
@@ -129,10 +131,11 @@ function array_get_float(array $array, string $key, ?float $default = null): flo
  */
 function array_get_bool(array $array, string $key, ?bool $default = null): bool
 {
+    /** @var mixed $value */
     $value = array_get($array, $key);
 
     if ($value === null && $default === null) {
-        throw new UnexpectedValueException(ARRAY_GET_ERROR_MESSAGE);
+        throw new UnexpectedValueException(sprintf(ARRAY_GET_ERROR_MESSAGE, $key));
     }
 
     if ($value === null) {
@@ -140,6 +143,31 @@ function array_get_bool(array $array, string $key, ?bool $default = null): bool
     }
 
     return boolval($value);
+}
+
+/**
+ * Type-safe array_get for arrays.
+ *
+ * @template T
+ * @param array<string, mixed> $array
+ * @psalm-param array<string, T> $array
+ * @param string $key
+ * @param array|null $default
+ * @return array
+ */
+function array_get_arr(array $array, string $key, ?array $default = null): array
+{
+    $value = array_get($array, $key);
+
+    if ($value === null && $default === null) {
+        throw new UnexpectedValueException(sprintf(ARRAY_GET_ERROR_MESSAGE, $key));
+    }
+
+    if ($value === null) {
+        return $default;
+    }
+
+    return (array) $value;
 }
 
 /**

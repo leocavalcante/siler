@@ -10,9 +10,10 @@ use UnexpectedValueException;
 use function Siler\array_get;
 
 /**
- * @param string $path Directory name of the .env file location *
+ * Load the .env file contents into the environment.
+ *
+ * @param string $path Directory name of the .env file location
  * @return array<array-key, null|string>
- * @return array
  * @deprecated Will be removed on the next release.
  *
  */
@@ -23,9 +24,10 @@ function init(string $path): array
 }
 
 /**
- * @param string|null $key
- * @param mixed $default A default when the key do not exists
+ * Get an environment value or fallback to the given default.
  *
+ * @param string|null $key
+ * @param string|null $default A default when the key do not exists
  * @return string|null|array<string, string>
  * @deprecated Use function Siler\Env\env_var.
  *
@@ -37,9 +39,10 @@ function env(?string $key = null, ?string $default = null)
 }
 
 /**
+ * Returns an environment variable as an integer.
+ *
  * @param string $key
  * @param int|null $default
- *
  * @return int|null
  * @deprecated Use function Siler\Env\env_int.
  *
@@ -61,9 +64,10 @@ function int_val(string $key, ?int $default = null): ?int
 }
 
 /**
+ * Returns an environment variable as an boolean.
+ *
  * @param string $key
  * @param bool|null $default
- *
  * @return bool|null
  * @deprecated Use function Siler\Env\env_bool.
  *
@@ -93,11 +97,11 @@ function bool_val(string $key, ?bool $default = null): ?bool
 }
 
 /**
- * @param string $key
+ * Checks for the presence of an environment variable.
  *
+ * @param string $key
  * @return true
  * @deprecated Environment vars getters already checks if there no default.
- *
  */
 function requires(string $key): bool
 {
