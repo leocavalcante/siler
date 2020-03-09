@@ -102,8 +102,8 @@ class RequestTest extends TestCase
     public function testFile()
     {
         $this->assertSame($_FILES, Request\file());
-        $this->assertSame('bar', Request\file('foo'));
-        $this->assertSame('qux', Request\file('baz', 'qux'));
+        $this->assertSame(['name' => 'bar'], Request\file('foo'));
+        $this->assertSame(['name' => 'qux'], Request\file('baz', ['name' => 'qux']));
         $this->assertNull(Request\file('baz'));
     }
 
@@ -222,7 +222,13 @@ class RequestTest extends TestCase
 
     protected function setUp(): void
     {
-        $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = $_FILES = ['foo' => 'bar'];
+        $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = ['foo' => 'bar'];
+
+        $_FILES = [
+            'foo' => [
+                'name' => 'bar',
+            ],
+        ];
 
         $_SERVER['HTTP_HOST'] = 'test:8000';
         $_SERVER['SCRIPT_NAME'] = '/foo/test.php';

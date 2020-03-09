@@ -12,9 +12,8 @@ use function Siler\array_get;
 /**
  * Load the .env file contents into the environment.
  *
- * @param string $path Directory name of the .env file location *
+ * @param string $path Directory name where .env file is located
  * @return array<array-key, null|string>
- * @return array
  */
 function init(string $path): array
 {
@@ -26,8 +25,7 @@ function init(string $path): array
  * Get an environment value or fallback to the given default.
  *
  * @param string|null $key
- * @param mixed $default A default when the key do not exists
- *
+ * @param string|null $default A default when the key do not exists
  * @return string|null|array<string, string>
  */
 function env(?string $key = null, ?string $default = null)
@@ -41,7 +39,6 @@ function env(?string $key = null, ?string $default = null)
  *
  * @param string $key
  * @param int|null $default
- *
  * @return int|null
  */
 function int_val(string $key, ?int $default = null): ?int
@@ -64,12 +61,11 @@ function int_val(string $key, ?int $default = null): ?int
  *
  * @param string $key
  * @param bool|null $default
- *
  * @return bool|null
  */
 function bool_val(string $key, ?bool $default = null): ?bool
 {
-    $val = env($key, $default);
+    $val = env($key);
 
     if ($val === null) {
         return $default;
@@ -94,7 +90,6 @@ function bool_val(string $key, ?bool $default = null): ?bool
  * Checks for the presence of an environment variable.
  *
  * @param string $key
- *
  * @return true
  */
 function requires(string $key): bool

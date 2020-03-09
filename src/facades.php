@@ -238,6 +238,7 @@ const array_get_str = '\Siler\array_get_str';
 const array_get_int = '\Siler\array_get_int';
 const array_get_float = '\Siler\array_get_float';
 const array_get_bool = '\Siler\array_get_bool';
+const array_get_arr = '\Siler\array_get_arr';
 const require_fn = '\Siler\require_fn';
 
 

@@ -7,11 +7,13 @@ namespace Siler\Test\Unit;
 use PHPUnit\Framework\TestCase;
 use UnexpectedValueException;
 use function Siler\array_get;
+use function Siler\array_get_arr;
 use function Siler\array_get_bool;
 use function Siler\array_get_float;
 use function Siler\array_get_int;
 use function Siler\array_get_str;
 use function Siler\require_fn;
+use const Siler\ARRAY_GET_ERROR_MESSAGE;
 
 class SilerTest extends TestCase
 {
@@ -102,8 +104,24 @@ class SilerTest extends TestCase
         $this->assertSame(true, array_get_bool($fixture, 'foo', true));
 
         $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage(sprintf(ARRAY_GET_ERROR_MESSAGE, 'foo'));
         $fixture = [];
         array_get_bool($fixture, 'foo');
+    }
+
+    public function testArrayGetArr()
+    {
+        $fixture = ['foo' => []];
+        $this->assertSame([], array_get_arr($fixture, 'foo'));
+
+        $fixture = ['foo' => new \stdClass()];
+        $this->assertSame([], array_get_arr($fixture, 'foo'));
+
+        $fixture = [];
+        $this->assertSame([], array_get_arr($fixture, 'foo', []));
+
+        $this->expectException(UnexpectedValueException::class);
+        array_get_arr($fixture, 'foo');
     }
 
     public function testRequireFn()

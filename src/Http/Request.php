@@ -138,11 +138,11 @@ function get(?string $key = null, $default = null)
  * Get a value from the $_POST global.
  *
  * @param string|null $key
- * @param mixed $default The default value to be returned when the key don't exists
+ * @param string|null $default The default value to be returned when the key don't exists
  *
  * @return string|array<string, string>|null
  */
-function post(?string $key = null, string $default = null)
+function post(?string $key = null, ?string $default = null)
 {
     /** @var array<string, string> $_POST */
     return array_get($_POST, $key, $default);
@@ -152,11 +152,11 @@ function post(?string $key = null, string $default = null)
  * Get a value from the $_REQUEST global.
  *
  * @param string|null $key
- * @param mixed $default The default value to be returned when the key don't exists
+ * @param string|null $default The default value to be returned when the key don't exists
  *
- * @return string|null|array
+ * @return string|null|array<string, string>
  */
-function input(?string $key = null, $default = null)
+function input(?string $key = null, ?string $default = null)
 {
     /** @var array<string, string> $_REQUEST */
     return array_get($_REQUEST, $key, $default);
@@ -166,10 +166,10 @@ function input(?string $key = null, $default = null)
  * Get a value from the $_FILES global.
  *
  * @param string|null $key
- * @param mixed $default The default value to be returned when the key don't exists
- * @return array|null|string
+ * @param array|null $default The default value to be returned when the key don't exists
+ * @return array<string, array>|array|null
  */
-function file(?string $key = null, $default = null)
+function file(?string $key = null, ?array $default = null)
 {
     /** @var array<string, array> $_FILES */
     return array_get($_FILES, $key, $default);
