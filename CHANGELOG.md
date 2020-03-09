@@ -1,3 +1,6 @@
+# 1.7.3
+- Better error message for `array_get`'s
+
 # 1.7.2
 - Experimental support for gRPC servers
 - Support middleware-like pipelines in Swoole with `Swoole\middleware`

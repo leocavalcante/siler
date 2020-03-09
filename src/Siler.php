@@ -8,7 +8,7 @@ namespace Siler;
 use Closure;
 use UnexpectedValueException;
 
-const ARRAY_GET_ERROR_MESSAGE = "Key not found in array and no default was provided.";
+const ARRAY_GET_ERROR_MESSAGE = "Key (%s) not found in array and no default was provided.";
 
 /**
  * Get a value from an array checking if the key exists and returning a default value if not.
@@ -57,7 +57,7 @@ function array_get_str(array $array, string $key, ?string $default = null): stri
     $value = array_get($array, $key);
 
     if ($value === null && $default === null) {
-        throw new UnexpectedValueException(ARRAY_GET_ERROR_MESSAGE);
+        throw new UnexpectedValueException(sprintf(ARRAY_GET_ERROR_MESSAGE, $key));
     }
 
     if ($value === null) {
@@ -82,7 +82,7 @@ function array_get_int(array $array, string $key, ?int $default = null): int
     $value = array_get($array, $key);
 
     if ($value === null && $default === null) {
-        throw new UnexpectedValueException(ARRAY_GET_ERROR_MESSAGE);
+        throw new UnexpectedValueException(sprintf(ARRAY_GET_ERROR_MESSAGE, $key));
     }
 
     if ($value === null) {
@@ -107,7 +107,7 @@ function array_get_float(array $array, string $key, ?float $default = null): flo
     $value = array_get($array, $key);
 
     if ($value === null && $default === null) {
-        throw new UnexpectedValueException(ARRAY_GET_ERROR_MESSAGE);
+        throw new UnexpectedValueException(sprintf(ARRAY_GET_ERROR_MESSAGE, $key));
     }
 
     if ($value === null) {
@@ -132,7 +132,7 @@ function array_get_bool(array $array, string $key, ?bool $default = null): bool
     $value = array_get($array, $key);
 
     if ($value === null && $default === null) {
-        throw new UnexpectedValueException(ARRAY_GET_ERROR_MESSAGE);
+        throw new UnexpectedValueException(sprintf(ARRAY_GET_ERROR_MESSAGE, $key));
     }
 
     if ($value === null) {
