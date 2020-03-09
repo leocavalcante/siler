@@ -143,6 +143,29 @@ function array_get_bool(array $array, string $key, ?bool $default = null): bool
 }
 
 /**
+ * Type-safe array_get for arrays.
+ *
+ * @param array $array
+ * @param string $key
+ * @param array|null $default
+ * @return array
+ */
+function array_get_arr(array $array, string $key, ?array $default = null): array
+{
+    $value = array_get($array, $key);
+
+    if ($value === null && $default === null) {
+        throw new UnexpectedValueException(sprintf(ARRAY_GET_ERROR_MESSAGE, $key));
+    }
+
+    if ($value === null) {
+        return $default;
+    }
+
+    return (array) $value;
+}
+
+/**
  * Returns a function that requires the given filename.
  *
  * @param string $filename The file to be required
