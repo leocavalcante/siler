@@ -190,6 +190,10 @@ const alert = '\Siler\Monolog\alert';
 const emergency = '\Siler\Monolog\emergency';
 
 
+namespace Siler\Klass;
+const unqualified_name = '\Siler\Klass\unqualified_name';
+
+
 namespace Siler\Str;
 const slugify = '\Siler\Str\slugify';
 const lines = '\Siler\Str\lines';
