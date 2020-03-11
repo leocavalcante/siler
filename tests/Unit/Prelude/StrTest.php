@@ -59,4 +59,11 @@ class StrTest extends TestCase
         $this->assertSame('foo_bar', Str\snake_case('fooBAR'));
         $this->assertSame('foo_bar_baz', Str\snake_case('FooBarBaz'));
     }
+
+    public function testCamelCase()
+    {
+        $this->assertSame('Foo', Str\camel_case('foo'));
+        $this->assertSame('FooBar', Str\camel_case('foo_bar'));
+        $this->assertSame('FooBarBaz', Str\camel_case('foo_bar_baz'));
+    }
 }
