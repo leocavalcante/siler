@@ -48,4 +48,15 @@ class StrTest extends TestCase
 
         $this->assertFalse(Str\contains('foo', 'a'));
     }
+
+    public function testSnakeCase()
+    {
+        $this->assertSame('foo', Str\snake_case('foo'));
+        $this->assertSame('foo', Str\snake_case('Foo'));
+        $this->assertSame('foo_bar', Str\snake_case('fooBar'));
+        $this->assertSame('foo_bar', Str\snake_case('FooBar'));
+        $this->assertSame('foo_bar', Str\snake_case('FOOBar'));
+        $this->assertSame('foo_bar', Str\snake_case('fooBAR'));
+        $this->assertSame('foo_bar_baz', Str\snake_case('FooBarBaz'));
+    }
 }

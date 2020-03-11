@@ -79,3 +79,14 @@ function contains(string $haystack, string $needle): bool
 {
     return mb_strpos($haystack, $needle) > -1;
 }
+
+/**
+ * Converts a CamelCase string to snake_case.
+ *
+ * @param string $input
+ * @return string
+ */
+function snake_case(string $input): string
+{
+    return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $input));
+}

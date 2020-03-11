@@ -4,6 +4,7 @@
 - PHPUnit 9
 - Add `starts_with`, `ends_with` and `contains`
 - Add Klass module with `unqualified_name` function
+- Add `snake_case` function
 
 # 1.7.2
 - Experimental support for gRPC servers
