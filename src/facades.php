@@ -200,6 +200,8 @@ const lines = '\Siler\Str\lines';
 const starts_with = '\Siler\Str\starts_with';
 const ends_with = '\Siler\Str\ends_with';
 const contains = '\Siler\Str\contains';
+const snake_case = '\Siler\Str\snake_case';
+const camel_case = '\Siler\Str\camel_case';
 
 
 namespace Siler\Tuple;
