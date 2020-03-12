@@ -183,7 +183,7 @@ function psr7(Schema $schema): Closure
  * Also sets a Siler's default field resolver based on $resolvers array.
  *
  * @param string $typeDefs
- * @param array $resolvers
+ * @param array<string, array<string, mixed>> $resolvers
  * @param callable|null $typeConfigDecorator
  * @param array $options
  * @return Schema
@@ -200,80 +200,95 @@ function schema(string $typeDefs, array $resolvers = [], ?callable $typeConfigDe
 /**
  * Sets a Siler's default field resolver based on the given $resolvers array.
  *
- * @param array $resolvers
+ * @param array<string, array<string, mixed>> $resolvers
  * @return void
  */
-function resolvers(array $resolvers)
+function resolvers(array $resolvers): void
 {
-    /**
-     * @param mixed $source
-     * @param array $args
-     * @param mixed $context
-     * @param ResolveInfo $info
-     * @return callable|mixed|null
-     */
-    $resolver = static function ($source, array $args, $context, ResolveInfo $info) use ($resolvers) {
-        /** @var string|null $field_name */
-        $field_name = $info->fieldName;
+    $resolver =
+        /**
+         * @template Source
+         * @template Context
+         * @param mixed $source
+         * @psalm-param Source $source
+         * @param array $args
+         * @param mixed $context
+         * @psalm-param Context $context
+         * @param ResolveInfo $info
+         * @return mixed|null
+         */
+        static function ($source, array $args, $context, ResolveInfo $info) use ($resolvers) {
+            /** @var string|null $field_name */
+            $field_name = $info->fieldName;
 
-        if ($field_name === null) {
-            throw new UnexpectedValueException('Could not get fieldName from ResolveInfo');
-        }
+            if ($field_name === null) {
+                throw new UnexpectedValueException('Could not get fieldName from ResolveInfo');
+            }
 
-        /** @var ObjectType|null $parent_type */
-        $parent_type = $info->parentType;
+            /** @var ObjectType|null $parent_type */
+            $parent_type = $info->parentType;
 
             if ($parent_type === null) {
                 throw new UnexpectedValueException('Could not get parentType from ResolveInfo');
             }
 
-        $parent_type_name = $parent_type->name;
+            $parent_type_name = $parent_type->name;
 
-        if (isset($resolvers[$parent_type_name])) {
-            /** @var array|object $resolver */
-            $resolver = $resolvers[$parent_type_name];
-            $value = null;
+            if (isset($resolvers[$parent_type_name])) {
+                /** @var array|object $resolver */
+                $resolver = $resolvers[$parent_type_name];
+                $value = null;
 
-            if (is_array($resolver)) {
-                if (array_key_exists($field_name, $resolver)) {
-                    /** @var callable|mixed $value */
-                    $value = $resolver[$field_name];
+                if (is_array($resolver)) {
+                    if (array_key_exists($field_name, $resolver)) {
+                        /** @var callable|mixed $value */
+                        $value = $resolver[$field_name];
+                    }
+                }
+
+                if (is_object($resolver)) {
+                    if (isset($resolver->{$field_name})) {
+                        /** @var callable|mixed $value */
+                        $value = $resolver->{$field_name};
+                    }
+                }
+
+                if (is_callable($value)) {
+                    return $value($source, $args, $context, $info);
+                }
+
+                if ($value !== null) {
+                    return $value;
                 }
             }
 
-            if (is_object($resolver)) {
-                if (isset($resolver->{$field_name})) {
-                    /** @var callable|mixed $value */
-                    $value = $resolver->{$field_name};
-                }
-            }
-
-            if (is_callable($value)) {
-                return $value($source, $args, $context, $info);
-            }
-
-            if ($value !== null) {
-                return $value;
-            }
-        }
-
-        return Executor::defaultFieldResolver($source, $args, $context, $info);
-    };
+            return Executor::defaultFieldResolver($source, $args, $context, $info);
+        };
 
     Executor::setDefaultFieldResolver(
+    /**
+     * @template Source
+     * @template Context
+     * @param mixed $source
+     * @psalm-param Source $source
+     * @param array $args
+     * @param mixed $context
+     * @psalm-param Context $context
+     * @param ResolveInfo $info
+     * @return mixed|null
+     */
         static function ($source, array $args, $context, ResolveInfo $info) use ($resolvers, $resolver) {
             $field_node = $info->fieldNodes[0];
             /** @var NodeList $directives */
             $directives = $field_node->directives;
 
-            if (!empty($directives)) {
-                /** @var DirectiveNode $directive */
-                foreach ($directives as $directive) {
-                    $directive_name = "@{$directive->name->value}";
+            /** @var DirectiveNode $directive */
+            foreach ($directives as $directive) {
+                $directive_name = "@{$directive->name->value}";
 
-                    if (array_key_exists($directive_name, $resolvers)) {
-                        $resolver = $resolvers[$directive_name]($resolver);
-                    }
+                if (array_key_exists($directive_name, $resolvers)) {
+                    /** @var callable $resolver */
+                    $resolver = $resolvers[$directive_name]($resolver);
                 }
             }
 
