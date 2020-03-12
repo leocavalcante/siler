@@ -1,8 +1,12 @@
 # 1.7.3
+- Fix #276 - GraphQL WebSocket client sub-protocol
 - GraphQL's Custom Directives
-- Better error message for `array_get`'s
-- Add `array_get_arr` function
 - PHPUnit 9
+- Better error message for `array_get`'s
+- `Siler\array_get_arr` type-safe array getter for arrays
+- `Str\starts_with`, `Str\ends_with` and `Str\contains`
+- Introducing Klass module with `Klass\unqualified_name`
+- `Str\snake_case` and `Str\camel_case` case converters
 
 # 1.7.2
 - Experimental support for gRPC servers

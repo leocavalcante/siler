@@ -8,6 +8,7 @@ use Closure;
 use Exception;
 use GraphQL\Error\Debug;
 use GraphQL\Executor\Executor;
+use GraphQL\Executor\Promise\Adapter\SyncPromiseAdapter;
 use GraphQL\Executor\Promise\Promise;
 use GraphQL\Executor\Promise\PromiseAdapter;
 use GraphQL\GraphQL;
@@ -115,33 +116,36 @@ function input(string $input = 'php://input'): array
 /**
  * Executes a GraphQL query over a schema.
  *
+ * @template RootValue
+ * @template Context
  * @param Schema $schema The application root Schema
  * @param array<string, mixed> $input Incoming query, operation and variables
- * @param mixed $rootValue Some optional GraphQL root value
- * @param mixed $context Some optional GraphQL context
+ * @param mixed $rootValue
+ * @psalm-param RootValue|null $rootValue
+ * @param mixed $context
+ * @psalm-param Context|null $context
  *
  * @return array
  */
 function execute(Schema $schema, array $input, $rootValue = null, $context = null)
 {
-    /** @var string $query */
-    $query = array_get($input, 'query');
-    /** @var string $operation */
-    $operation = array_get($input, 'operationName');
-    /** @var array $variables */
-    $variables = array_get($input, 'variables');
-
-    return GraphQL::executeQuery($schema, $query, $rootValue, $context, $variables, $operation)->toArray(debugging());
+    $promise_adapter = new SyncPromiseAdapter();
+    $promise = promise_execute($promise_adapter, $schema, $input, $rootValue, $context);
+    return $promise_adapter->wait($promise)->toArray(debugging());
 }
 
 /**
  * Same as execute(), but allows passing a custom Promise adapter.
  *
+ * @template RootValue
+ * @template Context
  * @param PromiseAdapter $adapter
  * @param Schema $schema
  * @param array<string, mixed> $input
- * @param null $rootValue
- * @param null $context
+ * @param mixed $rootValue
+ * @psalm-param RootValue|null $rootValue
+ * @param mixed $context
+ * @psalm-param Context|null $context
  *
  * @return Promise
  */
@@ -219,9 +223,9 @@ function resolvers(array $resolvers)
         /** @var ObjectType|null $parent_type */
         $parent_type = $info->parentType;
 
-        if ($parent_type === null) {
-            throw new UnexpectedValueException('Could not get parentType from ResolveInfo');
-        }
+            if ($parent_type === null) {
+                throw new UnexpectedValueException('Could not get parentType from ResolveInfo');
+            }
 
         $parent_type_name = $parent_type->name;
 
@@ -325,7 +329,7 @@ function subscriptions(
  * @param string $url
  * @return void
  */
-function subscriptions_at(string $url)
+function subscriptions_at(string $url): void
 {
     Container\set('graphql_subscriptions_endpoint', $url);
 }
@@ -349,7 +353,13 @@ function publish(string $subscriptionName, $payload = null): void
     /** @var string $ws_endpoint */
     $ws_endpoint = Container\get('graphql_subscriptions_endpoint');
 
-    $client = new Client($ws_endpoint);
+    $opts = [
+        'headers' => [
+            'Sec-WebSocket-Protocol' => WEBSOCKET_SUB_PROTOCOL
+        ]
+    ];
+
+    $client = new Client($ws_endpoint, $opts);
     $client->send(encode($message));
 }
 
