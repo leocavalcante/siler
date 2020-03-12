@@ -8,6 +8,7 @@ use Closure;
 use Exception;
 use GraphQL\Error\Debug;
 use GraphQL\Executor\Executor;
+use GraphQL\Executor\Promise\Adapter\SyncPromiseAdapter;
 use GraphQL\Executor\Promise\Promise;
 use GraphQL\Executor\Promise\PromiseAdapter;
 use GraphQL\GraphQL;
@@ -64,24 +65,6 @@ function debug(int $level = Debug::INCLUDE_DEBUG_MESSAGE): void
 /**
  * @return int
  */
-/**
- * @return int
- */
-/**
- * @return int
- */
-/**
- * @return int
- */
-/**
- * @return int
- */
-/**
- * @return int
- */
-/**
- * @return int
- */
 function debugging(): int
 {
     return intval(Container\get(GRAPHQL_DEBUG, 0));
@@ -131,33 +114,36 @@ function input(string $input = 'php://input'): array
 /**
  * Executes a GraphQL query over a schema.
  *
+ * @template RootValue
+ * @template Context
  * @param Schema $schema The application root Schema
  * @param array<string, mixed> $input Incoming query, operation and variables
- * @param mixed $rootValue Some optional GraphQL root value
- * @param mixed $context Some optional GraphQL context
+ * @param mixed $rootValue
+ * @psalm-param RootValue|null $rootValue
+ * @param mixed $context
+ * @psalm-param Context|null $context
  *
  * @return array
  */
 function execute(Schema $schema, array $input, $rootValue = null, $context = null)
 {
-    /** @var string $query */
-    $query = array_get($input, 'query');
-    /** @var string $operation */
-    $operation = array_get($input, 'operationName');
-    /** @var array $variables */
-    $variables = array_get($input, 'variables');
-
-    return GraphQL::executeQuery($schema, $query, $rootValue, $context, $variables, $operation)->toArray(debugging());
+    $promise_adapter = new SyncPromiseAdapter();
+    $promise = promise_execute($promise_adapter, $schema, $input, $rootValue, $context);
+    return $promise_adapter->wait($promise)->toArray(debugging());
 }
 
 /**
  * Same as execute(), but allows passing a custom Promise adapter.
  *
+ * @template RootValue
+ * @template Context
  * @param PromiseAdapter $adapter
  * @param Schema $schema
  * @param array<string, mixed> $input
- * @param null $rootValue
- * @param null $context
+ * @param mixed $rootValue
+ * @psalm-param RootValue|null $rootValue
+ * @param mixed $context
+ * @psalm-param Context|null $context
  *
  * @return Promise
  */
@@ -177,10 +163,7 @@ function promise_execute(PromiseAdapter $adapter, Schema $schema, array $input, 
  * Returns a PSR-7 complaint ServerRequestInterface handler.
  *
  * @param Schema $schema GraphQL schema to execute
- *
- * @return Closure ServerRequestInterface -> IO
- *
- * @return Closure(ServerRequestInterface): JsonResponse
+ * @return Closure(ServerRequestInterface):JsonResponse
  */
 function psr7(Schema $schema): Closure
 {
@@ -297,8 +280,7 @@ function subscriptions_manager(
  * @param array $context
  *
  * @return IoServer
- * @deprecated Returns a new websocket server bootstrapped for GraphQL.
- *
+ * @deprecated Returns a new websocket server bootstrapped for GraphQL
  * @noinspection PhpTooManyParametersInspection
  */
 function subscriptions(
@@ -317,10 +299,9 @@ function subscriptions(
  * Sets the GraphQL server endpoint where publish should connect to.
  *
  * @param string $url
- *
  * @return void
  */
-function subscriptions_at(string $url)
+function subscriptions_at(string $url): void
 {
     Container\set('graphql_subscriptions_endpoint', $url);
 }
@@ -330,7 +311,6 @@ function subscriptions_at(string $url)
  *
  * @param string $subscriptionName
  * @param mixed $payload
- *
  * @return void
  * @throws BadOpcodeException
  */
@@ -345,30 +325,16 @@ function publish(string $subscriptionName, $payload = null): void
     /** @var string $ws_endpoint */
     $ws_endpoint = Container\get('graphql_subscriptions_endpoint');
 
-    $client = new Client($ws_endpoint);
+    $opts = [
+        'headers' => [
+            'Sec-WebSocket-Protocol' => WEBSOCKET_SUB_PROTOCOL
+        ]
+    ];
+
+    $client = new Client($ws_endpoint, $opts);
     $client->send(encode($message));
 }
 
-/**
- * @param string $eventName
- * @param callable $listener
- */
-/**
- * @param string $eventName
- * @param callable $listener
- */
-/**
- * @param string $eventName
- * @param callable $listener
- */
-/**
- * @param string $eventName
- * @param callable $listener
- */
-/**
- * @param string $eventName
- * @param callable $listener
- */
 /**
  * @param string $eventName
  * @param callable $listener
