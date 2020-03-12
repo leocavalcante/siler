@@ -112,6 +112,7 @@ const promise_execute = '\Siler\GraphQL\promise_execute';
 const psr7 = '\Siler\GraphQL\psr7';
 const schema = '\Siler\GraphQL\schema';
 const resolvers = '\Siler\GraphQL\resolvers';
+const directives = '\Siler\GraphQL\directives';
 const subscriptions_manager = '\Siler\GraphQL\subscriptions_manager';
 const subscriptions = '\Siler\GraphQL\subscriptions';
 const subscriptions_at = '\Siler\GraphQL\subscriptions_at';

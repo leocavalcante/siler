@@ -52,6 +52,7 @@ const ON_DISCONNECT = 'graphql_on_disconnect';
 
 const GRAPHQL_DEBUG = 'graphql_debug';
 const WEBSOCKET_SUB_PROTOCOL = 'graphql-ws';
+const DIRECTIVES = 'directives';
 
 /**
  * Sets GraphQL debug level.
@@ -265,6 +266,7 @@ function resolvers(array $resolvers): void
             return Executor::defaultFieldResolver($source, $args, $context, $info);
         };
 
+
     Executor::setDefaultFieldResolver(
     /**
      * @template Source
@@ -277,18 +279,19 @@ function resolvers(array $resolvers): void
      * @param ResolveInfo $info
      * @return mixed|null
      */
-        static function ($source, array $args, $context, ResolveInfo $info) use ($resolvers, $resolver) {
+        static function ($source, array $args, $context, ResolveInfo $info) use ($resolver) {
             $field_node = $info->fieldNodes[0];
-            /** @var NodeList $directives */
-            $directives = $field_node->directives;
+            /** @var NodeList $directive_defs */
+            $directive_defs = $field_node->directives;
+            /** @var array<string, callable(callable):callable> $directives */
+            $directives = Container\get(DIRECTIVES, []);
 
             /** @var DirectiveNode $directive */
-            foreach ($directives as $directive) {
-                $directive_name = "@{$directive->name->value}";
+            foreach ($directive_defs as $directive) {
+                $directive_name = $directive->name->value;
 
-                if (array_key_exists($directive_name, $resolvers)) {
-                    /** @var callable $resolver */
-                    $resolver = $resolvers[$directive_name]($resolver);
+                if (array_key_exists($directive_name, $directives)) {
+                    $resolver = $directives[$directive_name]($resolver);
                 }
             }
 
@@ -298,42 +301,50 @@ function resolvers(array $resolvers): void
 }
 
 /**
+ * Sets directives to be used when resolving fields.
+ *
+ * @param array<string, callable(callable):callable> $directives
+ */
+function directives(array $directives): void
+{
+    Container\set(DIRECTIVES, $directives);
+}
+
+/**
  * Returns a GraphQL Subscriptions Manager.
  *
+ * @template RootValue
+ * @template Context
  * @param Schema $schema
  * @param array $filters
- * @param array $rootValue
- * @param array $context
+ * @param mixed $rootValue
+ * @psalm-param RootValue|null $rootValue
+ * @param mixed $context
+ * @psalm-param Context|null $context
  * @return SubscriptionsManager
  */
-function subscriptions_manager(
-    Schema $schema,
-    array $filters = [],
-    $rootValue = [],
-    $context = []
-): SubscriptionsManager {
+function subscriptions_manager(Schema $schema, array $filters = [], $rootValue = null, $context = null): SubscriptionsManager
+{
     return new SubscriptionsManager($schema, $filters, $rootValue, $context);
 }
 
 /**
+ * @template RootValue
+ * @template Context
  * @param Schema $schema
  * @param array $filters
  * @param string $host
  * @param int $port
- * @param array $rootValue
- * @param array $context
+ * @param mixed $rootValue
+ * @psalm-param RootValue|null $rootValue
+ * @param mixed $context
+ * @psalm-param Context|null $context
  * @return IoServer
  * @deprecated Returns a new websocket server bootstrapped for GraphQL.
  * @noinspection PhpTooManyParametersInspection
  */
-function subscriptions(
-    Schema $schema,
-    array $filters = [],
-    string $host = '0.0.0.0',
-    int $port = 5000,
-    array $rootValue = [],
-    array $context = []
-): IoServer {
+function subscriptions(Schema $schema, array $filters = [], string $host = '0.0.0.0', int $port = 5000, $rootValue = null, $context = null): IoServer
+{
     $manager = subscriptions_manager($schema, $filters, $rootValue, $context);
     return graphql_subscriptions($manager, $port, $host);
 }

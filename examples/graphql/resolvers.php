@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Siler\Example;
+namespace Siler\Example\GraphQL;
 
+use DateTime;
 use RedBeanPHP\OODBBean;
 use RedBeanPHP\R;
 use Siler\GraphQL;
@@ -50,7 +51,7 @@ $mutations = [
         $message = R::dispense('message');
         $message['roomId'] = $room['id'];
         $message['body'] = $body;
-        $message['timestamp'] = new \DateTime();
+        $message['timestamp'] = new DateTime();
 
         R::store($message);
 
@@ -75,23 +76,13 @@ $mutations = [
 
 $subscriptions = [
     'inbox' => function ($message) {
-        // <- Received from "publish"
         return $message;
     }
 ];
 
-$directives = [
-    '@upper' => function (callable $resolver): \Closure {
-        return function ($root, $args, $context, $info) use ($resolver): string {
-            $value = $resolver($root, $args, $context, $info);
-            return mb_strtoupper($value, 'UTF-8');
-        };
-    },
-];
-
 return [
-        'Room' => $room,
-        'Query' => $queries,
-        'Mutation' => $mutations,
-        'Subscription' => $subscriptions,
-    ] + $directives;
+    'Room' => $room,
+    'Query' => $queries,
+    'Mutation' => $mutations,
+    'Subscription' => $subscriptions,
+];
