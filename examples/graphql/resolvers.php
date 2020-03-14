@@ -2,6 +2,8 @@
 
 use RedBeanPHP\R;
 use Siler\GraphQL;
+use function Siler\array_get_str;
+use function Siler\Swoole\request;
 
 R::setup('sqlite:' . __DIR__ . '/db.sqlite');
 
@@ -48,7 +50,7 @@ $mutationType = [
         $message = R::dispense('message');
         $message['roomId'] = $room['id'];
         $message['body'] = $body;
-        $message['timestamp'] = new \DateTime();
+        $message['timestamp'] = new DateTime();
 
         R::store($message);
 
@@ -57,7 +59,17 @@ $mutationType = [
         GraphQL\publish('inbox', $message);
         // <- Exactly what "inbox" will receive
         return $message;
-    }
+    },
+    'upload' => function () {
+        /** @var array<string, mixed> $file */
+        $file = request()->files[0];
+        $filename = array_get_str($file, 'name');
+        $tmp_name = array_get_str($file, 'tmp_name');
+
+        move_uploaded_file($tmp_name, __DIR__ . '/uploads/' . $filename);
+
+        return ['filename' => $filename];
+    },
 ];
 
 $subscriptionType = [

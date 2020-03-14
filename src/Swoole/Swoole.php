@@ -12,6 +12,7 @@ use OutOfBoundsException;
 use Siler\Container;
 use Siler\Encoder\Json;
 use Siler\GraphQL\SubscriptionsManager;
+use Siler\Monolog as Log;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
 use Swoole\Http\Server as HttpServer;
@@ -24,9 +25,8 @@ use Throwable;
 use UnexpectedValueException;
 use function Siler\array_get;
 use function Siler\GraphQL\execute;
-use const Siler\GraphQL\GQL_DATA;
-use const Siler\GraphQL\GRAPHQL_DEBUG;
-use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
+use function Siler\Str\starts_with;
+use const Siler\GraphQL\{GQL_DATA, GRAPHQL_DEBUG, WEBSOCKET_SUB_PROTOCOL};
 use const Siler\Route\DID_MATCH;
 
 const SWOOLE_HTTP_REQUEST = 'swoole_http_request';
@@ -494,9 +494,15 @@ function http_server_port(Server $server, callable $handler, int $port = 80, str
 function graphql_handler(Schema $schema, $root_value = null, $context = null): Closure
 {
     return static function () use ($schema, $root_value, $context): void {
-        try {
-            $raw = raw();
+        $raw = raw();
+        $content_type = \Siler\Swoole\request()->header['content-type'];
+        $debugging = Container\get(GRAPHQL_DEBUG, 0) > 0;
 
+        if (starts_with($content_type, 'multipart/form-data')) {
+            $raw = \Siler\Swoole\request()->post['operations'];
+        }
+
+        try {
             if ($raw === null) {
                 throw new UnexpectedValueException('Request without content');
             }
@@ -504,8 +510,18 @@ function graphql_handler(Schema $schema, $root_value = null, $context = null): C
             /** @var array<string, mixed> $input */
             $input = Json\decode($raw);
             $result = execute($schema, $input, $root_value, $context);
+        } catch (\JsonException $exception) {
+            if ($debugging) {
+                Log\debug('GraphQL JSON Error', ['message' => "Unable to parse: $raw"]);
+            }
+
+            $result = FormattedError::createFromException($exception, $debugging);
         } catch (Throwable $exception) {
-            $result = FormattedError::createFromException($exception, Container\get(GRAPHQL_DEBUG, 0) > 0);
+            if ($debugging) {
+                Log\debug('GraphQL Internal Error', ['exception' => $exception]);
+            }
+
+            $result = FormattedError::createFromException($exception, $debugging);
         } finally {
             json($result);
         }
