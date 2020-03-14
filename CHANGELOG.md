@@ -1,4 +1,5 @@
 # 1.7.3
+- GraphQL Uploads!
 - Fix #276 - GraphQL WebSocket client sub-protocol
 - PHPUnit 9
 - Better error message for `array_get`'s
