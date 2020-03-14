@@ -6,6 +6,7 @@
 namespace Siler\Http;
 
 use function Siler\array_get;
+use function Siler\array_get_str;
 
 /**
  * Get a value from the $_COOKIE global.
@@ -104,15 +105,15 @@ function url(?string $path = null): string
  */
 function path(): string
 {
-    /**
-     * @var array<string, string> $_SERVER
-     * @var string $script_name
-     */
-    $script_name = array_get($_SERVER, 'SCRIPT_NAME', '');
-    /** @var string $query_string */
-    $query_string = array_get($_SERVER, 'QUERY_STRING', '');
-    /** @var string $request_uri */
-    $request_uri = array_get($_SERVER, 'REQUEST_URI', '');
+    /** @var array<string, string> $_SERVER */
+    $script_name = array_get_str($_SERVER, 'SCRIPT_NAME', '');
+    $query_string = array_get_str($_SERVER, 'QUERY_STRING', '');
+    $request_uri = array_get_str($_SERVER, 'REQUEST_URI', '');
+
+    // NOTE: When using built-in server with a router script, SCRIPT_NAME will be same as the REQUEST_URI
+    if (php_sapi_name() === 'cli-server') {
+        $script_name = '';
+    }
 
     $request_uri = str_replace('?' . $query_string, '', $request_uri);
     $script_path = str_replace('\\', '/', dirname($script_name));
