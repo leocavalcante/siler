@@ -11,6 +11,7 @@ class ArrTest extends TestCase
     {
         $fixture = ['foo' => ['bar' => 'baz']];
         $expected = ['foo' => ['bar' => 'qux']];
-        $this->assertSame($expected, set($fixture, 'foo.bar', 'baz'));
+        set($fixture, 'foo.bar', 'qux');
+        $this->assertSame($expected, $fixture);
     }
 }
