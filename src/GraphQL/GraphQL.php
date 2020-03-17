@@ -18,16 +18,21 @@ use GraphQL\Type\Schema;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use Ratchet\Server\IoServer;
+use Siler\Arr;
 use Siler\Container;
 use Siler\Diactoros;
+use Siler\GraphQL\Request as GraphQLRequest;
 use Siler\Http\Request;
 use Siler\Http\Response;
 use UnexpectedValueException;
 use WebSocket\BadOpcodeException;
 use WebSocket\Client;
 use function Siler\array_get;
+use function Siler\array_get_arr;
+use function Siler\array_get_str;
 use function Siler\Encoder\Json\decode;
 use function Siler\Encoder\Json\encode;
+use function Siler\GraphQL\request as graphql_request;
 use function Siler\Ratchet\graphql_subscriptions;
 
 // Protocol messages.
@@ -81,7 +86,7 @@ function debugging(): int
  */
 function init(Schema $schema, $rootValue = null, $context = null, string $input = 'php://input'): void
 {
-    $result = execute($schema, input($input), $rootValue, $context);
+    $result = execute($schema, graphql_request($input)->toArray(), $rootValue, $context);
     Response\json($result);
 }
 
@@ -91,6 +96,7 @@ function init(Schema $schema, $rootValue = null, $context = null, string $input 
  * @param string $input
  * @return array<string, mixed>
  * @throws Exception
+ * @deprecated Use request() instead.
  */
 function input(string $input = 'php://input'): array
 {
@@ -109,6 +115,44 @@ function input(string $input = 'php://input'): array
 
     /** @var array<string, mixed> */
     return $data;
+}
+
+/**
+ * Creates a GraphQL Request based on the current Request (handles the multipart/form-data case on uploads).
+ *
+ * @param string $input
+ * @return GraphQLRequest
+ */
+function request(string $input = 'php://input'): GraphQLRequest
+{
+    /** @var array<string, mixed> $body */
+    $body = Request\body_parse($input);
+
+    if (Request\is_multipart()) {
+        /** @var array<string, mixed> $ops */
+        $ops = decode(array_get_str($body, 'operations'));
+        /** @var array<int, string[]> $map */
+        $map = decode(array_get_str($body, 'map'));
+        $query = array_get_str($ops, 'query');
+        $vars = array_get_arr($ops, 'variables');
+        $op_name = array_get_str($ops, 'operationName');
+
+        foreach ($map as $file_key => $ops_paths) {
+            $file = Request\file($file_key);
+
+            foreach ($ops_paths as $ops_path) {
+                Arr\set($ops, $ops_path, $file);
+            }
+        }
+
+        return new GraphQLRequest($query, $vars, $op_name);
+    }
+
+    $query = array_get_str($body, 'query');
+    $vars = array_get_arr($body, 'variables', []);
+    $op_name = array_get_str($body, 'operationName', '');
+
+    return new GraphQLRequest($query, $vars, $op_name);
 }
 
 /**
@@ -151,12 +195,12 @@ function promise_execute(PromiseAdapter $adapter, Schema $schema, array $input, 
 {
     /** @var string $query */
     $query = array_get($input, 'query');
-    /** @var string $operation */
-    $operation = array_get($input, 'operationName');
     /** @var array $variables */
     $variables = array_get($input, 'variables');
+    /** @var string $operation_name */
+    $operation_name = array_get($input, 'operationName');
 
-    return GraphQL::promiseToExecute($adapter, $schema, $query, $rootValue, $context, $variables, $operation);
+    return GraphQL::promiseToExecute($adapter, $schema, $query, $rootValue, $context, $variables, $operation_name);
 }
 
 /**
@@ -205,10 +249,10 @@ function schema(string $typeDefs, array $resolvers = [], ?callable $typeConfigDe
 function resolvers(array $resolvers)
 {
     Executor::setDefaultFieldResolver(
-        /**
-        * @param mixed $source
-        * @param mixed $context
-        */
+    /**
+     * @param mixed $source
+     * @param mixed $context
+     */
         static function ($source, array $args, $context, ResolveInfo $info) use ($resolvers) {
             /** @var string|null $field_name */
             $field_name = $info->fieldName;

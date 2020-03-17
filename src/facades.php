@@ -107,6 +107,7 @@ const debug = '\Siler\GraphQL\debug';
 const debugging = '\Siler\GraphQL\debugging';
 const init = '\Siler\GraphQL\init';
 const input = '\Siler\GraphQL\input';
+const request = '\Siler\GraphQL\request';
 const execute = '\Siler\GraphQL\execute';
 const promise_execute = '\Siler\GraphQL\promise_execute';
 const psr7 = '\Siler\GraphQL\psr7';
@@ -139,6 +140,10 @@ namespace Siler\Http\Request;
 const raw = '\Siler\Http\Request\raw';
 const params = '\Siler\Http\Request\params';
 const json = '\Siler\Http\Request\json';
+const body_parse = '\Siler\Http\Request\body_parse';
+const is_json = '\Siler\Http\Request\is_json';
+const is_multipart = '\Siler\Http\Request\is_multipart';
+const content_type = '\Siler\Http\Request\content_type';
 const headers = '\Siler\Http\Request\headers';
 const header = '\Siler\Http\Request\header';
 const get = '\Siler\Http\Request\get';
@@ -188,6 +193,10 @@ const error = '\Siler\Monolog\error';
 const critical = '\Siler\Monolog\critical';
 const alert = '\Siler\Monolog\alert';
 const emergency = '\Siler\Monolog\emergency';
+
+
+namespace Siler\Arr;
+const set = '\Siler\Arr\set';
 
 
 namespace Siler\Klass;
