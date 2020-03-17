@@ -1,7 +1,6 @@
 # 1.7.3
-- GraphQL Uploads!
-- GraphQL's Custom Directives<br>
-  **Breaking**: you should now explicitly use arrays (or any other type) for subscription's root and context values
+- **GraphQL uploads & custom directives!**
+- **Enums!**
 - Fix #276 - GraphQL WebSocket client sub-protocol
 - PHPUnit 9
 - Better error message for `array_get`'s
@@ -9,6 +8,7 @@
 - `Str\starts_with`, `Str\ends_with` and `Str\contains`
 - Introducing Klass module with `Klass\unqualified_name`
 - `Str\snake_case` and `Str\camel_case` case converters
+- **Breaking**: you should now explicitly use arrays (or any other type) for subscription's root and context values
 
 # 1.7.2
 - Experimental support for gRPC servers
