@@ -69,7 +69,6 @@ function flash(?string $key = null, ?string $default = null)
  * Redirects using the HTTP Location header.
  *
  * @param string $url The url to be redirected to
- *
  * @return void
  */
 function redirect(string $url): void

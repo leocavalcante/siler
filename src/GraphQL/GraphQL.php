@@ -18,16 +18,20 @@ use GraphQL\Type\Schema;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use Ratchet\Server\IoServer;
+use Siler\Arr;
 use Siler\Container;
 use Siler\Diactoros;
+use Siler\GraphQL\Request as GraphQLRequest;
 use Siler\Http\Request;
 use Siler\Http\Response;
 use UnexpectedValueException;
 use WebSocket\BadOpcodeException;
 use WebSocket\Client;
 use function Siler\array_get;
+use function Siler\array_get_str;
 use function Siler\Encoder\Json\decode;
 use function Siler\Encoder\Json\encode;
+use function Siler\GraphQL\request as graphql_request;
 use function Siler\Ratchet\graphql_subscriptions;
 
 // Protocol messages.
@@ -81,7 +85,7 @@ function debugging(): int
  */
 function init(Schema $schema, $rootValue = null, $context = null, string $input = 'php://input'): void
 {
-    $result = execute($schema, input($input), $rootValue, $context);
+    $result = execute($schema, graphql_request($input)->toArray(), $rootValue, $context);
     Response\json($result);
 }
 
@@ -91,6 +95,7 @@ function init(Schema $schema, $rootValue = null, $context = null, string $input 
  * @param string $input
  * @return array<string, mixed>
  * @throws Exception
+ * @deprecated Use request() instead.
  */
 function input(string $input = 'php://input'): array
 {
@@ -109,6 +114,35 @@ function input(string $input = 'php://input'): array
 
     /** @var array<string, mixed> */
     return $data;
+}
+
+/**
+ * Creates a GraphQL Request based on the current Request (handles the multipart/form-data case on uploads).
+ *
+ * @param string $input
+ * @return \Siler\GraphQL\Request
+ */
+function request(string $input = 'php://input'): GraphQLRequest
+{
+    $input = Request\body_parse($input);
+
+    if (Request\is_multipart()) {
+        $operations = decode(array_get_str($input, 'operations'));
+        $map = decode(array_get_str($input, 'map'));
+
+        foreach ($map as $file_key => $ops_paths) {
+            $file = Request\file($file_key);
+
+            /** @var string $ops_path */
+            foreach ($ops_paths as $ops_path) {
+                Arr\set($operations, $ops_path, $file);
+            }
+        }
+
+        return new GraphQLRequest($operations['query'], $operations['variables'], $operations['operationName']);
+    }
+
+    return new GraphQLRequest($input['query'], $input['variables'], $input['operationName']);
 }
 
 /**
@@ -151,12 +185,12 @@ function promise_execute(PromiseAdapter $adapter, Schema $schema, array $input, 
 {
     /** @var string $query */
     $query = array_get($input, 'query');
-    /** @var string $operation */
-    $operation = array_get($input, 'operationName');
     /** @var array $variables */
     $variables = array_get($input, 'variables');
+    /** @var string $operation_name */
+    $operation_name = array_get($input, 'operationName');
 
-    return GraphQL::promiseToExecute($adapter, $schema, $query, $rootValue, $context, $variables, $operation);
+    return GraphQL::promiseToExecute($adapter, $schema, $query, $rootValue, $context, $variables, $operation_name);
 }
 
 /**
@@ -205,10 +239,10 @@ function schema(string $typeDefs, array $resolvers = [], ?callable $typeConfigDe
 function resolvers(array $resolvers)
 {
     Executor::setDefaultFieldResolver(
-        /**
-        * @param mixed $source
-        * @param mixed $context
-        */
+    /**
+     * @param mixed $source
+     * @param mixed $context
+     */
         static function ($source, array $args, $context, ResolveInfo $info) use ($resolvers) {
             /** @var string|null $field_name */
             $field_name = $info->fieldName;
@@ -267,7 +301,8 @@ function subscriptions_manager(
     array $filters = [],
     $rootValue = [],
     $context = []
-): SubscriptionsManager {
+): SubscriptionsManager
+{
     return new SubscriptionsManager($schema, $filters, $rootValue, $context);
 }
 
@@ -290,7 +325,8 @@ function subscriptions(
     int $port = 5000,
     array $rootValue = [],
     array $context = []
-): IoServer {
+): IoServer
+{
     $manager = subscriptions_manager($schema, $filters, $rootValue, $context);
     return graphql_subscriptions($manager, $port, $host);
 }

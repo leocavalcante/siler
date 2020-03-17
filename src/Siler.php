@@ -16,7 +16,7 @@ const ARRAY_GET_ERROR_MESSAGE = "Key (%s) not found in array and no default was 
  * @template T
  * @param array<string, mixed>|null $array
  * @psalm-param array<string, T>|null $array
- * @param string|null $key The key to be searched
+ * @param array-key|null $key The key to be searched
  * @param mixed|null $default The default value to be returned when the key don't exists
  * @psalm-param T|null $default The default value to be returned when the key don't exists
  * @param bool $caseInsensitive Ignore key case, default false
@@ -24,7 +24,7 @@ const ARRAY_GET_ERROR_MESSAGE = "Key (%s) not found in array and no default was 
  * @psalm-return T|null|array<string, T>
  * @psalm-suppress LessSpecificReturnType
  */
-function array_get(?array $array, ?string $key = null, $default = null, bool $caseInsensitive = false)
+function array_get(?array $array, $key = null, $default = null, bool $caseInsensitive = false)
 {
     if ($array === null) {
         return $default;

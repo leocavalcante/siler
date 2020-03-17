@@ -22,10 +22,9 @@ use Swoole\Table;
 use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server as WebsocketServer;
 use Throwable;
-use UnexpectedValueException;
 use function Siler\array_get;
 use function Siler\GraphQL\execute;
-use function Siler\Str\starts_with;
+use function Siler\GraphQL\request as graphql_request;
 use const Siler\GraphQL\{GQL_DATA, GRAPHQL_DEBUG, WEBSOCKET_SUB_PROTOCOL};
 use const Siler\Route\DID_MATCH;
 
@@ -306,6 +305,7 @@ function cors(string $origin = '*', string $headers = 'Content-Type, Authorizati
 
 /**
  * Sugar to Swoole`s Http Request rawContent().
+ * @deprecated Use Siler\Http\Request\raw().
  */
 function raw(): ?string
 {
@@ -494,28 +494,10 @@ function http_server_port(Server $server, callable $handler, int $port = 80, str
 function graphql_handler(Schema $schema, $root_value = null, $context = null): Closure
 {
     return static function () use ($schema, $root_value, $context): void {
-        $raw = raw();
-        $content_type = \Siler\Swoole\request()->header['content-type'];
         $debugging = Container\get(GRAPHQL_DEBUG, 0) > 0;
 
-        if (starts_with($content_type, 'multipart/form-data')) {
-            $raw = \Siler\Swoole\request()->post['operations'];
-        }
-
         try {
-            if ($raw === null) {
-                throw new UnexpectedValueException('Request without content');
-            }
-
-            /** @var array<string, mixed> $input */
-            $input = Json\decode($raw);
-            $result = execute($schema, $input, $root_value, $context);
-        } catch (\JsonException $exception) {
-            if ($debugging) {
-                Log\debug('GraphQL JSON Error', ['message' => "Unable to parse: $raw"]);
-            }
-
-            $result = FormattedError::createFromException($exception, $debugging);
+            $result = execute($schema, graphql_request()->toArray(), $root_value, $context);
         } catch (Throwable $exception) {
             if ($debugging) {
                 Log\debug('GraphQL Internal Error', ['exception' => $exception]);

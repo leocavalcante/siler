@@ -14,7 +14,7 @@ type Room {
 }
 
 type File {
-  filename: String!
+  name: String!
 }
 
 type Query {

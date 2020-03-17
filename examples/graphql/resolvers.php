@@ -2,8 +2,7 @@
 
 use RedBeanPHP\R;
 use Siler\GraphQL;
-use function Siler\array_get_str;
-use function Siler\Swoole\request;
+use function Siler\array_get_arr;
 
 R::setup('sqlite:' . __DIR__ . '/db.sqlite');
 
@@ -60,15 +59,10 @@ $mutationType = [
         // <- Exactly what "inbox" will receive
         return $message;
     },
-    'upload' => function () {
-        /** @var array<string, mixed> $file */
-        $file = request()->files[0];
-        $filename = array_get_str($file, 'name');
-        $tmp_name = array_get_str($file, 'tmp_name');
-
-        move_uploaded_file($tmp_name, __DIR__ . '/uploads/' . $filename);
-
-        return ['filename' => $filename];
+    'upload' => function ($root, $args) {
+        $file = array_get_arr($args, 'file');
+        move_uploaded_file($file['tmp_name'], __DIR__ . "/uploads/{$file['name']}");
+        return ['name' => $file['name']];
     },
 ];
 
