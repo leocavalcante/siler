@@ -14,9 +14,8 @@ use Siler\Encoder\Json;
 use function Siler\array_get;
 
 /**
- * Class SubscriptionsManager
- *
- * @package Siler\GraphQL
+ * @template RootValue
+ * @template Context
  */
 class SubscriptionsManager
 {
@@ -24,9 +23,15 @@ class SubscriptionsManager
     protected $schema;
     /** @var array */
     protected $filters;
-    /** @var mixed */
+    /**
+     * @var mixed
+     * @psalm-var RootValue|null
+     */
     protected $rootValue;
-    /** @var mixed */
+    /**
+     * @var mixed
+     * @psalm-var Context|null
+     */
     protected $context;
     /**  @var array<string, array> */
     protected $subscriptions;
@@ -36,17 +41,14 @@ class SubscriptionsManager
     /**
      * SubscriptionsManager constructor.
      *
-     * @template RootValue
-     * @template Context
-     *
      * @param Schema $schema
      * @param array $filters
      * @param mixed $rootValue
-     * @psalm-param RootValue $rootValue
+     * @psalm-param RootValue|null $rootValue
      * @param mixed $context
-     * @psalm-param Context $context
+     * @psalm-param Context|null $context
      */
-    public function __construct(Schema $schema, array $filters = [], $rootValue = [], $context = [])
+    public function __construct(Schema $schema, array $filters = [], $rootValue = null, $context = null)
     {
         $this->schema = $schema;
         $this->filters = $filters;
