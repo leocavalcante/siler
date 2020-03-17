@@ -28,6 +28,13 @@ class StrTest extends TestCase
         $this->assertTrue(Str\starts_with('foo', 'f'));
         $this->assertFalse(Str\starts_with('foo', 'o'));
         $this->assertFalse(Str\starts_with('foo', 'of'));
+
+        $this->assertTrue(Str\starts_with('áêÌçõü', 'á'));
+        $this->assertTrue(Str\starts_with('áêÌçõü', 'áê'));
+        $this->assertTrue(Str\starts_with('áêÌçõü', 'áêÌçõü'));
+        $this->assertFalse(Str\starts_with('áêÌçõü', 'ae'));
+        $this->assertFalse(Str\starts_with('áêÌçõü', 'ae'));
+        $this->assertFalse(Str\starts_with('áêÌçõü', 'çõü'));
     }
 
     public function testEndsWith()
@@ -37,6 +44,13 @@ class StrTest extends TestCase
         $this->assertTrue(Str\ends_with('foo', 'foo'));
         $this->assertFalse(Str\ends_with('foo', 'f'));
         $this->assertFalse(Str\ends_with('foo', 'fo'));
+
+        $this->assertTrue(Str\ends_with('áêÌçõü', 'ü'));
+        $this->assertTrue(Str\ends_with('áêÌçõü', 'õü'));
+        $this->assertTrue(Str\ends_with('áêÌçõü', 'áêÌçõü'));
+        $this->assertFalse(Str\ends_with('áêÌçõü', 'õ'));
+        $this->assertFalse(Str\ends_with('áêÌçõü', 'çõ'));
+        $this->assertFalse(Str\ends_with('áêÌçõü', 'áêÌ'));
     }
 
     public function testContains()
@@ -45,8 +59,14 @@ class StrTest extends TestCase
         $this->assertTrue(Str\contains('foo', 'o'));
         $this->assertTrue(Str\contains('foo', 'fo'));
         $this->assertTrue(Str\contains('foo', 'oo'));
-
         $this->assertFalse(Str\contains('foo', 'a'));
+
+        $this->assertTrue(Str\contains('áêÌçõü', 'á'));
+        $this->assertTrue(Str\contains('áêÌçõü', 'áê'));
+        $this->assertTrue(Str\contains('áêÌçõü', 'Ì'));
+        $this->assertTrue(Str\contains('áêÌçõü', 'õü'));
+        $this->assertFalse(Str\contains('áêÌçõü', 'ei'));
+        $this->assertFalse(Str\contains('áêÌçõü', 'c'));
     }
 
     public function testSnakeCase()

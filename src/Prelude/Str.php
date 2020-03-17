@@ -53,7 +53,7 @@ function lines(string $input): array
  */
 function starts_with(string $haystack, string $needle): bool
 {
-    return mb_strpos($haystack, $needle) === 0;
+    return strpos($haystack, $needle) === 0;
 }
 
 /**
@@ -65,7 +65,7 @@ function starts_with(string $haystack, string $needle): bool
  */
 function ends_with(string $haystack, string $needle): bool
 {
-    return starts_with(strrev($haystack), strrev($needle));
+    return substr_compare($haystack, $needle, -strlen($needle)) === 0;
 }
 
 /**
@@ -77,7 +77,7 @@ function ends_with(string $haystack, string $needle): bool
  */
 function contains(string $haystack, string $needle): bool
 {
-    return mb_strpos($haystack, $needle) > -1;
+    return strpos($haystack, $needle) > -1;
 }
 
 /**
