@@ -11,7 +11,19 @@ class ArrTest extends TestCase
     {
         $fixture = ['foo' => ['bar' => 'baz']];
         $expected = ['foo' => ['bar' => 'qux']];
+
         set($fixture, 'foo.bar', 'qux');
+
+        $this->assertSame($expected, $fixture);
+    }
+
+    public function testSetDeeplyCreates()
+    {
+        $fixture = ['foo' => []];
+        $expected = ['foo' => ['bar' => 'qux']];
+
+        set($fixture, 'foo.bar', 'qux');
+
         $this->assertSame($expected, $fixture);
     }
 }
