@@ -311,8 +311,7 @@ function subscriptions_manager(
     array $filters = [],
     $rootValue = [],
     $context = []
-): SubscriptionsManager
-{
+): SubscriptionsManager {
     return new SubscriptionsManager($schema, $filters, $rootValue, $context);
 }
 
@@ -335,8 +334,7 @@ function subscriptions(
     int $port = 5000,
     array $rootValue = [],
     array $context = []
-): IoServer
-{
+): IoServer {
     $manager = subscriptions_manager($schema, $filters, $rootValue, $context);
     return graphql_subscriptions($manager, $port, $host);
 }
