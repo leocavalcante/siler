@@ -6,16 +6,16 @@
 namespace Siler\Http;
 
 use function Siler\array_get;
+use function Siler\array_get_str;
 
 /**
  * Get a value from the $_COOKIE global.
  *
  * @param string|null $key
- * @param mixed $default The default value to be returned when the key don't exists
- *
- * @return mixed
+ * @param string|null $default The default value to be returned when the key don't exists
+ * @return string|null|array<string, string>
  */
-function cookie(?string $key = null, $default = null)
+function cookie(?string $key = null, ?string $default = null)
 {
     /** @var array<string, string> $_COOKIE */
     return array_get($_COOKIE, $key, $default);
@@ -25,10 +25,10 @@ function cookie(?string $key = null, $default = null)
  * Get a value from the $_SESSION global.
  *
  * @param string|null $key
- * @param mixed $default The default value to be returned when the key don't exists
- * @return string|null|array
+ * @param string|null $default The default value to be returned when the key don't exists
+ * @return string|null|array<string, string>
  */
-function session(?string $key = null, string $default = null)
+function session(?string $key = null, ?string $default = null)
 {
     /** @var array<string, string> $_SESSION */
     return array_get($_SESSION, $key, $default);
@@ -39,7 +39,6 @@ function session(?string $key = null, string $default = null)
  *
  * @param string $key The key to be used
  * @param mixed $value The value to be stored
- *
  * @return void
  */
 function setsession(string $key, $value): void
@@ -51,11 +50,11 @@ function setsession(string $key, $value): void
  * Get a value from the $_SESSION global and remove it.
  *
  * @param string|null $key
- * @param mixed $default The default value to be returned when the key don't exists
+ * @param string|null $default The default value to be returned when the key don't exists
  *
  * @return mixed
  */
-function flash(?string $key = null, $default = null)
+function flash(?string $key = null, ?string $default = null)
 {
     $value = session($key, $default);
 
@@ -70,7 +69,6 @@ function flash(?string $key = null, $default = null)
  * Redirects using the HTTP Location header.
  *
  * @param string $url The url to be redirected to
- *
  * @return void
  */
 function redirect(string $url): void
@@ -106,15 +104,15 @@ function url(?string $path = null): string
  */
 function path(): string
 {
-    /**
-     * @var array<string, string> $_SERVER
-     * @var string $script_name
-     */
-    $script_name = array_get($_SERVER, 'SCRIPT_NAME', '');
-    /** @var string $query_string */
-    $query_string = array_get($_SERVER, 'QUERY_STRING', '');
-    /** @var string $request_uri */
-    $request_uri = array_get($_SERVER, 'REQUEST_URI', '');
+    /** @var array<string, string> $_SERVER */
+    $script_name = array_get_str($_SERVER, 'SCRIPT_NAME', '');
+    $query_string = array_get_str($_SERVER, 'QUERY_STRING', '');
+    $request_uri = array_get_str($_SERVER, 'REQUEST_URI', '');
+
+    // NOTE: When using built-in server with a router script, SCRIPT_NAME will be same as the REQUEST_URI
+    if (php_sapi_name() === 'cli-server') {
+        $script_name = '';
+    }
 
     $request_uri = str_replace('?' . $query_string, '', $request_uri);
     $script_path = str_replace('\\', '/', dirname($script_name));

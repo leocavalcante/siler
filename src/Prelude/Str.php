@@ -43,3 +43,61 @@ function lines(string $input): array
         return trim($row);
     }, preg_split('/\n/', $input));
 }
+
+/**
+ * Checks if a string starts with another string.
+ *
+ * @param string $haystack
+ * @param string $needle
+ * @return bool
+ */
+function starts_with(string $haystack, string $needle): bool
+{
+    return mb_strpos($haystack, $needle) === 0;
+}
+
+/**
+ * Checks if a string ends by another string.
+ *
+ * @param string $haystack
+ * @param string $needle
+ * @return bool
+ */
+function ends_with(string $haystack, string $needle): bool
+{
+    return starts_with(strrev($haystack), strrev($needle));
+}
+
+/**
+ * Checks if a string contains another string.
+ *
+ * @param string $haystack
+ * @param string $needle
+ * @return bool
+ */
+function contains(string $haystack, string $needle): bool
+{
+    return mb_strpos($haystack, $needle) > -1;
+}
+
+/**
+ * Converts a CamelCase string to snake_case.
+ *
+ * @param string $input
+ * @return string
+ */
+function snake_case(string $input): string
+{
+    return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $input));
+}
+
+/**
+ * Converts a snake_case string to CamelCase.
+ *
+ * @param string $input
+ * @return string
+ */
+function camel_case(string $input): string
+{
+    return str_replace('_', '', ucwords($input, '_'));
+}

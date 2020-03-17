@@ -6,6 +6,7 @@ use RedBeanPHP\OODBBean;
 use RedBeanPHP\R;
 use Siler\GraphQL;
 use function Siler\array_get_str;
+use function Siler\array_get_arr;
 
 R::setup('sqlite:' . __DIR__ . '/db.sqlite');
 
@@ -50,7 +51,7 @@ $mutations = [
         $message = R::dispense('message');
         $message['roomId'] = $room['id'];
         $message['body'] = $body;
-        $message['timestamp'] = new \DateTime();
+        $message['timestamp'] = new DateTime();
 
         R::store($message);
 
@@ -70,6 +71,12 @@ $mutations = [
 
         R::trash($room);
         return true;
+    },
+    },
+    'upload' => function ($root, $args) {
+        $file = array_get_arr($args, 'file');
+        move_uploaded_file($file['tmp_name'], __DIR__ . "/uploads/{$file['name']}");
+        return ['name' => $file['name']];
     },
 ];
 

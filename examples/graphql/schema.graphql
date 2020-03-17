@@ -1,5 +1,7 @@
 directive @upper on FIELD
 
+scalar Upload
+
 type Message {
   id: ID!
   roomId: Int!
@@ -13,6 +15,10 @@ type Room {
   messages: [Message!]!
 }
 
+type File {
+  name: String!
+}
+
 type Query {
   messages(roomName: String!): [Message!]!
   rooms: [Room!]!
@@ -22,6 +28,9 @@ type Mutation {
   start(roomName: String!): Room!
   chat(roomName: String!, body: String!): Message!
   close(roomName: String!): Boolean!
+  start(roomName: String): Room
+  chat(roomName: String, body: String): Message
+  upload(file: Upload): File!
 }
 
 type Subscription {

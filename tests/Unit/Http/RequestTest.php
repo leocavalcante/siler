@@ -46,6 +46,19 @@ class RequestTest extends TestCase
         Request\json();
     }
 
+    public function testBodyParseJson()
+    {
+
+        $_SERVER['CONTENT_TYPE'] = 'application/json';
+        $params = Request\body_parse(__DIR__ . '/../../fixtures/php_input.json');
+
+        $this->assertArrayHasKey('foo', $params);
+        $this->assertContains('bar', $params);
+        $this->assertCount(1, $params);
+        $this->assertArrayHasKey('foo', $params);
+        $this->assertSame('bar', $params['foo']);
+    }
+
     public function testHeaders()
     {
         $headers = Request\headers();
@@ -91,6 +104,14 @@ class RequestTest extends TestCase
         $this->assertNull(Request\post('baz'));
     }
 
+    public function testPostBodyParse()
+    {
+        $data = Request\body_parse();
+
+        $this->assertSame($_POST, $data);
+        $this->assertSame('bar', $data['foo']);
+    }
+
     public function testInput()
     {
         $this->assertSame($_REQUEST, Request\input());
@@ -102,8 +123,8 @@ class RequestTest extends TestCase
     public function testFile()
     {
         $this->assertSame($_FILES, Request\file());
-        $this->assertSame('bar', Request\file('foo'));
-        $this->assertSame('qux', Request\file('baz', 'qux'));
+        $this->assertSame(['name' => 'bar'], Request\file('foo'));
+        $this->assertSame(['name' => 'qux'], Request\file('baz', ['name' => 'qux']));
         $this->assertNull(Request\file('baz'));
     }
 
@@ -220,9 +241,38 @@ class RequestTest extends TestCase
         Container\clear(SWOOLE_HTTP_REQUEST);
     }
 
+    public function testContentType()
+    {
+        $this->assertSame('phpunit/test', Request\content_type());
+    }
+
+    public function testIsJson()
+    {
+        $_SERVER['CONTENT_TYPE'] = 'application/json;charset=utf8';
+        $this->assertTrue(Request\is_json());
+
+        $_SERVER['CONTENT_TYPE'] = '';
+        $this->assertFalse(Request\is_json());
+    }
+
+    public function testIsMultipart()
+    {
+        $_SERVER['CONTENT_TYPE'] = 'multipart/form-data ----foobarbaz';
+        $this->assertTrue(Request\is_multipart());
+
+        $_SERVER['CONTENT_TYPE'] = '';
+        $this->assertFalse(Request\is_multipart());
+    }
+
     protected function setUp(): void
     {
-        $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = $_FILES = ['foo' => 'bar'];
+        $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = ['foo' => 'bar'];
+
+        $_FILES = [
+            'foo' => [
+                'name' => 'bar',
+            ],
+        ];
 
         $_SERVER['HTTP_HOST'] = 'test:8000';
         $_SERVER['SCRIPT_NAME'] = '/foo/test.php';

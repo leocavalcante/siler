@@ -1,8 +1,10 @@
-<?php /** @noinspection PhpComposerExtensionStubsInspection */
-declare(strict_types=1);
-/*
+<?php
+/**
  * Helpers functions for HTTP requests.
+ * @noinspection PhpComposerExtensionStubsInspection
  */
+
+declare(strict_types=1);
 
 namespace Siler\Http\Request;
 
@@ -11,18 +13,23 @@ use Siler\Container;
 use Swoole\Http\Request;
 use function locale_get_default;
 use function Siler\array_get;
+use function Siler\array_get_str;
 use function Siler\Encoder\Json\decode;
+use function Siler\Str\starts_with;
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 /**
  * Returns the raw HTTP body request.
  *
  * @param string $input The input file to check on
- *
  * @return string
  */
 function raw(string $input = 'php://input'): string
 {
+    if (Container\has(SWOOLE_HTTP_REQUEST)) {
+        return strval(\Siler\Swoole\request()->rawContent());
+    }
+
     $contents = file_get_contents($input);
     return $contents === false ? '' : $contents;
 }
@@ -31,14 +38,12 @@ function raw(string $input = 'php://input'): string
  * Returns URL decoded raw request body.
  *
  * @param string $input The input file to check on
- *
  * @return array
  */
 function params(string $input = 'php://input'): array
 {
     $params = [];
     parse_str(raw($input), $params);
-
     return $params;
 }
 
@@ -51,6 +56,66 @@ function params(string $input = 'php://input'): array
 function json(string $input = 'php://input')
 {
     return decode(raw($input));
+}
+
+/**
+ * Tries to figure out the body type and parse it.
+ *
+ * @param string $input
+ * @return mixed
+ */
+function body_parse(string $input = 'php://input')
+{
+    if (is_json()) {
+        return json($input);
+    }
+
+    return post();
+}
+
+/**
+ * Returns true if the current HTTP request is JSON (based on Content-type header).
+ *
+ * @param bool $default
+ * @return bool
+ */
+function is_json(bool $default = false): bool
+{
+    $content_type = content_type();
+
+    if ($content_type !== null) {
+        return starts_with($content_type, 'application/json');
+    }
+
+    return $default;
+}
+
+/**
+ * Returns true if the current request is multipart/form-data, based on Content-type header.
+ *
+ * @param bool $default
+ * @return bool
+ */
+function is_multipart(bool $default = false): bool
+{
+    $content_type = content_type();
+
+    if ($content_type !== null) {
+        return starts_with($content_type, 'multipart/form-data');
+    }
+
+    return $default;
+}
+
+/**
+ * Returns the Content-type header.
+ *
+ * @param string|null $default
+ * @return string|null
+ */
+function content_type(?string $default = null): ?string
+{
+    return header('content-type', $default);
 }
 
 /**
@@ -106,11 +171,16 @@ function headers(): array
  *
  * @param string $key The header name
  * @param string|null $default The default value when header isn't present
- *
  * @return string|null
  */
-function header(string $key, ?string $default = null)
+function header(string $key, ?string $default = null): ?string
 {
+    if (Container\has(SWOOLE_HTTP_REQUEST)) {
+        /** @var array<string, string> $headers */
+        $headers = \Siler\Swoole\request()->header;
+        return array_get_str($headers, $key, $default);
+    }
+
     $val = array_get(headers(), $key, $default, true);
 
     if (is_array($val)) {
@@ -138,12 +208,17 @@ function get(?string $key = null, $default = null)
  * Get a value from the $_POST global.
  *
  * @param string|null $key
- * @param mixed $default The default value to be returned when the key don't exists
- *
+ * @param string|null $default The default value to be returned when the key don't exists
  * @return string|array<string, string>|null
  */
-function post(?string $key = null, string $default = null)
+function post(?string $key = null, ?string $default = null)
 {
+    if (Container\has(SWOOLE_HTTP_REQUEST)) {
+        /** @var array<string, string> $post */
+        $post = \Siler\Swoole\request()->post;
+        return array_get($post, $key, $default);
+    }
+
     /** @var array<string, string> $_POST */
     return array_get($_POST, $key, $default);
 }
@@ -152,11 +227,11 @@ function post(?string $key = null, string $default = null)
  * Get a value from the $_REQUEST global.
  *
  * @param string|null $key
- * @param mixed $default The default value to be returned when the key don't exists
+ * @param string|null $default The default value to be returned when the key don't exists
  *
- * @return string|null|array
+ * @return string|null|array<string, string>
  */
-function input(?string $key = null, $default = null)
+function input(?string $key = null, ?string $default = null)
 {
     /** @var array<string, string> $_REQUEST */
     return array_get($_REQUEST, $key, $default);
@@ -165,12 +240,18 @@ function input(?string $key = null, $default = null)
 /**
  * Get a value from the $_FILES global.
  *
- * @param string|null $key
- * @param mixed $default The default value to be returned when the key don't exists
- * @return array|null|string
+ * @param array-key|null $key
+ * @param array|null $default The default value to be returned when the key don't exists
+ * @return array<string, array>|array|null
  */
-function file(?string $key = null, $default = null)
+function file($key = null, ?array $default = null)
 {
+    if (Container\has(SWOOLE_HTTP_REQUEST)) {
+        /** @var array[] $files */
+        $files = \Siler\Swoole\request()->files;
+        return array_get($files, $key, $default);
+    }
+
     /** @var array<string, array> $_FILES */
     return array_get($_FILES, $key, $default);
 }
@@ -324,7 +405,6 @@ function recommended_locale(string $default = ''): string
  * Look up for Bearer Authorization token.
  *
  * @param null $request
- *
  * @return string|null
  */
 function bearer($request = null): ?string
