@@ -8,16 +8,12 @@ namespace Siler\Arr;
  * If no key is given to the method, the entire array will be replaced.
  *
  * @param array $array
- * @param string|null $key
+ * @param string $key
  * @param mixed $value
  * @return array
  */
-function set(&$array, $key, $value)
+function set(array &$array, string $key, $value)
 {
-    if (is_null($key)) {
-        return $array = $value;
-    }
-
     $keys = explode('.', $key);
 
     while (count($keys) > 1) {
@@ -33,7 +29,7 @@ function set(&$array, $key, $value)
         $array = &$array[$key];
     }
 
+    /** @psalm-suppress MixedAssignment */
     $array[array_shift($keys)] = $value;
-
     return $array;
 }

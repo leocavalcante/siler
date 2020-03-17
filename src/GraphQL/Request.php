@@ -27,7 +27,7 @@ final class Request
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      * @internal For legacy purposes, may be removed.
      */
     public function toArray(): array

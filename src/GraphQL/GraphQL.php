@@ -28,6 +28,7 @@ use UnexpectedValueException;
 use WebSocket\BadOpcodeException;
 use WebSocket\Client;
 use function Siler\array_get;
+use function Siler\array_get_arr;
 use function Siler\array_get_str;
 use function Siler\Encoder\Json\decode;
 use function Siler\Encoder\Json\encode;
@@ -120,29 +121,38 @@ function input(string $input = 'php://input'): array
  * Creates a GraphQL Request based on the current Request (handles the multipart/form-data case on uploads).
  *
  * @param string $input
- * @return \Siler\GraphQL\Request
+ * @return GraphQLRequest
  */
 function request(string $input = 'php://input'): GraphQLRequest
 {
-    $input = Request\body_parse($input);
+    /** @var array<string, mixed> $body */
+    $body = Request\body_parse($input);
 
     if (Request\is_multipart()) {
-        $operations = decode(array_get_str($input, 'operations'));
-        $map = decode(array_get_str($input, 'map'));
+        /** @var array<string, mixed> $ops */
+        $ops = decode(array_get_str($body, 'operations'));
+        /** @var array<int, string[]> $map */
+        $map = decode(array_get_str($body, 'map'));
+        $query = array_get_str($ops, 'query');
+        $vars = array_get_arr($ops, 'variables');
+        $op_name = array_get_str($ops, 'operationName');
 
         foreach ($map as $file_key => $ops_paths) {
             $file = Request\file($file_key);
 
-            /** @var string $ops_path */
             foreach ($ops_paths as $ops_path) {
-                Arr\set($operations, $ops_path, $file);
+                Arr\set($ops, $ops_path, $file);
             }
         }
 
-        return new GraphQLRequest($operations['query'], $operations['variables'], $operations['operationName']);
+        return new GraphQLRequest($query, $vars, $op_name);
     }
 
-    return new GraphQLRequest($input['query'], $input['variables'], $input['operationName']);
+    $query = array_get_str($body, 'query');
+    $vars = array_get_arr($body, 'variables', []);
+    $op_name = array_get_str($body, 'operationName', '');
+
+    return new GraphQLRequest($query, $vars, $op_name);
 }
 
 /**

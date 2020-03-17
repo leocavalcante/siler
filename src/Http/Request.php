@@ -13,6 +13,7 @@ use Siler\Container;
 use Swoole\Http\Request;
 use function locale_get_default;
 use function Siler\array_get;
+use function Siler\array_get_str;
 use function Siler\Encoder\Json\decode;
 use function Siler\Str\starts_with;
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
@@ -61,19 +62,15 @@ function json(string $input = 'php://input')
  * Tries to figure out the body type and parse it.
  *
  * @param string $input
- * @return array
+ * @return mixed
  */
-function body_parse(string $input = 'php://input'): array
+function body_parse(string $input = 'php://input')
 {
     if (is_json()) {
         return json($input);
     }
 
-    if (is_multipart()) {
-        return post();
-    }
-
-    return params($input);
+    return post();
 }
 
 /**
@@ -174,13 +171,14 @@ function headers(): array
  *
  * @param string $key The header name
  * @param string|null $default The default value when header isn't present
- *
  * @return string|null
  */
-function header(string $key, ?string $default = null)
+function header(string $key, ?string $default = null): ?string
 {
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
-        return \Siler\Swoole\request()->header[$key] ?? $default;
+        /** @var array<string, string> $headers */
+        $headers = \Siler\Swoole\request()->header;
+        return array_get_str($headers, $key, $default);
     }
 
     $val = array_get(headers(), $key, $default, true);
@@ -216,7 +214,9 @@ function get(?string $key = null, $default = null)
 function post(?string $key = null, ?string $default = null)
 {
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
-        return array_get(\Siler\Swoole\request()->post, $key, $default);
+        /** @var array<string, string> $post */
+        $post = \Siler\Swoole\request()->post;
+        return array_get($post, $key, $default);
     }
 
     /** @var array<string, string> $_POST */
@@ -247,7 +247,9 @@ function input(?string $key = null, ?string $default = null)
 function file($key = null, ?array $default = null)
 {
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
-        return array_get(\Siler\Swoole\request()->files, $key, $default);
+        /** @var array[] $files */
+        $files = \Siler\Swoole\request()->files;
+        return array_get($files, $key, $default);
     }
 
     /** @var array<string, array> $_FILES */
