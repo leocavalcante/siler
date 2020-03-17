@@ -1,5 +1,7 @@
 # 1.7.3
 - GraphQL Uploads!
+- GraphQL's Custom Directives<br>
+  **Breaking**: you should now explicitly use arrays (or any other type) for subscription's root and context values
 - Fix #276 - GraphQL WebSocket client sub-protocol
 - PHPUnit 9
 - Better error message for `array_get`'s

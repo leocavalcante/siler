@@ -12,6 +12,8 @@ use GraphQL\Executor\Promise\Adapter\SyncPromiseAdapter;
 use GraphQL\Executor\Promise\Promise;
 use GraphQL\Executor\Promise\PromiseAdapter;
 use GraphQL\GraphQL;
+use GraphQL\Language\AST\DirectiveNode;
+use GraphQL\Language\AST\NodeList;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Schema;
@@ -27,11 +29,8 @@ use Siler\Http\Response;
 use UnexpectedValueException;
 use WebSocket\BadOpcodeException;
 use WebSocket\Client;
-use function Siler\array_get;
-use function Siler\array_get_arr;
-use function Siler\array_get_str;
-use function Siler\Encoder\Json\decode;
-use function Siler\Encoder\Json\encode;
+use function Siler\{array_get, array_get_arr, array_get_str};
+use function Siler\Encoder\Json\{decode, encode};
 use function Siler\GraphQL\request as graphql_request;
 use function Siler\Ratchet\graphql_subscriptions;
 
@@ -55,6 +54,8 @@ const ON_DISCONNECT = 'graphql_on_disconnect';
 
 const GRAPHQL_DEBUG = 'graphql_debug';
 const WEBSOCKET_SUB_PROTOCOL = 'graphql-ws';
+const DIRECTIVES = 'graphql_custom_directives';
+const SUBSCRIPTIONS_ENDPOINT = 'graphql_subscriptions_endpoint';
 
 /**
  * Sets GraphQL debug level.
@@ -119,6 +120,7 @@ function input(string $input = 'php://input'): array
 
 /**
  * Creates a GraphQL Request based on the current Request (handles the multipart/form-data case on uploads).
+ * It also works on Swoole runtime.
  *
  * @param string $input
  * @return GraphQLRequest
@@ -133,9 +135,6 @@ function request(string $input = 'php://input'): GraphQLRequest
         $ops = decode(array_get_str($body, 'operations'));
         /** @var array<int, string[]> $map */
         $map = decode(array_get_str($body, 'map'));
-        $query = array_get_str($ops, 'query');
-        $vars = array_get_arr($ops, 'variables');
-        $op_name = array_get_str($ops, 'operationName');
 
         foreach ($map as $file_key => $ops_paths) {
             $file = Request\file($file_key);
@@ -145,7 +144,8 @@ function request(string $input = 'php://input'): GraphQLRequest
             }
         }
 
-        return new GraphQLRequest($query, $vars, $op_name);
+        /** @var array<string, mixed> $body */
+        $body = $ops;
     }
 
     $query = array_get_str($body, 'query');
@@ -225,7 +225,7 @@ function psr7(Schema $schema): Closure
  * Also sets a Siler's default field resolver based on $resolvers array.
  *
  * @param string $typeDefs
- * @param array $resolvers
+ * @param array<string, array<string, mixed>> $resolvers
  * @param callable|null $typeConfigDecorator
  * @param array $options
  * @return Schema
@@ -242,17 +242,23 @@ function schema(string $typeDefs, array $resolvers = [], ?callable $typeConfigDe
 /**
  * Sets a Siler's default field resolver based on the given $resolvers array.
  *
- * @param array $resolvers
- *
+ * @param array<string, array<string, mixed>> $resolvers
  * @return void
  */
-function resolvers(array $resolvers)
+function resolvers(array $resolvers): void
 {
-    Executor::setDefaultFieldResolver(
-    /**
-     * @param mixed $source
-     * @param mixed $context
-     */
+    $resolver =
+        /**
+         * @template Source
+         * @template Context
+         * @param mixed $source
+         * @psalm-param Source $source
+         * @param array $args
+         * @param mixed $context
+         * @psalm-param Context $context
+         * @param ResolveInfo $info
+         * @return mixed|null
+         */
         static function ($source, array $args, $context, ResolveInfo $info) use ($resolvers) {
             /** @var string|null $field_name */
             $field_name = $info->fieldName;
@@ -273,12 +279,12 @@ function resolvers(array $resolvers)
             if (isset($resolvers[$parent_type_name])) {
                 /** @var array|object $resolver */
                 $resolver = $resolvers[$parent_type_name];
+                $value = null;
 
                 if (is_array($resolver)) {
                     if (array_key_exists($field_name, $resolver)) {
                         /** @var callable|mixed $value */
                         $value = $resolver[$field_name];
-                        return is_callable($value) ? $value($source, $args, $context, $info) : $value;
                     }
                 }
 
@@ -286,55 +292,100 @@ function resolvers(array $resolvers)
                     if (isset($resolver->{$field_name})) {
                         /** @var callable|mixed $value */
                         $value = $resolver->{$field_name};
-                        return is_callable($value) ? $value($source, $args, $context, $info) : $value;
                     }
+                }
+
+                if (is_callable($value)) {
+                    return $value($source, $args, $context, $info);
+                }
+
+                if ($value !== null) {
+                    return $value;
                 }
             }
 
             return Executor::defaultFieldResolver($source, $args, $context, $info);
+        };
+
+
+    Executor::setDefaultFieldResolver(
+    /**
+     * @template Source
+     * @template Context
+     * @param mixed $source
+     * @psalm-param Source $source
+     * @param array $args
+     * @param mixed $context
+     * @psalm-param Context $context
+     * @param ResolveInfo $info
+     * @return mixed|null
+     */
+        static function ($source, array $args, $context, ResolveInfo $info) use ($resolver) {
+            $field_node = $info->fieldNodes[0];
+            /** @var NodeList $directive_defs */
+            $directive_defs = $field_node->directives;
+            /** @var array<string, callable(callable):callable> $directives */
+            $directives = Container\get(DIRECTIVES, []);
+
+            /** @var DirectiveNode $directive */
+            foreach ($directive_defs as $directive) {
+                $directive_name = $directive->name->value;
+
+                if (array_key_exists($directive_name, $directives)) {
+                    $resolver = $directives[$directive_name]($resolver);
+                }
+            }
+
+            return $resolver($source, $args, $context, $info);
         }
     );
 }
 
 /**
+ * Sets directives to be used when resolving fields.
+ *
+ * @param array<string, callable(callable):callable> $directives
+ */
+function directives(array $directives): void
+{
+    Container\set(DIRECTIVES, $directives);
+}
+
+/**
  * Returns a GraphQL Subscriptions Manager.
  *
+ * @template RootValue
+ * @template Context
  * @param Schema $schema
  * @param array $filters
- * @param array $rootValue
- * @param array $context
- *
+ * @param mixed $rootValue
+ * @psalm-param RootValue|null $rootValue
+ * @param mixed $context
+ * @psalm-param Context|null $context
  * @return SubscriptionsManager
  */
-function subscriptions_manager(
-    Schema $schema,
-    array $filters = [],
-    $rootValue = [],
-    $context = []
-): SubscriptionsManager {
+function subscriptions_manager(Schema $schema, array $filters = [], $rootValue = null, $context = null): SubscriptionsManager
+{
     return new SubscriptionsManager($schema, $filters, $rootValue, $context);
 }
 
 /**
+ * @template RootValue
+ * @template Context
  * @param Schema $schema
  * @param array $filters
  * @param string $host
  * @param int $port
- * @param array $rootValue
- * @param array $context
- *
+ * @param mixed $rootValue
+ * @psalm-param RootValue|null $rootValue
+ * @param mixed $context
+ * @psalm-param Context|null $context
  * @return IoServer
  * @deprecated Returns a new websocket server bootstrapped for GraphQL
  * @noinspection PhpTooManyParametersInspection
  */
-function subscriptions(
-    Schema $schema,
-    array $filters = [],
-    string $host = '0.0.0.0',
-    int $port = 5000,
-    array $rootValue = [],
-    array $context = []
-): IoServer {
+function subscriptions(Schema $schema, array $filters = [], string $host = '0.0.0.0', int $port = 5000, $rootValue = null, $context = null): IoServer
+{
     $manager = subscriptions_manager($schema, $filters, $rootValue, $context);
     return graphql_subscriptions($manager, $port, $host);
 }
@@ -347,7 +398,7 @@ function subscriptions(
  */
 function subscriptions_at(string $url): void
 {
-    Container\set('graphql_subscriptions_endpoint', $url);
+    Container\set(SUBSCRIPTIONS_ENDPOINT, $url);
 }
 
 /**
@@ -367,7 +418,7 @@ function publish(string $subscriptionName, $payload = null): void
     ];
 
     /** @var string $ws_endpoint */
-    $ws_endpoint = Container\get('graphql_subscriptions_endpoint');
+    $ws_endpoint = Container\get(SUBSCRIPTIONS_ENDPOINT);
 
     $opts = [
         'headers' => [
