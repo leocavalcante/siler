@@ -28,8 +28,6 @@ type Mutation {
   start(roomName: String!): Room!
   chat(roomName: String!, body: String!): Message!
   close(roomName: String!): Boolean!
-  start(roomName: String): Room
-  chat(roomName: String, body: String): Message
   upload(file: Upload): File!
 }
 

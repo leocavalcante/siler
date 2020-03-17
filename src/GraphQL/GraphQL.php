@@ -29,11 +29,8 @@ use Siler\Http\Response;
 use UnexpectedValueException;
 use WebSocket\BadOpcodeException;
 use WebSocket\Client;
-use function Siler\array_get;
-use function Siler\array_get_arr;
-use function Siler\array_get_str;
-use function Siler\Encoder\Json\decode;
-use function Siler\Encoder\Json\encode;
+use function Siler\{array_get, array_get_arr, array_get_str};
+use function Siler\Encoder\Json\{decode, encode};
 use function Siler\GraphQL\request as graphql_request;
 use function Siler\Ratchet\graphql_subscriptions;
 
@@ -57,7 +54,8 @@ const ON_DISCONNECT = 'graphql_on_disconnect';
 
 const GRAPHQL_DEBUG = 'graphql_debug';
 const WEBSOCKET_SUB_PROTOCOL = 'graphql-ws';
-const DIRECTIVES = 'directives';
+const DIRECTIVES = 'graphql_custom_directives';
+const SUBSCRIPTIONS_ENDPOINT = 'graphql_subscriptions_endpoint';
 
 /**
  * Sets GraphQL debug level.
@@ -122,6 +120,7 @@ function input(string $input = 'php://input'): array
 
 /**
  * Creates a GraphQL Request based on the current Request (handles the multipart/form-data case on uploads).
+ * It also works on Swoole runtime.
  *
  * @param string $input
  * @return GraphQLRequest
@@ -136,9 +135,6 @@ function request(string $input = 'php://input'): GraphQLRequest
         $ops = decode(array_get_str($body, 'operations'));
         /** @var array<int, string[]> $map */
         $map = decode(array_get_str($body, 'map'));
-        $query = array_get_str($ops, 'query');
-        $vars = array_get_arr($ops, 'variables');
-        $op_name = array_get_str($ops, 'operationName');
 
         foreach ($map as $file_key => $ops_paths) {
             $file = Request\file($file_key);
@@ -148,7 +144,8 @@ function request(string $input = 'php://input'): GraphQLRequest
             }
         }
 
-        return new GraphQLRequest($query, $vars, $op_name);
+        /** @var array<string, mixed> $body */
+        $body = $ops;
     }
 
     $query = array_get_str($body, 'query');
@@ -250,24 +247,6 @@ function schema(string $typeDefs, array $resolvers = [], ?callable $typeConfigDe
  */
 function resolvers(array $resolvers): void
 {
-    /**
-     * @param mixed $source
-     * @param array $args
-     * @param mixed $context
-     * @param ResolveInfo $info
-     * @return callable|mixed|null
-     */
-    $resolver = static function ($source, array $args, $context, ResolveInfo $info) use ($resolvers) {
-        /** @var string|null $field_name */
-        $field_name = $info->fieldName;
-    Executor::setDefaultFieldResolver(
-    /**
-     * @param mixed $source
-     * @param mixed $context
-     */
-        static function ($source, array $args, $context, ResolveInfo $info) use ($resolvers) {
-            /** @var string|null $field_name */
-            $field_name = $info->fieldName;
     $resolver =
         /**
          * @template Source
@@ -402,7 +381,6 @@ function subscriptions_manager(Schema $schema, array $filters = [], $rootValue =
  * @param mixed $context
  * @psalm-param Context|null $context
  * @return IoServer
- * @deprecated Returns a new websocket server bootstrapped for GraphQL.
  * @deprecated Returns a new websocket server bootstrapped for GraphQL
  * @noinspection PhpTooManyParametersInspection
  */
@@ -420,7 +398,7 @@ function subscriptions(Schema $schema, array $filters = [], string $host = '0.0.
  */
 function subscriptions_at(string $url): void
 {
-    Container\set('graphql_subscriptions_endpoint', $url);
+    Container\set(SUBSCRIPTIONS_ENDPOINT, $url);
 }
 
 /**
@@ -440,7 +418,7 @@ function publish(string $subscriptionName, $payload = null): void
     ];
 
     /** @var string $ws_endpoint */
-    $ws_endpoint = Container\get('graphql_subscriptions_endpoint');
+    $ws_endpoint = Container\get(SUBSCRIPTIONS_ENDPOINT);
 
     $opts = [
         'headers' => [

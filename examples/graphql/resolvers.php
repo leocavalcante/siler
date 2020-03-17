@@ -3,11 +3,9 @@
 namespace Siler\Example\GraphQL;
 
 use DateTime;
-use RedBeanPHP\OODBBean;
-use RedBeanPHP\R;
+use RedBeanPHP\{OODBBean, R};
 use Siler\GraphQL;
-use function Siler\array_get_str;
-use function Siler\array_get_arr;
+use function Siler\{array_get_arr, array_get_str};
 
 R::setup('sqlite:' . __DIR__ . '/db.sqlite');
 
@@ -25,7 +23,7 @@ $queries = [
     'rooms' => function () {
         return R::findAll('room');
     },
-    'messages' => function ($root, $args) use ($room_by_name) {
+    'messages' => function ($_, $args) use ($room_by_name) {
         $room_name = array_get_str($args, 'roomName');
         $room = $room_by_name($room_name);
         return R::find('message', 'room_id = ?', [$room['id']]);
@@ -33,7 +31,7 @@ $queries = [
 ];
 
 $mutations = [
-    'start' => function ($root, $args) {
+    'start' => function ($_, $args) {
         $room_name = array_get_str($args, 'roomName');
 
         $room = R::dispense('room');
@@ -43,7 +41,7 @@ $mutations = [
 
         return $room;
     },
-    'chat' => function ($root, $args) use ($room_by_name) {
+    'chat' => function ($_, $args) use ($room_by_name) {
         $room_name = array_get_str($args, 'roomName');
         $body = array_get_str($args, 'body');
 
@@ -62,7 +60,7 @@ $mutations = [
         // <- Exactly what "inbox" will receive
         return $message;
     },
-    'close' => function ($root, array $args) use ($room_by_name): bool {
+    'close' => function ($_, array $args) use ($room_by_name): bool {
         $room_name = array_get_str($args, 'roomName');
         $room = $room_by_name($room_name);
 
@@ -73,8 +71,7 @@ $mutations = [
         R::trash($room);
         return true;
     },
-    },
-    'upload' => function ($root, $args) {
+    'upload' => function ($_, $args) {
         $file = array_get_arr($args, 'file');
         move_uploaded_file($file['tmp_name'], __DIR__ . "/uploads/{$file['name']}");
         return ['name' => $file['name']];

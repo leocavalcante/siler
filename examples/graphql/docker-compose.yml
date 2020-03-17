@@ -10,4 +10,4 @@ services:
       - 8001:8001
     environment:
       WATCH_DIR: /app/examples/graphql
-      ENTRY_POINT_FILE: /app/examples/graphql/index.php
+      ENTRY_POINT_FILE: /app/examples/graphql/swoole.php
