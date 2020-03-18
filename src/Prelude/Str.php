@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /*
  * String module. Functions to operate on strings.
@@ -77,7 +75,7 @@ function ends_with(string $haystack, string $needle): bool
  */
 function contains(string $haystack, string $needle): bool
 {
-    return strpos($haystack, $needle) > -1;
+    return strpos($haystack, $needle) !== false;
 }
 
 /**
