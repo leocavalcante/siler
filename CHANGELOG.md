@@ -8,7 +8,8 @@
 - `Str\starts_with`, `Str\ends_with` and `Str\contains`
 - `Str\snake_case` and `Str\camel_case` case converters
 - Introducing Klass module with `Klass\unqualified_name`
-- Introducing `FromArray` and `ToArray` traits
+- Introducing Obj module with `Obj\patch`
+- Introducing traits with: `FromArray`, `ToArray` and `Patch`
 - **Breaking**: you should now explicitly use arrays (or any other type) for subscription's root and context values
 - **Breaking**: match doesn't return null anymore, you should provide an exhaust function
 

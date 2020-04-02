@@ -65,6 +65,7 @@
             "src/Monolog/Monolog.php",
             "src/Prelude/Arr.php",
             "src/Prelude/Klass.php",
+            "src/Prelude/Obj.php",
             "src/Prelude/Str.php",
             "src/Prelude/Tuple.php",
             "src/Ratchet/Ratchet.php",

@@ -12,7 +12,7 @@ class FromToArrayTest extends TestCase
 {
     public function testFromArray()
     {
-        $fixture = FromToArrayFixture::fromArray([
+        $fixture = PatchFromToFixture::fromArray([
             'foo' => 'foo',
             'fooBar' => 'bar',
             'foo_bar_baz' => 'baz',
@@ -25,7 +25,7 @@ class FromToArrayTest extends TestCase
 
     public function testToArray()
     {
-        $fixture = new FromToArrayFixture();
+        $fixture = new PatchFromToFixture();
         $fixture->foo = 'foo';
         $fixture->fooBar = 'bar';
 

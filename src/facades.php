@@ -204,6 +204,10 @@ namespace Siler\Klass;
 const unqualified_name = '\Siler\Klass\unqualified_name';
 
 
+namespace Siler\Obj;
+const patch = '\Siler\Obj\patch';
+
+
 namespace Siler\Str;
 const slugify = '\Siler\Str\slugify';
 const lines = '\Siler\Str\lines';
