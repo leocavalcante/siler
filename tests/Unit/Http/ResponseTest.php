@@ -133,4 +133,10 @@ class ResponseTest extends TestCase
             $this->assertTrue(true);
         }
     }
+
+    public function testNotFound()
+    {
+        Response\not_found();
+        $this->assertSame(404, http_response_code());
+    }
 }

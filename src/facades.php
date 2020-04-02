@@ -169,6 +169,7 @@ const header = '\Siler\Http\Response\header';
 const redirect = '\Siler\Http\Response\redirect';
 const no_content = '\Siler\Http\Response\no_content';
 const cors = '\Siler\Http\Response\cors';
+const not_found = '\Siler\Http\Response\not_found';
 
 
 namespace Siler\HttpHandlerRunner;
