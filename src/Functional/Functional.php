@@ -108,28 +108,31 @@ function greater_than($right): \Closure
 /**
  * It allows for conditional execution of code fragments.
  *
- * @param callable(mixed): bool $cond
- *
- * @return \Closure(callable(mixed):mixed):Closure(callable(mixed):mixed):Closure(mixed):mixed
+ * @template I
+ * @template O
+ * @param callable(I):bool $cond
+ * @return \Closure(callable(I):O):((\Closure(callable(I):O):\Closure(I):O)
  */
 function if_else(callable $cond): \Closure
 {
     return
         /**
-         * @param callable(mixed): mixed $then
-         * @return \Closure(callable(mixed):mixed):Closure(mixed):mixed
+         * @param callable(I):O $then
+         * @return \Closure(callable(I):O):(Closure(I):O)
          */
         static function (callable $then) use ($cond): \Closure {
             return
                 /**
-                 * @param callable(mixed): mixed $else
-                 * @return \Closure(mixed): mixed
+                 * @param callable(I):O $else
+                 * @return \Closure(I):O
                  */
                 static function (callable $else) use ($cond, $then): \Closure {
                     return
                         /**
                          * @param mixed $value
+                         * @psalm-param I $value
                          * @return mixed
+                         * @psalm-return O
                          */
                         static function ($value) use ($cond, $then, $else) {
                             return $cond($value) ? $then($value) : $else($value);
@@ -141,27 +144,29 @@ function if_else(callable $cond): \Closure
 /**
  * Pattern-Matching Semantics.
  *
- * @param array $matches
- *
- * @return \Closure(mixed):mixed
+ * @template I
+ * @template O
+ * @param array{callable(I):bool, callable(I):O}[] $matches
+ * @param callable(I):O $exhaust
+ * @return \Closure(I):O
  */
-function match(array $matches): \Closure
+function match(array $matches, callable $exhaust): \Closure
 {
     return
         /**
          * @param mixed $value
+         * @psalm-param I $value
          * @return mixed
+         * @psalm-return O
          */
-        static function ($value) use ($matches) {
-            if (empty($matches)) {
-                return null;
+        static function ($value) use ($matches, $exhaust) {
+            foreach ($matches as [$predicate, $callback]) {
+                if ($predicate($value)) {
+                    return $callback($value);
+                }
             }
 
-            /** @var array<callable(mixed):bool> $match */
-            $match = $matches[0];
-            $if_else = if_else($match[0])($match[1])(match(array_slice($matches, 1)));
-
-            return $if_else($value);
+            return $exhaust($value);
         };
 }
 
@@ -579,16 +584,18 @@ function partial(callable $callable, ...$partial): \Closure
 /**
  * Calls a function if the predicate is true.
  *
+ * @template T
  * @param callable $predicate
- *
- * @return \Closure(callable):mixed
+ * @return \Closure(callable():T):(T|null)
  */
 function if_then(callable $predicate): \Closure
 {
     return function (callable $then) use ($predicate) {
         if ($predicate()) {
-            $then();
+            return $then();
         }
+
+        return null;
     };
 }
 
@@ -797,7 +804,7 @@ function conduit(array $callbacks): \Closure
  *
  * @param string $separator
  *
- * @return \Closure(string|false|null): Closure(string): string
+ * @return \Closure(string|false|null):(Closure(string):string)
  */
 function lconcat(string $separator = ''): \Closure
 {
@@ -807,7 +814,7 @@ function lconcat(string $separator = ''): \Closure
          * @return \Closure(string): string
          */
         static function ($b) use ($separator): \Closure {
-            return static function (string $a) use ($separator, $b) {
+            return static function (string $a) use ($separator, $b): string {
                 return concat($separator)($a, $b);
             };
         };

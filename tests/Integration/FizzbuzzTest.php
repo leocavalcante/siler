@@ -1,19 +1,13 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Siler\Test\Integration;
 
 use PHPUnit\Framework\TestCase;
-use function Siler\Functional\always;
-use function Siler\Functional\identity as id;
-use function Siler\Functional\match;
-use function Siler\Functional\mod;
-use function Siler\Functional\not;
+use function Siler\Functional\{always, identity, match, mod, not};
 
 class FizzbuzzTest extends TestCase
 {
-    public function testFizzbuzz()
+    public function testFizzBuzz()
     {
         $input = range(1, 15);
         $expected = [1, 2, 'Fizz', 4, 'Buzz', 'Fizz', 7, 8, 'Fizz', 'Buzz', 11, 'Fizz', 13, 14, 'Fizz Buzz'];
@@ -22,8 +16,7 @@ class FizzbuzzTest extends TestCase
             [not(mod(15)), always('Fizz Buzz')],
             [not(mod(3)), always('Fizz')],
             [not(mod(5)), always('Buzz')],
-            [always(true), id()]
-        ]);
+        ], identity());
 
         $actual = array_map($match, $input);
 

@@ -6,9 +6,10 @@
 - Better error message for `array_get`'s
 - `Siler\array_get_arr` type-safe array getter for arrays
 - `Str\starts_with`, `Str\ends_with` and `Str\contains`
-- Introducing Klass module with `Klass\unqualified_name`
 - `Str\snake_case` and `Str\camel_case` case converters
+- Introducing Klass module with `Klass\unqualified_name`
 - **Breaking**: you should now explicitly use arrays (or any other type) for subscription's root and context values
+- **Breaking**: match doesn't return null anymore, you should provide an exhaust function
 
 # 1.7.2
 - Experimental support for gRPC servers
