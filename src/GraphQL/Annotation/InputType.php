@@ -12,4 +12,6 @@ class InputType
 {
     /** @var string */
     public $name;
+    /** @var string */
+    public $description;
 }

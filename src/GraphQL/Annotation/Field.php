@@ -6,12 +6,14 @@ use Doctrine\Common\Annotations\Annotation\Target;
 
 /**
  * @Annotation
- * @Target("METHOD")
+ * @Target({"METHOD", "PROPERTY"})
  */
 final class Field
 {
     /** @var string */
     public $type;
+    /** @var string */
+    public $name;
     /** @var string */
     public $description;
 }

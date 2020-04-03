@@ -5,8 +5,8 @@ namespace App;
 use Siler\GraphQL\Annotation\Field;
 use Siler\GraphQL\Annotation\ObjectType;
 
-/** @ObjectType(name="Query") */
-class Queries
+/** @ObjectType */
+class Query
 {
     /** @Field(description="A common greet") */
     public static function hello(): string
