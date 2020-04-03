@@ -12,7 +12,9 @@ class Mutation
 {
     /**
      * @Field(description="Sums two integers")
-     * @Args({"input" = TupleInput::class})
+     * @Args({
+     *     @Field(name="input", type=TupleInput::class)
+     * })
      */
     public static function sum($_, array $args): int
     {

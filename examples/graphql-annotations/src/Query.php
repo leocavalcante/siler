@@ -19,4 +19,14 @@ class Query
     {
         return 42;
     }
+
+    /**
+     * @Field(listOf=Todo::class)
+     * @return Todo[]
+     */
+    public static function todos(): array
+    {
+        $todos = [new Todo('Something to do')];
+        return $todos;
+    }
 }

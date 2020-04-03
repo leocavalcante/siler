@@ -6,7 +6,7 @@ use Doctrine\Common\Annotations\Annotation\Target;
 
 /**
  * @Annotation
- * @Target({"METHOD", "PROPERTY"})
+ * @Target({"METHOD", "PROPERTY", "ANNOTATION"})
  */
 final class Field
 {
@@ -16,4 +16,6 @@ final class Field
     public $name;
     /** @var string */
     public $description;
+    /** @var string */
+    public $listOf;
 }

@@ -10,6 +10,11 @@ use Doctrine\Common\Annotations\Annotation\Target;
  */
 class Args
 {
-    /** @var array<string, string> */
-    public $value;
+    /** @var Field[] */
+    public $fields;
+
+    public function __construct(array $values)
+    {
+        $this->fields = $values['value'];
+    }
 }
