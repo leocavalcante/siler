@@ -20,6 +20,12 @@ class Query
         return 42;
     }
 
+    /** @Field */
+    public static function now(): \DateTime
+    {
+        return new \DateTime();
+    }
+
     /**
      * @Field(listOf=Todo::class)
      * @return Todo[]

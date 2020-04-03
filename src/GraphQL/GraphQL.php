@@ -448,17 +448,22 @@ function listen(string $eventName, callable $listener): void
 /**
  * Generates a schema from annotations.
  *
- * @param array<class-string> ...$typings
+ * @param array<class-name> $typings
+ * @param array<Type> $types
  * @return Schema
  * @throws AnnotationException
  * @throws \ReflectionException
  */
-function annotated(...$typings): Schema
+function annotated(array $typings, array $types = []): Schema
 {
     AnnotationRegistry::registerLoader('class_exists');
 
     /** @var array<string, Type> $types */
-    $types = [];
+    $types = array_reduce($types, function (array $types, Type $type): array {
+        $types[$type->name] = $type;
+        return $types;
+    }, []);
+
     $reader = new AnnotationReader();
     $config = new SchemaConfig();
 
