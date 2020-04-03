@@ -1,10 +1,11 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Siler\GraphQL;
 
 use Closure;
+use Doctrine\Common\Annotations\AnnotationException;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Exception;
 use GraphQL\Error\Debug;
 use GraphQL\Executor\Executor;
@@ -14,15 +15,19 @@ use GraphQL\Executor\Promise\PromiseAdapter;
 use GraphQL\GraphQL;
 use GraphQL\Language\AST\DirectiveNode;
 use GraphQL\Language\AST\NodeList;
+use GraphQL\Type\Definition\NullableType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
+use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
+use GraphQL\Type\SchemaConfig;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use Ratchet\Server\IoServer;
 use Siler\Arr;
 use Siler\Container;
 use Siler\Diactoros;
+use Siler\GraphQL\Annotation;
 use Siler\GraphQL\Request as GraphQLRequest;
 use Siler\Http\Request;
 use Siler\Http\Response;
@@ -437,4 +442,107 @@ function publish(string $subscriptionName, $payload = null): void
 function listen(string $eventName, callable $listener): void
 {
     Container\set($eventName, $listener);
+}
+
+/**
+ * Generates a schema from annotations.
+ *
+ * @param mixed ...$classNames
+ * @return Schema
+ * @throws AnnotationException
+ * @throws \ReflectionException
+ */
+function annotated(...$classNames): Schema
+{
+    AnnotationRegistry::registerLoader('class_exists');
+
+    $config = new SchemaConfig();
+    /** @var Type[] $types */
+    $types = [];
+    $reader = new AnnotationReader();
+
+    foreach ($classNames as $class_name) {
+        $reflection = new \ReflectionClass($class_name);
+        /** @var Annotation\ObjectType $annotation */
+        $annotation = $reader->getClassAnnotation($reflection, Annotation\ObjectType::class);
+
+        $object_type = new ObjectType([
+            'name' => $annotation->name,
+            'description' => $annotation->description,
+            'fields' => array_reduce($reflection->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_STATIC), static function (array $fields, \ReflectionMethod $method) use ($reader): array {
+                /** @var Annotation\Field $annotation */
+                $annotation = $reader->getMethodAnnotation($method, Annotation\Field::class);
+
+                $fields[$method->getName()] = [
+                    'name' => $method->getName(),
+                    'description' => $annotation->description,
+                    'type' => annotated_type($method, $annotation),
+                    'resolve' => static function ($root, array $args, $context, ResolveInfo $info) use ($method) {
+                        return $method->invoke(null, $root, $args, $context, $info);
+                    }
+                ];
+
+                return $fields;
+            }, []),
+        ]);
+
+        if ($object_type->name === 'Query') {
+            $config->setQuery($object_type);
+        }
+    }
+
+    return new Schema($config);
+}
+
+/**
+ * Maps a Type from the method's reflection & annotations.
+ *
+ * @param \ReflectionMethod $method
+ * @param Annotation\Field $annotation
+ * @return Type
+ */
+function annotated_type(\ReflectionMethod $method, Annotation\Field $annotation): Type
+{
+    /** @var string $return_type */
+    $return_type = $method->getReturnType()->getName();
+
+    /** @var array<string, string> $php_types */
+    $php_types = [
+        'string' => Type::STRING,
+        'int' => Type::INT,
+        'bool' => Type::BOOLEAN,
+        'float' => Type::FLOAT,
+    ];
+
+    if (isset($annotation->type)) {
+        $type_name = $annotation->type;
+    } elseif (array_key_exists($return_type, $php_types)) {
+        $type_name = $php_types[$return_type];
+    } else {
+        throw new \TypeError('Field type not provided and could not guess from resolvers return type.');
+    }
+
+    $graphql_types = Type::getStandardTypes();
+
+    if (array_key_exists($type_name, $graphql_types)) {
+        /** @var Type|NullableType $type */
+        $type = $graphql_types[$type_name];
+    } else {
+        if (!class_exists($type_name)) {
+            throw new \TypeError("Provided class name `$type_name` as field type does not exists.");
+        }
+
+        /** @var Type|NullableType $type */
+        $type = new $type_name();
+
+        if (!($type instanceof Type)) {
+            throw new \TypeError("Provided class name `$type_name` is not a valid Type.");
+        }
+    }
+
+    if ($method->getReturnType()->allowsNull()) {
+        return $type;
+    }
+
+    return Type::nonNull($type);
 }
