@@ -6,7 +6,7 @@ use Siler\GraphQL\Annotation\Field;
 use Siler\GraphQL\Annotation\ObjectType;
 
 /** @ObjectType(name="Query") */
-class RootQuery
+class Queries
 {
     /** @Field(description="A common greet") */
     public static function hello(): string

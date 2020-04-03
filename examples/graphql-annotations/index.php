@@ -9,7 +9,7 @@ use function Siler\GraphQL\init;
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-$schema = annotated(RootQuery::class);
+$schema = annotated(Queries::class, Mutations::class);
 
 debug();
 init($schema);

@@ -447,12 +447,12 @@ function listen(string $eventName, callable $listener): void
 /**
  * Generates a schema from annotations.
  *
- * @param mixed ...$classNames
+ * @param mixed ...$typings
  * @return Schema
  * @throws AnnotationException
  * @throws \ReflectionException
  */
-function annotated(...$classNames): Schema
+function annotated(...$typings): Schema
 {
     AnnotationRegistry::registerLoader('class_exists');
 
@@ -461,33 +461,43 @@ function annotated(...$classNames): Schema
     $types = [];
     $reader = new AnnotationReader();
 
-    foreach ($classNames as $class_name) {
+    foreach ($typings as $class_name) {
         $reflection = new \ReflectionClass($class_name);
-        /** @var Annotation\ObjectType $annotation */
-        $annotation = $reader->getClassAnnotation($reflection, Annotation\ObjectType::class);
+        /** @var Annotation\ObjectType $object_annotation */
+        $object_annotation = $reader->getClassAnnotation($reflection, Annotation\ObjectType::class);
 
         $object_type = new ObjectType([
-            'name' => $annotation->name,
-            'description' => $annotation->description,
-            'fields' => array_reduce($reflection->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_STATIC), static function (array $fields, \ReflectionMethod $method) use ($reader): array {
-                /** @var Annotation\Field $annotation */
-                $annotation = $reader->getMethodAnnotation($method, Annotation\Field::class);
+            'name' => $object_annotation->name,
+            'description' => $object_annotation->description,
+            'fields' => array_reduce(
+                $reflection->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_STATIC),
+                static function (array $fields, \ReflectionMethod $method) use ($reader, $object_annotation): array {
+                    /** @var Annotation\Field $method_annotation */
+                    $method_name = $method->getName();
+                    $method_annotation = $reader->getMethodAnnotation($method, Annotation\Field::class);
 
-                $fields[$method->getName()] = [
-                    'name' => $method->getName(),
-                    'description' => $annotation->description,
-                    'type' => annotated_type($method, $annotation),
-                    'resolve' => static function ($root, array $args, $context, ResolveInfo $info) use ($method) {
-                        return $method->invoke(null, $root, $args, $context, $info);
-                    }
-                ];
+                    $fields[$method_name] = [
+                        'type' => annotated_type($method, $method_annotation),
+                        'name' => $method_name,
+                        'description' => $method_annotation->description,
+                        'args' => annotated_args($method, $reader),
+                        'resolve' => static function ($root, array $args, $context, ResolveInfo $info) use ($method) {
+                            return $method->invoke(null, $root, $args, $context, $info);
+                        }
+                    ];
 
-                return $fields;
-            }, []),
+                    return $fields;
+                },
+                []
+            ),
         ]);
 
         if ($object_type->name === 'Query') {
             $config->setQuery($object_type);
+        }
+
+        if ($object_type->name === 'Mutation') {
+            $config->setMutation($object_type);
         }
     }
 
@@ -522,27 +532,60 @@ function annotated_type(\ReflectionMethod $method, Annotation\Field $annotation)
         throw new \TypeError('Field type not provided and could not guess from resolvers return type.');
     }
 
-    $graphql_types = Type::getStandardTypes();
-
-    if (array_key_exists($type_name, $graphql_types)) {
-        /** @var Type|NullableType $type */
-        $type = $graphql_types[$type_name];
-    } else {
-        if (!class_exists($type_name)) {
-            throw new \TypeError("Provided class name `$type_name` as field type does not exists.");
-        }
-
-        /** @var Type|NullableType $type */
-        $type = new $type_name();
-
-        if (!($type instanceof Type)) {
-            throw new \TypeError("Provided class name `$type_name` is not a valid Type.");
-        }
-    }
+    /** @var Type|NullableType $type */
+    $type = type_from_string($type_name);
 
     if ($method->getReturnType()->allowsNull()) {
         return $type;
     }
 
     return Type::nonNull($type);
+}
+
+/**
+ * @param \ReflectionMethod $method
+ * @param AnnotationReader $reader
+ * @return array<string, Type>
+ */
+function annotated_args(\ReflectionMethod $method, AnnotationReader $reader): array
+{
+    $args = [];
+
+    /** @var Annotation\Args|null $annotation */
+    $annotation = $reader->getMethodAnnotation($method, Annotation\Args::class);
+
+    if ($annotation === null) {
+        return $args;
+    }
+
+    foreach ($annotation->value as $name => $type_name) {
+        $args[$name] = type_from_string($type_name);
+    }
+
+    return $args;
+}
+
+/**
+ * @param string|class-string $str
+ * @return Type
+ */
+function type_from_string(string $str): Type
+{
+    $standards = Type::getStandardTypes();
+
+    if (array_key_exists($str, $standards)) {
+        $type = $standards[$str];
+    } else {
+        if (!class_exists($str)) {
+            throw new \TypeError("Provided class name `$str` as field type does not exists.");
+        }
+
+        $type = new $str();
+
+        if (!($type instanceof Type)) {
+            throw new \TypeError("Provided class name `$str` is not a valid Type.");
+        }
+    }
+
+    return $type;
 }
