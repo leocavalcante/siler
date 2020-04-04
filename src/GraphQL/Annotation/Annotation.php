@@ -108,7 +108,7 @@ function deannotate_enum(string $class_name, \ReflectionClass $reflection, EnumT
                 /** @var EnumVal $annotation */
                 $annotation = $parsed[0];
 
-                $values[$const->getName()] = [
+                $values[$annotation->name ?? $const->getName()] = [
                     'name' => $annotation->name ?? $const->getName(),
                     'description' => $annotation->description,
                     'value' => $annotation->value ?? $const->getValue(),
@@ -151,9 +151,9 @@ function deannotate_object(array $types, AnnotationReader $reader, string $class
     $annotated_method_fields = array_reduce(
         $reflection->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_STATIC),
         static function (array $fields, \ReflectionMethod $method) use ($types, $reader, $annotation): array {
-            $method_name = $method->getName();
             /** @var Field|null $annotation */
             $annotation = $reader->getMethodAnnotation($method, Field::class);
+            $method_name = $annotation->name ?? $method->getName();
 
             if ($annotation === null) {
                 return $fields;
@@ -197,13 +197,13 @@ function deannotate_properties(array $types, \ReflectionClass $reflection, Annot
     $fields = [];
 
     foreach ($reflection->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
-        $prop_name = $property->getName();
         /** @var Field $annotation */
         $annotation = $reader->getPropertyAnnotation($property, Field::class);
+        $prop_name = $annotation->name ?? $property->getName();
 
         $fields[$prop_name] = [
+            'name' => $prop_name,
             'type' => deannotate_type($types, $annotation),
-            'name' => $annotation->name ?? $prop_name,
             'description' => $annotation->description,
         ];
     }
