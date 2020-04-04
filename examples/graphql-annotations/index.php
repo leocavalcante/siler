@@ -2,7 +2,6 @@
 
 namespace App;
 
-use GraphQL\Error\Debug;
 use Siler\GraphQL\DateTimeScalar;
 use function Siler\GraphQL\{debug, init};
 use function Siler\GraphQL\Annotation\annotated;
@@ -11,6 +10,9 @@ require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 $schema = annotated([
+    Foo::class,
+    Bar::class,
+    FooBar::class,
     TodoStatus::class,
     ITodo::class,
     Todo::class,
@@ -21,5 +23,5 @@ $schema = annotated([
     new DateTimeScalar(),
 ]);
 
-debug(Debug::RETHROW_INTERNAL_EXCEPTIONS);
+debug();
 init($schema);

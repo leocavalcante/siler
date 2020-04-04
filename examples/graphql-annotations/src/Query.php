@@ -26,6 +26,12 @@ class Query
         return new \DateTime();
     }
 
+    /** @Field */
+    public static function fooBar(): FooBar
+    {
+        return rand(0, 100) > 50 ? new Foo() : new Bar();
+    }
+
     /**
      * @Field(listOf=Todo::class)
      * @return Todo[]

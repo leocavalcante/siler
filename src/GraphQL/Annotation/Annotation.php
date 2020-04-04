@@ -13,6 +13,7 @@ use GraphQL\Type\Definition\NullableType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Definition\UnionType as UnionTypeDefinition;
 use GraphQL\Type\Schema;
 use GraphQL\Type\SchemaConfig;
 use Siler\GraphQL\Annotation\EnumType as EnumTypeAnnotation;
@@ -91,6 +92,32 @@ function deannotate(array $types, AnnotationReader $reader, string $class_name):
     if ($annotation !== null) {
         return deannotate_interface($types, $reader, $class_name, $reflection, $annotation);
     }
+
+    /** @var UnionType|null $annotation */
+    $annotation = $reader->getClassAnnotation($reflection, UnionType::class);
+    if ($annotation !== null) {
+        return deannotate_union($types, $class_name, $annotation);
+    }
+}
+
+/**
+ * @param array<string, Type> $types
+ * @param string $class_name
+ * @param UnionType $annotation
+ * @return UnionTypeDefinition
+ */
+function deannotate_union(array $types, string $class_name, UnionType $annotation): UnionTypeDefinition
+{
+    return new UnionTypeDefinition([
+        'name' => $annotation->name ?? unqualified_name($class_name),
+        'description' => $annotation->description,
+        'resolveType' => static function ($value) use ($types): Type {
+            return type_from_string($types, get_class($value));
+        },
+        'types' => array_map(function (string $type_name) use ($types): Type {
+            return type_from_string($types, $type_name);
+        }, $annotation->types),
+    ]);
 }
 
 /**
@@ -247,10 +274,17 @@ function deannotate_properties(array $types, \ReflectionClass $reflection, Annot
     /** @var array<string, array<string, mixed> $fields */
     $fields = [];
 
-    foreach ($reflection->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
+    $props = $reflection->getProperties(\ReflectionProperty::IS_PUBLIC);
+
+    // TODO: We are going only one level deep, this should be recursive.
+    if ($reflection->getParentClass()) {
+        $props = array_merge($props, $reflection->getParentClass()->getProperties(\ReflectionProperty::IS_PUBLIC));
+    }
+
+    foreach ($props as $prop) {
         /** @var Field $annotation */
-        $annotation = $reader->getPropertyAnnotation($property, Field::class);
-        $prop_name = $annotation->name ?? $property->getName();
+        $annotation = $reader->getPropertyAnnotation($prop, Field::class);
+        $prop_name = $annotation->name ?? $prop->getName();
 
         $fields[$prop_name] = [
             'name' => $prop_name,
@@ -339,8 +373,14 @@ function type_from_string(array $types, string $str): Type
     }
 
     if (class_exists($str)) {
-        return new $str();
+        $type = new $str();
+
+        if ($type instanceof Type) {
+            return $type;
+        }
+
+        throw new \TypeError("Class $str does exists, but is not a Type. Does it have Annotations and it's added to annotated function array?");
     }
 
-    throw new \TypeError("Provided class name `$str` is not a valid type. Perhaps your forgot to place it before another type that uses it in the `annotated` function arguments.");
+    throw new \TypeError("Provided class name $str is not a valid type. Perhaps your forgot to place it before another type that uses it in the `annotated` function arguments.");
 }

@@ -2,7 +2,6 @@
 
 namespace App;
 
-use GraphQL\Type\Definition\Type;
 use Siler\GraphQL\Annotation\{Field, InputType};
 use Siler\Prelude\FromArray;
 
@@ -12,12 +11,12 @@ class TupleInput
     use FromArray;
 
     /**
-     * @Field(type = Type::INT)
+     * @Field(type = "Int")
      * @var int
      */
     public $x;
     /**
-     * @Field(type = Type::INT)
+     * @Field(type = "Int")
      * @var int
      */
     public $y;
