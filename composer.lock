@@ -9,33 +9,34 @@
   "packages-dev": [
     {
       "name": "amphp/amp",
-      "version": "v2.4.1",
+      "version": "v2.4.2",
       "source": {
         "type": "git",
         "url": "https://github.com/amphp/amp.git",
-        "reference": "2ac3b550c4997f2ec304faa63c8b2885079a2dc4"
+        "reference": "feca077369a47263b22156b3c6389e55f3809f24"
       },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/amphp/amp/zipball/2ac3b550c4997f2ec304faa63c8b2885079a2dc4",
-                "reference": "2ac3b550c4997f2ec304faa63c8b2885079a2dc4",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7"
-            },
-            "require-dev": {
-                "amphp/php-cs-fixer-config": "dev-master",
-                "amphp/phpunit-util": "^1",
-                "ext-json": "*",
-                "phpstan/phpstan": "^0.8.5",
-                "phpunit/phpunit": "^6.0.9 | ^7",
-                "react/promise": "^2"
-            },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/amphp/amp/zipball/feca077369a47263b22156b3c6389e55f3809f24",
+        "reference": "feca077369a47263b22156b3c6389e55f3809f24",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=7"
+      },
+      "require-dev": {
+        "amphp/php-cs-fixer-config": "dev-master",
+        "amphp/phpunit-util": "^1",
+        "ext-json": "*",
+        "jetbrains/phpstorm-stubs": "^2019.3",
+        "phpunit/phpunit": "^6.0.9 | ^7",
+        "react/promise": "^2",
+        "vimeo/psalm": "^3.9@dev"
+      },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                  "dev-master": "2.x-dev"
                 }
             },
             "autoload": {
@@ -82,7 +83,7 @@
                 "non-blocking",
                 "promise"
             ],
-            "time": "2020-02-10T18:10:57+00:00"
+      "time": "2020-04-04T15:05:26+00:00"
         },
         {
             "name": "amphp/byte-stream",
@@ -349,16 +350,16 @@
                     "Composer\\XdebugHandler\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "John Stevenson",
-                    "email": "john-stevenson@blueyonder.co.uk"
-                }
-            ],
+          "notification-url": "https://packagist.org/downloads/",
+          "license": [
+            "MIT"
+          ],
+          "authors": [
+            {
+              "name": "John Stevenson",
+              "email": "john-stevenson@blueyonder.co.uk"
+            }
+          ],
           "description": "Restarts a process without Xdebug.",
           "keywords": [
             "Xdebug",
@@ -446,16 +447,16 @@
       "dist": {
         "type": "zip",
         "url": "https://api.github.com/repos/doctrine/instantiator/zipball/ae466f726242e637cebdd526a7d991b9433bacf1",
-                "reference": "ae466f726242e637cebdd526a7d991b9433bacf1",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1"
-            },
-            "require-dev": {
-                "doctrine/coding-standard": "^6.0",
-                "ext-pdo": "*",
-                "ext-phar": "*",
+        "reference": "ae466f726242e637cebdd526a7d991b9433bacf1",
+        "shasum": ""
+      },
+      "require": {
+        "php": "^7.1"
+      },
+      "require-dev": {
+        "doctrine/coding-standard": "^6.0",
+        "ext-pdo": "*",
+        "ext-phar": "*",
                 "phpbench/phpbench": "^0.13",
                 "phpstan/phpstan-phpunit": "^0.11",
                 "phpstan/phpstan-shim": "^0.11",
@@ -1254,20 +1255,20 @@
             ],
             "time": "2020-03-29T13:31:02+00:00"
         },
-        {
-            "name": "laminas/laminas-zendframework-bridge",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laminas/laminas-zendframework-bridge.git",
-                "reference": "faf68f6109ceeff24241226033ab59640c7eb63b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/faf68f6109ceeff24241226033ab59640c7eb63b",
-                "reference": "faf68f6109ceeff24241226033ab59640c7eb63b",
-                "shasum": ""
-            },
+    {
+      "name": "laminas/laminas-zendframework-bridge",
+      "version": "1.0.3",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/laminas/laminas-zendframework-bridge.git",
+        "reference": "bfbbdb6c998d50dbf69d2187cb78a5f1fa36e1e9"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/laminas/laminas-zendframework-bridge/zipball/bfbbdb6c998d50dbf69d2187cb78a5f1fa36e1e9",
+        "reference": "bfbbdb6c998d50dbf69d2187cb78a5f1fa36e1e9",
+        "shasum": ""
+      },
             "require": {
                 "php": "^5.6 || ^7.0"
             },
@@ -1304,7 +1305,7 @@
                 "laminas",
                 "zf"
             ],
-            "time": "2020-03-26T16:07:12+00:00"
+      "time": "2020-04-03T16:01:00+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2305,59 +2306,59 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
+                  "email": "sebastian@phpunit.de"
                 }
             ],
-            "description": "Wrapper around PHP's tokenizer extension.",
-            "homepage": "https://github.com/sebastianbergmann/php-token-stream/",
-            "keywords": [
-                "tokenizer"
-            ],
-            "time": "2020-02-07T06:19:00+00:00"
+          "description": "Wrapper around PHP's tokenizer extension.",
+          "homepage": "https://github.com/sebastianbergmann/php-token-stream/",
+          "keywords": [
+            "tokenizer"
+          ],
+          "time": "2020-02-07T06:19:00+00:00"
         },
     {
       "name": "phpunit/phpunit",
-      "version": "9.1.0",
+      "version": "9.1.1",
       "source": {
         "type": "git",
         "url": "https://github.com/sebastianbergmann/phpunit.git",
-        "reference": "ef2af937ce574f215afb6dca37d583cb2964bad9"
+        "reference": "848f6521c906500e66229668768576d35de0227e"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ef2af937ce574f215afb6dca37d583cb2964bad9",
-        "reference": "ef2af937ce574f215afb6dca37d583cb2964bad9",
+        "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/848f6521c906500e66229668768576d35de0227e",
+        "reference": "848f6521c906500e66229668768576d35de0227e",
         "shasum": ""
       },
-            "require": {
-                "doctrine/instantiator": "^1.2.0",
-                "ext-dom": "*",
-                "ext-json": "*",
-                "ext-libxml": "*",
-                "ext-mbstring": "*",
-                "ext-xml": "*",
-                "ext-xmlwriter": "*",
-              "myclabs/deep-copy": "^1.9.1",
-              "phar-io/manifest": "^1.0.3",
-              "phar-io/version": "^2.0.1",
-              "php": "^7.3",
-              "phpspec/prophecy": "^1.8.1",
-              "phpunit/php-code-coverage": "^8.0.1",
-              "phpunit/php-file-iterator": "^3.0",
-              "phpunit/php-invoker": "^3.0",
-              "phpunit/php-text-template": "^2.0",
-              "phpunit/php-timer": "^3.0",
-              "sebastian/code-unit": "^1.0",
-              "sebastian/comparator": "^4.0",
-              "sebastian/diff": "^4.0",
-              "sebastian/environment": "^5.0.1",
-              "sebastian/exporter": "^4.0",
-              "sebastian/global-state": "^4.0",
-              "sebastian/object-enumerator": "^4.0",
-              "sebastian/resource-operations": "^3.0",
-              "sebastian/type": "^2.0",
-              "sebastian/version": "^3.0"
-            },
+      "require": {
+        "doctrine/instantiator": "^1.2.0",
+        "ext-dom": "*",
+        "ext-json": "*",
+        "ext-libxml": "*",
+        "ext-mbstring": "*",
+        "ext-xml": "*",
+        "ext-xmlwriter": "*",
+        "myclabs/deep-copy": "^1.9.1",
+        "phar-io/manifest": "^1.0.3",
+        "phar-io/version": "^2.0.1",
+        "php": "^7.3",
+        "phpspec/prophecy": "^1.8.1",
+        "phpunit/php-code-coverage": "^8.0.1",
+        "phpunit/php-file-iterator": "^3.0",
+        "phpunit/php-invoker": "^3.0",
+        "phpunit/php-text-template": "^2.0",
+        "phpunit/php-timer": "^3.0",
+        "sebastian/code-unit": "^1.0",
+        "sebastian/comparator": "^4.0",
+        "sebastian/diff": "^4.0",
+        "sebastian/environment": "^5.0.1",
+        "sebastian/exporter": "^4.0",
+        "sebastian/global-state": "^4.0",
+        "sebastian/object-enumerator": "^4.0",
+        "sebastian/resource-operations": "^3.0",
+        "sebastian/type": "^2.0",
+        "sebastian/version": "^3.0"
+      },
             "require-dev": {
                 "ext-pdo": "*"
             },
@@ -2400,7 +2401,7 @@
                 "testing",
                 "xunit"
             ],
-      "time": "2020-04-03T05:23:04+00:00"
+      "time": "2020-04-03T14:40:04+00:00"
         },
         {
             "name": "psr/container",
@@ -3102,8 +3103,8 @@
             ],
             "description": "Event-driven readable and writable streams for non-blocking I/O in ReactPHP",
             "keywords": [
-                "event-driven",
-                "io",
+              "event-driven",
+              "io",
               "non-blocking",
               "pipe",
               "reactphp",
@@ -3170,16 +3171,16 @@
       "dist": {
         "type": "zip",
         "url": "https://api.github.com/repos/sebastianbergmann/code-unit-reverse-lookup/zipball/5b5dbe0044085ac41df47e79d34911a15b96d82e",
-                "reference": "5b5dbe0044085ac41df47e79d34911a15b96d82e",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^9.0"
-            },
-            "type": "library",
+        "reference": "5b5dbe0044085ac41df47e79d34911a15b96d82e",
+        "shasum": ""
+      },
+      "require": {
+        "php": "^7.3"
+      },
+      "require-dev": {
+        "phpunit/phpunit": "^9.0"
+      },
+      "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.0-dev"

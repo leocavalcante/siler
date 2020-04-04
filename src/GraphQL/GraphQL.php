@@ -3,9 +3,6 @@
 namespace Siler\GraphQL;
 
 use Closure;
-use Doctrine\Common\Annotations\AnnotationException;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Exception;
 use GraphQL\Error\Debug;
 use GraphQL\Executor\Executor;
@@ -15,27 +12,22 @@ use GraphQL\Executor\Promise\PromiseAdapter;
 use GraphQL\GraphQL;
 use GraphQL\Language\AST\DirectiveNode;
 use GraphQL\Language\AST\NodeList;
-use GraphQL\Type\Definition\InputObjectType;
-use GraphQL\Type\Definition\NullableType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
-use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
-use GraphQL\Type\SchemaConfig;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use Ratchet\Server\IoServer;
 use Siler\Arr;
 use Siler\Container;
 use Siler\Diactoros;
-use Siler\GraphQL\Annotation;
 use Siler\GraphQL\Request as GraphQLRequest;
 use Siler\Http\Request;
 use Siler\Http\Response;
 use UnexpectedValueException;
 use WebSocket\BadOpcodeException;
 use WebSocket\Client;
-use function Siler\{array_get, array_get_arr, array_get_str, Klass\unqualified_name};
+use function Siler\{array_get, array_get_arr, array_get_str};
 use function Siler\Encoder\Json\{decode, encode};
 use function Siler\GraphQL\request as graphql_request;
 use function Siler\Ratchet\graphql_subscriptions;
@@ -443,239 +435,4 @@ function publish(string $subscriptionName, $payload = null): void
 function listen(string $eventName, callable $listener): void
 {
     Container\set($eventName, $listener);
-}
-
-/**
- * Generates a schema from annotations.
- *
- * @param array<class-name> $typings
- * @param array<Type> $types
- * @return Schema
- * @throws AnnotationException
- * @throws \ReflectionException
- */
-function annotated(array $typings, array $types = []): Schema
-{
-    AnnotationRegistry::registerLoader('class_exists');
-
-    /** @var array<string, Type> $types */
-    $types = array_reduce($types, function (array $types, Type $type): array {
-        $types[$type->name] = $type;
-        return $types;
-    }, []);
-
-    $reader = new AnnotationReader();
-    $config = new SchemaConfig();
-
-    foreach ($typings as $class_name) {
-        $type = deannotate($types, $reader, $class_name);
-
-        if ($type->name === 'Query' && $type instanceof ObjectType) {
-            $config->setQuery($type);
-        } elseif ($type->name === 'Mutation' && $type instanceof ObjectType) {
-            $config->setMutation($type);
-        } else {
-            $types[$class_name] = $type;
-        }
-    }
-
-    $config->setTypes($types);
-    return new Schema($config);
-}
-
-/**
- * @param array<string, Type> $types
- * @param AnnotationReader $reader
- * @param string $class_name
- * @return Type|null
- * @throws \ReflectionException
- */
-function deannotate(array $types, AnnotationReader $reader, string $class_name): ?Type
-{
-    $reflection = new \ReflectionClass($class_name);
-
-    /** @var Annotation\ObjectType|null $annotation */
-    $annotation = $reader->getClassAnnotation($reflection, Annotation\ObjectType::class);
-    if ($annotation !== null) {
-        return deannotate_object($types, $reader, $class_name, $reflection, $annotation);
-    }
-
-    /** @var Annotation\InputType|null $annotation */
-    $annotation = $reader->getClassAnnotation($reflection, Annotation\InputType::class);
-    if ($annotation !== null) {
-        return deannotate_input($types, $reader, $class_name, $reflection, $annotation);
-    }
-}
-
-/**
- * @param array<string, Type> $types
- * @param AnnotationReader $reader
- * @param string $class_name
- * @param \ReflectionClass $reflection
- * @param Annotation\InputType $annotation
- * @return InputObjectType
- */
-function deannotate_input(array $types, AnnotationReader $reader, string $class_name, \ReflectionClass $reflection, Annotation\InputType $annotation): InputObjectType
-{
-    return new InputObjectType([
-        'name' => $annotation->name ?? unqualified_name($class_name),
-        'description' => $annotation->description,
-        'fields' => annotated_property_fields($types, $reflection, $reader),
-    ]);
-}
-
-/**
- * @param array<string, Type> $types
- * @param AnnotationReader $reader
- * @param string $class_name
- * @param \ReflectionClass $reflection
- * @param Annotation\ObjectType $annotation
- * @return ObjectType
- */
-function deannotate_object(array $types, AnnotationReader $reader, string $class_name, \ReflectionClass $reflection, Annotation\ObjectType $annotation): ObjectType
-{
-    $annotated_method_fields = array_reduce(
-        $reflection->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_STATIC),
-        static function (array $fields, \ReflectionMethod $method) use ($types, $reader, $annotation): array {
-            $method_name = $method->getName();
-            /** @var Annotation\Field|null $annotation */
-            $annotation = $reader->getMethodAnnotation($method, Annotation\Field::class);
-
-            if ($annotation === null) {
-                return $fields;
-            }
-
-            if (!isset($annotation->type)) {
-                $annotation->type = $method->getReturnType()->getName();
-            }
-
-            $fields[$method_name] = [
-                'type' => annotated_type($types, $annotation),
-                'name' => $method_name,
-                'description' => $annotation->description,
-                'args' => annotated_args($types, $method, $reader),
-                'resolve' => static function ($root, array $args, $context, ResolveInfo $info) use ($method) {
-                    return $method->invoke(null, $root, $args, $context, $info);
-                }
-            ];
-
-            return $fields;
-        },
-        []
-    );
-
-    return new ObjectType([
-        'name' => $annotation->name ?? unqualified_name($class_name),
-        'description' => $annotation->description,
-        'fields' => array_merge(annotated_property_fields($types, $reflection, $reader), $annotated_method_fields),
-    ]);
-}
-
-/**
- * @param array<string, Type> $types
- * @param \ReflectionClass $reflection
- * @param AnnotationReader $reader
- * @return array<string, array<string, mixed>
- */
-function annotated_property_fields(array $types, \ReflectionClass $reflection, AnnotationReader $reader): array
-{
-    /** @var array<string, array<string, mixed> $fields */
-    $fields = [];
-
-    foreach ($reflection->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
-        $prop_name = $property->getName();
-        /** @var Annotation\Field $annotation */
-        $annotation = $reader->getPropertyAnnotation($property, Annotation\Field::class);
-
-        $fields[$prop_name] = [
-            'type' => annotated_type($types, $annotation),
-            'name' => $annotation->name ?? $prop_name,
-            'description' => $annotation->description,
-        ];
-    }
-
-    return $fields;
-}
-
-/**
- * @param array<string, Type> $types
- * @param \ReflectionMethod $method
- * @param AnnotationReader $reader
- * @return array<string, Type>
- */
-function annotated_args(array $types, \ReflectionMethod $method, AnnotationReader $reader): array
-{
-    $args = [];
-
-    /** @var Annotation\Args|null $annotation */
-    $annotation = $reader->getMethodAnnotation($method, Annotation\Args::class);
-
-    if ($annotation === null) {
-        return $args;
-    }
-
-    foreach ($annotation->fields as $field) {
-        $args[$field->name] = annotated_type($types, $field);
-    }
-
-    return $args;
-}
-
-/**
- * @param array<string, Type> $types
- * @param Annotation\Field $annotation
- * @return Type
- */
-function annotated_type(array $types, Annotation\Field $annotation): Type
-{
-    $type = type_from_string($types, $annotation->listOf ?? $annotation->type);
-
-    if ($type instanceof NullableType) {
-        $type = Type::nonNull($type);
-    }
-
-    if (isset($annotation->listOf)) {
-        $type = Type::nonNull(Type::listOf($type));
-    }
-
-    return $type;
-}
-
-/**
- * @param array<string, Type> $types
- * @param string|class-string $str
- * @return Type
- */
-function type_from_string(array $types, string $str): Type
-{
-    if (array_key_exists($str, $types)) {
-        return $types[$str];
-    }
-
-    $standards = Type::getStandardTypes();
-    if (array_key_exists($str, $standards)) {
-        return $standards[$str];
-    }
-
-    if ('string' === $str) {
-        return Type::string();
-    }
-
-    if ('int' === $str) {
-        return Type::int();
-    }
-
-    if ('bool' === $str) {
-        return Type::boolean();
-    }
-
-    if ('float' === $str) {
-        return Type::float();
-    }
-
-    if (class_exists($str)) {
-        return new $str();
-    }
-
-    throw new \TypeError("Provided class name `$str` is not a valid type. Perhaps your forgot to place it before another type that uses it in the `annotated` function arguments.");
 }

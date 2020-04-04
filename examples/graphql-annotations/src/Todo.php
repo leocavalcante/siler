@@ -22,14 +22,15 @@ class Todo
     public $title;
 
     /**
-     * @Field(type = Type::BOOLEAN)
-     * @var bool
+     * @Field(type = TodoStatus::class)
+     * @var TodoStatus
      */
-    public $done;
+    public $status;
 
     public function __construct(string $title)
     {
         $this->title = $title;
         $this->done = false;
+        $this->status = TodoStatus::TODO;
     }
 }
