@@ -32,7 +32,6 @@ class Query
      */
     public static function todos(): array
     {
-        $todos = [new Todo('Something to do')];
-        return $todos;
+        return [new Todo('Something to do')];
     }
 }

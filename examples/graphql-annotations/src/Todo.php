@@ -7,7 +7,7 @@ use Siler\GraphQL\Annotation\Field;
 use Siler\GraphQL\Annotation\ObjectType;
 
 /** @ObjectType */
-class Todo
+class Todo implements ITodo
 {
     /**
      * @Field(type = Type::ID)
@@ -21,16 +21,22 @@ class Todo
      */
     public $title;
 
-    /**
-     * @Field(type = TodoStatus::class)
-     * @var TodoStatus
-     */
-    public $status;
+    /** @var int */
+    private $status;
 
     public function __construct(string $title)
     {
         $this->title = $title;
-        $this->done = false;
         $this->status = TodoStatus::TODO;
+    }
+
+    /**
+     * @Field(type = TodoStatus::class)
+     * @param Todo $todo
+     * @return int
+     */
+    public static function status(Todo $todo): int
+    {
+        return $todo->status;
     }
 }

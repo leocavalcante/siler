@@ -8,6 +8,7 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\DocParser;
 use GraphQL\Type\Definition\EnumType as EnumTypeDefinition;
 use GraphQL\Type\Definition\InputObjectType;
+use GraphQL\Type\Definition\InterfaceType as InterfaceTypeDefinition;
 use GraphQL\Type\Definition\NullableType;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -84,6 +85,53 @@ function deannotate(array $types, AnnotationReader $reader, string $class_name):
     if ($annotation !== null) {
         return deannotate_enum($class_name, $reflection, $annotation);
     }
+
+    /** @var InterfaceType|null $annotation */
+    $annotation = $reader->getClassAnnotation($reflection, InterfaceType::class);
+    if ($annotation !== null) {
+        return deannotate_interface($types, $reader, $class_name, $reflection, $annotation);
+    }
+}
+
+/**
+ * @param array<string, Type> $types
+ * @param AnnotationReader $reader
+ * @param string $class_name
+ * @param \ReflectionClass $reflection
+ * @param InterfaceType $annotation
+ * @return InterfaceTypeDefinition
+ */
+function deannotate_interface(array $types, AnnotationReader $reader, string $class_name, \ReflectionClass $reflection, InterfaceType $annotation): InterfaceTypeDefinition
+{
+    return new InterfaceTypeDefinition([
+        'name' => $annotation->name ?? unqualified_name($class_name),
+        'description' => $annotation->description,
+        'fields' => array_reduce(
+            $reflection->getMethods(\ReflectionMethod::IS_PUBLIC),
+            static function (array $fields, \ReflectionMethod $method) use ($types, $reader, $annotation): array {
+                /** @var Field|null $annotation */
+                $annotation = $reader->getMethodAnnotation($method, Field::class);
+                $method_name = $annotation->name ?? $method->getName();
+
+                if ($annotation === null) {
+                    return $fields;
+                }
+
+                if (!isset($annotation->type)) {
+                    $annotation->type = $method->getReturnType()->getName();
+                }
+
+                $fields[$method_name] = [
+                    'type' => deannotate_type($types, $annotation),
+                    'name' => $method_name,
+                    'description' => $annotation->description,
+                ];
+
+                return $fields;
+            },
+            []
+        ),
+    ]);
 }
 
 /**
@@ -182,6 +230,9 @@ function deannotate_object(array $types, AnnotationReader $reader, string $class
         'name' => $annotation->name ?? unqualified_name($class_name),
         'description' => $annotation->description,
         'fields' => array_merge(deannotate_properties($types, $reflection, $reader), $annotated_method_fields),
+        'interfaces' => array_map(function (string $interface_name) use ($types): Type {
+            return type_from_string($types, $interface_name);
+        }, $reflection->getInterfaceNames()),
     ]);
 }
 
