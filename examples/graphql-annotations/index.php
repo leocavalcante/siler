@@ -9,6 +9,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 $schema = annotated([
+    Upper::class,
     Foo::class,
     Bar::class,
     FooBar::class,

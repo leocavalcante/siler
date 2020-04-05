@@ -395,7 +395,7 @@ final class Deannotator
     private function directive(\ReflectionClass $reflection, Annotation\Directive $annotation): Definition\Directive
     {
         return new Definition\Directive([
-            'name' => $annotation->name ?? $reflection->getShortName(),
+            'name' => $annotation->name ?? lcfirst($reflection->getShortName()),
             'description' => $annotation->description,
             'locations' => $annotation->locations,
         ]);

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use GraphQL\Type\Definition\ResolveInfo;
 use Siler\GraphQL\Annotation\Field;
 use Siler\GraphQL\Annotation\ObjectType;
 
@@ -9,7 +10,7 @@ use Siler\GraphQL\Annotation\ObjectType;
 class Query
 {
     /** @Field(description="A common greet") */
-    public static function hello(): string
+    public static function hello($root, array $args, $context, ResolveInfo $info): string
     {
         return 'world';
     }
