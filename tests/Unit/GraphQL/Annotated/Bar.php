@@ -9,13 +9,13 @@ use Siler\GraphQL\Annotation\ObjectType;
 class Bar extends FooBar
 {
     /** @Field() */
-    public static function myBool(): bool
+    public function myBool(): bool
     {
         return true;
     }
 
     /** @Field() */
-    public static function myFloat(): float
+    public function myFloat(): float
     {
         return 4.2;
     }

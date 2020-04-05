@@ -9,5 +9,5 @@ use Siler\GraphQL\Annotation\InterfaceType;
 interface IFoo
 {
     /** @Field() */
-    public static function foo(): string;
+    public function foo(): string;
 }

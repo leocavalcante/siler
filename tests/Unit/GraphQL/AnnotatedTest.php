@@ -35,8 +35,8 @@ class AnnotatedTest extends TestCase
         $result = execute($schema, ['query' => 'mutation { sum(input: {x: 2, y: 2}) }']);
         $this->assertSame(['data' => ['sum' => 4]], $result);
 
-        $result = execute($schema, ['query' => 'query { foo { enum } }']);
-        $this->assertSame(['data' => ['foo' => ['enum' => Enum::YES]]], $result);
+        $result = execute($schema, ['query' => 'query { foo { enum foo } }']);
+        $this->assertSame(['data' => ['foo' => ['enum' => Enum::YES, 'foo' => 'foo']]], $result);
 
         $result = execute($schema, ['query' => 'query { bar { myBool myFloat } }']);
         $this->assertSame(['data' => ['bar' => ['myBool' => true, 'myFloat' => 4.2]]], $result);

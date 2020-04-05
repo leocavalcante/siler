@@ -130,7 +130,7 @@ final class Deannotator
     private function objectType(\ReflectionClass $reflection, Annotation\ObjectType $annotation): Definition\ObjectType
     {
         $fields = array_reduce(
-            $reflection->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_STATIC),
+            $reflection->getMethods(\ReflectionMethod::IS_PUBLIC),
             function (array $fields, \ReflectionMethod $method) use ($annotation): array {
                 /** @var Annotation\Field|null $annotation */
                 $annotation = $this->reader->getMethodAnnotation($method, Annotation\Field::class);
@@ -163,7 +163,11 @@ final class Deannotator
                      * @return mixed
                      */
                         static function ($root, array $args, $context, Definition\ResolveInfo $info) use ($method) {
-                            return $method->invoke(null, $root, $args, $context, $info);
+                            if ($method->isStatic()) {
+                                return $method->invoke(null, $root, $args, $context, $info);
+                            }
+
+                            return $method->invoke($root, $root, $args, $context, $info);
                         }
                 ];
 

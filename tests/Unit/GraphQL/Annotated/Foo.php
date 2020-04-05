@@ -15,7 +15,7 @@ class Foo extends FooBar implements IFoo
     public $enum = Enum::YES;
 
     /** @Field() */
-    public static function foo(): string
+    public function foo(): string
     {
         return 'foo';
     }
