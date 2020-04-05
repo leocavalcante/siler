@@ -88,7 +88,7 @@ type Query {
 }
 ```
 
-With the static `hello` method body already playing the resolver role, so:
+With the static `hello` method body already playing the **resolver** role, so:
 
 ```graphql
 query {
@@ -106,5 +106,5 @@ Returns:
 }
 ```
 
-**For a full-featured example, please, take a look at:** [**github.com/leocavalcante/siler/examples/graphql-annotations**](https://github.com/leocavalcante/siler/tree/master/examples/graphql-annotations)\*\*\*\*
+**For a full-featured example, please take a look at:** [**github.com/leocavalcante/siler/examples/graphql-annotations**](https://github.com/leocavalcante/siler/tree/master/examples/graphql-annotations)\*\*\*\*
 
