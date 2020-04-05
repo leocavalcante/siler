@@ -145,8 +145,7 @@ use Siler\Http\Response;
 require 'vendor/autoload.php';
 
 // Enable CORS
-Response\header('Access-Control-Allow-Origin', '*');
-Response\header('Access-Control-Allow-Headers', 'content-type');
+Response\cors();
 
 // Respond only for POST requests
 if (Request\method_is('post')) {
@@ -368,7 +367,7 @@ $ composer require cboden/ratchet
 And the other is for the client-side:
 
 ```text
-$ composer require ratchet/pawl
+$ composer require textalk/websocket
 ```
 
 First, let's add our **Subscription** type to our Schema:
@@ -518,12 +517,14 @@ As in `api.php` endpoint we need to setup the Subscriptions server:
 ```php
 <?php
 
-use Siler\GraphQL;
+use function Siler\{GraphQL, Ratchet};
 
-require 'vendor/autoload.php';
+require_once '/vendor/autoload.php';
 
-$schema = include __DIR__.'/schema.php';
-GraphQL\subscriptions($schema, [], '0.0.0.0', 3000)->run();
+$schema = require_once __DIR__ . '/schema.php';
+$manager = GraphQL\subscriptions_manager($schema);
+
+Ratchet\graphql_subscriptions($manager)->run();
 ```
 {% endcode %}
 
@@ -609,9 +610,9 @@ Filters are part of **Siler** and based on Apollo's setup functions. Filter func
 ```php
 <?php
 
-use Siler\GraphQL;
+use function Siler\{GraphQL, Ratchet};
 
-require dirname(dirname(__DIR__)).'/vendor/autoload.php';
+require_once '/vendor/autoload.php';
 
 $filters = [
     'inbox' => function ($payload, $vars) {
@@ -619,8 +620,10 @@ $filters = [
     },
 ];
 
-$schema = include __DIR__.'/schema.php';
-GraphQL\subscriptions($schema, $filters)->run();
+$schema = require_once __DIR__ . '/schema.php';
+$manager = GraphQL\subscriptions_manager($schema, $filters);
+
+Ratchet\graphql_subscriptions($manager)->run();
 ```
 {% endcode %}
 
@@ -638,4 +641,6 @@ When a `RedBeanObject` is encoded to JSON it automatically converts camel case p
 {% endhint %}
 
 And that should be enough to solve our problem, now you only receive data from the subscribed rooms. **Enjoy!**
+
+**You can see a complete example including file uploads and directives at:**[ **github.com/leocavalcante/siler/examples/graphql**](https://github.com/leocavalcante/siler/tree/master/examples/graphql)**.**
 
