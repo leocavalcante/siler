@@ -1,5 +1,8 @@
 # 1.7.3
 - **GraphQL uploads & custom directives!**
+- **GraphQL annotations!**
+
+
 - **Enums!**
 - Fix #276 - GraphQL WebSocket client sub-protocol
 - PHPUnit 9
