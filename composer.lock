@@ -43,16 +43,16 @@
         "psr-4": {
           "Amp\\": "lib"
         },
-                "files": [
-                    "lib/functions.php",
-                    "lib/Internal/functions.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
+        "files": [
+          "lib/functions.php",
+          "lib/Internal/functions.php"
+        ]
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
                 {
                     "name": "Daniel Lowrey",
                     "email": "rdlowrey@php.net"
@@ -75,16 +75,16 @@
             "keywords": [
                 "async",
                 "asynchronous",
-                "awaitable",
-                "concurrency",
-                "event",
-                "event-loop",
-                "future",
-                "non-blocking",
-                "promise"
+              "awaitable",
+              "concurrency",
+              "event",
+              "event-loop",
+              "future",
+              "non-blocking",
+              "promise"
             ],
       "time": "2020-04-04T15:05:26+00:00"
-        },
+    },
     {
       "name": "amphp/byte-stream",
       "version": "v1.7.3",
@@ -99,9 +99,9 @@
         "reference": "b867505edb79dda8f253ca3c3a2bbadae4b16592",
         "shasum": ""
       },
-            "require": {
-                "amphp/amp": "^2"
-            },
+      "require": {
+        "amphp/amp": "^2"
+      },
       "require-dev": {
         "amphp/php-cs-fixer-config": "dev-master",
         "amphp/phpunit-util": "^1",
@@ -126,16 +126,16 @@
       },
       "notification-url": "https://packagist.org/downloads/",
       "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Aaron Piotrowski",
-                    "email": "aaron@trowski.com"
-                },
-                {
-                    "name": "Niklas Keller",
-                    "email": "me@kelunik.com"
+        "MIT"
+      ],
+      "authors": [
+        {
+          "name": "Aaron Piotrowski",
+          "email": "aaron@trowski.com"
+        },
+        {
+          "name": "Niklas Keller",
+          "email": "me@kelunik.com"
                 }
             ],
             "description": "A stream abstraction to make working with non-blocking I/O simple.",
@@ -337,16 +337,16 @@
                 "url": "https://github.com/composer/xdebug-handler.git",
                 "reference": "1ab9842d69e64fb3a01be6b656501032d1b78cb7"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/1ab9842d69e64fb3a01be6b656501032d1b78cb7",
-                "reference": "1ab9842d69e64fb3a01be6b656501032d1b78cb7",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.3.2 || ^7.0 || ^8.0",
-                "psr/log": "^1.0"
-            },
+          "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/1ab9842d69e64fb3a01be6b656501032d1b78cb7",
+            "reference": "1ab9842d69e64fb3a01be6b656501032d1b78cb7",
+            "shasum": ""
+          },
+          "require": {
+            "php": "^5.3.2 || ^7.0 || ^8.0",
+            "psr/log": "^1.0"
+          },
           "require-dev": {
             "phpunit/phpunit": "^4.8.35 || ^5.7 || 6.5 - 8"
           },
@@ -473,16 +473,16 @@
         "branch-alias": {
           "dev-master": "1.2.x-dev"
         }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Doctrine\\Instantiator\\": "src/Doctrine/Instantiator/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
+      },
+      "autoload": {
+        "psr-4": {
+          "Doctrine\\Instantiator\\": "src/Doctrine/Instantiator/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
             "authors": [
                 {
                     "name": "Marco Pivetta",
@@ -1242,15 +1242,15 @@
                     "src/functions/middleware.legacy.php",
                     "src/functions/path.legacy.php"
                 ],
-                "psr-4": {
-                    "Laminas\\Stratigility\\": "src/"
-                }
+              "psr-4": {
+                "Laminas\\Stratigility\\": "src/"
+              }
             },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "PSR-7 middleware foundation for building and dispatching middleware pipelines",
+          "notification-url": "https://packagist.org/downloads/",
+          "license": [
+            "BSD-3-Clause"
+          ],
+          "description": "PSR-7 middleware foundation for building and dispatching middleware pipelines",
           "homepage": "https://laminas.dev",
           "keywords": [
             "http",
@@ -1285,16 +1285,16 @@
       "type": "library",
       "extra": {
         "branch-alias": {
-                    "dev-master": "1.0.x-dev",
-                    "dev-develop": "1.1.x-dev"
-                },
-                "laminas": {
-                    "module": "Laminas\\ZendFrameworkBridge"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/autoload.php"
+          "dev-master": "1.0.x-dev",
+          "dev-develop": "1.1.x-dev"
+        },
+        "laminas": {
+          "module": "Laminas\\ZendFrameworkBridge"
+        }
+      },
+      "autoload": {
+        "files": [
+          "src/autoload.php"
                 ],
                 "psr-4": {
                     "Laminas\\ZendFrameworkBridge\\": "src//"
@@ -2295,16 +2295,16 @@
                 "phpunit/phpunit": "^9.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.0-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
+          "extra": {
+            "branch-alias": {
+              "dev-master": "4.0-dev"
+            }
+          },
+          "autoload": {
+            "classmap": [
+              "src/"
+            ]
+          },
           "notification-url": "https://packagist.org/downloads/",
           "license": [
             "BSD-3-Clause"
@@ -2375,16 +2375,16 @@
       "bin": [
         "phpunit"
       ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                  "dev-master": "9.1-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ],
+      "type": "library",
+      "extra": {
+        "branch-alias": {
+          "dev-master": "9.1-dev"
+        }
+      },
+      "autoload": {
+        "classmap": [
+          "src/"
+        ],
                 "files": [
                     "src/Framework/Assert/Functions.php"
                 ]
@@ -3197,16 +3197,16 @@
           "src/"
         ]
       },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
-                }
-            ],
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "BSD-3-Clause"
+      ],
+      "authors": [
+        {
+          "name": "Sebastian Bergmann",
+          "email": "sebastian@phpunit.de"
+        }
+      ],
             "description": "Looks up which function or method a line of code belongs to",
             "homepage": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/",
             "time": "2020-02-07T06:20:13+00:00"

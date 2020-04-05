@@ -11,9 +11,15 @@ use Doctrine\Common\Annotations\Annotation\Target;
  */
 class UnionType
 {
-    /** @var string|null */
+    /**
+     * @var string
+     * @psalm-var string|null
+     */
     public $name;
-    /** @var string|null */
+    /**
+     * @var string
+     * @psalm-var string|null
+     */
     public $description;
     /** @var string[]|null */
     public $types;

@@ -8,9 +8,15 @@ namespace Siler\GraphQL\Annotation;
  */
 class EnumVal
 {
-    /** @var string|null */
+    /**
+     * @var string
+     * @psalm-var string|null
+     */
     public $name;
-    /** @var string|null */
+    /**
+     * @var string
+     * @psalm-var string|null
+     */
     public $description;
     /** @var mixed */
     public $value;

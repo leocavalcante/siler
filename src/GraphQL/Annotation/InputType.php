@@ -11,8 +11,14 @@ use Doctrine\Common\Annotations\Annotation\Target;
  */
 class InputType
 {
-    /** @var string|null */
+    /**
+     * @var string
+     * @psalm-var string|null
+     */
     public $name;
-    /** @var string|null */
+    /**
+     * @var string
+     * @psalm-var string|null
+     */
     public $description;
 }

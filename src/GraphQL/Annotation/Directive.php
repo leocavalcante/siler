@@ -11,10 +11,19 @@ use Doctrine\Common\Annotations\Annotation\Target;
  */
 final class Directive
 {
-    /** @var string|null */
+    /**
+     * @var string
+     * @psalm-var string|null
+     */
     public $name;
-    /** @var string|null */
+    /**
+     * @var string
+     * @psalm-var string|null
+     */
     public $description;
-    /** @var string[]|null */
+    /**
+     * @var string[]
+     * @psalm-var string|null
+     */
     public $locations;
 }

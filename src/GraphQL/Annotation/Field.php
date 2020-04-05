@@ -11,12 +11,24 @@ use Doctrine\Common\Annotations\Annotation\Target;
  */
 final class Field
 {
-    /** @var string|null */
+    /**
+     * @var string
+     * @psalm-var string|null
+     */
     public $type;
-    /** @var string|null */
+    /**
+     * @var string
+     * @psalm-var string|null
+     */
     public $name;
-    /** @var string|null */
+    /**
+     * @var string
+     * @psalm-var string|null
+     */
     public $description;
-    /** @var string|null */
+    /**
+     * @var string
+     * @psalm-var string|null
+     */
     public $listOf;
 }

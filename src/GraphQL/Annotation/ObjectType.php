@@ -11,8 +11,14 @@ use Doctrine\Common\Annotations\Annotation\Target;
  */
 final class ObjectType
 {
-    /** @var string|null */
+    /**
+     * @var string
+     * @psalm-var string|null
+     */
     public $name;
-    /** @var string|null */
+    /**
+     * @var string
+     * @psalm-var string|null
+     */
     public $description;
 }
