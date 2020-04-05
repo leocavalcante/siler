@@ -5,10 +5,10 @@ namespace Siler\Test\Unit\GraphQL\Annotated;
 use Siler\GraphQL\Annotation\Field;
 use Siler\GraphQL\Annotation\ObjectType;
 
-/** @ObjectType */
+/** @ObjectType() */
 class Query
 {
-    /** @Field */
+    /** @Field() */
     public static function hello(): string
     {
         return 'world';
