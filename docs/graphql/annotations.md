@@ -55,7 +55,7 @@ class Query
     /** @Field(description="A common greet") */
     public static function hello(): string
     {
-        return 'world';
+        return 'Hello, World!';
     }
 }
 ```
