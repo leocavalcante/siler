@@ -1,4 +1,4 @@
-# PSRs & Middlewares Pipelines
+# PSRs & Middleware Pipeline
 
 This interfaces are already \(and amazingly\) implemented by Laminas at projects: [Diactoros](https://github.com/laminas/laminas-diactoros) and [Stratigility](https://github.com/laminas/laminas-stratigility). Siler wraps them and exposes a function-friendly API handling state internally while achieving a fully-featured and declarative way for: **Middleware Pipelining**.
 
