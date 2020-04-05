@@ -38,8 +38,8 @@ class AnnotatedTest extends TestCase
         $result = execute($schema, ['query' => 'query { foo { enum } }']);
         $this->assertSame(['data' => ['foo' => ['enum' => Enum::YES]]], $result);
 
-        $result = execute($schema, ['query' => 'query { bar { bool float } }']);
-        $this->assertSame(['data' => ['bar' => ['bool' => true, 'float' => 4.2]]], $result);
+        $result = execute($schema, ['query' => 'query { bar { myBool myFloat } }']);
+        $this->assertSame(['data' => ['bar' => ['myBool' => true, 'myFloat' => 4.2]]], $result);
 
         $this->assertNotNull($schema->getDirective('myDirective'));
     }

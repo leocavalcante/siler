@@ -8,14 +8,15 @@ use Siler\GraphQL\Annotation\ObjectType;
 /** @ObjectType() */
 class Bar extends FooBar
 {
-    /**
-     * @Field(type="Boolean")
-     * @var bool
-     */
-    public $bool = true;
-    /**
-     * @Field(type="Float")
-     * @var float
-     */
-    public $float = 4.2;
+    /** @Field() */
+    public static function myBool(): bool
+    {
+        return true;
+    }
+
+    /** @Field() */
+    public static function myFloat(): float
+    {
+        return 4.2;
+    }
 }
