@@ -13,4 +13,14 @@ class Query
     {
         return 'world';
     }
+
+    /** @Field() */
+    public static function foo(): Foo
+    {
+        return new Foo();
+    }
+
+    public static function noop()
+    {
+    }
 }
