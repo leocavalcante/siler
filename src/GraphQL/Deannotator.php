@@ -125,6 +125,7 @@ final class Deannotator
      * @param \ReflectionClass $reflection
      * @param Annotation\ObjectType $annotation
      * @return Definition\ObjectType
+     * @throws \ReflectionException
      */
     private function objectType(\ReflectionClass $reflection, Annotation\ObjectType $annotation): Definition\ObjectType
     {
@@ -184,6 +185,7 @@ final class Deannotator
     /**
      * @param Annotation\Field $annotation
      * @return Definition\Type
+     * @throws \ReflectionException
      */
     private function type(Annotation\Field $annotation): Definition\Type
     {
@@ -209,6 +211,7 @@ final class Deannotator
     /**
      * @param string|class-string $value
      * @return Definition\Type
+     * @throws \ReflectionException
      */
     private function typeFromString(string $value): Definition\Type
     {
@@ -254,6 +257,7 @@ final class Deannotator
     /**
      * @param \ReflectionMethod $method
      * @return array<string, Definition\Type>
+     * @throws \ReflectionException
      */
     private function args(\ReflectionMethod $method): array
     {
@@ -280,6 +284,7 @@ final class Deannotator
     /**
      * @param \ReflectionClass $reflection
      * @return array<string, array<string, mixed>>
+     * @throws \ReflectionException
      */
     private function fields(\ReflectionClass $reflection): array
     {
@@ -413,6 +418,7 @@ final class Deannotator
      * @param \ReflectionClass $reflection
      * @param Annotation\InputType $annotation
      * @return Definition\InputObjectType
+     * @throws \ReflectionException
      */
     private function inputType(\ReflectionClass $reflection, Annotation\InputType $annotation): Definition\InputObjectType
     {
