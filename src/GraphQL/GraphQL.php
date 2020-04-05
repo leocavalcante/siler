@@ -1,10 +1,11 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Siler\GraphQL;
 
 use Closure;
+use Doctrine\Common\Annotations\AnnotationException;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Exception;
 use GraphQL\Error\Debug;
 use GraphQL\Executor\Executor;
@@ -14,8 +15,10 @@ use GraphQL\Executor\Promise\PromiseAdapter;
 use GraphQL\GraphQL;
 use GraphQL\Language\AST\DirectiveNode;
 use GraphQL\Language\AST\NodeList;
+use GraphQL\Type\Definition\Directive;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
+use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
@@ -437,4 +440,29 @@ function publish(string $subscriptionName, $payload = null): void
 function listen(string $eventName, callable $listener): void
 {
     Container\set($eventName, $listener);
+}
+
+/**
+ * Generates a schema from annotations.
+ *
+ * @param array<class-string> $class_names
+ * @param array<Type> $with_types
+ * @param array<Directive> $with_directives
+ * @return Schema
+ * @throws AnnotationException
+ * @throws \ReflectionException
+ */
+function annotated(array $class_names, array $with_types = [], array $with_directives = []): Schema
+{
+    /** @psalm-suppress DeprecatedMethod */
+    AnnotationRegistry::registerLoader('class_exists');
+
+    /** @var array<string, Type> $with_types */
+    $with_types = array_reduce($with_types, function (array $types, Type $type): array {
+        $types[$type->name] = $type;
+        return $types;
+    }, []);
+
+    $deannotator = new Deannotator(new AnnotationReader(), $with_types, $with_directives);
+    return $deannotator->deannotate($class_names);
 }

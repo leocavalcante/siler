@@ -119,6 +119,7 @@ const subscriptions = '\Siler\GraphQL\subscriptions';
 const subscriptions_at = '\Siler\GraphQL\subscriptions_at';
 const publish = '\Siler\GraphQL\publish';
 const listen = '\Siler\GraphQL\listen';
+const annotated = '\Siler\GraphQL\annotated';
 
 
 namespace Siler\Grpc;

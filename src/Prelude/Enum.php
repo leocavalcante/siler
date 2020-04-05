@@ -26,7 +26,7 @@ abstract class Enum
      */
     protected static function consts(): array
     {
-        $class_name = get_called_class();
+        $class_name = static::class;
 
         if (!array_key_exists($class_name, static::$constsMemo)) {
             $reflection = new \ReflectionClass($class_name);
@@ -56,7 +56,7 @@ abstract class Enum
     public function __construct($value)
     {
         if (!static::valid($value)) {
-            $class_name = get_called_class();
+            $class_name = static::class;
             throw new \UnexpectedValueException("Invalid value ($value) for enum ($class_name)");
         }
 
