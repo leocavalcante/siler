@@ -454,6 +454,7 @@ function listen(string $eventName, callable $listener): void
  */
 function annotated(array $class_names, array $with_types = [], array $with_directives = []): Schema
 {
+    /** @psalm-suppress DeprecatedMethod */
     AnnotationRegistry::registerLoader('class_exists');
 
     /** @var array<string, Type> $with_types */

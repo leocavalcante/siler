@@ -9,7 +9,6 @@ use GraphQL\Type\Definition\ScalarType;
 
 /**
  * Class DateTimeScalar
- * @package App
  */
 final class DateTimeScalar extends ScalarType
 {
@@ -18,18 +17,23 @@ final class DateTimeScalar extends ScalarType
     public $name = 'DateTime';
 
     /**
-     * @param \DateTime $value
+     * @param mixed $value
      * @return string
+     * @throws Error
      */
     public function serialize($value): string
     {
-        return $value->format(self::FORMAT);
+        if ($value instanceof \DateTime) {
+            return $value->format(self::FORMAT);
+        }
+
+        throw new Error('Don\'t know how to serialize non-DateTimes');
     }
 
     /**
      * @param Node $valueNode
      * @param array|null $variables
-     * @return \DateTime
+     * @return mixed
      * @throws Error
      */
     public function parseLiteral($valueNode, ?array $variables = null)
@@ -42,11 +46,22 @@ final class DateTimeScalar extends ScalarType
     }
 
     /**
-     * @param string $value
-     * @return \DateTime
+     * @param mixed $value
+     * @return mixed
+     * @throws Error
      */
-    public function parseValue($value): \DateTime
+    public function parseValue($value)
     {
-        return \DateTime::createFromFormat(self::FORMAT, $value);
+        $date_time = false;
+
+        if (is_string($value)) {
+            $date_time = \DateTime::createFromFormat(self::FORMAT, $value);
+        }
+
+        if ($date_time === false) {
+            throw new Error(sprintf("Error parsing $value as DateTime (%s)", self::FORMAT));
+        }
+
+        return $date_time;
     }
 }

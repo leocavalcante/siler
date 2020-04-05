@@ -7,15 +7,16 @@ use Doctrine\Common\Annotations\Annotation\Target;
 /**
  * @Annotation
  * @Target({"METHOD", "PROPERTY", "ANNOTATION"})
+ * @psalm-suppress MissingConstructor
  */
 final class Field
 {
-    /** @var string */
+    /** @var string|null */
     public $type;
-    /** @var string */
+    /** @var string|null */
     public $name;
-    /** @var string */
+    /** @var string|null */
     public $description;
-    /** @var string */
+    /** @var string|null */
     public $listOf;
 }

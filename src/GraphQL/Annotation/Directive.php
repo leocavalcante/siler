@@ -7,13 +7,14 @@ use Doctrine\Common\Annotations\Annotation\Target;
 /**
  * @Annotation
  * @Target("CLASS")
+ * @psalm-suppress MissingConstructor
  */
 final class Directive
 {
-    /** @var string */
+    /** @var string|null */
     public $name;
-    /** @var string */
+    /** @var string|null */
     public $description;
-    /** @var array<string> */
+    /** @var string[]|null */
     public $locations;
 }

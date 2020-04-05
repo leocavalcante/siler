@@ -10,6 +10,7 @@
         <directory name="src"/>
         <ignoreFiles>
             <file name="src/GraphQL/BuildSchema.php"/>
+            <directory name="vendor"/>
         </ignoreFiles>
     </projectFiles>
 

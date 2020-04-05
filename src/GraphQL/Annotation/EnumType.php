@@ -7,11 +7,12 @@ use Doctrine\Common\Annotations\Annotation\Target;
 /**
  * @Annotation
  * @Target("CLASS")
+ * @psalm-suppress MissingConstructor
  */
 class EnumType
 {
-    /** @var string */
+    /** @var string|null */
     public $name;
-    /** @var string */
+    /** @var string|null */
     public $description;
 }

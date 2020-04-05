@@ -4,12 +4,13 @@ namespace Siler\GraphQL\Annotation;
 
 /**
  * @Annotation
+ * @psalm-suppress MissingConstructor
  */
 class EnumVal
 {
-    /** @var string */
+    /** @var string|null */
     public $name;
-    /** @var string */
+    /** @var string|null */
     public $description;
     /** @var mixed */
     public $value;

@@ -25,8 +25,8 @@ final class Deannotator
 
     /**
      * @param AnnotationReader $reader
-     * @param array $types
-     * @param array $directives
+     * @param array<string, Definition\Type> $types
+     * @param Definition\Directive[] $directives
      */
     public function __construct(AnnotationReader $reader, array $types = [], array $directives = [])
     {
@@ -45,7 +45,7 @@ final class Deannotator
     }
 
     /**
-     * @param array $classNames
+     * @param array<class-string> $classNames
      * @return Schema
      * @throws \ReflectionException
      */
@@ -63,9 +63,9 @@ final class Deannotator
 
             if ($deannotated instanceof Definition\Type) {
                 if ($deannotated instanceof Definition\ObjectType) {
-                    if ($deannotated->name === 'Query' && $deannotated instanceof Definition\ObjectType) {
+                    if ($deannotated->name === 'Query') {
                         $config->setQuery($deannotated);
-                    } elseif ($deannotated->name === 'Mutation' && $deannotated instanceof Definition\ObjectType) {
+                    } elseif ($deannotated->name === 'Mutation') {
                         $config->setMutation($deannotated);
                     }
                 }
@@ -81,7 +81,9 @@ final class Deannotator
 
     /**
      * @param string $className
+     * @psalm-param class-string $className
      * @return mixed
+     * @psalm-return Definition\Type|Definition\Directive|null
      * @throws \ReflectionException
      */
     private function deannotateClass(string $className)
@@ -131,14 +133,19 @@ final class Deannotator
             function (array $fields, \ReflectionMethod $method) use ($annotation): array {
                 /** @var Annotation\Field|null $annotation */
                 $annotation = $this->reader->getMethodAnnotation($method, Annotation\Field::class);
-                $method_name = $annotation->name ?? $method->getName();
 
                 if ($annotation === null) {
                     return $fields;
                 }
 
-                if (!isset($annotation->type)) {
-                    $annotation->type = $method->getReturnType()->getName();
+                $method_name = $annotation->name ?? $method->getName();
+
+                if ($annotation->type === null) {
+                    /** @var \ReflectionNamedType|null $return_type */
+                    $return_type = $method->getReturnType();
+                    if ($return_type !== null) {
+                        $annotation->type = $return_type->getName();
+                    }
                 }
 
                 $fields[$method_name] = [
@@ -146,9 +153,17 @@ final class Deannotator
                     'name' => $method_name,
                     'description' => $annotation->description,
                     'args' => $this->args($method),
-                    'resolve' => static function ($root, array $args, $context, Definition\ResolveInfo $info) use ($method) {
-                        return $method->invoke(null, $root, $args, $context, $info);
-                    }
+                    'resolve' =>
+                    /**
+                     * @param mixed $root
+                     * @param array $args
+                     * @param mixed $context
+                     * @param Definition\ResolveInfo $info
+                     * @return mixed
+                     */
+                        static function ($root, array $args, $context, Definition\ResolveInfo $info) use ($method) {
+                            return $method->invoke(null, $root, $args, $context, $info);
+                        }
                 ];
 
                 return $fields;
@@ -172,7 +187,13 @@ final class Deannotator
      */
     private function type(Annotation\Field $annotation): Definition\Type
     {
-        $type = $this->typeFromString($annotation->listOf ?? $annotation->type);
+        $type = $annotation->listOf ?? $annotation->type;
+
+        if ($type === null) {
+            throw new \UnexpectedValueException("Can't figure out a type from field {$annotation->name}. You should set type or listOf (in case of a list).");
+        }
+
+        $type = $this->typeFromString($type);
 
         if ($type instanceof Definition\NullableType) {
             $type = Definition\Type::nonNull($type);
@@ -186,7 +207,7 @@ final class Deannotator
     }
 
     /**
-     * @param string|class-string $str
+     * @param string|class-string $value
      * @return Definition\Type
      */
     private function typeFromString(string $value): Definition\Type
@@ -217,7 +238,8 @@ final class Deannotator
         }
 
         if (class_exists($value)) {
-            $type = new $value();
+            $reflection = new \ReflectionClass($value);
+            $type = $reflection->newInstanceWithoutConstructor();
 
             if ($type instanceof Definition\Type) {
                 return $type;
@@ -245,6 +267,10 @@ final class Deannotator
         }
 
         foreach ($annotation->fields as $field) {
+            if ($field->name === null) {
+                throw new \UnexpectedValueException("Fields on Args must have a name.");
+            }
+
             $args[$field->name] = $this->type($field);
         }
 
@@ -253,11 +279,11 @@ final class Deannotator
 
     /**
      * @param \ReflectionClass $reflection
-     * @return array<string, array<string, mixed>
+     * @return array<string, array<string, mixed>>
      */
     private function fields(\ReflectionClass $reflection): array
     {
-        /** @var array<string, array<string, mixed> $fields */
+        /** @var array<string, array<string, mixed>> $fields */
         $fields = [];
 
         $props = $reflection->getProperties(\ReflectionProperty::IS_PUBLIC);
@@ -268,12 +294,17 @@ final class Deannotator
         }
 
         foreach ($props as $prop) {
-            /** @var Annotation\Field $annotation */
+            /** @var Annotation\Field|null $annotation */
             $annotation = $this->reader->getPropertyAnnotation($prop, Annotation\Field::class);
-            $prop_name = $annotation->name ?? $prop->getName();
 
-            $fields[$prop_name] = [
-                'name' => $prop_name,
+            if ($annotation === null) {
+                continue;
+            }
+
+            $name = $annotation->name ?? $prop->getName();
+
+            $fields[$name] = [
+                'name' => $name,
                 'type' => $this->type($annotation),
                 'description' => $annotation->description,
             ];
@@ -331,14 +362,19 @@ final class Deannotator
                 function (array $fields, \ReflectionMethod $method) use ($annotation): array {
                     /** @var Annotation\Field|null $annotation */
                     $annotation = $this->reader->getMethodAnnotation($method, Annotation\Field::class);
-                    $method_name = $annotation->name ?? $method->getName();
 
                     if ($annotation === null) {
                         return $fields;
                     }
 
-                    if (!isset($annotation->type)) {
-                        $annotation->type = $method->getReturnType()->getName();
+                    $method_name = $annotation->name ?? $method->getName();
+
+                    if ($annotation->type === null) {
+                        /** @var \ReflectionNamedType|null $return_type */
+                        $return_type = $method->getReturnType();
+                        if ($return_type !== null) {
+                            $annotation->type = $return_type->getName();
+                        }
                     }
 
                     $fields[$method_name] = [
@@ -364,12 +400,12 @@ final class Deannotator
         return new Definition\UnionType([
             'name' => $annotation->name ?? $reflection->getShortName(),
             'description' => $annotation->description,
-            'resolveType' => function ($value): Definition\Type {
+            'resolveType' => function (object $value): Definition\Type {
                 return $this->typeFromString(get_class($value));
             },
             'types' => array_map(function (string $type): Definition\Type {
                 return $this->typeFromString($type);
-            }, $annotation->types),
+            }, $annotation->types ?? []),
         ]);
     }
 
