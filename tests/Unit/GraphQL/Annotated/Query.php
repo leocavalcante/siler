@@ -20,6 +20,12 @@ class Query
         return new Foo();
     }
 
+    /** @Field(type=Bar::class) */
+    public static function bar(): Bar
+    {
+        return new Bar();
+    }
+
     public static function noop()
     {
     }
