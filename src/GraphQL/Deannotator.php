@@ -163,11 +163,11 @@ final class Deannotator
                      * @return mixed
                      */
                         static function ($root, array $args, $context, Definition\ResolveInfo $info) use ($method) {
-                            if ($method->isStatic()) {
-                                return $method->invoke(null, $root, $args, $context, $info);
+                            if (!$method->isStatic() && is_object($root)) {
+                                return $method->invoke($root, $root, $args, $context, $info);
                             }
 
-                            return $method->invoke($root, $root, $args, $context, $info);
+                            return $method->invoke(null, $root, $args, $context, $info);
                         }
                 ];
 
