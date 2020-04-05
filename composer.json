@@ -57,7 +57,6 @@
             "src/Functional/Functional.php",
             "src/Functional/Monad/Monad.php",
             "src/GraphQL/GraphQL.php",
-            "src/GraphQL/Annotation/Annotation.php",
             "src/Grpc/Grpc.php",
             "src/Http/Http.php",
             "src/Http/Request.php",
