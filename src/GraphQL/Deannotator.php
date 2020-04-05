@@ -1,20 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Siler\GraphQL\Annotation;
+namespace Siler\GraphQL;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\DocParser;
-use GraphQL\Type\Definition\Directive as DirectiveDefinition;
-use GraphQL\Type\Definition\EnumType as EnumTypeDefinition;
-use GraphQL\Type\Definition\InputObjectType as InputTypeDefinition;
-use GraphQL\Type\Definition\InterfaceType as InterfaceTypeDefinition;
-use GraphQL\Type\Definition\NullableType;
-use GraphQL\Type\Definition\ObjectType as ObjectTypeDefinition;
-use GraphQL\Type\Definition\ResolveInfo;
-use GraphQL\Type\Definition\Type;
-use GraphQL\Type\Definition\UnionType as UnionTypeDefinition;
+use GraphQL\Type\Definition;
 use GraphQL\Type\Schema;
 use GraphQL\Type\SchemaConfig;
+use Siler\GraphQL\Annotation;
 
 /**
  * @internal
@@ -23,9 +16,9 @@ final class Deannotator
 {
     /** @var AnnotationReader */
     private $reader;
-    /** @var array<string, Type> */
+    /** @var array<string, Definition\Type> */
     private $types;
-    /** @var DirectiveDefinition[] */
+    /** @var Definition\Directive[] */
     private $directives;
     /** @var array<string> */
     private $annotations;
@@ -42,12 +35,12 @@ final class Deannotator
         $this->directives = $directives;
 
         $this->annotations = [
-            ObjectType::class,
-            EnumType::class,
-            InterfaceType::class,
-            UnionType::class,
-            InputType::class,
-            Directive::class,
+            Annotation\ObjectType::class,
+            Annotation\EnumType::class,
+            Annotation\InterfaceType::class,
+            Annotation\UnionType::class,
+            Annotation\InputType::class,
+            Annotation\Directive::class,
         ];
     }
 
@@ -61,21 +54,23 @@ final class Deannotator
         $config = new SchemaConfig();
 
         foreach ($classNames as $class_name) {
-            /** @var Type|DirectiveDefinition|null $deannotated */
+            /** @var Definition\Type|Definition\Directive|null $deannotated */
             $deannotated = $this->deannotateClass($class_name);
 
-            if ($deannotated instanceof DirectiveDefinition) {
+            if ($deannotated instanceof Definition\Directive) {
                 $this->directives[] = $deannotated;
             }
 
-            if ($deannotated instanceof Type) {
-                if ($deannotated->name === 'Query' && $deannotated instanceof ObjectTypeDefinition) {
-                    $config->setQuery($deannotated);
-                } elseif ($deannotated->name === 'Mutation' && $deannotated instanceof ObjectTypeDefinition) {
-                    $config->setMutation($deannotated);
-                } else {
-                    $this->types[$class_name] = $deannotated;
+            if ($deannotated instanceof Definition\Type) {
+                if ($deannotated instanceof Definition\ObjectType) {
+                    if ($deannotated->name === 'Query' && $deannotated instanceof Definition\ObjectType) {
+                        $config->setQuery($deannotated);
+                    } elseif ($deannotated->name === 'Mutation' && $deannotated instanceof Definition\ObjectType) {
+                        $config->setMutation($deannotated);
+                    }
                 }
+
+                $this->types[$class_name] = $deannotated;
             }
         }
 
@@ -96,27 +91,27 @@ final class Deannotator
         foreach ($this->annotations as $annotation_class) {
             $annotation = $this->reader->getClassAnnotation($reflection, $annotation_class);
 
-            if ($annotation instanceof ObjectType) {
+            if ($annotation instanceof Annotation\ObjectType) {
                 return $this->objectType($reflection, $annotation);
             }
 
-            if ($annotation instanceof EnumType) {
+            if ($annotation instanceof Annotation\EnumType) {
                 return $this->enumType($reflection, $annotation);
             }
 
-            if ($annotation instanceof InterfaceType) {
+            if ($annotation instanceof Annotation\InterfaceType) {
                 return $this->interfaceType($reflection, $annotation);
             }
 
-            if ($annotation instanceof UnionType) {
+            if ($annotation instanceof Annotation\UnionType) {
                 return $this->unionType($reflection, $annotation);
             }
 
-            if ($annotation instanceof InputType) {
+            if ($annotation instanceof Annotation\InputType) {
                 return $this->inputType($reflection, $annotation);
             }
 
-            if ($annotation instanceof Directive) {
+            if ($annotation instanceof Annotation\Directive) {
                 return $this->directive($reflection, $annotation);
             }
         }
@@ -126,16 +121,16 @@ final class Deannotator
 
     /**
      * @param \ReflectionClass $reflection
-     * @param ObjectType $annotation
-     * @return ObjectTypeDefinition
+     * @param Annotation\ObjectType $annotation
+     * @return Definition\ObjectType
      */
-    private function objectType(\ReflectionClass $reflection, ObjectType $annotation): ObjectTypeDefinition
+    private function objectType(\ReflectionClass $reflection, Annotation\ObjectType $annotation): Definition\ObjectType
     {
         $fields = array_reduce(
             $reflection->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_STATIC),
             function (array $fields, \ReflectionMethod $method) use ($annotation): array {
-                /** @var Field|null $annotation */
-                $annotation = $this->reader->getMethodAnnotation($method, Field::class);
+                /** @var Annotation\Field|null $annotation */
+                $annotation = $this->reader->getMethodAnnotation($method, Annotation\Field::class);
                 $method_name = $annotation->name ?? $method->getName();
 
                 if ($annotation === null) {
@@ -151,7 +146,7 @@ final class Deannotator
                     'name' => $method_name,
                     'description' => $annotation->description,
                     'args' => $this->args($method),
-                    'resolve' => static function ($root, array $args, $context, ResolveInfo $info) use ($method) {
+                    'resolve' => static function ($root, array $args, $context, Definition\ResolveInfo $info) use ($method) {
                         return $method->invoke(null, $root, $args, $context, $info);
                     }
                 ];
@@ -161,30 +156,30 @@ final class Deannotator
             []
         );
 
-        return new ObjectTypeDefinition([
+        return new Definition\ObjectType([
             'name' => $annotation->name ?? $reflection->getShortName(),
             'description' => $annotation->description,
             'fields' => array_merge($this->fields($reflection), $fields),
-            'interfaces' => array_map(function (string $interface_name): Type {
+            'interfaces' => array_map(function (string $interface_name): Definition\Type {
                 return $this->typeFromString($interface_name);
             }, $reflection->getInterfaceNames()),
         ]);
     }
 
     /**
-     * @param Field $annotation
-     * @return Type
+     * @param Annotation\Field $annotation
+     * @return Definition\Type
      */
-    private function type(Field $annotation): Type
+    private function type(Annotation\Field $annotation): Definition\Type
     {
         $type = $this->typeFromString($annotation->listOf ?? $annotation->type);
 
-        if ($type instanceof NullableType) {
-            $type = Type::nonNull($type);
+        if ($type instanceof Definition\NullableType) {
+            $type = Definition\Type::nonNull($type);
         }
 
         if (isset($annotation->listOf)) {
-            $type = Type::nonNull(Type::listOf($type));
+            $type = Definition\Type::nonNull(Definition\Type::listOf($type));
         }
 
         return $type;
@@ -192,39 +187,39 @@ final class Deannotator
 
     /**
      * @param string|class-string $str
-     * @return Type
+     * @return Definition\Type
      */
-    private function typeFromString(string $value): Type
+    private function typeFromString(string $value): Definition\Type
     {
         if (array_key_exists($value, $this->types)) {
             return $this->types[$value];
         }
 
-        $standards = Type::getStandardTypes();
+        $standards = Definition\Type::getStandardTypes();
         if (array_key_exists($value, $standards)) {
             return $standards[$value];
         }
 
         if ('string' === $value) {
-            return Type::string();
+            return Definition\Type::string();
         }
 
         if ('int' === $value) {
-            return Type::int();
+            return Definition\Type::int();
         }
 
         if ('bool' === $value) {
-            return Type::boolean();
+            return Definition\Type::boolean();
         }
 
         if ('float' === $value) {
-            return Type::float();
+            return Definition\Type::float();
         }
 
         if (class_exists($value)) {
             $type = new $value();
 
-            if ($type instanceof Type) {
+            if ($type instanceof Definition\Type) {
                 return $type;
             }
 
@@ -236,14 +231,14 @@ final class Deannotator
 
     /**
      * @param \ReflectionMethod $method
-     * @return array<string, Type>
+     * @return array<string, Definition\Type>
      */
     private function args(\ReflectionMethod $method): array
     {
         $args = [];
 
-        /** @var Args|null $annotation */
-        $annotation = $this->reader->getMethodAnnotation($method, Args::class);
+        /** @var Annotation\Args|null $annotation */
+        $annotation = $this->reader->getMethodAnnotation($method, Annotation\Args::class);
 
         if ($annotation === null) {
             return $args;
@@ -273,8 +268,8 @@ final class Deannotator
         }
 
         foreach ($props as $prop) {
-            /** @var Field $annotation */
-            $annotation = $this->reader->getPropertyAnnotation($prop, Field::class);
+            /** @var Annotation\Field $annotation */
+            $annotation = $this->reader->getPropertyAnnotation($prop, Annotation\Field::class);
             $prop_name = $annotation->name ?? $prop->getName();
 
             $fields[$prop_name] = [
@@ -289,23 +284,23 @@ final class Deannotator
 
     /**
      * @param \ReflectionClass $reflection
-     * @param EnumType $annotation
-     * @return EnumTypeDefinition
+     * @param Annotation\EnumType $annotation
+     * @return Definition\EnumType
      */
-    private function enumType(\ReflectionClass $reflection, EnumType $annotation): EnumTypeDefinition
+    private function enumType(\ReflectionClass $reflection, Annotation\EnumType $annotation): Definition\EnumType
     {
         $parser = new DocParser();
-        $parser->setImports(['enumval' => EnumVal::class]);
+        $parser->setImports(['enumval' => Annotation\EnumVal::class]);
         $parser->setIgnoreNotImportedAnnotations(true);
 
-        return new EnumTypeDefinition([
+        return new Definition\EnumType([
             'name' => $annotation->name ?? $reflection->getShortName(),
             'description' => $annotation->description,
             'values' => array_reduce(
                 $reflection->getReflectionConstants(),
                 static function (array $values, \ReflectionClassConstant $const) use ($parser): array {
                     $parsed = $parser->parse($const->getDocComment());
-                    /** @var EnumVal $annotation */
+                    /** @var Annotation\EnumVal $annotation */
                     $annotation = $parsed[0];
 
                     $values[$annotation->name ?? $const->getName()] = [
@@ -323,19 +318,19 @@ final class Deannotator
 
     /**
      * @param \ReflectionClass $reflection
-     * @param InterfaceType $annotation
-     * @return InterfaceTypeDefinition
+     * @param Annotation\InterfaceType $annotation
+     * @return Definition\InterfaceType
      */
-    private function interfaceType(\ReflectionClass $reflection, InterfaceType $annotation): InterfaceTypeDefinition
+    private function interfaceType(\ReflectionClass $reflection, Annotation\InterfaceType $annotation): Definition\InterfaceType
     {
-        return new InterfaceTypeDefinition([
+        return new Definition\InterfaceType([
             'name' => $annotation->name ?? $reflection->getShortName(),
             'description' => $annotation->description,
             'fields' => array_reduce(
                 $reflection->getMethods(\ReflectionMethod::IS_PUBLIC),
                 function (array $fields, \ReflectionMethod $method) use ($annotation): array {
-                    /** @var Field|null $annotation */
-                    $annotation = $this->reader->getMethodAnnotation($method, Field::class);
+                    /** @var Annotation\Field|null $annotation */
+                    $annotation = $this->reader->getMethodAnnotation($method, Annotation\Field::class);
                     $method_name = $annotation->name ?? $method->getName();
 
                     if ($annotation === null) {
@@ -361,18 +356,18 @@ final class Deannotator
 
     /**
      * @param \ReflectionClass $reflection
-     * @param UnionType $annotation
-     * @return UnionTypeDefinition
+     * @param Annotation\UnionType $annotation
+     * @return Definition\UnionType
      */
-    private function unionType(\ReflectionClass $reflection, UnionType $annotation): UnionTypeDefinition
+    private function unionType(\ReflectionClass $reflection, Annotation\UnionType $annotation): Definition\UnionType
     {
-        return new UnionTypeDefinition([
+        return new Definition\UnionType([
             'name' => $annotation->name ?? $reflection->getShortName(),
             'description' => $annotation->description,
-            'resolveType' => function ($value): Type {
+            'resolveType' => function ($value): Definition\Type {
                 return $this->typeFromString(get_class($value));
             },
-            'types' => array_map(function (string $type): Type {
+            'types' => array_map(function (string $type): Definition\Type {
                 return $this->typeFromString($type);
             }, $annotation->types),
         ]);
@@ -380,12 +375,12 @@ final class Deannotator
 
     /**
      * @param \ReflectionClass $reflection
-     * @param InputType $annotation
-     * @return InputTypeDefinition
+     * @param Annotation\InputType $annotation
+     * @return Definition\InputObjectType
      */
-    private function inputType(\ReflectionClass $reflection, InputType $annotation): InputTypeDefinition
+    private function inputType(\ReflectionClass $reflection, Annotation\InputType $annotation): Definition\InputObjectType
     {
-        return new InputTypeDefinition([
+        return new Definition\InputObjectType([
             'name' => $annotation->name ?? $reflection->getShortName(),
             'description' => $annotation->description,
             'fields' => $this->fields($reflection),
@@ -394,12 +389,12 @@ final class Deannotator
 
     /**
      * @param \ReflectionClass $reflection
-     * @param Directive $annotation
-     * @return DirectiveDefinition
+     * @param Annotation\Directive $annotation
+     * @return Definition\Directive
      */
-    private function directive(\ReflectionClass $reflection, Directive $annotation): DirectiveDefinition
+    private function directive(\ReflectionClass $reflection, Annotation\Directive $annotation): Definition\Directive
     {
-        return new DirectiveDefinition([
+        return new Definition\Directive([
             'name' => $annotation->name ?? $reflection->getShortName(),
             'description' => $annotation->description,
             'locations' => $annotation->locations,

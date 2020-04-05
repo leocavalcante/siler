@@ -26,7 +26,6 @@ use Ratchet\Server\IoServer;
 use Siler\Arr;
 use Siler\Container;
 use Siler\Diactoros;
-use Siler\GraphQL\Annotation\Deannotator;
 use Siler\GraphQL\Request as GraphQLRequest;
 use Siler\Http\Request;
 use Siler\Http\Response;
