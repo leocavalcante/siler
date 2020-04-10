@@ -146,11 +146,11 @@ function if_else(callable $cond): \Closure
  *
  * @template I
  * @template O
- * @param array{callable(I):bool, callable(I):O}[] $matches
+ * @param iterable{callable(I):bool, callable(I):O}[] $matches
  * @param callable(I):O $exhaust
  * @return \Closure(I):O
  */
-function match(array $matches, callable $exhaust): \Closure
+function match(iterable $matches, callable $exhaust): \Closure
 {
     return
         /**
@@ -171,13 +171,13 @@ function match(array $matches, callable $exhaust): \Closure
 }
 
 /**
- * Determines whether any returns of $functions is TRUE.
+ * Determines whether any returns of $functions is true-ish.
  *
- * @param array<callable> $functions
+ * @param iterable<callable> $functions
  *
  * @return \Closure(mixed): bool
  */
-function any(array $functions): \Closure
+function any(iterable $functions): \Closure
 {
     return
         /**
@@ -185,29 +185,24 @@ function any(array $functions): \Closure
          * @return bool
          */
         static function ($value) use ($functions): bool {
-            return array_reduce(
-                $functions,
-                /**
-                 * @param mixed $current
-                 * @param callable $function
-                 * @return bool
-                 */
-                function ($current, $function) use ($value) {
-                    return $current || $function($value);
-                },
-                false
-            );
+            foreach($functions as $function) {
+                if($function($value)) {
+                    return true;
+                }
+            }
+
+            return false;
         };
 }
 
 /**
- * Determines whether all returns of $functions are TRUE.
+ * Determines whether all returns of $functions are true-ish.
  *
- * @param callable[] $functions
+ * @param iterable<callable> $functions
  *
  * @return \Closure(mixed): bool
  */
-function all(array $functions): \Closure
+function all(iterable $functions): \Closure
 {
     return
         /**
@@ -215,18 +210,13 @@ function all(array $functions): \Closure
          * @return bool
          */
         static function ($value) use ($functions): bool {
-            return array_reduce(
-                $functions,
-                /**
-                 * @param mixed $current
-                 * @param callable $function
-                 * @return bool
-                 */
-                static function ($current, $function) use ($value) {
-                    return $current && $function($value);
-                },
-                true
-            );
+            foreach($functions as $function) {
+                if(!$function($value)) {
+                    return false;
+                }
+            }
+
+            return true;
         };
 }
 
