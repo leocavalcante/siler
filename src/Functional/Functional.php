@@ -185,8 +185,8 @@ function any(iterable $functions): \Closure
          * @return bool
          */
         static function ($value) use ($functions): bool {
-            foreach($functions as $function) {
-                if($function($value)) {
+            foreach ($functions as $function) {
+                if ($function($value)) {
                     return true;
                 }
             }
@@ -210,8 +210,8 @@ function all(iterable $functions): \Closure
          * @return bool
          */
         static function ($value) use ($functions): bool {
-            foreach($functions as $function) {
-                if(!$function($value)) {
+            foreach ($functions as $function) {
+                if (!$function($value)) {
                     return false;
                 }
             }
