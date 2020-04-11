@@ -146,11 +146,11 @@ function if_else(callable $cond): \Closure
  *
  * @template I
  * @template O
- * @param iterable{callable(I):bool, callable(I):O}[] $matches
+ * @param array{callable(I):bool, callable(I):O}[] $matches
  * @param callable(I):O $exhaust
  * @return \Closure(I):O
  */
-function match(iterable $matches, callable $exhaust): \Closure
+function match(array $matches, callable $exhaust): \Closure
 {
     return
         /**
