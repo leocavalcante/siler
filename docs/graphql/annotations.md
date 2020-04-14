@@ -108,3 +108,23 @@ Returns:
 
 **For a full-featured example, please take a look at:** [**github.com/leocavalcante/siler/examples/graphql-annotations**](https://github.com/leocavalcante/siler/tree/master/examples/graphql-annotations)\*\*\*\*
 
+## Caching
+
+Parsing docblocks can be expensive, on production environments is recommended to cache this process by using a caching reader.
+
+First, install `doctrine/cache`:
+
+```javascript
+composer require doctrine/cache
+```
+
+Then pass a `Doctrine\Common\Cache\Cache` to `Siler\GraphQL\Deannotator::cache()` like:
+
+```javascript
+Siler\GraphQL\Deannotator::cache(new ApcuCache());
+```
+
+{% hint style="info" %}
+Make sure you do this before the `annotated()` call.
+{% endhint %}
+
