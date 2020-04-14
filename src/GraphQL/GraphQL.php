@@ -4,7 +4,6 @@ namespace Siler\GraphQL;
 
 use Closure;
 use Doctrine\Common\Annotations\AnnotationException;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Exception;
 use GraphQL\Error\Debug;
@@ -477,6 +476,6 @@ function annotated(array $class_names, array $with_types = [], array $with_direc
         return $types;
     }, []);
 
-    $deannotator = new Deannotator(new AnnotationReader(), $with_types, $with_directives);
+    $deannotator = new Deannotator($with_types, $with_directives);
     return $deannotator->deannotate($class_names);
 }

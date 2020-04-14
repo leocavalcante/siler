@@ -2,19 +2,26 @@
 
 namespace Siler\GraphQL;
 
+use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Annotations\DocParser;
+use Doctrine\Common\Annotations\Reader;
+use Doctrine\Common\Cache\Cache;
 use GraphQL\Type\Definition;
 use GraphQL\Type\Schema;
 use GraphQL\Type\SchemaConfig;
 use Siler\GraphQL\Annotation;
 
 /**
- * @internal
+ * Class Deannotator
+ * @package Siler\GraphQL
  */
 final class Deannotator
 {
-    /** @var AnnotationReader */
+    /** @var Cache|null */
+    private static $cache;
+    /** @var Reader */
     private $reader;
     /** @var array<string, Definition\Type> */
     private $types;
@@ -24,13 +31,38 @@ final class Deannotator
     private $annotations;
 
     /**
-     * @param AnnotationReader $reader
+     * Sets a cache for the annotation reader.
+     *
+     * @param Cache $cache
+     */
+    public static function cache(Cache $cache): void
+    {
+        static::$cache = $cache;
+    }
+
+    /**
+     * Creates a new reader based on a cache and current debugging.
+     *
+     * @return Reader
+     * @throws AnnotationException
+     */
+    private function reader(): Reader
+    {
+        if (static::$cache !== null) {
+            new CachedReader(new AnnotationReader(), static::$cache, debugging() > 0);
+        }
+
+        return new AnnotationReader();
+    }
+
+    /**
      * @param array<string, Definition\Type> $types
      * @param Definition\Directive[] $directives
+     * @throws AnnotationException
      */
-    public function __construct(AnnotationReader $reader, array $types = [], array $directives = [])
+    public function __construct(array $types = [], array $directives = [])
     {
-        $this->reader = $reader;
+        $this->reader = $this->reader();
         $this->types = $types;
         $this->directives = $directives;
 
