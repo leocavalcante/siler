@@ -1,18 +1,17 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Siler\Functional\Monad;
 
 /**
- * Class Maybe
- * @package Siler\Functional\Monad
+ * @template T
+ * @extends Identity<T>
  */
 class Maybe extends Identity
 {
     /**
-     * @param callable|null $function
-     * @return $this|mixed|Identity
+     * @param callable(T):(T|null)|null $function
+     * @return self|mixed
+     * @psalm-return self|T
      */
     public function __invoke(callable $function = null)
     {
@@ -24,8 +23,8 @@ class Maybe extends Identity
     }
 
     /**
-     * @param callable $function
-     * @return $this
+     * @param callable(T):(T|null) $function
+     * @return self
      */
     public function bind(callable $function): self
     {

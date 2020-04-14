@@ -25,6 +25,7 @@
     "require-dev": {
         "cboden/ratchet": "^0.4.1",
         "cocur/slugify": "^3.2",
+        "doctrine/annotations": "^1.10",
         "gabordemooij/redbean": "^5.4",
         "google/protobuf": "^3.11",
         "grpc/grpc": "^1.25",
@@ -40,8 +41,7 @@
         "twig/twig": "^3.0",
         "vimeo/psalm": "^3.9",
         "vlucas/phpdotenv": "^3.6",
-        "webonyx/graphql-php": "^0.13",
-        "doctrine/annotations": "^1.10"
+        "webonyx/graphql-php": "^0.13"
     },
     "autoload": {
         "psr-4": {

@@ -61,7 +61,7 @@ abstract class Result implements JsonSerializable
 
     /**
      * @param callable(T|null): Result $fn
-     * @return $this
+     * @return Result
      */
     public function bind(callable $fn): self
     {

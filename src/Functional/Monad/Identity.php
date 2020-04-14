@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Siler\Functional\Monad;
 
@@ -25,7 +23,7 @@ class Identity
     }
 
     /**
-     * @param callable|null $function
+     * @param callable(T):(T|null)|null $function
      * @return self|mixed
      * @psalm-return self|T
      */
