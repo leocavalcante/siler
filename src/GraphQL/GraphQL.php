@@ -26,6 +26,7 @@ use Ratchet\Server\IoServer;
 use Siler\Arr;
 use Siler\Container;
 use Siler\Diactoros;
+use Siler\GraphQL\Annotation;
 use Siler\GraphQL\Request as GraphQLRequest;
 use Siler\Http\Request;
 use Siler\Http\Response;
@@ -454,8 +455,21 @@ function listen(string $eventName, callable $listener): void
  */
 function annotated(array $class_names, array $with_types = [], array $with_directives = []): Schema
 {
-    /** @psalm-suppress DeprecatedMethod */
-    AnnotationRegistry::registerLoader('class_exists');
+    $annotations = [
+        Annotation\Args::class,
+        Annotation\Directive::class,
+        Annotation\EnumType::class,
+        Annotation\EnumVal::class,
+        Annotation\Field::class,
+        Annotation\InputType::class,
+        Annotation\InterfaceType::class,
+        Annotation\ObjectType::class,
+        Annotation\UnionType::class,
+    ];
+
+    foreach ($annotations as $annotation) {
+        AnnotationRegistry::loadAnnotationClass($annotation);
+    }
 
     /** @var array<string, Type> $with_types */
     $with_types = array_reduce($with_types, function (array $types, Type $type): array {
