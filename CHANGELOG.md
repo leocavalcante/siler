@@ -1,8 +1,6 @@
 # 1.7.3
 - **GraphQL uploads & custom directives!**
 - **GraphQL annotations!**
-
-
 - **Enums!**
 - Fix #276 - GraphQL WebSocket client sub-protocol
 - PHPUnit 9
@@ -13,6 +11,7 @@
 - Introducing Klass module with `Klass\unqualified_name`
 - Introducing Obj module with `Obj\patch`
 - Introducing traits with: `FromArray`, `ToArray` and `Patch`
+- Fix optional parameters for `Route\class_name`
 - **Breaking**: you should now explicitly use arrays (or any other type) for subscription's root and context values
 - **Breaking**: match doesn't return null anymore, you should provide an exhaust function
 
