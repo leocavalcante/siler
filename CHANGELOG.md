@@ -1,7 +1,7 @@
 # 1.7.3
 - **GraphQL uploads & custom directives!**
 - **GraphQL annotations!**
-- **Enums!**
+- Enums draft
 - Fix #276 - GraphQL WebSocket client sub-protocol
 - PHPUnit 9
 - Better error message for `array_get`'s
