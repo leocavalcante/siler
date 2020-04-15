@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App;
+namespace Siler\Example\GraphQL\Annotation;
 
 use GraphQL\Type\Definition\Type;
 use Siler\GraphQL\Annotation\Field;

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace App;
+namespace Siler\Example\GraphQL\Annotation;
 
 use Siler\GraphQL\Annotation\Field;
 use Siler\GraphQL\Annotation\UnionType;
