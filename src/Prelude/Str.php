@@ -99,3 +99,25 @@ function camel_case(string $input): string
 {
     return str_replace('_', '', ucwords($input, '_'));
 }
+
+/**
+ * Multi-byte alternative for ucfirst().
+ *
+ * @param string $input
+ * @return string
+ */
+function mb_ucfirst(string $input): string
+{
+    return mb_strtoupper(mb_substr($input, 0, 1)) . mb_substr($input, 1);
+}
+
+/**
+ * Multi-byte alternative for lcfirst().
+ *
+ * @param string $input
+ * @return string
+ */
+function mb_lcfirst(string $input): string
+{
+    return mb_strtolower(mb_substr($input, 0, 1)) . mb_substr($input, 1);
+}

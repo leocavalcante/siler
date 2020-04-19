@@ -86,4 +86,20 @@ class StrTest extends TestCase
         $this->assertSame('FooBar', Str\camel_case('foo_bar'));
         $this->assertSame('FooBarBaz', Str\camel_case('foo_bar_baz'));
     }
+
+    public function testMbUcfirst()
+    {
+        $this->assertSame('Óof', Str\mb_ucfirst('óof'));
+        $this->assertSame('Óof', Str\mb_ucfirst('Óof'));
+        $this->assertSame('ÓOF', Str\mb_ucfirst('óOF'));
+        $this->assertSame('ÓOF', Str\mb_ucfirst('ÓOF'));
+    }
+
+    public function testMbLcfirst()
+    {
+        $this->assertSame('óof', Str\mb_lcfirst('óof'));
+        $this->assertSame('óof', Str\mb_lcfirst('Óof'));
+        $this->assertSame('óOF', Str\mb_lcfirst('óOF'));
+        $this->assertSame('óOF', Str\mb_lcfirst('ÓOF'));
+    }
 }

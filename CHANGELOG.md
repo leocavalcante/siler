@@ -8,6 +8,7 @@
 - `Siler\array_get_arr` type-safe array getter for arrays
 - `Str\starts_with`, `Str\ends_with` and `Str\contains`
 - `Str\snake_case` and `Str\camel_case` case converters
+git.
 - Introducing Klass module with `Klass\unqualified_name`
 - Introducing Obj module with `Obj\patch`
 - Introducing traits with: `FromArray`, `ToArray` and `Patch`

@@ -218,6 +218,8 @@ const ends_with = '\Siler\Str\ends_with';
 const contains = '\Siler\Str\contains';
 const snake_case = '\Siler\Str\snake_case';
 const camel_case = '\Siler\Str\camel_case';
+const mb_ucfirst = '\Siler\Str\mb_ucfirst';
+const mb_lcfirst = '\Siler\Str\mb_lcfirst';
 
 
 namespace Siler\Tuple;
