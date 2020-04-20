@@ -104,6 +104,8 @@ class SubscriptionsManager
 
             if (is_array($context) && is_array($this->context)) {
                 $this->context = array_merge($this->context, $context);
+            } else if (is_array($context) && $this->context === null) {
+                $this->context = $context;
             }
         } catch (Exception $e) {
             $response = [
