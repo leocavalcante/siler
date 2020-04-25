@@ -47,7 +47,7 @@ Nothing more, nothing less. You don't need even tell Siler to `run` or something
 - [Documentation](https://siler.leocavalcante.dev/)
 - [Examples](https://github.com/siler-examples)
 
----
+## Contributors
 
 ## License
 
