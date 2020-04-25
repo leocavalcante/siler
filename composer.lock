@@ -2415,29 +2415,29 @@
             "time": "2020-02-07T06:19:00+00:00"
         },
         {
-            "name": "phpunit/phpunit",
-            "version": "9.1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "d99d4e69c98c18d5c5f033c68c623880536f37be"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/d99d4e69c98c18d5c5f033c68c623880536f37be",
-                "reference": "d99d4e69c98c18d5c5f033c68c623880536f37be",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/instantiator": "^1.2.0",
-                "ext-dom": "*",
-                "ext-json": "*",
-                "ext-libxml": "*",
-                "ext-mbstring": "*",
-                "ext-xml": "*",
-                "ext-xmlwriter": "*",
-                "myclabs/deep-copy": "^1.9.1",
-                "phar-io/manifest": "^1.0.3",
+          "name": "phpunit/phpunit",
+          "version": "9.1.3",
+          "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/phpunit.git",
+            "reference": "a74780472172957a65cb5999a597e8c0878cf39c"
+          },
+          "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a74780472172957a65cb5999a597e8c0878cf39c",
+            "reference": "a74780472172957a65cb5999a597e8c0878cf39c",
+            "shasum": ""
+          },
+          "require": {
+            "doctrine/instantiator": "^1.2.0",
+            "ext-dom": "*",
+            "ext-json": "*",
+            "ext-libxml": "*",
+            "ext-mbstring": "*",
+            "ext-xml": "*",
+            "ext-xmlwriter": "*",
+            "myclabs/deep-copy": "^1.9.1",
+            "phar-io/manifest": "^1.0.3",
                 "phar-io/version": "^2.0.1",
                 "php": "^7.3",
                 "phpspec/prophecy": "^1.8.1",
@@ -2483,24 +2483,34 @@
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
-                }
-            ],
-            "description": "The PHP Unit Testing framework.",
-            "homepage": "https://phpunit.de/",
-            "keywords": [
-                "phpunit",
-                "testing",
-                "xunit"
-            ],
-            "time": "2020-04-20T06:24:01+00:00"
+          "license": [
+            "BSD-3-Clause"
+          ],
+          "authors": [
+            {
+              "name": "Sebastian Bergmann",
+              "email": "sebastian@phpunit.de",
+              "role": "lead"
+            }
+          ],
+          "description": "The PHP Unit Testing framework.",
+          "homepage": "https://phpunit.de/",
+          "keywords": [
+            "phpunit",
+            "testing",
+            "xunit"
+          ],
+          "funding": [
+            {
+              "url": "https://phpunit.de/donate.html",
+              "type": "custom"
+            },
+            {
+              "url": "https://github.com/sebastianbergmann",
+              "type": "github"
+            }
+          ],
+          "time": "2020-04-23T04:42:05+00:00"
         },
         {
             "name": "psr/container",

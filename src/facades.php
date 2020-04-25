@@ -202,6 +202,11 @@ namespace Siler\Arr;
 const set = '\Siler\Arr\set';
 
 
+namespace Siler\IO;
+const println = '\Siler\IO\println';
+const csv_to_array = '\Siler\IO\csv_to_array';
+
+
 namespace Siler\Klass;
 const unqualified_name = '\Siler\Klass\unqualified_name';
 
