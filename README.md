@@ -47,8 +47,6 @@ Nothing more, nothing less. You don't need even tell Siler to `run` or something
 - [Documentation](https://siler.leocavalcante.dev/)
 - [Examples](https://github.com/siler-examples)
 
-## Contributors
-
 ## License
 
 [![License](http://img.shields.io/:License-MIT-blue.svg?style=flat-square)](https://github.com/leocavalcante/siler/blob/master/LICENSE)
