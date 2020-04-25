@@ -33,3 +33,19 @@ function set(array &$array, string $key, $value)
     $array[array_shift($keys)] = $value;
     return $array;
 }
+
+/**
+ * Creates an array of associative arrays using the first element as keys.
+ *
+ * @param array $arr
+ * @return array
+ */
+function assoc(array $arr): array
+{
+    /** @var array<array-key, array-key> $head */
+    $head = $arr[0];
+
+    return array_map(static function (array $row) use ($head): array {
+        return array_combine($head, $row);
+    }, array_slice($arr, 1));
+}

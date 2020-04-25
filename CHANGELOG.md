@@ -6,13 +6,14 @@
 - Introducing Klass module with `Klass\unqualified_name`
 - Introducing Obj module with `Obj\patch`
 - Introducing traits with `FromArray`, `ToArray` and `Patch`
-- Introducing IO with `println` and `csv_to_array`
+- Introducing IO modile with `println` and `csv_to_array`
 - Fix #276 - GraphQL WebSocket client sub-protocol
 - Fix #289 - GraphQL Context on subscriptions (thanks @lemonbrain-mk)
 - `Siler\array_get_arr` type-safe array getter for arrays
 - `Str\starts_with`, `Str\ends_with` and `Str\contains`
 - `Str\snake_case` and `Str\camel_case` case converters
-- `Str\mb_ucfirst` and `Str\mb_lcfirst` (thanks @enricodias & @williamokano).
+- `Str\mb_ucfirst` and `Str\mb_lcfirst` (thanks @enricodias & @williamokano)
+- `Arr\assoc` creates an array of associative arrays using the first element as keys
 - Fix optional parameters for `Route\class_name`
 - Better error message for `array_get`'s
 - **Breaking**: you should now explicitly use arrays (or any other type) for subscription's root and context values
