@@ -107,16 +107,19 @@ const debug = '\Siler\GraphQL\debug';
 const debugging = '\Siler\GraphQL\debugging';
 const init = '\Siler\GraphQL\init';
 const input = '\Siler\GraphQL\input';
+const request = '\Siler\GraphQL\request';
 const execute = '\Siler\GraphQL\execute';
 const promise_execute = '\Siler\GraphQL\promise_execute';
 const psr7 = '\Siler\GraphQL\psr7';
 const schema = '\Siler\GraphQL\schema';
 const resolvers = '\Siler\GraphQL\resolvers';
+const directives = '\Siler\GraphQL\directives';
 const subscriptions_manager = '\Siler\GraphQL\subscriptions_manager';
 const subscriptions = '\Siler\GraphQL\subscriptions';
 const subscriptions_at = '\Siler\GraphQL\subscriptions_at';
 const publish = '\Siler\GraphQL\publish';
 const listen = '\Siler\GraphQL\listen';
+const annotated = '\Siler\GraphQL\annotated';
 
 
 namespace Siler\Grpc;
@@ -139,6 +142,10 @@ namespace Siler\Http\Request;
 const raw = '\Siler\Http\Request\raw';
 const params = '\Siler\Http\Request\params';
 const json = '\Siler\Http\Request\json';
+const body_parse = '\Siler\Http\Request\body_parse';
+const is_json = '\Siler\Http\Request\is_json';
+const is_multipart = '\Siler\Http\Request\is_multipart';
+const content_type = '\Siler\Http\Request\content_type';
 const headers = '\Siler\Http\Request\headers';
 const header = '\Siler\Http\Request\header';
 const get = '\Siler\Http\Request\get';
@@ -163,6 +170,7 @@ const header = '\Siler\Http\Response\header';
 const redirect = '\Siler\Http\Response\redirect';
 const no_content = '\Siler\Http\Response\no_content';
 const cors = '\Siler\Http\Response\cors';
+const not_found = '\Siler\Http\Response\not_found';
 
 
 namespace Siler\HttpHandlerRunner;
@@ -190,9 +198,28 @@ const alert = '\Siler\Monolog\alert';
 const emergency = '\Siler\Monolog\emergency';
 
 
+namespace Siler\Arr;
+const set = '\Siler\Arr\set';
+
+
+namespace Siler\Klass;
+const unqualified_name = '\Siler\Klass\unqualified_name';
+
+
+namespace Siler\Obj;
+const patch = '\Siler\Obj\patch';
+
+
 namespace Siler\Str;
 const slugify = '\Siler\Str\slugify';
 const lines = '\Siler\Str\lines';
+const starts_with = '\Siler\Str\starts_with';
+const ends_with = '\Siler\Str\ends_with';
+const contains = '\Siler\Str\contains';
+const snake_case = '\Siler\Str\snake_case';
+const camel_case = '\Siler\Str\camel_case';
+const mb_ucfirst = '\Siler\Str\mb_ucfirst';
+const mb_lcfirst = '\Siler\Str\mb_lcfirst';
 
 
 namespace Siler\Tuple;

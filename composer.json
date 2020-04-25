@@ -25,6 +25,8 @@
     "require-dev": {
         "cboden/ratchet": "^0.4.1",
         "cocur/slugify": "^3.2",
+        "doctrine/annotations": "^1.10",
+        "doctrine/cache": "^1.10",
         "gabordemooij/redbean": "^5.4",
         "google/protobuf": "^3.11",
         "grpc/grpc": "^1.25",
@@ -63,6 +65,9 @@
             "src/HttpHandlerRunner/HttpHandlerRunner.php",
             "src/Mail/SwiftMailer.php",
             "src/Monolog/Monolog.php",
+            "src/Prelude/Arr.php",
+            "src/Prelude/Klass.php",
+            "src/Prelude/Obj.php",
             "src/Prelude/Str.php",
             "src/Prelude/Tuple.php",
             "src/Ratchet/Ratchet.php",

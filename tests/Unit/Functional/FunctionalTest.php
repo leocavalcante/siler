@@ -54,13 +54,13 @@ class FunctionalTest extends TestCase
         $test = f\match([
             [f\equal('foo'), f\always('bar')],
             [f\equal('bar'), f\always('baz')],
-            [f\equal('baz'), f\always('qux')]
-        ]);
+            [f\equal('baz'), f\always('qux')],
+        ], f\always('foobar'));
 
         $this->assertSame('bar', $test('foo'));
         $this->assertSame('baz', $test('bar'));
         $this->assertSame('qux', $test('baz'));
-        $this->assertNull($test('qux'));
+        $this->assertSame('foobar', $test('qux'));
     }
 
     public function testAny()

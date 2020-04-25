@@ -17,7 +17,7 @@ composer require leocavalcante/siler
 ## A Hello World example
 
 ```php
-use Siler\Functional as λ;
+use Siler\Functional as λ; // Just to be cool, don't use non-ASCII identifiers ;)
 use Siler\Route;
 
 Route\get('/', λ\puts('Hello World'));

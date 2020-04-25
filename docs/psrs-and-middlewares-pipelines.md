@@ -1,8 +1,8 @@
-# PSRs & Middlewares Pipelines
+# PSRs & Middleware Pipeline
 
 This interfaces are already \(and amazingly\) implemented by Laminas at projects: [Diactoros](https://github.com/laminas/laminas-diactoros) and [Stratigility](https://github.com/laminas/laminas-stratigility). Siler wraps them and exposes a function-friendly API handling state internally while achieving a fully-featured and declarative way for: **Middleware Pipelining**.
 
-### PSR-7 HTTP Messages
+## PSR-7 HTTP Messages
 
 {% hint style="info" %}
 Siler doesn't have direct dependencies, to stay fit, it favors peer dependencies, which means you have to explicitly declare a `diactoros` dependency in your project in order to use it.
@@ -79,7 +79,7 @@ $response = Route\match([
 HttpHandlerRunner\sapi_emit($response);
 ```
 
-### PSR-15 Middleware Pipelining
+## PSR-15 Middleware Pipelining
 
 ```bash
 composer require laminas/laminas-stratigility
@@ -115,7 +115,7 @@ It's more `use`s than actual code because Siler is abstracting all the way down 
 | `handle` | Calls `handle` on a `MiddlewarePipe` marshaling the Request. |
 | `request` | Creates a Diactoros `ServerRequest` using PHP's Globals. |
 
-#### Siler's Routes
+### Siler's Routes
 
 You can also run pipelines for specific routes:
 

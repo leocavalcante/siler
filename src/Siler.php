@@ -14,17 +14,17 @@ const ARRAY_GET_ERROR_MESSAGE = "Key (%s) not found in array and no default was 
  * Get a value from an array checking if the key exists and returning a default value if not.
  *
  * @template T
- * @param array<string, mixed>|null $array
- * @psalm-param array<string, T>|null $array
- * @param string|null $key The key to be searched
+ * @param array<array-key, mixed>|null $array
+ * @psalm-param array<array-key, T>|null $array
+ * @param array-key|null $key The key to be searched
  * @param mixed|null $default The default value to be returned when the key don't exists
  * @psalm-param T|null $default The default value to be returned when the key don't exists
  * @param bool $caseInsensitive Ignore key case, default false
- * @return mixed|null|array<string, mixed>
+ * @return mixed|null|array<array-key, mixed>
  * @psalm-return T|null|array<string, T>
  * @psalm-suppress LessSpecificReturnType
  */
-function array_get(?array $array, ?string $key = null, $default = null, bool $caseInsensitive = false)
+function array_get(?array $array, $key = null, $default = null, bool $caseInsensitive = false)
 {
     if ($array === null) {
         return $default;
@@ -34,7 +34,8 @@ function array_get(?array $array, ?string $key = null, $default = null, bool $ca
         return $array;
     }
 
-    if ($caseInsensitive) {
+    if ($caseInsensitive && is_string($key)) {
+        /** @psalm-suppress MixedArgumentTypeCoercion */
         $array = array_change_key_case($array);
         $key = strtolower($key);
     }
@@ -46,7 +47,7 @@ function array_get(?array $array, ?string $key = null, $default = null, bool $ca
  * Type-safe array_get for strings.
  *
  * @template T
- * @param array<string, mixed> $array
+ * @param array<array-key, mixed> $array
  * @psalm-param array<string, T> $array
  * @param string $key
  * @param string|null $default
@@ -71,7 +72,7 @@ function array_get_str(array $array, string $key, ?string $default = null): stri
  * Type-safe array_get for integers.
  *
  * @template T
- * @param array<string, mixed> $array
+ * @param array<array-key, mixed> $array
  * @psalm-param array<string, T> $array
  * @param string $key
  * @param int|null $default
@@ -97,7 +98,7 @@ function array_get_int(array $array, string $key, ?int $default = null): int
  * Type-safe array_get for floats.
  *
  * @template T
- * @param array<string, mixed> $array
+ * @param array<array-key, mixed> $array
  * @psalm-param array<string, T> $array
  * @param string $key
  * @param float|null $default
@@ -123,7 +124,7 @@ function array_get_float(array $array, string $key, ?float $default = null): flo
  * Type-safe array_get for booleans.
  *
  * @template T
- * @param array<string, mixed> $array
+ * @param array<array-key, mixed> $array
  * @psalm-param array<string, T> $array
  * @param string $key
  * @param bool|null $default
@@ -149,7 +150,7 @@ function array_get_bool(array $array, string $key, ?bool $default = null): bool
  * Type-safe array_get for arrays.
  *
  * @template T
- * @param array<string, mixed> $array
+ * @param array<array-key, mixed> $array
  * @psalm-param array<string, T> $array
  * @param string $key
  * @param array|null $default

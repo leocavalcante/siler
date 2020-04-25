@@ -1,9 +1,23 @@
 # 1.8.0
 
 # 1.7.3
-- Better error message for `array_get`'s
-- Add `array_get_arr` function
+- **GraphQL uploads & custom directives!**
+- **GraphQL annotations!**
+- Enums draft
 - PHPUnit 9
+- Introducing Klass module with `Klass\unqualified_name`
+- Introducing Obj module with `Obj\patch`
+- Introducing traits with: `FromArray`, `ToArray` and `Patch`
+- Fix #276 - GraphQL WebSocket client sub-protocol
+- Fix #289 - GraphQL Context on subscriptions (thanks @lemonbrain-mk)
+- `Siler\array_get_arr` type-safe array getter for arrays
+- `Str\starts_with`, `Str\ends_with` and `Str\contains`
+- `Str\snake_case` and `Str\camel_case` case converters
+- `Str\mb_ucfirst` and `Str\mb_lcfirst` (thanks @enricodias & @williamokano).
+- Fix optional parameters for `Route\class_name`
+- Better error message for `array_get`'s
+- **Breaking**: you should now explicitly use arrays (or any other type) for subscription's root and context values
+- **Breaking**: match doesn't return null anymore, you should provide an exhaust function
 
 # 1.7.2
 - Experimental support for gRPC servers

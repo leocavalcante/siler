@@ -141,3 +141,15 @@ function cors(string $origin = '*', string $headers = 'Content-Type', string $me
         no_content();
     }
 }
+
+/**
+ * Sugar for 404 Not found.
+ *
+ * @param string $content
+ * @param string $charset
+ * @return int
+ */
+function not_found(string $content = '', string $charset = 'utf-8'): int
+{
+    return output($content, 404, $charset);
+}

@@ -377,7 +377,14 @@ function class_name(string $basePath, $className, $request = null): void
         });
 
         $path_params = array_map(function (\ReflectionParameter $param) {
-            return "{{$param->name}}";
+            $param_name = $param->getName();
+            $param_name = "{{$param_name}}";
+
+            if ($param->isOptional()) {
+                $param_name = "?$param_name?";
+            }
+
+            return $param_name;
         }, $method->getParameters());
 
         $path_segments = array_merge($path_segments, $path_params);
