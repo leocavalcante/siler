@@ -170,4 +170,10 @@ GraphQL\init(GraphQL\schema($typeDefs, $resolvers));
 ```
 
 ---
-MIT &copy; 2020
+
+## License
+
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
+
+- **[MIT license](http://opensource.org/licenses/mit-license.php)**
+- Copyright 2020 © <a href="https://leocavalcante.dev" target="_blank">LC</a>.
