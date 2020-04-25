@@ -6,7 +6,7 @@
 - Introducing Klass module with `Klass\unqualified_name`
 - Introducing Obj module with `Obj\patch`
 - Introducing traits with `FromArray`, `ToArray` and `Patch`
-- Introducing IO modile with `println` and `csv_to_array`
+- Introducing IO module with `println` and `csv_to_array`
 - Fix #276 - GraphQL WebSocket client sub-protocol
 - Fix #289 - GraphQL Context on subscriptions (thanks @lemonbrain-mk)
 - `Siler\array_get_arr` type-safe array getter for arrays
