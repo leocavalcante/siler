@@ -1,21 +1,68 @@
 {
-    "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
-        "This file is @generated automatically"
-    ],
-    "content-hash": "3474b2933436fd1c6222c7e3f0abba3a",
-    "packages": [],
-    "packages-dev": [
+  "_readme": [
+    "This file locks the dependencies of your project to a known state",
+    "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+    "This file is @generated automatically"
+  ],
+  "content-hash": "ba001ef65493c8bf5eef813cec2681c9",
+  "packages": [
+    {
+      "name": "psr/event-dispatcher",
+      "version": "1.0.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/php-fig/event-dispatcher.git",
+        "reference": "dbefd12671e8a14ec7f180cab83036ed26714bb0"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/php-fig/event-dispatcher/zipball/dbefd12671e8a14ec7f180cab83036ed26714bb0",
+        "reference": "dbefd12671e8a14ec7f180cab83036ed26714bb0",
+        "shasum": ""
+      },
+      "require": {
+        "php": ">=7.2.0"
+      },
+      "type": "library",
+      "extra": {
+        "branch-alias": {
+          "dev-master": "1.0.x-dev"
+        }
+      },
+      "autoload": {
+        "psr-4": {
+          "Psr\\EventDispatcher\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
         {
-            "name": "amphp/amp",
-            "version": "v2.4.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/amphp/amp.git",
-                "reference": "23ac95fc6d6973231763f5ed7d1309b39429b974"
-            },
-            "dist": {
+          "name": "PHP-FIG",
+          "homepage": "http://www.php-fig.org/"
+        }
+      ],
+      "description": "Standard interfaces for event handling.",
+      "keywords": [
+        "events",
+        "psr",
+        "psr-14"
+      ],
+      "time": "2019-01-08T18:20:26+00:00"
+    }
+  ],
+  "packages-dev": [
+    {
+      "name": "amphp/amp",
+      "version": "v2.4.3",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/amphp/amp.git",
+        "reference": "23ac95fc6d6973231763f5ed7d1309b39429b974"
+      },
+      "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/amphp/amp/zipball/23ac95fc6d6973231763f5ed7d1309b39429b974",
                 "reference": "23ac95fc6d6973231763f5ed7d1309b39429b974",
@@ -2414,40 +2461,40 @@
             ],
             "time": "2020-02-07T06:19:00+00:00"
         },
-        {
-          "name": "phpunit/phpunit",
-          "version": "9.1.3",
-          "source": {
-            "type": "git",
-            "url": "https://github.com/sebastianbergmann/phpunit.git",
-            "reference": "a74780472172957a65cb5999a597e8c0878cf39c"
-          },
-          "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a74780472172957a65cb5999a597e8c0878cf39c",
-            "reference": "a74780472172957a65cb5999a597e8c0878cf39c",
-            "shasum": ""
-          },
-          "require": {
-            "doctrine/instantiator": "^1.2.0",
-            "ext-dom": "*",
-            "ext-json": "*",
-            "ext-libxml": "*",
-            "ext-mbstring": "*",
-            "ext-xml": "*",
-            "ext-xmlwriter": "*",
-            "myclabs/deep-copy": "^1.9.1",
-            "phar-io/manifest": "^1.0.3",
-                "phar-io/version": "^2.0.1",
-                "php": "^7.3",
-                "phpspec/prophecy": "^1.8.1",
-                "phpunit/php-code-coverage": "^8.0.1",
-                "phpunit/php-file-iterator": "^3.0",
-                "phpunit/php-invoker": "^3.0",
-                "phpunit/php-text-template": "^2.0",
-                "phpunit/php-timer": "^3.1.4",
-                "sebastian/code-unit": "^1.0",
-                "sebastian/comparator": "^4.0",
+    {
+      "name": "phpunit/phpunit",
+      "version": "9.1.3",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/sebastianbergmann/phpunit.git",
+        "reference": "a74780472172957a65cb5999a597e8c0878cf39c"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a74780472172957a65cb5999a597e8c0878cf39c",
+        "reference": "a74780472172957a65cb5999a597e8c0878cf39c",
+        "shasum": ""
+      },
+      "require": {
+        "doctrine/instantiator": "^1.2.0",
+        "ext-dom": "*",
+        "ext-json": "*",
+        "ext-libxml": "*",
+        "ext-mbstring": "*",
+        "ext-xml": "*",
+        "ext-xmlwriter": "*",
+        "myclabs/deep-copy": "^1.9.1",
+        "phar-io/manifest": "^1.0.3",
+        "phar-io/version": "^2.0.1",
+        "php": "^7.3",
+        "phpspec/prophecy": "^1.8.1",
+        "phpunit/php-code-coverage": "^8.0.1",
+        "phpunit/php-file-iterator": "^3.0",
+        "phpunit/php-invoker": "^3.0",
+        "phpunit/php-text-template": "^2.0",
+        "phpunit/php-timer": "^3.1.4",
+        "sebastian/code-unit": "^1.0",
+        "sebastian/comparator": "^4.0",
                 "sebastian/diff": "^4.0",
                 "sebastian/environment": "^5.0.1",
                 "sebastian/exporter": "^4.0",
@@ -2474,44 +2521,44 @@
                     "dev-master": "9.1-dev"
                 }
             },
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ],
-                "files": [
-                    "src/Framework/Assert/Functions.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-          "license": [
-            "BSD-3-Clause"
-          ],
-          "authors": [
-            {
-              "name": "Sebastian Bergmann",
-              "email": "sebastian@phpunit.de",
-              "role": "lead"
-            }
-          ],
-          "description": "The PHP Unit Testing framework.",
-          "homepage": "https://phpunit.de/",
-          "keywords": [
-            "phpunit",
-            "testing",
-            "xunit"
-          ],
-          "funding": [
-            {
-              "url": "https://phpunit.de/donate.html",
-              "type": "custom"
-            },
-            {
-              "url": "https://github.com/sebastianbergmann",
-              "type": "github"
-            }
-          ],
-          "time": "2020-04-23T04:42:05+00:00"
+      "autoload": {
+        "classmap": [
+          "src/"
+        ],
+        "files": [
+          "src/Framework/Assert/Functions.php"
+        ]
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "BSD-3-Clause"
+      ],
+      "authors": [
+        {
+          "name": "Sebastian Bergmann",
+          "email": "sebastian@phpunit.de",
+          "role": "lead"
+        }
+      ],
+      "description": "The PHP Unit Testing framework.",
+      "homepage": "https://phpunit.de/",
+      "keywords": [
+        "phpunit",
+        "testing",
+        "xunit"
+      ],
+      "funding": [
+        {
+          "url": "https://phpunit.de/donate.html",
+          "type": "custom"
         },
+        {
+          "url": "https://github.com/sebastianbergmann",
+          "type": "github"
+        }
+      ],
+      "time": "2020-04-23T04:42:05+00:00"
+    },
         {
             "name": "psr/container",
             "version": "1.0.0",
