@@ -29,5 +29,7 @@ function csv_to_array(string $filename, string $delimiter = ',', int $length = 0
         $arr[] = $row;
     }
 
+    fclose($handle);
+
     return $arr;
 }
