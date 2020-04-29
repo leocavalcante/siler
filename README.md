@@ -1,7 +1,4 @@
 <p align="center">
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
     <br><br>
     <img src="siler.png" height="100"/>
     <br><br><br><br><br><br>
@@ -49,23 +46,6 @@ Nothing more, nothing less. You don't need even tell Siler to `run` or something
 
 - [Documentation](https://siler.leocavalcante.dev/)
 - [Examples](https://github.com/siler-examples)
-
-## Contributors
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tr>
-    <td align="center"><a href="https://leocavalcante.dev"><img src="https://avatars3.githubusercontent.com/u/183722?v=4" width="100px;" alt=""/><br /><sub><b>Leo Cavalcante</b></sub></a><br /><a href="#maintenance-leocavalcante" title="Maintenance">🚧</a></td>
-    <td align="center"><a href="http://shoggoth.net"><img src="https://avatars3.githubusercontent.com/u/1096923?v=4" width="100px;" alt=""/><br /><sub><b>Matt Wiseman</b></sub></a><br /><a href="https://github.com/leocavalcante/siler/commits?author=trollboy" title="Code">💻</a> <a href="https://github.com/leocavalcante/siler/issues?q=author%3Atrollboy" title="Bug reports">🐛</a></td>
-  </tr>
-</table>
-
-<!-- markdownlint-enable -->
-<!-- prettier-ignore-end -->
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ## License
 
