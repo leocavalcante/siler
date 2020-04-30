@@ -39,15 +39,17 @@ final class Dispatcher implements EventDispatcherInterface, ListenerProviderInte
      * Dispatch the given event.
      *
      * @param object $event
-     * @return void
+     * @return object
      */
-    public function dispatch(object $event): void
+    public function dispatch(object $event): object
     {
         $event_class = get_class($event);
 
         foreach ($this->listeners[$event_class] as $callback) {
             $callback($event);
         }
+
+        return $event;
     }
 
     /**
