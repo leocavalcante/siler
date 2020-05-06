@@ -15,7 +15,7 @@ Siler is a set of general purpose high-level abstractions aiming an API for decl
 
 * 💧 **Files and functions** as first-class citizens
 * 🔋 **Zero dependency**, everything is on top of PHP built-in functions
-* ⚡ **Blazing fast**, no additional overhead - [*benchmark A*](https://github.com/kenjis/php-framework-benchmark#results) and [*benchmark B*](https://qiita.com/prograti/items/01eac3d20f1447a7b2f9)
+* ⚡ **Blazing fast**, no additional overhead - [*benchmark 1*](https://github.com/kenjis/php-framework-benchmark#results), [*benchmark 2*](https://qiita.com/prograti/items/01eac3d20f1447a7b2f9) and [*benchmark 3*](https://github.com/the-benchmarker/web-frameworks)
 
 ## Use with [Swoole](https://www.swoole.co.uk/)
 
