@@ -233,7 +233,7 @@ final class Deannotator
 
         $type = $this->typeFromString($type);
 
-        if ($type instanceof Definition\NullableType) {
+        if (!$annotation->nullable && $type instanceof Definition\NullableType) {
             $type = Definition\Type::nonNull($type);
         }
 
