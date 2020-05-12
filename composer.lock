@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4d8cfe6fe42a00825bd8817b2c7fa3dc",
+    "content-hash": "04032af9576bb022d63e3b8ecb0640f3",
     "packages": [],
     "packages-dev": [
         {
@@ -4033,23 +4033,23 @@
         },
         {
             "name": "swoole/ide-helper",
-            "version": "4.5.0",
+            "version": "4.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swoole/ide-helper.git",
-                "reference": "bfc9e789a6bf90775da9a3095e7877899deb6a2d"
+                "reference": "4020851800932578c51eb472b1ad6148bf311ed5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/bfc9e789a6bf90775da9a3095e7877899deb6a2d",
-                "reference": "bfc9e789a6bf90775da9a3095e7877899deb6a2d",
+                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/4020851800932578c51eb472b1ad6148bf311ed5",
+                "reference": "4020851800932578c51eb472b1ad6148bf311ed5",
                 "shasum": ""
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "~6.5.0",
+                "laminas/laminas-code": "~3.4.0",
                 "squizlabs/php_codesniffer": "~3.5.0",
-                "symfony/filesystem": "~4.3.0",
-                "zendframework/zend-code": "~3.3.0"
+                "symfony/filesystem": "~4.0"
             },
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
@@ -4063,7 +4063,7 @@
                 }
             ],
             "description": "IDE help files for Swoole.",
-            "time": "2020-04-26T18:12:57+00:00"
+            "time": "2020-05-11T20:47:58+00:00"
         },
         {
             "name": "symfony/console",

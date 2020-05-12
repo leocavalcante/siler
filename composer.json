@@ -38,7 +38,7 @@
         "psr/event-dispatcher": "^1.0",
         "squizlabs/php_codesniffer": "^3.5",
         "swiftmailer/swiftmailer": "^6.2",
-        "swoole/ide-helper": "^4.4",
+        "swoole/ide-helper": "^4.5",
         "textalk/websocket": "^1.2",
         "twig/twig": "^3.0",
         "vimeo/psalm": "^3.11",
