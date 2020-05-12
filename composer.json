@@ -24,7 +24,7 @@
     "minimum-stability": "stable",
     "require-dev": {
         "cboden/ratchet": "^0.4.1",
-        "cocur/slugify": "^3.2",
+        "cocur/slugify": "^4.0",
         "doctrine/annotations": "^1.10",
         "doctrine/cache": "^1.10",
         "gabordemooij/redbean": "^5.4",
