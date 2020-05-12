@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bdbb59a523560757c362a7d5b8de7f9f",
+    "content-hash": "117659e224cf5b56df346ccd80143d31",
     "packages": [],
     "packages-dev": [
         {
@@ -366,17 +366,23 @@
                 "MIT"
             ],
             "authors": [
-                {
-                    "name": "John Stevenson",
-                    "email": "john-stevenson@blueyonder.co.uk"
-                }
+              {
+                "name": "John Stevenson",
+                "email": "john-stevenson@blueyonder.co.uk"
+              }
             ],
-            "description": "Restarts a process without Xdebug.",
-            "keywords": [
-                "Xdebug",
-                "performance"
-            ],
-            "time": "2020-03-01T12:26:26+00:00"
+          "description": "Restarts a process without Xdebug.",
+          "keywords": [
+            "Xdebug",
+            "performance"
+          ],
+          "funding": [
+            {
+              "url": "https://packagist.com",
+              "type": "custom"
+            }
+          ],
+          "time": "2020-03-01T12:26:26+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -1157,17 +1163,23 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-3-Clause"
+              "BSD-3-Clause"
             ],
-            "description": "PSR HTTP Message implementations",
-            "homepage": "https://laminas.dev",
-            "keywords": [
-                "http",
-                "laminas",
-                "psr",
-                "psr-7"
-            ],
-            "time": "2020-04-27T17:07:01+00:00"
+          "description": "PSR HTTP Message implementations",
+          "homepage": "https://laminas.dev",
+          "keywords": [
+            "http",
+            "laminas",
+            "psr",
+            "psr-7"
+          ],
+          "funding": [
+            {
+              "url": "https://funding.communitybridge.org/projects/laminas-project",
+              "type": "community_bridge"
+            }
+          ],
+          "time": "2020-04-27T17:07:01+00:00"
         },
         {
             "name": "laminas/laminas-escaper",
@@ -1391,17 +1403,23 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "Alias legacy ZF class names to Laminas Project equivalents.",
-            "keywords": [
-                "ZendFramework",
-                "autoloading",
-                "laminas",
-                "zf"
-            ],
-            "time": "2020-04-03T16:01:00+00:00"
+          "license": [
+            "BSD-3-Clause"
+          ],
+          "description": "Alias legacy ZF class names to Laminas Project equivalents.",
+          "keywords": [
+            "ZendFramework",
+            "autoloading",
+            "laminas",
+            "zf"
+          ],
+          "funding": [
+            {
+              "url": "https://funding.communitybridge.org/projects/laminas-project",
+              "type": "community_bridge"
+            }
+          ],
+          "time": "2020-04-03T16:01:00+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -1630,37 +1648,37 @@
             ],
             "time": "2020-04-10T16:34:50+00:00"
         },
-        {
-            "name": "ocramius/package-versions",
-            "version": "1.5.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Ocramius/PackageVersions.git",
-                "reference": "1d32342b8c1eb27353c8887c366147b4c2da673c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/1d32342b8c1eb27353c8887c366147b4c2da673c",
-                "reference": "1d32342b8c1eb27353c8887c366147b4c2da673c",
-                "shasum": ""
-            },
+      {
+        "name": "ocramius/package-versions",
+        "version": "1.8.0",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/Ocramius/PackageVersions.git",
+          "reference": "421679846270a5772534828013a93be709fb13df"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/421679846270a5772534828013a93be709fb13df",
+          "reference": "421679846270a5772534828013a93be709fb13df",
+          "shasum": ""
+        },
             "require": {
-                "composer-plugin-api": "^1.0.0",
-                "php": "^7.3.0"
+              "composer-plugin-api": "^1.1.0 || ^2.0",
+              "php": "^7.4.0"
             },
             "require-dev": {
-                "composer/composer": "^1.8.6",
-                "doctrine/coding-standard": "^6.0.0",
-                "ext-zip": "*",
-                "infection/infection": "^0.13.4",
-                "phpunit/phpunit": "^8.2.5",
-                "vimeo/psalm": "^3.4.9"
+              "composer/composer": "^1.9.3 || ^2.0@dev",
+              "doctrine/coding-standard": "^7.0.2",
+              "ext-zip": "^1.15.0",
+              "infection/infection": "^0.15.3",
+              "phpunit/phpunit": "^9.0.1",
+              "vimeo/psalm": "^3.9.3"
             },
             "type": "composer-plugin",
             "extra": {
                 "class": "PackageVersions\\Installer",
                 "branch-alias": {
-                    "dev-master": "1.6.x-dev"
+                  "dev-master": "1.99.x-dev"
                 }
             },
             "autoload": {
@@ -1669,18 +1687,28 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marco Pivetta",
-                    "email": "ocramius@gmail.com"
-                }
-            ],
-            "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
-            "time": "2019-07-17T15:49:50+00:00"
-        },
+        "license": [
+          "MIT"
+        ],
+        "authors": [
+          {
+            "name": "Marco Pivetta",
+            "email": "ocramius@gmail.com"
+          }
+        ],
+        "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
+        "funding": [
+          {
+            "url": "https://github.com/Ocramius",
+            "type": "github"
+          },
+          {
+            "url": "https://tidelift.com/funding/github/packagist/ocramius/package-versions",
+            "type": "tidelift"
+          }
+        ],
+        "time": "2020-04-06T17:43:35+00:00"
+      },
         {
             "name": "openlss/lib-array2xml",
             "version": "1.0.0",
@@ -2200,17 +2228,23 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                  "email": "sebastian@phpunit.de",
+                  "role": "lead"
                 }
             ],
-            "description": "FilterIterator implementation that filters files based on a list of suffixes.",
-            "homepage": "https://github.com/sebastianbergmann/php-file-iterator/",
-            "keywords": [
-                "filesystem",
-                "iterator"
-            ],
-            "time": "2020-04-18T05:02:12+00:00"
+          "description": "FilterIterator implementation that filters files based on a list of suffixes.",
+          "homepage": "https://github.com/sebastianbergmann/php-file-iterator/",
+          "keywords": [
+            "filesystem",
+            "iterator"
+          ],
+          "funding": [
+            {
+              "url": "https://github.com/sebastianbergmann",
+              "type": "github"
+            }
+          ],
+          "time": "2020-04-18T05:02:12+00:00"
         },
         {
             "name": "phpunit/php-invoker",
@@ -2348,17 +2382,23 @@
             ],
             "authors": [
                 {
-                    "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                  "name": "Sebastian Bergmann",
+                  "email": "sebastian@phpunit.de",
+                  "role": "lead"
                 }
             ],
-            "description": "Utility class for timing",
-            "homepage": "https://github.com/sebastianbergmann/php-timer/",
-            "keywords": [
-                "timer"
-            ],
-            "time": "2020-04-20T06:00:37+00:00"
+          "description": "Utility class for timing",
+          "homepage": "https://github.com/sebastianbergmann/php-timer/",
+          "keywords": [
+            "timer"
+          ],
+          "funding": [
+            {
+              "url": "https://github.com/sebastianbergmann",
+              "type": "github"
+            }
+          ],
+          "time": "2020-04-20T06:00:37+00:00"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -3506,17 +3546,23 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de"
+                  "email": "sebastian@phpunit.de"
                 }
             ],
-            "description": "Provides functionality to handle HHVM/PHP environments",
-            "homepage": "http://www.github.com/sebastianbergmann/environment",
-            "keywords": [
-                "Xdebug",
-                "environment",
-                "hhvm"
-            ],
-            "time": "2020-04-14T13:36:52+00:00"
+          "description": "Provides functionality to handle HHVM/PHP environments",
+          "homepage": "http://www.github.com/sebastianbergmann/environment",
+          "keywords": [
+            "Xdebug",
+            "environment",
+            "hhvm"
+          ],
+          "funding": [
+            {
+              "url": "https://github.com/sebastianbergmann",
+              "type": "github"
+            }
+          ],
+          "time": "2020-04-14T13:36:52+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -4129,17 +4175,31 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                  "name": "Fabien Potencier",
+                  "email": "fabien@symfony.com"
                 },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
+              {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+              }
             ],
-            "description": "Symfony Console Component",
-            "homepage": "https://symfony.com",
-            "time": "2020-03-30T11:42:42+00:00"
+          "description": "Symfony Console Component",
+          "homepage": "https://symfony.com",
+          "funding": [
+            {
+              "url": "https://symfony.com/sponsor",
+              "type": "custom"
+            },
+            {
+              "url": "https://github.com/fabpot",
+              "type": "github"
+            },
+            {
+              "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+              "type": "tidelift"
+            }
+          ],
+          "time": "2020-03-30T11:42:42+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -4184,17 +4244,31 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
+                  "name": "Fabien Potencier",
+                  "email": "fabien@symfony.com"
                 },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
+              {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+              }
             ],
-            "description": "Symfony HttpFoundation Component",
-            "homepage": "https://symfony.com",
-            "time": "2020-04-18T20:50:06+00:00"
+          "description": "Symfony HttpFoundation Component",
+          "homepage": "https://symfony.com",
+          "funding": [
+            {
+              "url": "https://symfony.com/sponsor",
+              "type": "custom"
+            },
+            {
+              "url": "https://github.com/fabpot",
+              "type": "github"
+            },
+            {
+              "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+              "type": "tidelift"
+            }
+          ],
+          "time": "2020-04-18T20:50:06+00:00"
         },
         {
             "name": "symfony/mime",
@@ -4246,17 +4320,31 @@
                     "email": "fabien@symfony.com"
                 },
                 {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
+                  "name": "Symfony Community",
+                  "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "A library to manipulate MIME messages",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "mime",
-                "mime-type"
-            ],
-            "time": "2020-04-17T03:29:44+00:00"
+          "description": "A library to manipulate MIME messages",
+          "homepage": "https://symfony.com",
+          "keywords": [
+            "mime",
+            "mime-type"
+          ],
+          "funding": [
+            {
+              "url": "https://symfony.com/sponsor",
+              "type": "custom"
+            },
+            {
+              "url": "https://github.com/fabpot",
+              "type": "github"
+            },
+            {
+              "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+              "type": "tidelift"
+            }
+          ],
+          "time": "2020-04-17T03:29:44+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -4675,15 +4763,29 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony Routing Component",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "router",
-                "routing",
-                "uri",
-                "url"
-            ],
-            "time": "2020-04-21T21:02:50+00:00"
+          "description": "Symfony Routing Component",
+          "homepage": "https://symfony.com",
+          "keywords": [
+            "router",
+            "routing",
+            "uri",
+            "url"
+          ],
+          "funding": [
+            {
+              "url": "https://symfony.com/sponsor",
+              "type": "custom"
+            },
+            {
+              "url": "https://github.com/fabpot",
+              "type": "github"
+            },
+            {
+              "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+              "type": "tidelift"
+            }
+          ],
+          "time": "2020-04-21T21:02:50+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -4984,24 +5086,25 @@
         },
         {
             "name": "vlucas/phpdotenv",
-            "version": "v3.6.3",
+            "version": "v4.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "1b3103013797f04521c6cae5560f604649484066"
+                "reference": "539bb6927c101a5605d31d11a2d17185a2ce2bf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/1b3103013797f04521c6cae5560f604649484066",
-                "reference": "1b3103013797f04521c6cae5560f604649484066",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/539bb6927c101a5605d31d11a2d17185a2ce2bf1",
+                "reference": "539bb6927c101a5605d31d11a2d17185a2ce2bf1",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.4 || ^7.0",
-                "phpoption/phpoption": "^1.5",
+                "php": "^5.5.9 || ^7.0 || ^8.0",
+                "phpoption/phpoption": "^1.7.2",
                 "symfony/polyfill-ctype": "^1.9"
             },
             "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.3",
                 "ext-filter": "*",
                 "ext-pcre": "*",
                 "phpunit/phpunit": "^4.8.35 || ^5.0 || ^6.0 || ^7.0"
@@ -5013,7 +5116,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.6-dev"
+                    "dev-master": "4.1-dev"
                 }
             },
             "autoload": {
@@ -5033,17 +5136,27 @@
                 },
                 {
                     "name": "Vance Lucas",
-                    "email": "vance@vancelucas.com",
-                    "homepage": "https://vancelucas.com/"
+                  "email": "vance@vancelucas.com",
+                  "homepage": "https://vancelucas.com/"
                 }
             ],
-            "description": "Loads environment variables from `.env` to `getenv()`, `$_ENV` and `$_SERVER` automagically.",
-            "keywords": [
-                "dotenv",
-                "env",
-                "environment"
-            ],
-            "time": "2020-04-12T15:18:03+00:00"
+          "description": "Loads environment variables from `.env` to `getenv()`, `$_ENV` and `$_SERVER` automagically.",
+          "keywords": [
+            "dotenv",
+            "env",
+            "environment"
+          ],
+          "funding": [
+            {
+              "url": "https://github.com/GrahamCampbell",
+              "type": "github"
+            },
+            {
+              "url": "https://tidelift.com/funding/github/packagist/vlucas/phpdotenv",
+              "type": "tidelift"
+            }
+          ],
+          "time": "2020-05-02T14:08:57+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -5239,13 +5352,14 @@
             "time": "2019-08-25T10:32:47+00:00"
         }
     ],
-    "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
-    "prefer-stable": false,
-    "prefer-lowest": false,
-    "platform": {
-        "php": ">=7.3"
-    },
-    "platform-dev": []
+  "aliases": [],
+  "minimum-stability": "stable",
+  "stability-flags": [],
+  "prefer-stable": false,
+  "prefer-lowest": false,
+  "platform": {
+    "php": ">=7.3"
+  },
+  "platform-dev": [],
+  "plugin-api-version": "1.1.0"
 }
