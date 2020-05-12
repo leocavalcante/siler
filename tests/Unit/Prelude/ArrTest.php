@@ -3,6 +3,7 @@
 namespace Siler\Test\Unit\Prelude;
 
 use PHPUnit\Framework\TestCase;
+use function Siler\Arr\assoc;
 use function Siler\Arr\set;
 
 class ArrTest extends TestCase
@@ -25,5 +26,22 @@ class ArrTest extends TestCase
         set($fixture, 'foo.bar', 'qux');
 
         $this->assertSame($expected, $fixture);
+    }
+
+    public function testAssoc()
+    {
+        $fixture = [
+            ['foo', 'bar'],
+            ['baz', 'qux'],
+            [4, 2],
+        ];
+
+        $expected = [
+            ['foo' => 'baz', 'bar' => 'qux'],
+            ['foo' => 4, 'bar' => 2],
+        ];
+
+        $actual = assoc($fixture);
+        $this->assertSame($expected, $actual);
     }
 }

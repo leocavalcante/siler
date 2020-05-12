@@ -200,6 +200,12 @@ const emergency = '\Siler\Monolog\emergency';
 
 namespace Siler\Arr;
 const set = '\Siler\Arr\set';
+const assoc = '\Siler\Arr\assoc';
+
+
+namespace Siler\IO;
+const println = '\Siler\IO\println';
+const csv_to_array = '\Siler\IO\csv_to_array';
 
 
 namespace Siler\Klass;

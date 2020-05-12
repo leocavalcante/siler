@@ -19,7 +19,7 @@ use function Siler\array_get;
  */
 function init(string $path): array
 {
-    $dot_env = Dotenv::create($path);
+    $dot_env = Dotenv::createImmutable($path);
     return $dot_env->load();
 }
 

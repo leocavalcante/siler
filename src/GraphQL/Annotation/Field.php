@@ -31,4 +31,9 @@ final class Field
      * @psalm-var string|null
      */
     public $listOf;
+    /**
+     * @var boolean
+     * @psalm-var boolean
+     */
+    public $nullable = false;
 }
