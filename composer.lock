@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "04032af9576bb022d63e3b8ecb0640f3",
+    "content-hash": "bdbb59a523560757c362a7d5b8de7f9f",
     "packages": [],
     "packages-dev": [
         {
@@ -890,16 +890,16 @@
         },
         {
             "name": "gabordemooij/redbean",
-            "version": "v5.4.2",
+            "version": "v5.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gabordemooij/redbean.git",
-                "reference": "58d366ac135cf14c7b952cda075a7723dfb425a7"
+                "reference": "8b8326f7dbe8023675b0d1936df4800fe0cce0b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/58d366ac135cf14c7b952cda075a7723dfb425a7",
-                "reference": "58d366ac135cf14c7b952cda075a7723dfb425a7",
+                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/8b8326f7dbe8023675b0d1936df4800fe0cce0b3",
+                "reference": "8b8326f7dbe8023675b0d1936df4800fe0cce0b3",
                 "shasum": ""
             },
             "require": {
@@ -927,7 +927,7 @@
             "keywords": [
                 "orm"
             ],
-            "time": "2019-12-26T17:14:58+00:00"
+            "time": "2020-04-26T13:31:18+00:00"
         },
         {
             "name": "google/protobuf",
