@@ -34,7 +34,7 @@
         "laminas/laminas-httphandlerrunner": "^1.1",
         "laminas/laminas-stratigility": "^3.2",
         "monolog/monolog": "^2.0",
-        "phpunit/phpunit": "^9.0",
+        "phpunit/phpunit": "^9.1",
         "psr/event-dispatcher": "^1.0",
         "squizlabs/php_codesniffer": "^3.5",
         "swiftmailer/swiftmailer": "^6.2",
