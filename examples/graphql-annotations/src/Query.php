@@ -39,6 +39,9 @@ class Query
      */
     public static function todos(): array
     {
-        return [new Todo('Something to do')];
+        $parent = new Todo('Parent todo');
+        $todo = new Todo('Something to do');
+        $todo->parent = $parent;
+        return [$todo];
     }
 }

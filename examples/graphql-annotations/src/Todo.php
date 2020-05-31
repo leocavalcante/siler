@@ -24,6 +24,12 @@ class Todo implements ITodo
     /** @var int */
     private $status;
 
+    /**
+     * @Field(type = Todo::class, nullable = true, description="Just to test recursive types")
+     * @var Todo|null
+     */
+    public $parent;
+
     public function __construct(string $title)
     {
         $this->title = $title;

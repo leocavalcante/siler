@@ -211,7 +211,9 @@ final class Deannotator
         return new Definition\ObjectType([
             'name' => $annotation->name ?? $reflection->getShortName(),
             'description' => $annotation->description,
-            'fields' => array_merge($this->fields($reflection), $fields),
+            'fields' => function () use ($reflection, $fields) {
+                return array_merge($this->fields($reflection), $fields);
+            },
             'interfaces' => array_map(function (string $interface_name): Definition\Type {
                 return $this->typeFromString($interface_name);
             }, $reflection->getInterfaceNames()),
@@ -403,36 +405,38 @@ final class Deannotator
         return new Definition\InterfaceType([
             'name' => $annotation->name ?? $reflection->getShortName(),
             'description' => $annotation->description,
-            'fields' => array_reduce(
-                $reflection->getMethods(\ReflectionMethod::IS_PUBLIC),
-                function (array $fields, \ReflectionMethod $method) use ($annotation): array {
-                    /** @var Annotation\Field|null $annotation */
-                    $annotation = $this->reader->getMethodAnnotation($method, Annotation\Field::class);
+            'fields' => function () use ($reflection, $annotation) {
+                return array_reduce(
+                    $reflection->getMethods(\ReflectionMethod::IS_PUBLIC),
+                    function (array $fields, \ReflectionMethod $method) use ($annotation): array {
+                        /** @var Annotation\Field|null $annotation */
+                        $annotation = $this->reader->getMethodAnnotation($method, Annotation\Field::class);
 
-                    if ($annotation === null) {
-                        return $fields;
-                    }
-
-                    $method_name = $annotation->name ?? $method->getName();
-
-                    if ($annotation->type === null) {
-                        /** @var \ReflectionNamedType|null $return_type */
-                        $return_type = $method->getReturnType();
-                        if ($return_type !== null) {
-                            $annotation->type = $return_type->getName();
+                        if ($annotation === null) {
+                            return $fields;
                         }
-                    }
 
-                    $fields[$method_name] = [
-                        'type' => $this->type($annotation),
-                        'name' => $method_name,
-                        'description' => $annotation->description,
-                    ];
+                        $method_name = $annotation->name ?? $method->getName();
 
-                    return $fields;
-                },
-                []
-            ),
+                        if ($annotation->type === null) {
+                            /** @var \ReflectionNamedType|null $return_type */
+                            $return_type = $method->getReturnType();
+                            if ($return_type !== null) {
+                                $annotation->type = $return_type->getName();
+                            }
+                        }
+
+                        $fields[$method_name] = [
+                            'type' => $this->type($annotation),
+                            'name' => $method_name,
+                            'description' => $annotation->description,
+                        ];
+
+                        return $fields;
+                    },
+                    []
+                );
+            }
         ]);
     }
 
