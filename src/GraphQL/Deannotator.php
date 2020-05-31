@@ -372,6 +372,11 @@ final class Deannotator
                 $reflection->getReflectionConstants(),
                 static function (array $values, \ReflectionClassConstant $const) use ($parser): array {
                     $parsed = $parser->parse($const->getDocComment());
+
+                    if (empty($parsed)) {
+                        return $values;
+                    }
+
                     /** @var Annotation\EnumVal $annotation */
                     $annotation = $parsed[0];
 

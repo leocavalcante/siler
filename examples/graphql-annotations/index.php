@@ -3,6 +3,7 @@
 namespace Siler\Example\GraphQL\Annotation;
 
 use Siler\GraphQL\DateTimeScalar;
+use Siler\Route;
 use function Siler\GraphQL\{annotated, debug, init};
 
 require_once __DIR__ . '/../../vendor/autoload.php';
@@ -24,4 +25,5 @@ $schema = annotated([
 ]);
 
 debug();
-init($schema);
+
+Route\post('/graphql', fn() => init($schema));

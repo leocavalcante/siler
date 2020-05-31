@@ -1,0 +1,10 @@
+{
+  "name": "Annotated GraphQL Schema",
+  "extensions": {
+    "endpoints": {
+      "Default GraphQL Endpoint": {
+        "url": "http://localhost:8080/graphql"
+      }
+    }
+  }
+}

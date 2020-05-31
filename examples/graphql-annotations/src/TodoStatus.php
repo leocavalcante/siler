@@ -18,4 +18,6 @@ class TodoStatus
      * @var int
      */
     public const DONE = 2;
+
+    public const SHOULD_BE_IGNORED = -1;
 }
