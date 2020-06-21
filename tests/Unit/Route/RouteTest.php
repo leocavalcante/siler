@@ -1,14 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
-
-namespace Siler\Test\Unit;
+namespace Siler\Test\Unit\Route;
 
 use Laminas\Diactoros\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Siler\Container;
 use Siler\Route;
-use Siler\Test\Unit\Route\SwooleHttpRequestMock;
 use function Siler\Functional\always;
 use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 

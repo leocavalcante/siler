@@ -8,6 +8,8 @@ namespace Siler\Http;
 use function Siler\array_get;
 use function Siler\array_get_str;
 
+const DEFAULT_PATH_INFO = '__default_path_info';
+
 /**
  * Get a value from the $_COOKIE global.
  *
@@ -104,7 +106,7 @@ function url(?string $path = null): string
  */
 function path(): string
 {
-    /** @var array<string, string> $_SERVER */
+    /** @psalm-var array<string, string> $_SERVER */
     $script_name = array_get_str($_SERVER, 'SCRIPT_NAME', '');
     $query_string = array_get_str($_SERVER, 'QUERY_STRING', '');
     $request_uri = array_get_str($_SERVER, 'REQUEST_URI', '');
@@ -114,6 +116,7 @@ function path(): string
         $script_name = '';
     }
 
+    $request_uri = rawurldecode($request_uri);
     $request_uri = str_replace('?' . $query_string, '', $request_uri);
     $script_path = str_replace('\\', '/', dirname($script_name));
 

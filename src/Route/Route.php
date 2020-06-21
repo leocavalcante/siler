@@ -5,7 +5,16 @@
 
 namespace Siler\Route;
 
+use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use RecursiveRegexIterator;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
+use ReflectionParameter;
+use RegexIterator;
 use Siler\Container;
 use Siler\Http;
 use Siler\Http\Request;
@@ -189,6 +198,7 @@ function regexify(string $path): string
     ];
 
     $path = preg_replace(array_keys($patterns), array_values($patterns), $path);
+
     /** @var string $base */
     $base = Container\get(BASE_PATH, '');
 
@@ -306,12 +316,12 @@ function files(string $basePath, string $prefix = '', $request = null)
     $realpath = realpath($basePath);
 
     if (false === $realpath) {
-        throw new \InvalidArgumentException("{$basePath} does not exists");
+        throw new InvalidArgumentException("{$basePath} does not exists");
     }
 
-    $directory = new \RecursiveDirectoryIterator($realpath);
-    $iterator = new \RecursiveIteratorIterator($directory);
-    $regex = new \RegexIterator($iterator, '/^.+\.php$/i', \RecursiveRegexIterator::GET_MATCH);
+    $directory = new RecursiveDirectoryIterator($realpath);
+    $iterator = new RecursiveIteratorIterator($directory);
+    $regex = new RegexIterator($iterator, '/^.+\.php$/i', RecursiveRegexIterator::GET_MATCH);
 
     $files = array_keys(iterator_to_array($regex));
 
@@ -357,15 +367,15 @@ function files(string $basePath, string $prefix = '', $request = null)
  * @param array{0: string, 1: string}|ServerRequestInterface|null $request
  *
  * @return void
- * @throws \ReflectionException
+ * @throws ReflectionException
  *
  */
 function class_name(string $basePath, $className, $request = null): void
 {
-    $reflection = new \ReflectionClass($className);
+    $reflection = new ReflectionClass($className);
     $object = $reflection->newInstance();
 
-    $methods = $reflection->getMethods(\ReflectionMethod::IS_PUBLIC);
+    $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
 
     foreach ($methods as $method) {
         $specs = preg_split('/(?=[A-Z])/', $method->name);
@@ -376,7 +386,7 @@ function class_name(string $basePath, $className, $request = null): void
             return $segment != 'index';
         });
 
-        $path_params = array_map(function (\ReflectionParameter $param) {
+        $path_params = array_map(function (ReflectionParameter $param) {
             $param_name = $param->getName();
             $param_name = "{{$param_name}}";
 
