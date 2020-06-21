@@ -1,6 +1,4 @@
-<?php /** @noinspection PhpIllegalPsrClassPathInspection */
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Siler\Monolog;
 
@@ -50,8 +48,21 @@ function stream(
  */
 function log(int $level, string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL): void
 {
-    $logger = Loggers::getLogger($channel);
-    $logger->log($level, $message, $context);
+    if (Loggers::gate($level)) {
+        $logger = Loggers::getLogger($channel);
+        $logger->log($level, $message, $context);
+    }
+}
+
+/**
+ * Add a gate to the log level.
+ *
+ * @param int $level
+ * @param bool|callable():bool $predicate
+ */
+function log_if(int $level, $predicate): void
+{
+    Loggers::logIf($level, $predicate);
 }
 
 /**
@@ -81,6 +92,14 @@ function handler(HandlerInterface $handler, string $channel = MONOLOG_DEFAULT_CH
 function debug(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL): void
 {
     log(Logger::DEBUG, $message, $context, $channel);
+}
+
+/**
+ * @param bool|callable():bool $predicate
+ */
+function debug_if($predicate): void
+{
+    log_if(Logger::DEBUG, $predicate);
 }
 
 /**
@@ -179,33 +198,4 @@ function alert(string $message, array $context = [], string $channel = MONOLOG_D
 function emergency(string $message, array $context = [], string $channel = MONOLOG_DEFAULT_CHANNEL): void
 {
     log(Logger::EMERGENCY, $message, $context, $channel);
-}
-
-/**
- * Internal DIC.
- *
- * @ignore Not part of the API.
- */
-final class Loggers
-{
-    /**
-     * @var Logger[]
-     */
-    public static $loggers = [];
-
-    /**
-     * Returns the Logger identified by the channel.
-     *
-     * @param string $channel The log channel.
-     *
-     * @return Logger
-     */
-    public static function getLogger(string $channel): Logger
-    {
-        if (empty(static::$loggers[$channel])) {
-            static::$loggers[$channel] = new Logger($channel);
-        }
-
-        return static::$loggers[$channel];
-    }
 }

@@ -3,6 +3,7 @@
 namespace Siler\Test\Unit\File;
 
 use PHPUnit\Framework\TestCase;
+use SplFileInfo;
 use function Siler\File\concat_files;
 use function Siler\File\join_dir;
 use function Siler\File\recur_iter_dir;
@@ -15,7 +16,7 @@ class FileTest extends TestCase
         $basedir = dirname(__DIR__, 2);
         $dir = recursively_iterated_directory(join_dir($basedir, 'fixtures'));
 
-        $dir = array_map(function (\SplFileInfo $info): string {
+        $dir = array_map(function (SplFileInfo $info): string {
             return $info->getPathname();
         }, $dir);
 
@@ -27,7 +28,7 @@ class FileTest extends TestCase
         $basedir = dirname(__DIR__, 2);
         $dir = recur_iter_dir(join_dir($basedir, 'fixtures'), '/\.txt$/');
 
-        $dir = array_map(function (\SplFileInfo $info): string {
+        $dir = array_map(function (SplFileInfo $info): string {
             return $info->getPathname();
         }, $dir);
 
