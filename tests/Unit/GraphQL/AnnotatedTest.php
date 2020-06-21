@@ -9,9 +9,11 @@ use Siler\Test\Unit\GraphQL\Annotated\Foo;
 use Siler\Test\Unit\GraphQL\Annotated\FooBar;
 use Siler\Test\Unit\GraphQL\Annotated\IFoo;
 use Siler\Test\Unit\GraphQL\Annotated\Input;
+use Siler\Test\Unit\GraphQL\Annotated\ListOfException;
 use Siler\Test\Unit\GraphQL\Annotated\Mutation;
 use Siler\Test\Unit\GraphQL\Annotated\MyDirective;
 use Siler\Test\Unit\GraphQL\Annotated\Query;
+use TypeError;
 use function Siler\GraphQL\{annotated, execute};
 
 class AnnotatedTest extends TestCase
@@ -42,5 +44,11 @@ class AnnotatedTest extends TestCase
         $this->assertSame(['data' => ['bar' => ['myBool' => true, 'myFloat' => 4.2]]], $result);
 
         $this->assertNotNull($schema->getDirective('myDirective'));
+    }
+
+    public function testListOfException()
+    {
+        $this->expectException(TypeError::class);
+        annotated(ListOfException::class);
     }
 }

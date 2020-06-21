@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Siler\Test\Unit;
+namespace Siler\Test\Unit\GraphQL;
 
 use GraphQL\Error\Debug;
 use GraphQL\Error\Error;

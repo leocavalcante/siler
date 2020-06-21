@@ -297,6 +297,10 @@ final class Deannotator
             throw new TypeError("Class $value does exists, but is not a Type. Does it have Annotations and it's added to annotated function array?");
         }
 
+        if ('array' === $value) {
+            throw new TypeError("Plain-old arrays are not supported out-of-the-box because they aren't typed, please use listOf.");
+        }
+
         throw new TypeError("Provided class name $value is not a valid type. Perhaps your forgot to place it before another type that uses it in the `annotated` function arguments.");
     }
 

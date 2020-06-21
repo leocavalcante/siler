@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GraphQL\Tests\Utils;
+namespace Siler\Test\Unit\GraphQL;
 
 use Closure;
 use GraphQL\Error\Error;

@@ -1,8 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
-
-namespace Siler\Test\Unit\Graphql;
+namespace Siler\Test\Unit\GraphQL;
 
 use PHPUnit\Framework\TestCase;
 use Siler\GraphQL;
