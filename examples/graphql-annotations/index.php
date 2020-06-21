@@ -2,7 +2,7 @@
 
 namespace Siler\Example\GraphQL\Annotation;
 
-use Siler\GraphQL\DateTimeScalar;
+use Siler\GraphQL\DateScalar;
 use Siler\Route;
 use function Siler\GraphQL\{annotated, debug, init};
 
@@ -21,7 +21,7 @@ $schema = annotated([
     Query::class,
     Mutation::class,
 ], [
-    new DateTimeScalar(),
+    new DateScalar(),
 ]);
 
 debug();
