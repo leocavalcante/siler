@@ -8,13 +8,16 @@
 
 namespace Siler\Functional;
 
+use Closure;
+use Traversable;
+
 /**
  * Identity function.
  *
  * @template T
- * @return \Closure(T): T
+ * @return Closure(T): T
  */
-function identity(): \Closure
+function identity(): Closure
 {
     return
         /**
@@ -34,9 +37,9 @@ function identity(): \Closure
  * @template T
  * @param mixed $value
  * @psalm-param T $value
- * @return \Closure(): T
+ * @return Closure(): T
  */
-function always($value): \Closure
+function always($value): Closure
 {
     return
         /**
@@ -53,9 +56,9 @@ function always($value): \Closure
  *
  * @param mixed $right
  *
- * @return \Closure(mixed): bool
+ * @return Closure(mixed): bool
  */
-function equal($right): \Closure
+function equal($right): Closure
 {
     return
         /**
@@ -72,9 +75,9 @@ function equal($right): \Closure
  *
  * @param mixed $right
  *
- * @return \Closure(mixed): bool
+ * @return Closure(mixed): bool
  */
-function less_than($right): \Closure
+function less_than($right): Closure
 {
     return
         /**
@@ -91,9 +94,9 @@ function less_than($right): \Closure
  *
  * @param mixed $right
  *
- * @return \Closure(mixed): bool
+ * @return Closure(mixed): bool
  */
-function greater_than($right): \Closure
+function greater_than($right): Closure
 {
     return
         /**
@@ -111,22 +114,22 @@ function greater_than($right): \Closure
  * @template I
  * @template O
  * @param callable(I):bool $cond
- * @return \Closure(callable(I):O):((\Closure(callable(I):O):\Closure(I):O)
+ * @return Closure(callable(I):O):((\Closure(callable(I):O):\Closure(I):O)
  */
-function if_else(callable $cond): \Closure
+function if_else(callable $cond): Closure
 {
     return
         /**
          * @param callable(I):O $then
-         * @return \Closure(callable(I):O):(Closure(I):O)
+         * @return Closure(callable(I):O):(Closure(I):O)
          */
-        static function (callable $then) use ($cond): \Closure {
+        static function (callable $then) use ($cond): Closure {
             return
                 /**
                  * @param callable(I):O $else
-                 * @return \Closure(I):O
+                 * @return Closure(I):O
                  */
-                static function (callable $else) use ($cond, $then): \Closure {
+                static function (callable $else) use ($cond, $then): Closure {
                     return
                         /**
                          * @param mixed $value
@@ -148,9 +151,9 @@ function if_else(callable $cond): \Closure
  * @template O
  * @param array{callable(I):bool, callable(I):O}[] $matches
  * @param callable(I):O $exhaust
- * @return \Closure(I):O
+ * @return Closure(I):O
  */
-function match(array $matches, callable $exhaust): \Closure
+function match(array $matches, callable $exhaust): Closure
 {
     return
         /**
@@ -175,9 +178,9 @@ function match(array $matches, callable $exhaust): \Closure
  *
  * @param iterable<callable> $functions
  *
- * @return \Closure(mixed): bool
+ * @return Closure(mixed): bool
  */
-function any(iterable $functions): \Closure
+function any(iterable $functions): Closure
 {
     return
         /**
@@ -200,9 +203,9 @@ function any(iterable $functions): \Closure
  *
  * @param iterable<callable> $functions
  *
- * @return \Closure(mixed): bool
+ * @return Closure(mixed): bool
  */
-function all(iterable $functions): \Closure
+function all(iterable $functions): Closure
 {
     return
         /**
@@ -225,9 +228,9 @@ function all(iterable $functions): \Closure
  *
  * @param callable $function
  *
- * @return \Closure(mixed): bool
+ * @return Closure(mixed): bool
  */
-function not(callable $function): \Closure
+function not(callable $function): Closure
 {
     return
         /**
@@ -243,9 +246,9 @@ function not(callable $function): \Closure
  * Sum of $left and $right.
  *
  * @param int|float $right
- * @return \Closure(int|float): (int|float)
+ * @return Closure(int|float): (int|float)
  */
-function add($right): \Closure
+function add($right): Closure
 {
     return
         /**
@@ -261,9 +264,9 @@ function add($right): \Closure
  * Product of $left and $right.
  *
  * @param int|float $right
- * @return \Closure(int|float): (int|float)
+ * @return Closure(int|float): (int|float)
  */
-function mul($right): \Closure
+function mul($right): Closure
 {
     return
         /**
@@ -280,9 +283,9 @@ function mul($right): \Closure
  *
  * @param int|float $right
  *
- * @return \Closure(int|float): (int|float)
+ * @return Closure(int|float): (int|float)
  */
-function sub($right): \Closure
+function sub($right): Closure
 {
     return
         /**
@@ -299,9 +302,9 @@ function sub($right): \Closure
  *
  * @param int|float $right
  *
- * @return \Closure(int|float): (int|float)
+ * @return Closure(int|float): (int|float)
  */
-function div($right): \Closure
+function div($right): Closure
 {
     return
         /**
@@ -317,18 +320,16 @@ function div($right): \Closure
  * Remainder of $left divided by $right.
  *
  * @param int|float $right
- * @return \Closure(int|float): (int|float)
+ * @return Closure(int|float): (int|float)
  */
-function mod($right): \Closure
+function mod($right): Closure
 {
     return
         /**
          * @param int|float $left
-         *
          * @return int|float
-         * @return int
          */
-        static function ($left) use ($right): int {
+        static function ($left) use ($right) {
             return $left % $right;
         };
 }
@@ -339,9 +340,9 @@ function mod($right): \Closure
  *
  * @param array<callable> $functions
  *
- * @return \Closure(mixed): mixed
+ * @return Closure(mixed): mixed
  */
-function compose(array $functions): \Closure
+function compose(array $functions): Closure
 {
     return
         /**
@@ -367,9 +368,9 @@ function compose(array $functions): \Closure
 /**
  * Converts the given $value to a boolean.
  *
- * @return \Closure(mixed): bool
+ * @return Closure(mixed): bool
  */
-function bool(): \Closure
+function bool(): Closure
 {
     return
         /**
@@ -385,9 +386,9 @@ function bool(): \Closure
  * In computer science, a NOP or NOOP (short for No Operation) is an assembly language instruction,
  * programming language statement, or computer protocol command that does nothing.
  *
- * @return \Closure(): void
+ * @return Closure(): void
  */
-function noop(): \Closure
+function noop(): Closure
 {
     return static function (): void {
     };
@@ -398,9 +399,9 @@ function noop(): \Closure
  *
  * @param callable $function
  *
- * @return \Closure(): mixed
+ * @return Closure(): mixed
  */
-function hold(callable $function): \Closure
+function hold(callable $function): Closure
 {
     return
         /**
@@ -416,9 +417,9 @@ function hold(callable $function): \Closure
  *
  * @param string $value
  *
- * @return \Closure(): void
+ * @return Closure(): void
  */
-function puts($value): \Closure
+function puts($value): Closure
 {
     return static function () use ($value): void {
         echo $value;
@@ -537,10 +538,7 @@ function non_null(array $list): array
  * Filter a list removing empty values.
  *
  * @param array $list
- *
  * @return array
- *
- * @return mixed[]
  */
 function non_empty(array $list): array
 {
@@ -557,9 +555,9 @@ function non_empty(array $list): array
  * @param callable $callable
  * @param mixed ...$partial
  *
- * @return \Closure(mixed[]): mixed
+ * @return Closure(mixed[]): mixed
  */
-function partial(callable $callable, ...$partial): \Closure
+function partial(callable $callable, ...$partial): Closure
 {
     return
         /**
@@ -576,9 +574,9 @@ function partial(callable $callable, ...$partial): \Closure
  *
  * @template T
  * @param callable $predicate
- * @return \Closure(callable():T):(T|null)
+ * @return Closure(callable():T):(T|null)
  */
-function if_then(callable $predicate): \Closure
+function if_then(callable $predicate): Closure
 {
     return function (callable $then) use ($predicate) {
         if ($predicate()) {
@@ -594,9 +592,9 @@ function if_then(callable $predicate): \Closure
  *
  * @param mixed $var
  *
- * @return \Closure():bool
+ * @return Closure():bool
  */
-function is_empty($var): \Closure
+function is_empty($var): Closure
 {
     return static function () use ($var): bool {
         return empty($var);
@@ -608,9 +606,9 @@ function is_empty($var): \Closure
  *
  * @param mixed $var
  *
- * @return \Closure():bool
+ * @return Closure():bool
  */
-function isnull($var): \Closure
+function isnull($var): Closure
 {
     return static function () use ($var): bool {
         return is_null($var);
@@ -622,9 +620,9 @@ function isnull($var): \Closure
  *
  * @param string $separator
  *
- * @return \Closure(string, string|false|null): string
+ * @return Closure(string, string|false|null): string
  */
-function concat(string $separator = ''): \Closure
+function concat(string $separator = ''): Closure
 {
     return
         /**
@@ -647,9 +645,9 @@ function concat(string $separator = ''): \Closure
  * @template T
  * @param callable(...mixed): T $callable
  * @param array<int, mixed> ...$args
- * @return \Closure(): T
+ * @return Closure(): T
  */
-function lazy(callable $callable, ...$args): \Closure
+function lazy(callable $callable, ...$args): Closure
 {
     return
         /**
@@ -682,7 +680,7 @@ function call(callable $callable, ...$args)
  *
  * @template I
  * @template O
- * @param \Traversable|array $list
+ * @param Traversable|array $list
  * @psalm-param \Traversable<I>|I[] $list
  * @param callable(I, array-key):O $callback
  * @return mixed[]
@@ -708,13 +706,13 @@ function map($list, callable $callback): array
  * @template I
  * @template O
  * @param callable(I, array-key): O $callback
- * @return \Closure(\Traversable<I>|I[]): O[]
+ * @return Closure(\Traversable<I>|I[]): O[]
  */
-function lmap(callable $callback): \Closure
+function lmap(callable $callback): Closure
 {
     return
         /**
-         * @param \Traversable|array $list
+         * @param Traversable|array $list
          * @psalm-param \Traversable<I>|I[] $list
          * @return mixed[]
          * @psalm-return O[]
@@ -728,9 +726,9 @@ function lmap(callable $callback): \Closure
  * Pipes functions calls.
  *
  * @param callable[] $callbacks
- * @return \Closure
+ * @return Closure
  */
-function pipe(array $callbacks): \Closure
+function pipe(array $callbacks): Closure
 {
     return
         /**
@@ -758,9 +756,9 @@ function pipe(array $callbacks): \Closure
  * it returns the last non-null value
  *
  * @param callable[] $callbacks
- * @return \Closure
+ * @return Closure
  */
-function conduit(array $callbacks): \Closure
+function conduit(array $callbacks): Closure
 {
     return
         /**
@@ -794,16 +792,16 @@ function conduit(array $callbacks): \Closure
  *
  * @param string $separator
  *
- * @return \Closure(string|false|null):(Closure(string):string)
+ * @return Closure(string|false|null):(Closure(string):string)
  */
-function lconcat(string $separator = ''): \Closure
+function lconcat(string $separator = ''): Closure
 {
     return
         /**
          * @param string|false|null $b
-         * @return \Closure(string): string
+         * @return Closure(string): string
          */
-        static function ($b) use ($separator): \Closure {
+        static function ($b) use ($separator): Closure {
             return static function (string $a) use ($separator, $b): string {
                 return concat($separator)($a, $b);
             };
@@ -814,9 +812,9 @@ function lconcat(string $separator = ''): \Closure
  * Lazy version of join().
  *
  * @param string $glue
- * @return \Closure(array): string
+ * @return Closure(array): string
  */
-function ljoin(string $glue = ''): \Closure
+function ljoin(string $glue = ''): Closure
 {
     return static function (array $pieces) use ($glue): string {
         return join($glue, $pieces);
@@ -843,9 +841,9 @@ function filter(array $input, callable $callback): array
  *
  * @template T
  * @param callable(T):bool $callback
- * @return \Closure(T[]):T[]
+ * @return Closure(T[]):T[]
  */
-function lfilter(callable $callback): \Closure
+function lfilter(callable $callback): Closure
 {
     return function (array $input) use ($callback): array {
         return filter($input, $callback);
