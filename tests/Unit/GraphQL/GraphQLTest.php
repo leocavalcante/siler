@@ -2,7 +2,7 @@
 
 namespace Siler\Test\Unit\GraphQL;
 
-use GraphQL\Error\Debug;
+use GraphQL\Error\DebugFlag;
 use GraphQL\Error\Error;
 use GraphQL\Executor\Promise\Adapter\SyncPromiseAdapter;
 use GraphQL\Type\Schema;
@@ -93,7 +93,7 @@ class GraphQLTest extends TestCase
     public function testDebug()
     {
         GraphQL\debug();
-        $this->assertSame(Debug::INCLUDE_DEBUG_MESSAGE, Container\get(GraphQL\GRAPHQL_DEBUG));
+        $this->assertSame(DebugFlag::INCLUDE_DEBUG_MESSAGE, Container\get(GraphQL\GRAPHQL_DEBUG));
         GraphQL\debug(0);
     }
 

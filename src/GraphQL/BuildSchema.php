@@ -14,16 +14,25 @@ declare(strict_types=1);
 namespace Siler\GraphQL;
 
 use GraphQL\Error\Error;
+use GraphQL\Language\AST\DirectiveDefinitionNode;
 use GraphQL\Language\AST\DocumentNode;
-use GraphQL\Language\AST\Node;
-use GraphQL\Language\AST\NodeKind;
+use GraphQL\Language\AST\EnumTypeDefinitionNode;
+use GraphQL\Language\AST\InputObjectTypeDefinitionNode;
+use GraphQL\Language\AST\InterfaceTypeDefinitionNode;
+use GraphQL\Language\AST\ObjectTypeDefinitionNode;
+use GraphQL\Language\AST\ScalarTypeDefinitionNode;
 use GraphQL\Language\AST\SchemaDefinitionNode;
+use GraphQL\Language\AST\TypeDefinitionNode;
+use GraphQL\Language\AST\UnionTypeDefinitionNode;
 use GraphQL\Language\Parser;
+use GraphQL\Language\Source;
 use GraphQL\Type\Definition\Directive;
+use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
 use GraphQL\Utils\ASTDefinitionBuilder;
+use GraphQL\Utils\Utils;
+use GraphQL\Validator\DocumentValidator;
 use function array_map;
-use function array_reduce;
 use function sprintf;
 
 /**
@@ -35,7 +44,7 @@ class BuildSchema
     /** @var DocumentNode */
     private $ast;
 
-    /** @var Node[] */
+    /** @var TypeDefinitionNode[] */
     private $nodeMap;
 
     /** @var callable|null */
@@ -47,6 +56,9 @@ class BuildSchema
     /** @var array */
     private $resolvers;
 
+    /**
+     * @param bool[] $options
+     */
     public function __construct(DocumentNode $ast, ?callable $typeConfigDecorator = null, array $options = [], array $resolvers = [])
     {
         $this->ast = $ast;
@@ -55,56 +67,86 @@ class BuildSchema
         $this->resolvers = $resolvers;
     }
 
-    public static function build($source, ?callable $typeConfigDecorator = null, array $options = [], array $resolvers = []): Schema
+    /**
+     * A helper function to build a GraphQLSchema directly from a source
+     * document.
+     *
+     * @param DocumentNode|Source|string $source
+     * @param bool[] $options
+     *
+     * @return Schema
+     *
+     * @api
+     */
+    public static function build($source, ?callable $typeConfigDecorator = null, array $options = [], array $resolvers = [])
     {
         $doc = $source instanceof DocumentNode ? $source : Parser::parse($source);
+
         return self::buildAST($doc, $typeConfigDecorator, $options, $resolvers);
     }
 
+    /**
+     * This takes the ast of a schema document produced by the parse function in
+     * GraphQL\Language\Parser.
+     *
+     * If no schema definition is provided, then it will look for types named Query
+     * and Mutation.
+     *
+     * Given that AST it constructs a GraphQL\Type\Schema. The resulting schema
+     * has no resolve methods, so execution will use default resolvers.
+     *
+     * Accepts options as a third argument:
+     *
+     *    - commentDescriptions:
+     *        Provide true to use preceding comments as the description.
+     *        This option is provided to ease adoption and will be removed in v16.
+     *
+     * @param bool[] $options
+     *
+     * @return Schema
+     *
+     * @throws Error
+     *
+     * @api
+     */
     public static function buildAST(DocumentNode $ast, ?callable $typeConfigDecorator = null, array $options = [], array $resolvers = [])
     {
         $builder = new self($ast, $typeConfigDecorator, $options, $resolvers);
+
         return $builder->buildSchema();
     }
 
     public function buildSchema()
     {
-        /** @var SchemaDefinitionNode $schemaDef */
+        $options = $this->options;
+        if (empty($options['assumeValid']) && empty($options['assumeValidSDL'])) {
+            DocumentValidator::assertValidSDL($this->ast);
+        }
+
         $schemaDef = null;
         $typeDefs = [];
         $this->nodeMap = [];
         $directiveDefs = [];
-        foreach ($this->ast->definitions as $d) {
-            switch ($d->kind) {
-                case NodeKind::SCHEMA_DEFINITION:
-                    if ($schemaDef) {
-                        throw new Error('Must provide only one schema definition.');
-                    }
-                    $schemaDef = $d;
+        foreach ($this->ast->definitions as $definition) {
+            switch (true) {
+                case $definition instanceof SchemaDefinitionNode:
+                    $schemaDef = $definition;
                     break;
-                case NodeKind::SCALAR_TYPE_DEFINITION:
-                case NodeKind::OBJECT_TYPE_DEFINITION:
-                case NodeKind::INTERFACE_TYPE_DEFINITION:
-                case NodeKind::ENUM_TYPE_DEFINITION:
-                case NodeKind::UNION_TYPE_DEFINITION:
-                case NodeKind::INPUT_OBJECT_TYPE_DEFINITION:
-                    $typeName = $d->name->value;
+                case $definition instanceof TypeDefinitionNode:
+                    $typeName = $definition->name->value;
                     if (!empty($this->nodeMap[$typeName])) {
                         throw new Error(sprintf('Type "%s" was defined more than once.', $typeName));
                     }
-                    if (array_key_exists($typeName, $this->resolvers) && ($d->kind === NodeKind::SCALAR_TYPE_DEFINITION || $d->kind === NodeKind::ENUM_TYPE_DEFINITION)) {
-                        break;
-                    }
-                    $typeDefs[] = $d;
-                    $this->nodeMap[$typeName] = $d;
+                    $typeDefs[] = $definition;
+                    $this->nodeMap[$typeName] = $definition;
                     break;
-                case NodeKind::DIRECTIVE_DEFINITION:
-                    $directiveDefs[] = $d;
+                case $definition instanceof DirectiveDefinitionNode:
+                    $directiveDefs[] = $definition;
                     break;
             }
         }
 
-        $operationTypes = $schemaDef
+        $operationTypes = $schemaDef !== null
             ? $this->getOperationTypes($schemaDef)
             : [
                 'query' => isset($this->nodeMap['Query']) ? 'Query' : null,
@@ -112,53 +154,40 @@ class BuildSchema
                 'subscription' => isset($this->nodeMap['Subscription']) ? 'Subscription' : null,
             ];
 
-        $builder = new ASTDefinitionBuilder(
+        $DefinitionBuilder = new ASTDefinitionBuilder(
             $this->nodeMap,
             $this->options,
             function ($typeName) {
                 if (array_key_exists($typeName, $this->resolvers)) {
                     return $this->resolvers[$typeName];
                 }
+
                 throw new Error('Type "' . $typeName . '" not found in document.');
             },
             $this->typeConfigDecorator
         );
 
         $directives = array_map(
-            static function ($def) use ($builder) {
-                return $builder->buildDirective($def);
+            static function ($def) use ($DefinitionBuilder) {
+                return $DefinitionBuilder->buildDirective($def);
             },
             $directiveDefs
         );
 
         // If specified directives were not explicitly declared, add them.
-        $skip = array_reduce(
+        $directivesByName = Utils::groupBy(
             $directives,
-            static function ($hasSkip, $directive) {
-                return (bool)$hasSkip || $directive->name === 'skip';
+            static function (Directive $directive): string {
+                return $directive->name;
             }
         );
-        if (!$skip) {
+        if (!isset($directivesByName['skip'])) {
             $directives[] = Directive::skipDirective();
         }
-
-        $include = array_reduce(
-            $directives,
-            static function ($hasInclude, $directive) {
-                return (bool)$hasInclude || $directive->name === 'include';
-            }
-        );
-        if (!$include) {
+        if (!isset($directivesByName['include'])) {
             $directives[] = Directive::includeDirective();
         }
-
-        $deprecated = array_reduce(
-            $directives,
-            static function ($hasDeprecated, $directive) {
-                return (bool)$hasDeprecated || $directive->name === 'deprecated';
-            }
-        );
-        if (!$deprecated) {
+        if (!isset($directivesByName['deprecated'])) {
             $directives[] = Directive::deprecatedDirective();
         }
 
@@ -168,23 +197,24 @@ class BuildSchema
 
         return new Schema([
             'query' => isset($operationTypes['query'])
-                ? $builder->buildType($operationTypes['query'])
+                ? $DefinitionBuilder->buildType($operationTypes['query'])
                 : null,
             'mutation' => isset($operationTypes['mutation'])
-                ? $builder->buildType($operationTypes['mutation'])
+                ? $DefinitionBuilder->buildType($operationTypes['mutation'])
                 : null,
             'subscription' => isset($operationTypes['subscription'])
-                ? $builder->buildType($operationTypes['subscription'])
+                ? $DefinitionBuilder->buildType($operationTypes['subscription'])
                 : null,
-            'typeLoader' => static function ($name) use ($builder) {
-                return $builder->buildType($name);
+            'typeLoader' => static function ($name) use ($DefinitionBuilder): Type {
+                return $DefinitionBuilder->buildType($name);
             },
             'directives' => $directives,
             'astNode' => $schemaDef,
-            'types' => function () use ($builder) {
+            'types' => function () use ($DefinitionBuilder): array {
                 $types = [];
+                /** @var ScalarTypeDefinitionNode|ObjectTypeDefinitionNode|InterfaceTypeDefinitionNode|UnionTypeDefinitionNode|EnumTypeDefinitionNode|InputObjectTypeDefinitionNode $def */
                 foreach ($this->nodeMap as $name => $def) {
-                    $types[] = $builder->buildType($def->name->value);
+                    $types[] = $DefinitionBuilder->buildType($def->name->value);
                 }
 
                 return $types;
@@ -192,6 +222,13 @@ class BuildSchema
         ]);
     }
 
+    /**
+     * @param SchemaDefinitionNode $schemaDef
+     *
+     * @return string[]
+     *
+     * @throws Error
+     */
     private function getOperationTypes($schemaDef)
     {
         $opTypes = [];

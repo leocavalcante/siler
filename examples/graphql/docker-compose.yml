@@ -2,12 +2,13 @@ version: '3'
 services:
   api:
     container_name: siler_example_graphql
-    image: leocavalcante/dwoole:dev
+    image: phpswoole/swoole
     volumes:
-      - ../../:/app
+      - ../../:/var/www
     ports:
       - 8000:8000
       - 8001:8001
     environment:
-      WATCH_DIR: /app/examples/graphql
-      ENTRY_POINT_FILE: /app/examples/graphql/swoole.php
+      AUTORELOAD_PROGRAMS: "swoole"
+      AUTORELOAD_ANY_FILES: 0
+    entrypoint: php /var/www/examples/graphql/swoole.php

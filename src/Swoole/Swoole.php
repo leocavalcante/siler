@@ -23,9 +23,10 @@ use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server as WebsocketServer;
 use Throwable;
 use function Siler\array_get;
+use function Siler\GraphQL\debugging;
 use function Siler\GraphQL\execute;
 use function Siler\GraphQL\request as graphql_request;
-use const Siler\GraphQL\{GQL_DATA, GRAPHQL_DEBUG, WEBSOCKET_SUB_PROTOCOL};
+use const Siler\GraphQL\{GQL_DATA, WEBSOCKET_SUB_PROTOCOL};
 use const Siler\Route\DID_MATCH;
 
 const SWOOLE_HTTP_REQUEST = 'swoole_http_request';
@@ -494,16 +495,16 @@ function http_server_port(Server $server, callable $handler, int $port = 80, str
 function graphql_handler(Schema $schema, $root_value = null, $context = null): Closure
 {
     return static function () use ($schema, $root_value, $context): void {
-        $debugging = Container\get(GRAPHQL_DEBUG, 0) > 0;
+        $debug = debugging();
 
         try {
             $result = execute($schema, graphql_request()->toArray(), $root_value, $context);
         } catch (Throwable $exception) {
-            if ($debugging) {
+            if ($debug > 0) {
                 Log\debug('GraphQL Internal Error', ['exception' => $exception]);
             }
 
-            $result = FormattedError::createFromException($exception, $debugging);
+            $result = FormattedError::createFromException($exception, $debug);
         } finally {
             json($result);
         }

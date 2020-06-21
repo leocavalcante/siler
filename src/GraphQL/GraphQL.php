@@ -6,7 +6,7 @@ use Closure;
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Exception;
-use GraphQL\Error\Debug;
+use GraphQL\Error\DebugFlag;
 use GraphQL\Executor\Executor;
 use GraphQL\Executor\Promise\Adapter\SyncPromiseAdapter;
 use GraphQL\Executor\Promise\Promise;
@@ -22,6 +22,7 @@ use GraphQL\Type\Schema;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use Ratchet\Server\IoServer;
+use ReflectionException;
 use Siler\Arr;
 use Siler\Container;
 use Siler\Diactoros;
@@ -66,7 +67,7 @@ const SUBSCRIPTIONS_ENDPOINT = 'graphql_subscriptions_endpoint';
  * @param int $level GraphQL debug level
  * @see https://webonyx.github.io/graphql-php/error-handling
  */
-function debug(int $level = Debug::INCLUDE_DEBUG_MESSAGE): void
+function debug(int $level = DebugFlag::INCLUDE_DEBUG_MESSAGE): void
 {
     Container\set(GRAPHQL_DEBUG, $level);
 }
@@ -153,7 +154,8 @@ function request(string $input = 'php://input'): GraphQLRequest
 
     $query = array_get_str($body, 'query');
     $vars = array_get_arr($body, 'variables', []);
-    $op_name = array_get_str($body, 'operationName', '');
+    /** @var string|null $op_name */
+    $op_name = array_get($body, 'operationName');
 
     return new GraphQLRequest($query, $vars, $op_name);
 }
@@ -200,7 +202,7 @@ function promise_execute(PromiseAdapter $adapter, Schema $schema, array $input, 
     $query = array_get($input, 'query');
     /** @var array $variables */
     $variables = array_get($input, 'variables');
-    /** @var string $operation_name */
+    /** @var string|null $operation_name */
     $operation_name = array_get($input, 'operationName');
 
     return GraphQL::promiseToExecute($adapter, $schema, $query, $rootValue, $context, $variables, $operation_name);
@@ -230,7 +232,7 @@ function psr7(Schema $schema): Closure
  * @param string $typeDefs
  * @param array<string, array<string, mixed>> $resolvers
  * @param callable|null $typeConfigDecorator
- * @param array $options
+ * @param bool[] $options
  * @return Schema
  */
 function schema(string $typeDefs, array $resolvers = [], ?callable $typeConfigDecorator = null, array $options = []): Schema
@@ -450,7 +452,7 @@ function listen(string $eventName, callable $listener): void
  * @param array<Directive> $with_directives
  * @return Schema
  * @throws AnnotationException
- * @throws \ReflectionException
+ * @throws ReflectionException
  */
 function annotated(array $class_names, array $with_types = [], array $with_directives = []): Schema
 {

@@ -1,10 +1,9 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Siler\Test\Unit\GraphQL;
 
 use Closure;
+use GraphQL\Error\DebugFlag;
 use GraphQL\Error\Error;
 use GraphQL\GraphQL;
 use GraphQL\Language\AST\EnumTypeDefinitionNode;
@@ -27,7 +26,9 @@ use function count;
 
 class BuildSchemaTest extends TestCase
 {
+
     // Describe: Schema Builder
+
     /**
      * @see it('can use built schema for limited execution')
      */
@@ -40,7 +41,7 @@ class BuildSchemaTest extends TestCase
         '));
 
         $result = GraphQL::executeQuery($schema, '{ str }', ['str' => 123]);
-        self::assertEquals(['str' => 123], $result->toArray(true)['data']);
+        self::assertEquals(['str' => 123], $result->toArray(DebugFlag::INCLUDE_DEBUG_MESSAGE)['data']);
     }
 
     /**
@@ -65,7 +66,7 @@ class BuildSchemaTest extends TestCase
             '{ add(x: 34, y: 55) }',
             $root
         );
-        self::assertEquals(['data' => ['add' => 89]], $result->toArray(true));
+        self::assertEquals(['data' => ['add' => 89]], $result->toArray(DebugFlag::INCLUDE_DEBUG_MESSAGE));
     }
 
     /**
@@ -101,6 +102,8 @@ type HelloScalars {
     {
         $body = '
 directive @foo(arg: Int) on FIELD
+
+directive @repeatableFoo(arg: Int) repeatable on FIELD
 
 type Query {
   str: String
@@ -437,6 +440,22 @@ type WorldTwo {
     }
 
     /**
+     * @see it('Can build recursive Union')
+     */
+    public function testCanBuildRecursiveUnion()
+    {
+        $schema = BuildSchema::build('
+          union Hello = Hello
+
+          type Query {
+            hello: Hello
+          }
+        ');
+        $errors = $schema->validate();
+        self::assertNotEmpty($errors);
+    }
+
+    /**
      * @see it('Specifying Union type using __typename')
      */
     public function testSpecifyingUnionTypeUsingTypename(): void
@@ -490,7 +509,7 @@ type WorldTwo {
         ];
 
         $result = GraphQL::executeQuery($schema, $query, $rootValue);
-        self::assertEquals($expected, $result->toArray(true));
+        self::assertEquals($expected, $result->toArray(DebugFlag::INCLUDE_DEBUG_MESSAGE));
     }
 
     /**
@@ -554,7 +573,7 @@ type WorldTwo {
         ];
 
         $result = GraphQL::executeQuery($schema, $query, $rootValue);
-        self::assertEquals($expected, $result->toArray(true));
+        self::assertEquals($expected, $result->toArray(DebugFlag::INCLUDE_DEBUG_MESSAGE));
     }
 
     /**
@@ -894,6 +913,21 @@ type Query {
         ');
         $errors = $schema->validate();
         self::assertGreaterThan(0, $errors);
+    }
+
+    /**
+     * @see it('Rejects invalid SDL')
+     */
+    public function testRejectsInvalidSDL()
+    {
+        $doc = Parser::parse('
+          type Query {
+            foo: String @unknown
+          }
+        ');
+        $this->expectException(Error::class);
+        $this->expectExceptionMessage('Unknown directive "unknown".');
+        BuildSchema::build($doc);
     }
 
     /**
@@ -1246,15 +1280,17 @@ interface Hello {
             'description' => '',
             'deprecationReason' => '',
         ];
+
         foreach (
             [
-                     'RED' => $enumValue,
-                     'GREEN' => $enumValue,
-                     'BLUE' => $enumValue,
-                 ] as $colorKey => $colorValue
+                'RED' => $enumValue,
+                'GREEN' => $enumValue,
+                'BLUE' => $enumValue,
+            ] as $colorKey => $colorValue
         ) {
             self::assertArrayHasKey($colorKey, $defaultConfig['values']);
         }
+
         self::assertCount(4, $defaultConfig); // 3 + astNode
         self::assertEquals(array_keys($allNodesMap), ['Query', 'Color', 'Hello']);
         self::assertEquals('My description of Color', $schema->getType('Color')->description);
