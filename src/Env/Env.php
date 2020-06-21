@@ -14,7 +14,8 @@ use UnexpectedValueException;
  */
 function env_var(string $key, ?string $default = null): string
 {
-    $value = getenv($key);
+    /** @var string|false $value */
+    $value = $_ENV[$key] ?? false;
 
     if ($value === false) {
         if ($default === null) {

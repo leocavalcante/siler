@@ -12,7 +12,7 @@ class EnvTest extends TestCase
 {
     public function testEnvVar()
     {
-        putenv('FOO=bar');
+        $_ENV['FOO'] = 'bar';
         $this->assertSame('bar', env_var('FOO'));
     }
 
@@ -29,7 +29,7 @@ class EnvTest extends TestCase
 
     public function testEnvInt()
     {
-        putenv('FOO=42');
+        $_ENV['FOO'] = '42';
         $this->assertSame(42, env_int('FOO'));
     }
 
@@ -40,10 +40,10 @@ class EnvTest extends TestCase
 
     public function testEnvBool()
     {
-        putenv('FOO=true');
+        $_ENV['FOO'] = 'true';
         $this->assertSame(true, env_bool('FOO'));
 
-        putenv('FOO=false');
+        $_ENV['FOO'] = 'false';
         $this->assertSame(false, env_bool('FOO'));
     }
 }
