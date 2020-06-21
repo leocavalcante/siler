@@ -2,11 +2,6 @@
 
 namespace Siler\GraphQL;
 
-use GraphQL\Error\Error;
-use GraphQL\Language\AST\Node;
-use GraphQL\Language\AST\StringValueNode;
-use GraphQL\Type\Definition\ScalarType;
-
 class DateTimeScalar extends DateScalar
 {
     /** @var string */
