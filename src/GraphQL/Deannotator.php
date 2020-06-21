@@ -11,7 +11,15 @@ use Doctrine\Common\Cache\Cache;
 use GraphQL\Type\Definition;
 use GraphQL\Type\Schema;
 use GraphQL\Type\SchemaConfig;
+use ReflectionClass;
+use ReflectionClassConstant;
+use ReflectionException;
+use ReflectionMethod;
+use ReflectionNamedType;
+use ReflectionProperty;
 use Siler\GraphQL\Annotation;
+use TypeError;
+use UnexpectedValueException;
 
 /**
  * Class Deannotator
@@ -79,7 +87,7 @@ final class Deannotator
     /**
      * @param array<class-string> $classNames
      * @return Schema
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function deannotate(array $classNames): Schema
     {
@@ -116,11 +124,11 @@ final class Deannotator
      * @psalm-param class-string $className
      * @return mixed
      * @psalm-return Definition\Type|Definition\Directive|null
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function deannotateClass(string $className)
     {
-        $reflection = new \ReflectionClass($className);
+        $reflection = new ReflectionClass($className);
 
         foreach ($this->annotations as $annotation_class) {
             $annotation = $this->reader->getClassAnnotation($reflection, $annotation_class);
@@ -154,16 +162,16 @@ final class Deannotator
     }
 
     /**
-     * @param \ReflectionClass $reflection
+     * @param ReflectionClass $reflection
      * @param Annotation\ObjectType $annotation
      * @return Definition\ObjectType
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
-    private function objectType(\ReflectionClass $reflection, Annotation\ObjectType $annotation): Definition\ObjectType
+    private function objectType(ReflectionClass $reflection, Annotation\ObjectType $annotation): Definition\ObjectType
     {
         $fields = array_reduce(
-            $reflection->getMethods(\ReflectionMethod::IS_PUBLIC),
-            function (array $fields, \ReflectionMethod $method) use ($annotation): array {
+            $reflection->getMethods(ReflectionMethod::IS_PUBLIC),
+            function (array $fields, ReflectionMethod $method) use ($annotation): array {
                 /** @var Annotation\Field|null $annotation */
                 $annotation = $this->reader->getMethodAnnotation($method, Annotation\Field::class);
 
@@ -171,19 +179,19 @@ final class Deannotator
                     return $fields;
                 }
 
-                $method_name = $annotation->name ?? $method->getName();
+                $annotation->name = $annotation->name ?? $method->getName();
 
                 if ($annotation->type === null) {
-                    /** @var \ReflectionNamedType|null $return_type */
+                    /** @var ReflectionNamedType|null $return_type */
                     $return_type = $method->getReturnType();
                     if ($return_type !== null) {
                         $annotation->type = $return_type->getName();
                     }
                 }
 
-                $fields[$method_name] = [
+                $fields[$annotation->name] = [
                     'type' => $this->type($annotation),
-                    'name' => $method_name,
+                    'name' => $annotation->name,
                     'description' => $annotation->description,
                     'args' => $this->args($method),
                     'resolve' =>
@@ -223,14 +231,14 @@ final class Deannotator
     /**
      * @param Annotation\Field $annotation
      * @return Definition\Type
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function type(Annotation\Field $annotation): Definition\Type
     {
         $type = $annotation->listOf ?? $annotation->type;
 
         if ($type === null) {
-            throw new \UnexpectedValueException("Can't figure out a type from field {$annotation->name}. You should set type or listOf (in case of a list).");
+            throw new UnexpectedValueException("Can't figure out a type from field {$annotation->name}. You should set type or listOf (in case of a list).");
         }
 
         $type = $this->typeFromString($type);
@@ -249,7 +257,7 @@ final class Deannotator
     /**
      * @param string|class-string $value
      * @return Definition\Type
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function typeFromString(string $value): Definition\Type
     {
@@ -279,25 +287,25 @@ final class Deannotator
         }
 
         if (class_exists($value)) {
-            $reflection = new \ReflectionClass($value);
+            $reflection = new ReflectionClass($value);
             $type = $reflection->newInstanceWithoutConstructor();
 
             if ($type instanceof Definition\Type) {
                 return $type;
             }
 
-            throw new \TypeError("Class $value does exists, but is not a Type. Does it have Annotations and it's added to annotated function array?");
+            throw new TypeError("Class $value does exists, but is not a Type. Does it have Annotations and it's added to annotated function array?");
         }
 
-        throw new \TypeError("Provided class name $value is not a valid type. Perhaps your forgot to place it before another type that uses it in the `annotated` function arguments.");
+        throw new TypeError("Provided class name $value is not a valid type. Perhaps your forgot to place it before another type that uses it in the `annotated` function arguments.");
     }
 
     /**
-     * @param \ReflectionMethod $method
+     * @param ReflectionMethod $method
      * @return array<string, Definition\Type>
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
-    private function args(\ReflectionMethod $method): array
+    private function args(ReflectionMethod $method): array
     {
         $args = [];
 
@@ -310,7 +318,7 @@ final class Deannotator
 
         foreach ($annotation->fields as $field) {
             if ($field->name === null) {
-                throw new \UnexpectedValueException("Fields on Args must have a name.");
+                throw new UnexpectedValueException("Fields on Args must have a name.");
             }
 
             $args[$field->name] = $this->type($field);
@@ -320,20 +328,20 @@ final class Deannotator
     }
 
     /**
-     * @param \ReflectionClass $reflection
+     * @param ReflectionClass $reflection
      * @return array<string, array<string, mixed>>
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
-    private function fields(\ReflectionClass $reflection): array
+    private function fields(ReflectionClass $reflection): array
     {
-        /** @var array<string, array<string, mixed>> $fields */
+        /** @psalm-var array<string, array<string, mixed>> $fields */
         $fields = [];
 
-        $props = $reflection->getProperties(\ReflectionProperty::IS_PUBLIC);
+        $props = $reflection->getProperties(ReflectionProperty::IS_PUBLIC);
 
         // TODO: We are going only one level deep, this should be recursive.
         if ($reflection->getParentClass()) {
-            $props = array_merge($props, $reflection->getParentClass()->getProperties(\ReflectionProperty::IS_PUBLIC));
+            $props = array_merge($props, $reflection->getParentClass()->getProperties(ReflectionProperty::IS_PUBLIC));
         }
 
         foreach ($props as $prop) {
@@ -344,10 +352,10 @@ final class Deannotator
                 continue;
             }
 
-            $name = $annotation->name ?? $prop->getName();
+            $annotation->name = $annotation->name ?? $prop->getName();
 
-            $fields[$name] = [
-                'name' => $name,
+            $fields[$annotation->name] = [
+                'name' => $annotation->name,
                 'type' => $this->type($annotation),
                 'description' => $annotation->description,
             ];
@@ -357,11 +365,11 @@ final class Deannotator
     }
 
     /**
-     * @param \ReflectionClass $reflection
+     * @param ReflectionClass $reflection
      * @param Annotation\EnumType $annotation
      * @return Definition\EnumType
      */
-    private function enumType(\ReflectionClass $reflection, Annotation\EnumType $annotation): Definition\EnumType
+    private function enumType(ReflectionClass $reflection, Annotation\EnumType $annotation): Definition\EnumType
     {
         $parser = new DocParser();
         $parser->setImports(['enumval' => Annotation\EnumVal::class]);
@@ -372,7 +380,7 @@ final class Deannotator
             'description' => $annotation->description,
             'values' => array_reduce(
                 $reflection->getReflectionConstants(),
-                static function (array $values, \ReflectionClassConstant $const) use ($parser): array {
+                static function (array $values, ReflectionClassConstant $const) use ($parser): array {
                     $parsed = $parser->parse($const->getDocComment());
 
                     if (empty($parsed)) {
@@ -396,19 +404,19 @@ final class Deannotator
     }
 
     /**
-     * @param \ReflectionClass $reflection
+     * @param ReflectionClass $reflection
      * @param Annotation\InterfaceType $annotation
      * @return Definition\InterfaceType
      */
-    private function interfaceType(\ReflectionClass $reflection, Annotation\InterfaceType $annotation): Definition\InterfaceType
+    private function interfaceType(ReflectionClass $reflection, Annotation\InterfaceType $annotation): Definition\InterfaceType
     {
         return new Definition\InterfaceType([
             'name' => $annotation->name ?? $reflection->getShortName(),
             'description' => $annotation->description,
             'fields' => function () use ($reflection, $annotation) {
                 return array_reduce(
-                    $reflection->getMethods(\ReflectionMethod::IS_PUBLIC),
-                    function (array $fields, \ReflectionMethod $method) use ($annotation): array {
+                    $reflection->getMethods(ReflectionMethod::IS_PUBLIC),
+                    function (array $fields, ReflectionMethod $method) use ($annotation): array {
                         /** @var Annotation\Field|null $annotation */
                         $annotation = $this->reader->getMethodAnnotation($method, Annotation\Field::class);
 
@@ -419,7 +427,7 @@ final class Deannotator
                         $method_name = $annotation->name ?? $method->getName();
 
                         if ($annotation->type === null) {
-                            /** @var \ReflectionNamedType|null $return_type */
+                            /** @var ReflectionNamedType|null $return_type */
                             $return_type = $method->getReturnType();
                             if ($return_type !== null) {
                                 $annotation->type = $return_type->getName();
@@ -441,11 +449,11 @@ final class Deannotator
     }
 
     /**
-     * @param \ReflectionClass $reflection
+     * @param ReflectionClass $reflection
      * @param Annotation\UnionType $annotation
      * @return Definition\UnionType
      */
-    private function unionType(\ReflectionClass $reflection, Annotation\UnionType $annotation): Definition\UnionType
+    private function unionType(ReflectionClass $reflection, Annotation\UnionType $annotation): Definition\UnionType
     {
         return new Definition\UnionType([
             'name' => $annotation->name ?? $reflection->getShortName(),
@@ -460,12 +468,12 @@ final class Deannotator
     }
 
     /**
-     * @param \ReflectionClass $reflection
+     * @param ReflectionClass $reflection
      * @param Annotation\InputType $annotation
      * @return Definition\InputObjectType
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
-    private function inputType(\ReflectionClass $reflection, Annotation\InputType $annotation): Definition\InputObjectType
+    private function inputType(ReflectionClass $reflection, Annotation\InputType $annotation): Definition\InputObjectType
     {
         return new Definition\InputObjectType([
             'name' => $annotation->name ?? $reflection->getShortName(),
@@ -475,11 +483,11 @@ final class Deannotator
     }
 
     /**
-     * @param \ReflectionClass $reflection
+     * @param ReflectionClass $reflection
      * @param Annotation\Directive $annotation
      * @return Definition\Directive
      */
-    private function directive(\ReflectionClass $reflection, Annotation\Directive $annotation): Definition\Directive
+    private function directive(ReflectionClass $reflection, Annotation\Directive $annotation): Definition\Directive
     {
         return new Definition\Directive([
             'name' => $annotation->name ?? lcfirst($reflection->getShortName()),
