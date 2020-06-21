@@ -2,6 +2,7 @@
 
 namespace Siler\Prelude;
 
+use ReflectionObject;
 use function Siler\Str\snake_case;
 
 /**
@@ -16,8 +17,8 @@ trait FromArray
      */
     public static function fromArray(array $arr): self
     {
-        $obj = new static();
-        $reflection = new \ReflectionObject($obj);
+        $obj = new self();
+        $reflection = new ReflectionObject($obj);
 
         foreach ($reflection->getProperties() as $prop) {
             $prop_name = $prop->getName();

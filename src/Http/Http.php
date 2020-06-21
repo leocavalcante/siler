@@ -8,8 +8,6 @@ namespace Siler\Http;
 use function Siler\array_get;
 use function Siler\array_get_str;
 
-const DEFAULT_PATH_INFO = '__default_path_info';
-
 /**
  * Get a value from the $_COOKIE global.
  *
