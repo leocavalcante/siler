@@ -2,20 +2,15 @@
 
 namespace Siler\Prelude;
 
-use function Siler\Obj\patch;
-
 /**
  * @template T
  */
-trait Patch
+interface FromArrayInterface
 {
     /**
      * @param array $data
      * @return mixed
      * @psalm-return T
      */
-    public function patch(array $data)
-    {
-        return patch($this, $data);
-    }
+    public static function fromArray(array $data);
 }

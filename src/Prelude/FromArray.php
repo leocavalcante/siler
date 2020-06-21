@@ -6,16 +6,16 @@ use ReflectionObject;
 use function Siler\Str\snake_case;
 
 /**
- * Trait FromArray
- * @package Siler\Prelude
+ * @template T
  */
 trait FromArray
 {
     /**
      * @param array $arr
-     * @return static
+     * @return mixed
+     * @psalm-return T
      */
-    public static function fromArray(array $arr): self
+    public static function fromArray(array $arr)
     {
         $obj = new self();
         $reflection = new ReflectionObject($obj);
