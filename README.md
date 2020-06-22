@@ -37,9 +37,10 @@ That is it. Actually, Siler is a library, not a framework (maybe a micro-framewo
 ### Hello, World!
 
 ```php
-use function Siler\{Functional\puts, Route\get};
+use Siler\Functional as λ; // Just to be cool, don't use non-ASCII identifiers ;)
+use Siler\Route;
 
-get('/', puts('hello world'));
+Route\get('/', λ\puts('Hello, World!'));
 ```
 Nothing more, nothing less. You don't need even tell Siler to `run` or something like that (`puts` works like a lazily evaluated `echo`).
 
