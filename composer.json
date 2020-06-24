@@ -42,7 +42,7 @@
         "textalk/websocket": "^1.2",
         "twig/twig": "^3.0",
         "vimeo/psalm": "^3.12",
-        "vlucas/phpdotenv": "^4.1",
+        "vlucas/phpdotenv": "^5.0",
         "webonyx/graphql-php": "^14.0"
     },
     "autoload": {
