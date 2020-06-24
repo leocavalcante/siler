@@ -29,7 +29,7 @@
         "doctrine/cache": "^1.10",
         "gabordemooij/redbean": "^5.5",
         "google/protobuf": "^3.12",
-        "grpc/grpc": "^1.25",
+        "grpc/grpc": "^1.30",
         "laminas/laminas-diactoros": "^2.2",
         "laminas/laminas-httphandlerrunner": "^1.1",
         "laminas/laminas-stratigility": "^3.2",
