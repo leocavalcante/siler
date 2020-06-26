@@ -2,6 +2,10 @@
 
 namespace Siler\IO;
 
+use function Siler\array_get;
+use function Siler\array_get_bool;
+use function Siler\array_get_int;
+use function Siler\array_get_str;
 use function Siler\Encoder\Json\encode;
 use function Siler\Str\starts_with;
 
@@ -37,67 +41,96 @@ function csv_to_array(string $filename, string $delimiter = ',', int $length = 0
     return $arr;
 }
 
-function fetch(string $url, array $opts = [])
+/**
+ * Simple HTTP request.
+ *
+ * @psalm-type RequestOpts=array{
+ *   body?: string,
+ *   follow?: bool,
+ *   headers?: array<string, string>,
+ *   method?: string,
+ *   timeout?: int,
+ *   url?: string,
+ *   verify?: bool,
+ *   json?: mixed,
+ *   query?: array<string, mixed>,
+ *   parse?: bool,
+ * }
+ *
+ * @psalm-type Json=array|string|int|float|bool|null
+ *
+ * @psalm-type Response=array{
+ *   data: Json,
+ *   error: string,
+ *   headers: array<string, string>,
+ *   response: string,
+ *   status: int,
+ * }
+ *
+ * @param string $url
+ * @param array $opts
+ * @psalm-param RequestOpts $opts
+ * @return array
+ */
+function fetch(string $url, array $opts = []): array
 {
-    $opts = array_merge([
-        'body' => '',
-        'follow' => true,
-        'headers' => [],
-        'method' => 'get',
-        'timeout' => 30,
-        'url' => $url,
-        'verify' => false,
-        'json' => null,
-        'query' => [],
-        'parse' => true,
-    ], $opts);
-
     $error = null;
     $headers = [];
     $ch = curl_init();
 
-    if ($opts['json'] !== null) {
+    if (array_key_exists('json', $opts) && array_key_exists('body', $opts)) {
         $headers[] = 'Content-Type: application/json';
         $opts['body'] = encode($opts['body']);
     }
 
-    foreach ($opts['headers'] as $h_name => $h_value) {
-        $headers[] = "$h_name: $h_value";
+    if (array_key_exists('headers', $opts)) {
+        foreach ($opts['headers'] as $h_name => $h_value) {
+            $headers[] = "$h_name: $h_value";
+        }
     }
 
-    $url = $opts['url'];
+    $url = array_get_str($opts, 'url', $url);
 
-    if (!empty($opts['query'])) {
+    if (array_key_exists('query', $opts)) {
         $url .= (str_contains($url, '?') ? '&' : '?') . http_build_query($opts['query']);
     }
 
+    /** @psalm-var array<string, string> $response_headers */
     $response_headers = [];
 
     curl_setopt_array($ch, [
-        CURLOPT_CUSTOMREQUEST => strtoupper($opts['method']),
-        CURLOPT_FOLLOWLOCATION => $opts['follow'],
+        CURLOPT_CUSTOMREQUEST => strtoupper(array_get_str($opts, 'method', 'get')),
+        CURLOPT_FOLLOWLOCATION => array_get_bool($opts, 'follow', true),
         CURLOPT_HTTPHEADER => $headers,
-        CURLOPT_POSTFIELDS => $opts['body'],
-        CURLOPT_SSL_VERIFYPEER => $opts['verify'],
-        CURLOPT_TIMEOUT => $opts['timeout'],
+        CURLOPT_POSTFIELDS => array_get($opts, 'body', null),
+        CURLOPT_SSL_VERIFYPEER => array_get_bool($opts, 'verify', false),
+        CURLOPT_TIMEOUT => array_get_int($opts, 'timeout', 30),
         CURLOPT_URL => $url,
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HEADERFUNCTION => function ($ch, $header) use (&$response_headers) {
-            $len = strlen($header);
-            $header = explode(':', $header, 2);
+        CURLOPT_HEADERFUNCTION =>
+        /**
+         * @param mixed $ch
+         * @param string $header
+         * @return int
+         */
+            static function ($ch, string $header) use (&$response_headers): int {
+                $len = strlen($header);
+                $header = explode(':', $header, 2);
 
-            if (count($header) < 2) {
+                if (count($header) < 2) {
+                    return $len;
+                }
+
+                $response_headers[strtolower(trim($header[0]))] = trim($header[1]);
+
                 return $len;
-            }
-
-            $response_headers[strtolower(trim($header[0]))] = trim($header[1]);
-
-            return $len;
-        },
+            },
     ]);
 
+    /** @var array<string, string> $response_headers */
+    $response_headers = $response_headers;
     $response = curl_exec($ch);
-    $status = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+    $status = intval(curl_getinfo($ch, CURLINFO_RESPONSE_CODE));
     $data = null;
 
     if (empty($response)) {
@@ -107,8 +140,9 @@ function fetch(string $url, array $opts = [])
 
     curl_close($ch);
 
-    if ($opts['parse']) {
-        if (starts_with($response_headers['content-type'], 'application/json')) {
+    if (array_get_bool($opts, 'parse', true) && array_key_exists('content-type', $response_headers)) {
+        if (starts_with($response_headers['content-type'], 'application/json') && is_string($response)) {
+            /** @psalm-var Json $data */
             $data = json_decode($response, true);
 
             if (json_last_error()) {
@@ -120,10 +154,10 @@ function fetch(string $url, array $opts = [])
     }
 
     return [
+        'data' => $data,
         'error' => $error,
+        'headers' => $response_headers,
         'response' => $response,
         'status' => $status,
-        'headers' => $response_headers,
-        'data' => $data,
     ];
 }
