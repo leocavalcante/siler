@@ -348,4 +348,21 @@ class FunctionalTest extends TestCase
 
         $this->assertSame([2, 4], f\lfilter($even)($input));
     }
+
+    public function testEvenOdd()
+    {
+        $this->assertTrue(f\even(2));
+        $this->assertFalse(f\odd(2));
+        $this->assertFalse(f\even(1));
+        $this->assertTrue(f\odd(1));
+    }
+
+    public function testFind()
+    {
+        $list = [1, 2, 3];
+        $this->assertSame(2, f\find($list, f\even));
+
+        $fst_even = f\lfind(f\even);
+        $this->assertSame(2, $fst_even($list));
+    }
 }

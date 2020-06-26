@@ -849,3 +849,64 @@ function lfilter(callable $callback): Closure
         return filter($input, $callback);
     };
 }
+
+/**
+ * Returns true if the given number is even.
+ *
+ * @param int $number
+ * @return bool
+ */
+function even(int $number): bool
+{
+    return $number % 2 === 0;
+}
+
+/**
+ * Returns true if the given number is odd.
+ *
+ * @param int $number
+ * @return bool
+ */
+function odd(int $number): bool
+{
+    return !even($number);
+}
+
+/**
+ * Returns the first element that matches the given predicate.
+ *
+ * @template T
+ * @param array $list
+ * @psalm-param T[] $list
+ * @param callable(T):bool $predicate
+ * @param mixed|null $default
+ * @psalm-param T|null $default
+ * @return mixed|null
+ * @psalm-return T|null
+ */
+function find(array $list, callable $predicate, $default = null)
+{
+    foreach ($list as $item) {
+        if ($predicate($item)) {
+            return $item;
+        }
+    }
+
+    return $default;
+}
+
+/**
+ * Lazy version for find.
+ *
+ * @template T
+ * @param callable(T):bool $predicate
+ * @param mixed|null $default
+ * @psalm-param T|null $default
+ * @return Closure(T[]):(T|null)
+ */
+function lfind(callable $predicate, $default = null)
+{
+    return function (array $list) use ($predicate, $default) {
+        return find($list, $predicate, $default);
+    };
+}
