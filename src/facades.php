@@ -99,6 +99,8 @@ const even = '\Siler\Functional\even';
 const odd = '\Siler\Functional\odd';
 const find = '\Siler\Functional\find';
 const lfind = '\Siler\Functional\lfind';
+const sort = '\Siler\Functional\sort';
+const lsort = '\Siler\Functional\lsort';
 
 
 namespace Siler\Functional\Monad;

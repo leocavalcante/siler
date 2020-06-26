@@ -365,4 +365,20 @@ class FunctionalTest extends TestCase
 
         $this->assertSame(0, f\find($list, f\equal(0), 0));
     }
+
+    public function testSort()
+    {
+        $list = [1, 2, 3];
+
+        $desc = function (int $a, int $b): int {
+            return $b <=> $a;
+        };
+
+        $this->assertSame([3, 2, 1], f\sort($list, $desc));
+
+        $sort_desc = f\lsort($desc);
+        $this->assertSame([3, 2, 1], $sort_desc($list));
+
+        $this->assertSame($list, $list);
+    }
 }

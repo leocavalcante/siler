@@ -904,9 +904,39 @@ function find(array $list, callable $predicate, $default = null)
  * @psalm-param T|null $default
  * @return Closure(T[]):(T|null)
  */
-function lfind(callable $predicate, $default = null)
+function lfind(callable $predicate, $default = null): Closure
 {
     return function (array $list) use ($predicate, $default) {
         return find($list, $predicate, $default);
+    };
+}
+
+/**
+ * Sorts a list by a given compare/test function returning a new list without modifying the given one.
+ *
+ * @template T
+ * @param array $list
+ * @psalm-param T[] $list
+ * @param callable(T, T):int $test
+ * @return array
+ * @psalm-return T[]
+ */
+function sort(array $list, callable $test): array
+{
+    usort($list, $test);
+    return $list;
+}
+
+/**
+ * Lazy version of the sort function.
+ *
+ * @template T
+ * @param callable(T, T):int $test
+ * @return Closure(T[]):T[]
+ */
+function lsort(callable $test): Closure
+{
+    return function (array $list) use ($test) {
+        return sort($list, $test);
     };
 }
