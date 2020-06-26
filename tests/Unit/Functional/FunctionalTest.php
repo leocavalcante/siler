@@ -1,8 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
-
-namespace Siler\Test\Unit;
+namespace Siler\Test\Unit\Functional;
 
 use Iterator;
 use PHPUnit\Framework\TestCase;
@@ -364,5 +362,7 @@ class FunctionalTest extends TestCase
 
         $fst_even = f\lfind(f\even);
         $this->assertSame(2, $fst_even($list));
+
+        $this->assertSame(0, f\find($list, f\equal(0), 0));
     }
 }
