@@ -33,7 +33,48 @@ final class Field
     public $listOf;
     /**
      * @var boolean
-     * @psalm-var boolean
+     * @psalm-var boolean|null
      */
     public $nullable = false;
+
+    /**
+     * @var callable|null
+     */
+    public $resolve;
+
+    public function type(string $type): self
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    public function name(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function description(string $description): self
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    public function listOf(string $listOf): self
+    {
+        $this->listOf = $listOf;
+        return $this;
+    }
+
+    public function nullable(bool $nullable): self
+    {
+        $this->nullable = $nullable;
+        return $this;
+    }
+
+    public function resolve(?callable $resolve): self
+    {
+        $this->resolve = $resolve;
+        return $this;
+    }
 }

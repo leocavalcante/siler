@@ -169,9 +169,39 @@ final class Deannotator
      */
     private function objectType(ReflectionClass $reflection, Annotation\ObjectType $annotation): Definition\ObjectType
     {
+        $fields = [];
+
+        if ($reflection->hasMethod('dynamicFields')) {
+            /** @var Annotation\Field[] $dynamic_fields */
+            $dynamic_fields = $reflection->getMethod('dynamicFields')->invoke(null);
+
+            $fields = array_reduce(
+                $dynamic_fields,
+                function (array $fields, Annotation\Field $field) {
+                    if ($field->name === null) {
+                        throw new UnexpectedValueException("Dynamic fields must have a declared name.");
+                    }
+
+                    if ($field->type === null) {
+                        throw new UnexpectedValueException("Dynamic fields must have a declared type.");
+                    }
+
+                    $fields[$field->name] = [
+                        'name' => $field->name,
+                        'type' => $this->typeFromString($field->type),
+                        'description' => $field->description,
+                        'resolve' => $field->resolve,
+                    ];
+
+                    return $fields;
+                },
+                $fields
+            );
+        }
+
         $fields = array_reduce(
             $reflection->getMethods(ReflectionMethod::IS_PUBLIC),
-            function (array $fields, ReflectionMethod $method) use ($annotation): array {
+            function (array $fields, ReflectionMethod $method): array {
                 /** @var Annotation\Field|null $annotation */
                 $annotation = $this->reader->getMethodAnnotation($method, Annotation\Field::class);
 
@@ -213,7 +243,7 @@ final class Deannotator
 
                 return $fields;
             },
-            []
+            $fields
         );
 
         return new Definition\ObjectType([

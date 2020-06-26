@@ -44,6 +44,9 @@ class AnnotatedTest extends TestCase
         $this->assertSame(['data' => ['bar' => ['myBool' => true, 'myFloat' => 4.2]]], $result);
 
         $this->assertNotNull($schema->getDirective('myDirective'));
+
+        $result = execute($schema, ['query' => 'query { baz }']);
+        $this->assertSame(['data' => ['baz' => 'Baz']], $result);
     }
 
     public function testListOfException()

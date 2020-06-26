@@ -2,9 +2,12 @@
 
 namespace Siler\Example\GraphQL\Annotation;
 
+use DateTime;
 use GraphQL\Type\Definition\ResolveInfo;
 use Siler\GraphQL\Annotation\Field;
 use Siler\GraphQL\Annotation\ObjectType;
+use function Siler\Functional\always;
+use function Siler\Functional\map;
 
 /** @ObjectType */
 class Query
@@ -22,9 +25,9 @@ class Query
     }
 
     /** @Field */
-    public static function now(): \DateTime
+    public static function now(): DateTime
     {
-        return new \DateTime();
+        return new DateTime();
     }
 
     /** @Field */
@@ -43,5 +46,10 @@ class Query
         $todo = new Todo('Something to do');
         $todo->parent = $parent;
         return [$todo];
+    }
+
+    public static function dynamicFields(): array
+    {
+        return map(range(1, 10), fn(int $i) => (new Field())->name("index$i")->type('Int')->resolve(always($i)));
     }
 }
