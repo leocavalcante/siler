@@ -208,6 +208,7 @@ const assoc = '\Siler\Arr\assoc';
 namespace Siler\IO;
 const println = '\Siler\IO\println';
 const csv_to_array = '\Siler\IO\csv_to_array';
+const fetch = '\Siler\IO\fetch';
 
 
 namespace Siler\Klass;
