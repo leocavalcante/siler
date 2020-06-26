@@ -24,14 +24,22 @@ class IOTest extends TestCase
     public function testFetch()
     {
         $args = ['foo' => 'bar'];
-        ['data' => $data, 'error' => $err] = fetch('https://postman-echo.com/get', ['query' => $args]);
-        $this->assertSame($args, $data['args']);
+        ['response' => $response, 'error' => $err, 'status' => $code] = fetch('https://postman-echo.com/get', ['query' => $args]);
         $this->assertNull($err);
+        $this->assertSame(200, $code);
+        $this->assertSame($args, $response['args']);
 
-        ['response' => $response, 'error' => $err] = fetch('https://postman-echo.com/post', ['body' => 'foobar']);
+        ['status' => $code, 'error' => $err] = fetch('https://postman-echo.com/status/418');
+        $this->assertNull($err);
+        $this->assertSame(418, $code);
 
-        var_dump($err);
-
-        $this->assertSame('foobar', $response);
+        ['response' => $response, 'error' => $err, 'status' => $code] = fetch('https://postman-echo.com/post', [
+            'method' => 'post',
+            'body' => 'foobar',
+            'headers' => ['content-type' => 'text/plain'],
+        ]);
+        $this->assertNull($err);
+        $this->assertSame(200, $code);
+        $this->assertSame('foobar', $response['data']);
     }
 }

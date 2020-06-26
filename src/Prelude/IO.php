@@ -60,10 +60,9 @@ function csv_to_array(string $filename, string $delimiter = ',', int $length = 0
  * @psalm-type Json=array|string|int|float|bool|null
  *
  * @psalm-type Response=array{
- *   data: Json,
  *   error: string,
  *   headers: array<string, string>,
- *   response: string,
+ *   response: string|Json,
  *   status: int,
  * }
  *
@@ -133,8 +132,13 @@ function fetch(string $url, array $opts = []): array
     $status = intval(curl_getinfo($ch, CURLINFO_RESPONSE_CODE));
     $data = null;
 
-    if (empty($response)) {
+    if ($response === false) {
         $error = curl_error($ch);
+
+        if ($error === '') {
+            $error = null;
+        }
+
         $response = null;
     }
 
@@ -142,19 +146,17 @@ function fetch(string $url, array $opts = []): array
 
     if (array_get_bool($opts, 'parse', true) && array_key_exists('content-type', $response_headers)) {
         if (starts_with($response_headers['content-type'], 'application/json') && is_string($response)) {
-            /** @psalm-var Json $data */
-            $data = json_decode($response, true);
+            /** @psalm-var Json $response */
+            $response = json_decode($response, true);
 
             if (json_last_error()) {
                 $error = json_last_error_msg();
-                $data = null;
                 $response = null;
             }
         }
     }
 
     return [
-        'data' => $data,
         'error' => $error,
         'headers' => $response_headers,
         'response' => $response,
