@@ -44,6 +44,17 @@ Route\get('/', λ\puts('Hello, World!'));
 ```
 Nothing more, nothing less. You don't need even tell Siler to `run` or something like that (`puts` works like a lazily evaluated `echo`).
 
+#### JSON
+
+```php
+use Siler\Route;
+use Siler\Http\Response;
+
+Route\get('/', fn() => Response\json(['message' => 'Hello, World!']));
+```
+
+The `Response\json` function will automatically add `Content-type: application/json` in the response headers.
+
 ## What is next?
 
 - [Documentation](https://siler.leocavalcante.dev/)
