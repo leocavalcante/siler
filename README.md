@@ -87,19 +87,42 @@ $schema = GraphQL\schema($type_defs, $resolvers);
 Route\post('/graphql', fn() => GraphQL\init($schema));
 ```
 
-```graphql
-query {
-  hello
+#### Code-first
+
+Another peer-dependency:
+
+```bash
+composer require doctrine/annotations
+```
+
+Then:
+
+```php
+/**
+ * @\Siler\GraphQL\Annotation\ObjectType()
+ */
+final class Query
+{
+    /**
+     * @\Siler\GraphQL\Annotation\Field()
+     */
+    static public function hello($root, $args, $context, $info): string
+    {
+        return 'Hello, World!';
+    }
 }
 ```
 
-```json
-{
-  "data": {
-    "hello": "Hello, World!"
-  }
-}
+```php
+use Siler\GraphQL;
+use Siler\Route;
+
+$schema = GraphQL\annotated([Query::class]);
+
+Route\post('/graphql', fn() => GraphQL\init($schema));
 ```
+
+Object type name will be guessed from class name, same for field name, and it's return type (i.e.: PHP `string` scalar `===` GraphQL `String` scalar).
 
 ## What is next?
 
