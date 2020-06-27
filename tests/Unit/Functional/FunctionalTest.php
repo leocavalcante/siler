@@ -398,4 +398,14 @@ class FunctionalTest extends TestCase
         $higher = f\lfirst($desc);
         $this->assertSame(3, $higher($list));
     }
+
+    public function testSum()
+    {
+        $this->assertSame(2, f\sum(1, 1));
+    }
+
+    public function testFold()
+    {
+        $this->assertSame(6, f\fold([1, 2, 3], 0, f\sum));
+    }
 }

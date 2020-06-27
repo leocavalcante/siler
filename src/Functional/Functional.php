@@ -980,3 +980,36 @@ function lfirst(callable $test, $if_empty = null): Closure
         return first($list, $test, $if_empty);
     };
 }
+
+/**
+ * Sums two integers.
+ *
+ * @param int $a
+ * @param int $b
+ * @return int
+ */
+function sum(int $a, int $b): int
+{
+    return $a + $b;
+}
+
+/**
+ * @template T
+ * @param array $list
+ * @psalm-param T[] $list
+ * @param mixed $initial
+ * @psalm-param T $initial
+ * @param callable(T,T):T $callback
+ * @return mixed
+ * @psalm-return T
+ */
+function fold(array $list, $initial, callable $callback)
+{
+    $value = $initial;
+
+    foreach ($list as $item) {
+        $value = $callback($value, $item);
+    }
+
+    return $value;
+}

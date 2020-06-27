@@ -103,6 +103,8 @@ const sort = '\Siler\Functional\sort';
 const lsort = '\Siler\Functional\lsort';
 const first = '\Siler\Functional\first';
 const lfirst = '\Siler\Functional\lfirst';
+const sum = '\Siler\Functional\sum';
+const fold = '\Siler\Functional\fold';
 
 
 namespace Siler\Functional\Monad;
