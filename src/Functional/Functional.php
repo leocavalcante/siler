@@ -452,10 +452,13 @@ function flatten(array $list): array
 /**
  * Extract the first element of a list.
  *
+ * @template T
  * @param array $list
- * @param mixed $default
- *
+ * @psalm-param T[] $list
+ * @param mixed|null $default
+ * @psalm-param T|null $default
  * @return mixed|null
+ * @psalm-return T|null
  */
 function head(array $list, $default = null)
 {
@@ -938,5 +941,42 @@ function lsort(callable $test): Closure
 {
     return function (array $list) use ($test) {
         return sort($list, $test);
+    };
+}
+
+/**
+ * Returns the first element on a list after it is sorted. It is a head(sort()) alias.
+ *
+ * @template T
+ * @param array $list
+ * @psalm-param T[] $list
+ * @param callable(T,T):int $test
+ * @param mixed|null $if_empty
+ * @psalm-param T|null $if_empty
+ * @return mixed|null
+ * @psalm-return T|null
+ */
+function first(array $list, callable $test, $if_empty = null)
+{
+    if (empty($list)) {
+        return $if_empty;
+    }
+
+    return head(sort($list, $test));
+}
+
+/**
+ * Lazy version of the `first` function.
+ *
+ * @template T
+ * @param callable(T,T):int $test
+ * @param mixed|null $if_empty
+ * @psalm-param T|null $if_empty
+ * @return Closure(T[]):(T|null)
+ */
+function lfirst(callable $test, $if_empty = null): Closure
+{
+    return function (array $list) use ($test, $if_empty) {
+        return first($list, $test, $if_empty);
     };
 }

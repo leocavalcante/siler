@@ -101,6 +101,8 @@ const find = '\Siler\Functional\find';
 const lfind = '\Siler\Functional\lfind';
 const sort = '\Siler\Functional\sort';
 const lsort = '\Siler\Functional\lsort';
+const first = '\Siler\Functional\first';
+const lfirst = '\Siler\Functional\lfirst';
 
 
 namespace Siler\Functional\Monad;

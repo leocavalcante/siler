@@ -381,4 +381,21 @@ class FunctionalTest extends TestCase
 
         $this->assertSame($list, $list);
     }
+
+    public function testFirst()
+    {
+        $desc = function (int $a, int $b): int {
+            return $b <=> $a;
+        };
+
+        $list = [];
+        $this->assertNull(f\first($list, $desc));
+        $this->assertSame(42, f\first($list, $desc, 42));
+
+        $list = [1, 2, 3];
+        $this->assertSame(3, f\first($list, $desc));
+
+        $higher = f\lfirst($desc);
+        $this->assertSame(3, $higher($list));
+    }
 }
