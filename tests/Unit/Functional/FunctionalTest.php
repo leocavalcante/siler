@@ -1,8 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
-
-namespace Siler\Test\Unit;
+namespace Siler\Test\Unit\Functional;
 
 use Iterator;
 use PHPUnit\Framework\TestCase;
@@ -347,5 +345,67 @@ class FunctionalTest extends TestCase
         };
 
         $this->assertSame([2, 4], f\lfilter($even)($input));
+    }
+
+    public function testEvenOdd()
+    {
+        $this->assertTrue(f\even(2));
+        $this->assertFalse(f\odd(2));
+        $this->assertFalse(f\even(1));
+        $this->assertTrue(f\odd(1));
+    }
+
+    public function testFind()
+    {
+        $list = [1, 2, 3];
+        $this->assertSame(2, f\find($list, f\even));
+
+        $fst_even = f\lfind(f\even);
+        $this->assertSame(2, $fst_even($list));
+
+        $this->assertSame(0, f\find($list, f\equal(0), 0));
+    }
+
+    public function testSort()
+    {
+        $list = [1, 2, 3];
+
+        $desc = function (int $a, int $b): int {
+            return $b <=> $a;
+        };
+
+        $this->assertSame([3, 2, 1], f\sort($list, $desc));
+
+        $sort_desc = f\lsort($desc);
+        $this->assertSame([3, 2, 1], $sort_desc($list));
+
+        $this->assertSame($list, $list);
+    }
+
+    public function testFirst()
+    {
+        $desc = function (int $a, int $b): int {
+            return $b <=> $a;
+        };
+
+        $list = [];
+        $this->assertNull(f\first($list, $desc));
+        $this->assertSame(42, f\first($list, $desc, 42));
+
+        $list = [1, 2, 3];
+        $this->assertSame(3, f\first($list, $desc));
+
+        $higher = f\lfirst($desc);
+        $this->assertSame(3, $higher($list));
+    }
+
+    public function testSum()
+    {
+        $this->assertSame(2, f\sum(1, 1));
+    }
+
+    public function testFold()
+    {
+        $this->assertSame(6, f\fold([1, 2, 3], 0, f\sum));
     }
 }

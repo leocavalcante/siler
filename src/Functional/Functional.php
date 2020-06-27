@@ -452,10 +452,13 @@ function flatten(array $list): array
 /**
  * Extract the first element of a list.
  *
+ * @template T
  * @param array $list
- * @param mixed $default
- *
+ * @psalm-param T[] $list
+ * @param mixed|null $default
+ * @psalm-param T|null $default
  * @return mixed|null
+ * @psalm-return T|null
  */
 function head(array $list, $default = null)
 {
@@ -848,4 +851,165 @@ function lfilter(callable $callback): Closure
     return function (array $input) use ($callback): array {
         return filter($input, $callback);
     };
+}
+
+/**
+ * Returns true if the given number is even.
+ *
+ * @param int $number
+ * @return bool
+ */
+function even(int $number): bool
+{
+    return $number % 2 === 0;
+}
+
+/**
+ * Returns true if the given number is odd.
+ *
+ * @param int $number
+ * @return bool
+ */
+function odd(int $number): bool
+{
+    return !even($number);
+}
+
+/**
+ * Returns the first element that matches the given predicate.
+ *
+ * @template T
+ * @param array $list
+ * @psalm-param T[] $list
+ * @param callable(T):bool $predicate
+ * @param mixed|null $default
+ * @psalm-param T|null $default
+ * @return mixed|null
+ * @psalm-return T|null
+ */
+function find(array $list, callable $predicate, $default = null)
+{
+    foreach ($list as $item) {
+        if ($predicate($item)) {
+            return $item;
+        }
+    }
+
+    return $default;
+}
+
+/**
+ * Lazy version for find.
+ *
+ * @template T
+ * @param callable(T):bool $predicate
+ * @param mixed|null $default
+ * @psalm-param T|null $default
+ * @return Closure(T[]):(T|null)
+ */
+function lfind(callable $predicate, $default = null): Closure
+{
+    return function (array $list) use ($predicate, $default) {
+        return find($list, $predicate, $default);
+    };
+}
+
+/**
+ * Sorts a list by a given compare/test function returning a new list without modifying the given one.
+ *
+ * @template T
+ * @param array $list
+ * @psalm-param T[] $list
+ * @param callable(T, T):int $test
+ * @return array
+ * @psalm-return T[]
+ */
+function sort(array $list, callable $test): array
+{
+    usort($list, $test);
+    return $list;
+}
+
+/**
+ * Lazy version of the sort function.
+ *
+ * @template T
+ * @param callable(T, T):int $test
+ * @return Closure(T[]):T[]
+ */
+function lsort(callable $test): Closure
+{
+    return function (array $list) use ($test) {
+        return sort($list, $test);
+    };
+}
+
+/**
+ * Returns the first element on a list after it is sorted. It is a head(sort()) alias.
+ *
+ * @template T
+ * @param array $list
+ * @psalm-param T[] $list
+ * @param callable(T,T):int $test
+ * @param mixed|null $if_empty
+ * @psalm-param T|null $if_empty
+ * @return mixed|null
+ * @psalm-return T|null
+ */
+function first(array $list, callable $test, $if_empty = null)
+{
+    if (empty($list)) {
+        return $if_empty;
+    }
+
+    return head(sort($list, $test));
+}
+
+/**
+ * Lazy version of the `first` function.
+ *
+ * @template T
+ * @param callable(T,T):int $test
+ * @param mixed|null $if_empty
+ * @psalm-param T|null $if_empty
+ * @return Closure(T[]):(T|null)
+ */
+function lfirst(callable $test, $if_empty = null): Closure
+{
+    return function (array $list) use ($test, $if_empty) {
+        return first($list, $test, $if_empty);
+    };
+}
+
+/**
+ * Sums two integers.
+ *
+ * @param int $a
+ * @param int $b
+ * @return int
+ */
+function sum(int $a, int $b): int
+{
+    return $a + $b;
+}
+
+/**
+ * @template T
+ * @param array $list
+ * @psalm-param T[] $list
+ * @param mixed $initial
+ * @psalm-param T $initial
+ * @param callable(T,T):T $callback
+ * @return mixed
+ * @psalm-return T
+ */
+function fold(array $list, $initial, callable $callback)
+{
+    $value = $initial;
+
+    foreach ($list as $item) {
+        $value = $callback($value, $item);
+    }
+
+    return $value;
 }

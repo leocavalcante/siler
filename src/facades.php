@@ -95,6 +95,16 @@ const lconcat = '\Siler\Functional\lconcat';
 const ljoin = '\Siler\Functional\ljoin';
 const filter = '\Siler\Functional\filter';
 const lfilter = '\Siler\Functional\lfilter';
+const even = '\Siler\Functional\even';
+const odd = '\Siler\Functional\odd';
+const find = '\Siler\Functional\find';
+const lfind = '\Siler\Functional\lfind';
+const sort = '\Siler\Functional\sort';
+const lsort = '\Siler\Functional\lsort';
+const first = '\Siler\Functional\first';
+const lfirst = '\Siler\Functional\lfirst';
+const sum = '\Siler\Functional\sum';
+const fold = '\Siler\Functional\fold';
 
 
 namespace Siler\Functional\Monad;
