@@ -3,6 +3,7 @@
 namespace Siler\Env;
 
 use UnexpectedValueException;
+use function Siler\Functional\bool;
 
 /**
  * Gets a variable from the environment.
@@ -58,4 +59,15 @@ function env_bool(string $key, ?bool $default = null): bool
     }
 
     return boolval($value);
+}
+
+/**
+ * A simple sugar for array_key_exists($key, $_ENV) to match other env_* functions.
+ *
+ * @param string $key
+ * @return bool
+ */
+function env_has(string $key): bool
+{
+    return array_key_exists($key, $_ENV);
 }

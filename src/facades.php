@@ -42,6 +42,7 @@ namespace Siler\Env;
 const env_var = '\Siler\Env\env_var';
 const env_int = '\Siler\Env\env_int';
 const env_bool = '\Siler\Env\env_bool';
+const env_has = '\Siler\Env\env_has';
 
 
 namespace Siler\File;
