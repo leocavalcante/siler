@@ -1746,19 +1746,19 @@
             "time": "2020-04-16T18:48:43+00:00"
         },
         {
-            "name": "nikic/php-parser",
-            "version": "v4.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "53c2753d756f5adb586dca79c2ec0e2654dd9463"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/53c2753d756f5adb586dca79c2ec0e2654dd9463",
-                "reference": "53c2753d756f5adb586dca79c2ec0e2654dd9463",
-                "shasum": ""
-            },
+          "name": "nikic/php-parser",
+          "version": "v4.6.0",
+          "source": {
+            "type": "git",
+            "url": "https://github.com/nikic/PHP-Parser.git",
+            "reference": "c346bbfafe2ff60680258b631afb730d186ed864"
+          },
+          "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/c346bbfafe2ff60680258b631afb730d186ed864",
+            "reference": "c346bbfafe2ff60680258b631afb730d186ed864",
+            "shasum": ""
+          },
             "require": {
                 "ext-tokenizer": "*",
                 "php": ">=7.0"
@@ -1795,7 +1795,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2020-06-03T07:24:19+00:00"
+          "time": "2020-07-02T17:12:47+00:00"
         },
         {
             "name": "ocramius/package-versions",
@@ -3395,20 +3395,20 @@
             ],
             "time": "2019-03-27T18:10:32+00:00"
         },
-        {
-            "name": "react/socket",
-            "version": "v1.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/reactphp/socket.git",
-                "reference": "97522e24987365e1ed873f0f4884900747a668e0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/socket/zipball/97522e24987365e1ed873f0f4884900747a668e0",
-                "reference": "97522e24987365e1ed873f0f4884900747a668e0",
-                "shasum": ""
-            },
+      {
+        "name": "react/socket",
+        "version": "v1.5.0",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/reactphp/socket.git",
+          "reference": "842dcd71df86671ee9491734035b3d2cf4a80ece"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/reactphp/socket/zipball/842dcd71df86671ee9491734035b3d2cf4a80ece",
+          "reference": "842dcd71df86671ee9491734035b3d2cf4a80ece",
+          "shasum": ""
+        },
             "require": {
                 "evenement/evenement": "^3.0 || ^2.0 || ^1.0",
                 "php": ">=5.3.0",
@@ -3419,9 +3419,9 @@
                 "react/stream": "^1.1"
             },
             "require-dev": {
-                "clue/block-react": "^1.2",
-                "phpunit/phpunit": "^7.5 || ^6.4 || ^5.7 || ^4.8.35",
-                "react/promise-stream": "^1.2"
+              "clue/block-react": "^1.2",
+              "phpunit/phpunit": "^9.0 || ^5.7 || ^4.8.35",
+              "react/promise-stream": "^1.2"
             },
             "type": "library",
             "autoload": {
@@ -3441,7 +3441,7 @@
                 "reactphp",
                 "stream"
             ],
-            "time": "2020-03-12T12:15:14+00:00"
+        "time": "2020-07-01T12:50:00+00:00"
         },
         {
             "name": "react/stream",
@@ -4124,20 +4124,20 @@
             ],
             "time": "2020-06-26T12:16:22+00:00"
         },
-        {
-            "name": "sebastian/type",
-            "version": "2.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sebastianbergmann/type.git",
-                "reference": "56b3ba194e0cbaaf3de7ccd353c289d7a84ed022"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/type/zipball/56b3ba194e0cbaaf3de7ccd353c289d7a84ed022",
-                "reference": "56b3ba194e0cbaaf3de7ccd353c289d7a84ed022",
-                "shasum": ""
-            },
+      {
+        "name": "sebastian/type",
+        "version": "2.2.1",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/sebastianbergmann/type.git",
+          "reference": "86991e2b33446cd96e648c18bcdb1e95afb2c05a"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/sebastianbergmann/type/zipball/86991e2b33446cd96e648c18bcdb1e95afb2c05a",
+          "reference": "86991e2b33446cd96e648c18bcdb1e95afb2c05a",
+          "shasum": ""
+        },
             "require": {
                 "php": "^7.3 || ^8.0"
             },
@@ -4147,7 +4147,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev"
+                  "dev-master": "2.2-dev"
                 }
             },
             "autoload": {
@@ -4174,7 +4174,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-06-26T12:17:54+00:00"
+        "time": "2020-07-05T08:31:53+00:00"
         },
         {
             "name": "sebastian/version",
@@ -4465,28 +4465,32 @@
             ],
             "time": "2020-06-15T12:59:21+00:00"
         },
-        {
-            "name": "symfony/deprecation-contracts",
-            "version": "v2.1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/deprecation-contracts.git",
-                "reference": "dd99cb3a0aff6cadd2a8d7d7ed72c2161e218337"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/dd99cb3a0aff6cadd2a8d7d7ed72c2161e218337",
-                "reference": "dd99cb3a0aff6cadd2a8d7d7ed72c2161e218337",
-                "shasum": ""
-            },
+      {
+        "name": "symfony/deprecation-contracts",
+        "version": "v2.1.3",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/symfony/deprecation-contracts.git",
+          "reference": "5e20b83385a77593259c9f8beb2c43cd03b2ac14"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/5e20b83385a77593259c9f8beb2c43cd03b2ac14",
+          "reference": "5e20b83385a77593259c9f8beb2c43cd03b2ac14",
+          "shasum": ""
+        },
             "require": {
                 "php": ">=7.1"
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "2.1-dev"
-                }
+              "branch-alias": {
+                "dev-master": "2.1-dev"
+              },
+              "thanks": {
+                "name": "symfony/contracts",
+                "url": "https://github.com/symfony/contracts"
+              }
             },
             "autoload": {
                 "files": [
@@ -4523,7 +4527,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-27T08:34:37+00:00"
+        "time": "2020-06-06T08:49:21+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -5386,20 +5390,20 @@
             ],
             "time": "2020-06-10T11:49:58+00:00"
         },
-        {
-            "name": "symfony/service-contracts",
-            "version": "v2.1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/service-contracts.git",
-                "reference": "66a8f0957a3ca54e4f724e49028ab19d75a8918b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/66a8f0957a3ca54e4f724e49028ab19d75a8918b",
-                "reference": "66a8f0957a3ca54e4f724e49028ab19d75a8918b",
-                "shasum": ""
-            },
+      {
+        "name": "symfony/service-contracts",
+        "version": "v2.1.3",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/symfony/service-contracts.git",
+          "reference": "58c7475e5457c5492c26cc740cc0ad7464be9442"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/symfony/service-contracts/zipball/58c7475e5457c5492c26cc740cc0ad7464be9442",
+          "reference": "58c7475e5457c5492c26cc740cc0ad7464be9442",
+          "shasum": ""
+        },
             "require": {
                 "php": ">=7.2.5",
                 "psr/container": "^1.0"
@@ -5409,9 +5413,13 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "2.1-dev"
-                }
+              "branch-alias": {
+                "dev-master": "2.1-dev"
+              },
+              "thanks": {
+                "name": "symfony/contracts",
+                "url": "https://github.com/symfony/contracts"
+              }
             },
             "autoload": {
                 "psr-4": {
@@ -5456,7 +5464,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-20T17:43:50+00:00"
+        "time": "2020-07-06T13:23:11+00:00"
         },
         {
             "name": "symfony/string",
@@ -5628,28 +5636,28 @@
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
             "time": "2019-06-13T22:48:21+00:00"
         },
-        {
-            "name": "twig/twig",
-            "version": "v3.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/twigphp/Twig.git",
-                "reference": "3b88ccd180a6b61ebb517aea3b1a8906762a1dc2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3b88ccd180a6b61ebb517aea3b1a8906762a1dc2",
-                "reference": "3b88ccd180a6b61ebb517aea3b1a8906762a1dc2",
-                "shasum": ""
-            },
+      {
+        "name": "twig/twig",
+        "version": "v3.0.4",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/twigphp/Twig.git",
+          "reference": "582bdbdc173027ebfba3c93dc750a40b8f9ebc02"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/twigphp/Twig/zipball/582bdbdc173027ebfba3c93dc750a40b8f9ebc02",
+          "reference": "582bdbdc173027ebfba3c93dc750a40b8f9ebc02",
+          "shasum": ""
+        },
             "require": {
-                "php": "^7.2.5",
-                "symfony/polyfill-ctype": "^1.8",
-                "symfony/polyfill-mbstring": "^1.3"
+              "php": ">=7.2.5",
+              "symfony/polyfill-ctype": "^1.8",
+              "symfony/polyfill-mbstring": "^1.3"
             },
             "require-dev": {
                 "psr/container": "^1.0",
-                "symfony/phpunit-bridge": "^4.4|^5.0"
+              "symfony/phpunit-bridge": "^4.4.9|^5.0.9"
             },
             "type": "library",
             "extra": {
@@ -5678,32 +5686,54 @@
                     "role": "Contributors"
                 },
                 {
-                    "name": "Armin Ronacher",
-                    "email": "armin.ronacher@active-4.com",
-                    "role": "Project Founder"
+                  "name": "Armin Ronacher",
+                  "email": "armin.ronacher@active-4.com",
+                  "role": "Project Founder"
                 }
             ],
-            "description": "Twig, the flexible, fast, and secure template language for PHP",
-            "homepage": "https://twig.symfony.com",
-            "keywords": [
-                "templating"
-            ],
-            "time": "2020-02-11T15:33:47+00:00"
+        "description": "Twig, the flexible, fast, and secure template language for PHP",
+        "homepage": "https://twig.symfony.com",
+        "keywords": [
+          "templating"
+        ],
+        "funding": [
+          {
+            "url": "https://certification.symfony.com/",
+            "type": "custom"
+          },
+          {
+            "url": "https://live.symfony.com/",
+            "type": "custom"
+          },
+          {
+            "url": "https://symfony.com/cloud/",
+            "type": "custom"
+          },
+          {
+            "url": "https://github.com/fabpot",
+            "type": "github"
+          },
+          {
+            "url": "https://tidelift.com/funding/github/packagist/twig/twig",
+            "type": "tidelift"
+          }
+        ],
+        "time": "2020-07-05T13:18:14+00:00"
+      },
+      {
+        "name": "vimeo/psalm",
+        "version": "3.12.2",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/vimeo/psalm.git",
+          "reference": "7c7ebd068f8acaba211d4a2c707c4ba90874fa26"
         },
-        {
-            "name": "vimeo/psalm",
-            "version": "3.12.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/vimeo/psalm.git",
-                "reference": "9b860214d58c48b5cbe99bdb17914d0eb723c9cd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/9b860214d58c48b5cbe99bdb17914d0eb723c9cd",
-                "reference": "9b860214d58c48b5cbe99bdb17914d0eb723c9cd",
-                "shasum": ""
-            },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/vimeo/psalm/zipball/7c7ebd068f8acaba211d4a2c707c4ba90874fa26",
+          "reference": "7c7ebd068f8acaba211d4a2c707c4ba90874fa26",
+          "shasum": ""
+        },
             "require": {
                 "amphp/amp": "^2.1",
                 "amphp/byte-stream": "^1.5",
@@ -5785,7 +5815,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2020-06-23T00:24:34+00:00"
+        "time": "2020-07-03T16:59:07+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -6005,39 +6035,39 @@
             "description": "A robust cross-platform utility for normalizing, comparing and modifying file paths.",
             "time": "2015-12-17T08:42:14+00:00"
         },
-        {
-            "name": "webonyx/graphql-php",
-            "version": "v14.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webonyx/graphql-php.git",
-                "reference": "45d84562433613c6ee41e2421c95409d2b2664d6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webonyx/graphql-php/zipball/45d84562433613c6ee41e2421c95409d2b2664d6",
-                "reference": "45d84562433613c6ee41e2421c95409d2b2664d6",
-                "shasum": ""
-            },
+      {
+        "name": "webonyx/graphql-php",
+        "version": "v14.0.1",
+        "source": {
+          "type": "git",
+          "url": "https://github.com/webonyx/graphql-php.git",
+          "reference": "c36914e9547ebabb16f3cf9dd9fdaa5b62dd7331"
+        },
+        "dist": {
+          "type": "zip",
+          "url": "https://api.github.com/repos/webonyx/graphql-php/zipball/c36914e9547ebabb16f3cf9dd9fdaa5b62dd7331",
+          "reference": "c36914e9547ebabb16f3cf9dd9fdaa5b62dd7331",
+          "shasum": ""
+        },
             "require": {
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "php": "^7.1||^8.0"
             },
             "require-dev": {
-                "amphp/amp": "^2.3",
-                "doctrine/coding-standard": "^6.0",
-                "nyholm/psr7": "^1.2",
-                "phpbench/phpbench": "^0.14",
-                "phpstan/extension-installer": "^1.0",
-                "phpstan/phpstan": "0.12.18",
-                "phpstan/phpstan-phpunit": "0.12.6",
-                "phpstan/phpstan-strict-rules": "0.12.2",
-                "phpunit/phpunit": "^7.2|^8.5",
-                "psr/http-message": "^1.0",
-                "react/promise": "2.*",
-                "simpod/php-coveralls-mirror": "^3.0",
-                "squizlabs/php_codesniffer": "3.5.4"
+              "amphp/amp": "^2.3",
+              "doctrine/coding-standard": "^6.0",
+              "nyholm/psr7": "^1.2",
+              "phpbench/phpbench": "^0.16.10",
+              "phpstan/extension-installer": "^1.0",
+              "phpstan/phpstan": "0.12.18",
+              "phpstan/phpstan-phpunit": "0.12.6",
+              "phpstan/phpstan-strict-rules": "0.12.2",
+              "phpunit/phpunit": "^7.2|^8.5",
+              "psr/http-message": "^1.0",
+              "react/promise": "2.*",
+              "simpod/php-coveralls-mirror": "^3.0",
+              "squizlabs/php_codesniffer": "3.5.4"
             },
             "suggest": {
                 "psr/http-message": "To use standard GraphQL server",
@@ -6065,7 +6095,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2020-06-21T12:53:32+00:00"
+        "time": "2020-07-02T05:58:07+00:00"
         }
     ],
     "aliases": [],
