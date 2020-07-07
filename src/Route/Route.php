@@ -114,7 +114,7 @@ function any(string $path, $callback, $request = null)
 /**
  * Define a new route.
  *
- * @param string|array $method The HTTP request method to listen on
+ * @param string|string[] $method The HTTP request method to listen on
  * @param string $path The HTTP URI to listen on
  * @param string|callable $callback The callable to be executed or a string to be used with Siler\require_fn
  * @param array{0: string, 1: string}|ServerRequestInterface|null $request

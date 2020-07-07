@@ -120,6 +120,7 @@ function fetch(string $url, array $opts = []): array
                     return $len;
                 }
 
+                /** @psalm-var array<string, string> $response_headers */
                 $response_headers[strtolower(trim($header[0]))] = trim($header[1]);
 
                 return $len;

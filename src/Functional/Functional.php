@@ -440,10 +440,17 @@ function flatten(array $list): array
     /** @psalm-var list<T> $flat */
     $flat = [];
 
-    array_walk_recursive($list, /** @param mixed $value */ static function ($value) use (&$flat): void {
-        /** @psalm-var T $value */
-        $flat[] = $value;
-    });
+    array_walk_recursive(
+        $list,
+        /**
+         * @param mixed $value
+         * @psalm-param T $value
+         */
+        static function ($value) use (&$flat): void {
+            /** @psalm-var list<T> $flat */
+            $flat[] = $value;
+        }
+    );
 
     /** @psalm-var list<T> */
     return $flat;

@@ -296,7 +296,7 @@ function method(): string
 /**
  * Checks for the current HTTP request method.
  *
- * @param string|array $method The given method to check on
+ * @param string|string[] $method The given method to check on
  * @param string|null $request_method
  * @return bool
  */
