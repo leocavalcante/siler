@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Siler\Test\Unit;
+namespace Siler\Test\Unit\Prelude;
 
 use OutOfRangeException;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use Siler\Tuple as T;
+use function Siler\Prelude\tuple;
 
 class TupleTest extends TestCase
 {
     public function testTuple()
     {
-        $tuple = T\tuple(1, 'a', true);
+        $tuple = tuple(1, 'a', true);
 
         $this->assertFalse(is_array($tuple));
         $this->assertSame(1, $tuple[0]);
@@ -27,27 +27,27 @@ class TupleTest extends TestCase
     public function testOutOfRangeGet()
     {
         $this->expectException(OutOfRangeException::class);
-        $tuple = T\tuple(1);
+        $tuple = tuple(1);
         $tuple[1];
     }
 
     public function testImmutableSet()
     {
         $this->expectException(RuntimeException::class);
-        $tuple = T\tuple(1);
+        $tuple = tuple(1);
         $tuple[1] = 2;
     }
 
     public function testImmutableUnset()
     {
         $this->expectException(RuntimeException::class);
-        $tuple = T\tuple(1);
+        $tuple = tuple(1);
         unset($tuple[0]);
     }
 
     public function testCount()
     {
-        $tuple = T\tuple(1, 2, 3);
+        $tuple = tuple(1, 2, 3);
         $this->assertCount(3, $tuple);
     }
 }

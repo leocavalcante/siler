@@ -242,8 +242,8 @@ const mb_ucfirst = '\Siler\Str\mb_ucfirst';
 const mb_lcfirst = '\Siler\Str\mb_lcfirst';
 
 
-namespace Siler\Tuple;
-const tuple = '\Siler\Tuple\tuple';
+namespace Siler\Prelude;
+const tuple = '\Siler\Prelude\tuple';
 
 
 namespace Siler\Ratchet;
