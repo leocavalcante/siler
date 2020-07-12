@@ -55,6 +55,24 @@ Route\get('/', fn() => Response\json(['message' => 'Hello, World!']));
 
 The `Response\json` function will automatically add `Content-type: application/json` in the response headers.
 
+### Swoole
+
+Siler provides first-class support for Swoole. You can regularly use `Route`, `Request` and `Response` modules for a Swoole HTTP server.
+
+```php
+use Siler\Http\Response;
+use Siler\Route;
+use Siler\Swoole;
+
+$handler = function () {
+    Route\get('/', fn() => Response\json('Hello, World!'));
+};
+
+$port = 8000;
+echo "Listening on port $port\n";
+Swoole\http($handler, $port)->start();
+```
+
 ### GraphQL
 
 Install peer-dependency:
