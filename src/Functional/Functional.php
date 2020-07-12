@@ -654,7 +654,7 @@ function concat(string $separator = ''): Closure
  *
  * @template T
  * @param callable(...mixed): T $callable
- * @param array<int, mixed> ...$args
+ * @param array $args
  * @return Closure(): T
  */
 function lazy(callable $callable, ...$args): Closure
@@ -665,6 +665,7 @@ function lazy(callable $callable, ...$args): Closure
          * @psalm-return T
          */
         static function () use ($callable, $args) {
+            /** @psalm-suppress MixedArgument */
             return call($callable, ...$args);
         };
 }
@@ -674,7 +675,7 @@ function lazy(callable $callable, ...$args): Closure
  *
  * @template T
  * @param callable(...mixed): T $callable
- * @param array<int, mixed> ...$args
+ * @param array ...$args
  * @return mixed
  * @psalm-return T
  */
