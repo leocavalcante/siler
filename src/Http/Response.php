@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /*
  * Helper functions to handle HTTP responses.
@@ -8,15 +6,19 @@ declare(strict_types=1);
 
 namespace Siler\Http\Response;
 
+use Siler\Container;
 use Siler\Http;
 use Siler\Http\Request;
 use function Siler\Encoder\Json\encode;
+use function Siler\Swoole\emit;
+use function Siler\Swoole\response;
+use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 
 /**
  * Outputs the given parameters based on a HTTP response.
  *
  * @param string $content The HTTP response body
- * @param int $code The HTTP response status code
+ * @param int $code The HTTP response code code
  * @param string $mimeType A value for HTTP Header Content-Type
  * @param string $charset The HTTP response charset
  *
@@ -24,6 +26,11 @@ use function Siler\Encoder\Json\encode;
  */
 function output(string $content = '', int $code = 204, string $mimeType = 'text/plain', string $charset = 'utf-8'): int
 {
+    if (Container\has(SWOOLE_HTTP_REQUEST)) {
+        emit($content, $code, ['Content-Type' => "$mimeType;charset=$charset"]);
+        return 1;
+    }
+
     http_response_code($code);
     \header(sprintf('Content-Type: %s;charset=%s', $mimeType, $charset));
 
@@ -67,7 +74,7 @@ function html(string $content, int $code = 200, string $charset = 'utf-8'): int
  *
  * @return int Returns 1, always
  */
-function jsonstr(string $content, int $code = 200, string $charset = 'utf-8'): int
+function json_str(string $content, int $code = 200, string $charset = 'utf-8'): int
 {
     return output(strval($content), $code, 'application/json', $charset);
 }
@@ -83,7 +90,7 @@ function jsonstr(string $content, int $code = 200, string $charset = 'utf-8'): i
  */
 function json($content, int $code = 200, string $charset = 'utf-8'): int
 {
-    return jsonstr(encode($content), $code, $charset);
+    return json_str(encode($content), $code, $charset);
 }
 
 /**
@@ -97,6 +104,11 @@ function json($content, int $code = 200, string $charset = 'utf-8'): int
  */
 function header(string $key, string $val, bool $replace = true): void
 {
+    if (Container\has(SWOOLE_HTTP_REQUEST)) {
+        response()->header($key, $val);
+        return;
+    }
+
     \header($key . ': ' . $val, $replace);
 }
 
@@ -133,6 +145,11 @@ function no_content(): void
  */
 function cors(string $origin = '*', string $headers = 'Content-Type', string $methods = 'GET, POST, PUT, DELETE'): void
 {
+    if (Container\has(SWOOLE_HTTP_REQUEST)) {
+        \Siler\Swoole\cors();
+        return;
+    }
+
     header('Access-Control-Allow-Origin', $origin);
     header('Access-Control-Allow-Headers', $headers);
     header('Access-Control-Allow-Methods', $methods);
