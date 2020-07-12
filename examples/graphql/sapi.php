@@ -5,8 +5,9 @@ namespace Siler\Example\GraphQL;
 use GraphQL\Error\UserError;
 use Monolog\Handler\ErrorLogHandler;
 use Siler\Monolog as Log;
-use function Siler\GraphQL\{debug, directives, init, listen, schema, subscriptions_at};
-use function Siler\Route\post;
+use Siler\Route;
+use function Siler\Functional\puts;
+use function Siler\GraphQL\{debug, directives, graphiql, init, listen, schema, subscriptions_at};
 use const Siler\GraphQL\{ON_CONNECT, ON_OPERATION};
 
 require_once __DIR__ . '/../../vendor/autoload.php';
@@ -49,4 +50,5 @@ $type_defs = file_get_contents(__DIR__ . '/schema.graphql');
 $schema = schema($type_defs, $resolvers);
 directives($directives);
 
-post('/graphql', fn() => init($schema, $root_value, $context));
+Route\post('/graphql', fn() => init($schema, $root_value, $context));
+Route\get('/graphiql', puts(graphiql()));
