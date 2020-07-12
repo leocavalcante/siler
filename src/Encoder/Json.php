@@ -14,7 +14,7 @@ use function json_encode;
  * @param int $depth
  * @return string
  */
-function encode($value, int $options = JSON_THROW_ON_ERROR, int $depth = 512): string
+function encode($value, int $options = JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE, int $depth = 512): string
 {
     return json_encode($value, $options, $depth);
 }
