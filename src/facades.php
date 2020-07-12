@@ -114,6 +114,10 @@ const maybe = '\Siler\Functional\Monad\maybe';
 
 
 namespace Siler\GraphQL;
+const graphiql = '\Siler\GraphQL\graphiql';
+
+
+namespace Siler\GraphQL;
 const debug = '\Siler\GraphQL\debug';
 const debugging = '\Siler\GraphQL\debugging';
 const init = '\Siler\GraphQL\init';
@@ -175,7 +179,7 @@ namespace Siler\Http\Response;
 const output = '\Siler\Http\Response\output';
 const text = '\Siler\Http\Response\text';
 const html = '\Siler\Http\Response\html';
-const jsonstr = '\Siler\Http\Response\jsonstr';
+const json_str = '\Siler\Http\Response\json_str';
 const json = '\Siler\Http\Response\json';
 const header = '\Siler\Http\Response\header';
 const redirect = '\Siler\Http\Response\redirect';

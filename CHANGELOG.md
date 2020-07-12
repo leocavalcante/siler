@@ -1,7 +1,8 @@
 # 1.7.3
 - **GraphQL uploads & custom directives!**
 - **GraphQL annotations!**
-- Enums draft
+- GraphiQL
+- Enums
 - PHPUnit v9
 - GraphQL v14
 - Introducing Klass module with `Klass\unqualified_name`
