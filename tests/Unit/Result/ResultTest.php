@@ -1,62 +1,60 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
-
-namespace Siler\Test\Unit;
+namespace Siler\Test\Unit\Result;
 
 use PHPUnit\Framework\TestCase;
-use Siler\Result\Failure;
+use Siler\Result\Err;
+use Siler\Result\Ok;
 use Siler\Result\Result;
-use Siler\Result\Success;
 use TypeError;
-use function Siler\Result\failure;
-use function Siler\Result\success;
+use function Siler\Result\err;
+use function Siler\Result\ok;
 
 class ResultTest extends TestCase
 {
     public function testSuccess()
     {
-        $success = success();
-        $this->assertInstanceOf(Success::class, $success);
+        $success = ok();
+        $this->assertInstanceOf(Ok::class, $success);
     }
 
     public function testFailure()
     {
-        $failure = failure();
-        $this->assertInstanceOf(Failure::class, $failure);
+        $failure = err();
+        $this->assertInstanceOf(Err::class, $failure);
     }
 
-    public function testBind()
+    public function testMap()
     {
-        $success = success('foo')->bind(function (string $val) {
-            return success("{$val}bar");
+        $success = ok('foo')->map(function (string $val) {
+            return ok("{$val}bar");
         });
 
-        $this->assertInstanceOf(Success::class, $success);
+        $this->assertInstanceOf(Ok::class, $success);
         $this->assertSame('foobar', $success->unwrap());
 
-        $failure = failure('baz')->bind(function (string $baz) {
-            return success('qux');
+        $failure = err('baz')->map(function (string $baz) {
+            return ok('qux');
         });
 
-        $this->assertInstanceOf(Failure::class, $failure);
+        $this->assertInstanceOf(Err::class, $failure);
         $this->assertSame('baz', $failure->unwrap());
 
-        $successToFailure = success(1)->bind(function (int $n): Result {
-            return failure($n + 1);
-        })->bind(function (int $n): Result {
-            return success($n + 1);
+        $successToFailure = ok(1)->map(function (int $n): Result {
+            return err($n + 1);
+        })->map(function (int $n): Result {
+            return ok($n + 1);
         });
 
-        $this->assertInstanceOf(Failure::class, $successToFailure);
+        $this->assertInstanceOf(Err::class, $successToFailure);
         $this->assertSame(2, $successToFailure->unwrap());
     }
 
-    public function testBindThrows()
+    public function testMapThrows()
     {
         $this->expectException(TypeError::class);
 
-        success(1)->bind(function (int $n): int {
+        ok(1)->map(function (int $n): int {
             return $n;
         });
     }

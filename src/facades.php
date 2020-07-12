@@ -255,8 +255,8 @@ const graphql_subscriptions = '\Siler\Ratchet\graphql_subscriptions';
 
 
 namespace Siler\Result;
-const success = '\Siler\Result\success';
-const failure = '\Siler\Result\failure';
+const ok = '\Siler\Result\ok';
+const err = '\Siler\Result\err';
 
 
 namespace Siler\Route;

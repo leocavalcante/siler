@@ -1,54 +1,27 @@
-<?php /** @noinspection PhpComposerExtensionStubsInspection */
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Siler\Result;
-
-use JsonSerializable;
 
 /**
  * @template T
  */
-abstract class Result implements JsonSerializable
+abstract class Result
 {
     /**
      * @var mixed
      * @psalm-var T|null
      */
     private $data;
-    /** @var int */
-    private $code;
-    /** @var string */
-    private $id;
 
     /**
      * Result constructor.
      *
      * @psalm-param T|null $data
      * @param null $data
-     * @param int $code
-     * @param string|null $id
      */
-    public function __construct($data = null, int $code = 0, string $id = null)
+    public function __construct($data = null)
     {
-        $this->id = is_null($id) ? base64_encode(uniqid()) : $id;
         $this->data = $data;
-        $this->code = $code;
-    }
-
-    /**
-     * @return string
-     */
-    public function id(): string
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return int
-     */
-    public function code(): int
-    {
-        return $this->code;
     }
 
     /**
@@ -63,9 +36,9 @@ abstract class Result implements JsonSerializable
      * @param callable(T|null): Result $fn
      * @return Result
      */
-    public function bind(callable $fn): self
+    public function map(callable $fn): self
     {
-        if ($this instanceof Success) {
+        if ($this instanceof Ok) {
             return $fn($this->unwrap());
         }
 
@@ -73,77 +46,38 @@ abstract class Result implements JsonSerializable
     }
 
     /**
-     * Specify data which should be serialized to JSON
-     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4
+     * @return bool
      */
-    public function jsonSerialize()
-    {
-        $json = [
-            'error' => $this->isFailure() && !$this->isSuccess(),
-            'id' => $this->id
-        ];
-
-        if (is_null($this->data)) {
-            return $json;
-        }
-
-        if (is_string($this->data)) {
-            $json['message'] = $this->data;
-            return $json;
-        }
-
-        if (is_array($this->data)) {
-            return array_merge($json, $this->data);
-        }
-
-        $json['data'] = $this->data;
-        return $json;
-    }
+    abstract public function isErr(): bool;
 
     /**
      * @return bool
      */
-    abstract public function isFailure(): bool;
-
-    /**
-     * @return bool
-     */
-    abstract public function isSuccess(): bool;
+    abstract public function isOk(): bool;
 }
 
 /**
- * Creates a new Success result monad.
+ * Creates a new Ok result monad.
  *
  * @template T
- *
  * @param mixed|null $data
+ * @return Ok
  * @psalm-param T|null $data
- * @param int $code
- * @param string|null $id
- *
- * @return Success
  */
-function success($data = null, int $code = 0, string $id = null): Success
+function ok($data = null): Ok
 {
-    return new Success($data, $code, $id);
+    return new Ok($data);
 }
 
 /**
- * Creates a new Failure result monad.
+ * Creates a new Err result monad.
  *
  * @template T
- *
  * @param mixed|null $data
  * @psalm-param T|null $data
- * @param int $code
- * @param string|null $id
- *
- * @return Failure
+ * @return Err
  */
-function failure($data = null, int $code = 1, string $id = null): Failure
+function err($data = null): Err
 {
-    return new Failure($data, $code, $id);
+    return new Err($data);
 }

@@ -16,6 +16,9 @@
 - `Str\snake_case` and `Str\camel_case` case converters
 - `Str\mb_ucfirst` and `Str\mb_lcfirst` (thanks @enricodias & @williamokano)
 - `Prelude\Dispatcher` an Event Dispatcher implementing PSR-14 interfaces
+- **Breaking**: `Result` module now adheres to Rust's naming and drops `id`, `code` and `json` support.
+  - `Success` is now `Ok`
+  - `Failure` is now `Err`
 - **Breaking**: you should now explicitly use arrays (or any other type) for subscription's root and context values
 - **Breaking**: match doesn't return null anymore, you should provide an exhaust function
 
