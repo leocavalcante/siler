@@ -220,6 +220,52 @@ return fn() => Swoole\emit($html);
 
 This avoids the template to be re-rendered on each request unnecessarily.
 
+### Serving static assets
+
+The `Siler\Swoole\http` function returns a plain `Swoole\Http\Server` so you can give it to a variable and use regular methods from Swoole's documentation like `set`:
+
+{% tabs %}
+{% tab title="index.php" %}
+```php
+/*
+ ├───api
+ ├───pages
+ └───public
+    └───assets
+*/
+
+$server = Swoole\http($handler);
+$server->set([
+    'enable_static_handler' => true,
+    'document_root' => __DIR__ . '/public',
+]);
+
+$server->start();
+```
+{% endtab %}
+
+{% tab title="pages/\_layout.twig" %}
+```markup
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Siler + Swoole</title>
+    
+    <link rel="stylesheet" href="/assets/styles.css">
+    <script defer src="/assets/scripts.js"></script>
+    
+</head>
+<body>
+    {% block page %}{% endblock %}
+</body>
+</html>
+```
+{% endtab %}
+{% endtabs %}
+
 ## Request's Query string, Body & Headers
 
 Since there is no web server module or CGI layer, things like $\_GET won't work for query string parameters etc. **But fear nothing**, Siler provides getters for both Swoole's Request and Response objects: `Siler\Swoole\request()` and `Siler\Swoole\response()`.
@@ -300,7 +346,7 @@ $todos = [
     ['id' => 3, 'text' => 'baz'],
 ];
 
-return function () use ($todos) {
+return function () {
     Swoole\cors();
     Swoole\json($todos);
 };
