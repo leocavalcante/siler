@@ -300,7 +300,7 @@ $todos = [
     ['id' => 3, 'text' => 'baz'],
 ];
 
-return function () {
+return function () use ($todos) {
     Swoole\cors();
     Swoole\json($todos);
 };
