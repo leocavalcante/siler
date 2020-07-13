@@ -2,7 +2,7 @@ version: '3'
 services:
   swoole:
     container_name: siler_swoole
-    image: leocavalcante/dwoole:1.0-development 
+    image: leocavalcante/dwoole:dev
     ports:
       - '9501:9501'
     volumes:

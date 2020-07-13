@@ -1,15 +1,14 @@
-<?php
-
-declare(strict_types=1);
-require_once __DIR__ . '/../../vendor/autoload.php';
+<?php declare(strict_types=1);
 
 use Siler\Route;
 use Siler\Swoole;
 use Siler\Twig;
 
+require_once __DIR__ . '/../../vendor/autoload.php';
+
 Twig\init(__DIR__ . '/pages');
 
-$server = function () {
+$handler = function () {
     Route\get('/', __DIR__ . '/pages/home.php');
     Route\get('/todos', __DIR__ . '/api/todos.php');
 
@@ -17,4 +16,9 @@ $server = function () {
     Swoole\emit('Not found', 404);
 };
 
-Swoole\http($server)->start();
+$server = Swoole\http($handler);
+$server->set([
+    'enable_static_handler' => true,
+    'document_root' => __DIR__ . '/public',
+]);
+$server->start();
