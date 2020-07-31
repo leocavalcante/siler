@@ -114,8 +114,8 @@ function path(): string
         $script_name = '';
     }
 
-    $request_uri = rawurldecode($request_uri);
     $request_uri = str_replace('?' . $query_string, '', $request_uri);
+    $request_uri = rawurldecode($request_uri);
     $script_path = str_replace('\\', '/', dirname($script_name));
 
     if (!strlen(str_replace('/', '', $script_path))) {

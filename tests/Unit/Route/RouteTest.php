@@ -266,6 +266,15 @@ class RouteTest extends TestCase
         $this->assertNull($result);
     }
 
+    public function testUrlEncodedQueryString()
+    {
+        $_SERVER['REQUEST_URI'] = '/bar/baz?filters%5Bstate%5D=2';
+        $_SERVER['QUERY_STRING'] = 'filters%5Bstate%5D=2';
+
+        $actual = Route\get('/bar/baz', always('foo'));
+        $this->assertSame('foo', $actual);
+    }
+
     protected function setUp(): void
     {
         $_GET = $_POST = $_REQUEST = ['foo' => 'bar'];
