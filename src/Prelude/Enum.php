@@ -85,6 +85,6 @@ abstract class Enum
      */
     public function __toString(): string
     {
-        return strval($this->value);
+        return (string)$this->value;
     }
 }

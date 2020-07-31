@@ -152,7 +152,7 @@ class SubscriptionsManager
                 $conn_subs = array_key_exists($conn->key(), $this->connStorage)
                     ? $this->connStorage[$conn->key()]
                     : [];
-                $conn_subs[strval($data['id'])] = $data;
+                $conn_subs[(string)$data['id']] = $data;
                 $this->connStorage[$conn->key()] = $conn_subs;
 
                 $this->callListener(ON_OPERATION, [$data, $this->rootValue, $this->context]);
@@ -200,7 +200,6 @@ class SubscriptionsManager
      * @param string $query
      * @param mixed $payload
      * @param array|null $variables
-     *
      * @return array
      */
     private function execute(string $query, $payload = null, ?array $variables = null): array
@@ -208,42 +207,6 @@ class SubscriptionsManager
         return GraphQL::executeQuery($this->schema, $query, $payload, $this->context, $variables)->toArray(debugging());
     }
 
-    /**
-     * @param DocumentNode $document
-     * @return string
-     */
-    /**
-     * @param DocumentNode $document
-     * @return string
-     */
-    /**
-     * @param DocumentNode $document
-     * @return string
-     */
-    /**
-     * @param DocumentNode $document
-     * @return string
-     */
-    /**
-     * @param DocumentNode $document
-     * @return string
-     */
-    /**
-     * @param DocumentNode $document
-     * @return string
-     */
-    /**
-     * @param DocumentNode $document
-     * @return string
-     */
-    /**
-     * @param DocumentNode $document
-     * @return string
-     */
-    /**
-     * @param DocumentNode $document
-     * @return string
-     */
     /**
      * @param DocumentNode $document
      * @return string
@@ -331,7 +294,7 @@ class SubscriptionsManager
         /** @var array<string, mixed> $conn_subs */
         $conn_subs = $this->connStorage[$conn->key()];
         /** @var array|null $subscription */
-        $subscription = array_get($conn_subs, strval($data['id']));
+        $subscription = array_get($conn_subs, (string)$data['id']);
 
         if (!is_null($subscription)) {
             /** @var string subscription_name */

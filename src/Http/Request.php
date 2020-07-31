@@ -27,7 +27,7 @@ use const Siler\Swoole\SWOOLE_HTTP_REQUEST;
 function raw(string $input = 'php://input'): string
 {
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
-        return strval(\Siler\Swoole\request()->rawContent());
+        return (string)\Siler\Swoole\request()->rawContent();
     }
 
     $contents = file_get_contents($input);
@@ -148,7 +148,7 @@ function headers(): array
     );
 
     $values = array_map(function (string $header): string {
-        return strval($_SERVER[$header]);
+        return (string)$_SERVER[$header];
     }, $http_headers);
 
     $headers = array_map(function (string $header) {
@@ -329,7 +329,7 @@ function accepted_locales(): array
         // break up string into pieces (languages and q factors)
         preg_match_all(
             '/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i',
-            strval($_SERVER['HTTP_ACCEPT_LANGUAGE']),
+            (string)$_SERVER['HTTP_ACCEPT_LANGUAGE'],
             $lang_parse
         );
 
@@ -377,12 +377,12 @@ function accepted_locales(): array
  */
 function recommended_locale(string $default = ''): string
 {
-    /** @var array<string, string> $_GET */
-    $locale = strval(array_get($_GET, 'lang', ''));
+    /** @psalm-var array<string, string> $_GET */
+    $locale = array_get_str($_GET, 'lang', '');
 
     if (empty($locale)) {
-        /** @var array<string, string> $_SESSION */
-        $locale = strval(array_get($_SESSION, 'lang', ''));
+        /** @psalm-var array<string, string> $_SESSION */
+        $locale = array_get_str($_SESSION, 'lang', '');
     }
 
     if (empty($locale)) {

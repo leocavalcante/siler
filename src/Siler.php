@@ -55,6 +55,7 @@ function array_get(?array $array, $key = null, $default = null, bool $caseInsens
  */
 function array_get_str(array $array, string $key, ?string $default = null): string
 {
+    /** @var mixed|null $value */
     $value = array_get($array, $key);
 
     if ($value === null && $default === null) {
@@ -65,7 +66,7 @@ function array_get_str(array $array, string $key, ?string $default = null): stri
         return $default;
     }
 
-    return strval($value);
+    return (string)$value;
 }
 
 /**

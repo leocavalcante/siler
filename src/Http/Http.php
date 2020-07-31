@@ -43,7 +43,7 @@ function session(?string $key = null, ?string $default = null)
  */
 function setsession(string $key, $value): void
 {
-    $_SESSION[$key] = strval($value);
+    $_SESSION[$key] = (string)$value;
 }
 
 /**

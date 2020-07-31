@@ -25,7 +25,7 @@ class DateScalar extends ScalarType
     public function serialize($value): string
     {
         if ($value instanceof DateTime) {
-            return $value->format(strval(static::FORMAT));
+            return $value->format((string)static::FORMAT);
         }
 
         throw new Error('Don\'t know how to serialize non-DateTime');
@@ -56,11 +56,11 @@ class DateScalar extends ScalarType
         $date_time = false;
 
         if (is_string($value)) {
-            $date_time = DateTime::createFromFormat(strval(static::FORMAT), $value);
+            $date_time = DateTime::createFromFormat((string)static::FORMAT, $value);
         }
 
         if ($date_time === false) {
-            throw new Error(sprintf("Error parsing $value as %s. Is it in %s format?", $this->name, strval(static::FORMAT)));
+            throw new Error(sprintf("Error parsing $value as %s. Is it in %s format?", $this->name, (string)static::FORMAT));
         }
 
         return $date_time;

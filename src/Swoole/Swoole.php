@@ -317,7 +317,7 @@ function raw(): ?string
         return null;
     }
 
-    return strval($content);
+    return (string)$content;
 }
 
 /**
@@ -375,9 +375,9 @@ function graphql_subscriptions(SubscriptionsManager $manager, int $port = 3000, 
          * @psalm-suppress MissingPropertyType
          * @var array<string, string> $message
          */
-        $message = Json\decode(strval($frame->data));
+        $message = Json\decode((string)$frame->data);
         /** @psalm-suppress MissingPropertyType */
-        $handle($message, intval($frame->fd));
+        $handle($message, (int)$frame->fd);
 
         if ($message['type'] === GQL_DATA) {
             /** @var array{id: int} $worker */
