@@ -3,7 +3,7 @@
 namespace Siler\Test\Integration;
 
 use PHPUnit\Framework\TestCase;
-use function Siler\Functional\{always, identity, match, mod, not};
+use function Siler\Functional\{always, identity, matching, mod, not};
 
 class FizzbuzzTest extends TestCase
 {
@@ -12,7 +12,7 @@ class FizzbuzzTest extends TestCase
         $input = range(1, 15);
         $expected = [1, 2, 'Fizz', 4, 'Buzz', 'Fizz', 7, 8, 'Fizz', 'Buzz', 11, 'Fizz', 13, 14, 'Fizz Buzz'];
 
-        $match = match([
+        $match = matching([
             [not(mod(15)), always('Fizz Buzz')],
             [not(mod(3)), always('Fizz')],
             [not(mod(5)), always('Buzz')],

@@ -153,7 +153,7 @@ function if_else(callable $cond): Closure
  * @param callable(I):O $exhaust
  * @return Closure(I):O
  */
-function match(array $matches, callable $exhaust): Closure
+function matching(array $matches, callable $exhaust): Closure
 {
     return
         /**
@@ -1013,6 +1013,7 @@ function sum(int $a, int $b): int
  */
 function fold(array $list, $initial, callable $callback)
 {
+    /** @psalm-var T $value */
     $value = $initial;
 
     foreach ($list as $item) {

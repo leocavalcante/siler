@@ -466,7 +466,7 @@ function resume(): void
  * @param array<mixed|null> $routes The route results to br tested
  * @return mixed|null
  */
-function match(array $routes)
+function matching(array $routes)
 {
     /** @var mixed|null $route */
     foreach ($routes as $route) {

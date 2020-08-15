@@ -50,7 +50,7 @@ echo $pred('bar'); // isnt foo
 
 ## `partial(callable $callable, ...$partial)`
 
-Partial application refers to the process of fixing a number of arguments to a function, producing another function of smaller [arity](https://en.wikipedia.org/wiki/Arity). Given a function![{\displaystyle f\colon \(X\times Y\times Z\)\to N}](https://wikimedia.org/api/rest_v1/media/math/render/svg/5c7acf81877307746cd88e2785967d9a2f287107), we might fix \(or 'bind'\) the first argument, producing a function of type ![{\displaystyle {\text{partial}}\(f\)\colon \(Y\times Z\)\to N}](https://wikimedia.org/api/rest_v1/media/math/render/svg/d45fcfd39c660c562ebd3da8158dbfd8f673836e).  
+Partial application refers to the process of fixing a number of arguments to a function, producing another function of smaller [arity](https://en.wikipedia.org/wiki/Arity). Given a function![{\displaystyle f\colon \(X\times Y\times Z\)\to N}](https://wikimedia.org/api/rest_v1/media/math/render/svg/5c7acf81877307746cd88e2785967d9a2f287107), we might fix \(or 'bind'\) the first argument, producing a function of type ![{\displaystyle {\text{partial}}\(f\)\colon \(Y\times Z\)\to N}](https://wikimedia.org/api/rest_v1/media/math/render/svg/d45fcfd39c660c562ebd3da8158dbfd8f673836e).
 [https://en.wikipedia.org/wiki/Partial\_application](https://en.wikipedia.org/wiki/Partial_application)
 
 Nothing like a good example:
@@ -92,7 +92,7 @@ A pattern-match attempt. Truthy Closure evaluations on the left calls and short-
 ```php
 use Siler\Functional as λ;
 
-$nameOf = λ\match([
+$nameOf = λ\matching([
     [λ\equal(1), λ\always('one')],
     [λ\equal(2), λ\always('two')],
     [λ\equal(3), λ\always('three')],

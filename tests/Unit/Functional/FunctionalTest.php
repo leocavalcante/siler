@@ -49,7 +49,7 @@ class FunctionalTest extends TestCase
 
     public function testMatch()
     {
-        $test = f\match([
+        $test = f\matching([
             [f\equal('foo'), f\always('bar')],
             [f\equal('bar'), f\always('baz')],
             [f\equal('baz'), f\always('qux')],

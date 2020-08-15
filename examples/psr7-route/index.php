@@ -11,7 +11,7 @@ use Siler\Route;
 use function Siler\array_get;
 
 $request = Diactoros\request();
-$response = Route\match([
+$response = Route\matching([
     // /greet/Leo?salute=Hello
     Route\get(
         '/greet/{name}',

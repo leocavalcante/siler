@@ -62,7 +62,7 @@ use Siler\Route;
 use function Siler\array_get;
 
 $request = Diactoros\request();
-$response = Route\match([
+$response = Route\matching([
     // /greet/Leo?salute=Hello
     Route\get('/greet/{name}', function ($params) use ($request) {
         $salute = array_get($request->getQueryParams(), 'salute', 'Olá');
@@ -154,7 +154,7 @@ $secretHandler = function ($request) {
 Stratigility\pipe($userMiddleware, 'auth');
 
 $request = Diactoros\request();
-$response = Route\match([
+$response = Route\matching([
     Route\get('/', $homeHandler, $request),
     Route\get('/admin', Stratigility\process($request, 'auth')($adminHandler), $request),
     Route\get('/secret', Stratigility\process($request, 'auth')($secretHandler), $request),

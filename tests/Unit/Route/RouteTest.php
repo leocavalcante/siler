@@ -222,10 +222,10 @@ class RouteTest extends TestCase
     public function testMatch()
     {
         $routes = [null, false];
-        $this->assertFalse(Route\match($routes));
+        $this->assertFalse(Route\matching($routes));
 
         $routes = [null, null];
-        $this->assertNull(Route\match($routes));
+        $this->assertNull(Route\matching($routes));
     }
 
     /**

@@ -37,7 +37,7 @@ $secretHandler = function ($request) {
 Stratigility\pipe($userMiddleware, 'auth');
 
 $request = Diactoros\request();
-$response = Route\match([
+$response = Route\matching([
     Route\get('/', $homeHandler, $request),
     Route\get('/admin', Stratigility\process($request, 'auth')($adminHandler), $request),
     Route\get('/secret', Stratigility\process($request, 'auth')($secretHandler), $request),
