@@ -9,6 +9,7 @@ use Ratchet\WebSocket\WsServerInterface;
 use Siler\Encoder\Json;
 use Siler\GraphQL\SubscriptionsConnection;
 use Siler\GraphQL\SubscriptionsManager;
+use SplObjectStorage;
 use const Siler\GraphQL\WEBSOCKET_SUB_PROTOCOL;
 
 /**
@@ -19,7 +20,7 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
 {
     /** @var SubscriptionsManager */
     private $manager;
-    /** @var \SplObjectStorage<ConnectionInterface, SubscriptionsConnection> */
+    /** @var SplObjectStorage<ConnectionInterface, SubscriptionsConnection> */
     private $connections;
 
     /**
@@ -30,8 +31,8 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
     public function __construct(SubscriptionsManager $manager)
     {
         $this->manager = $manager;
-        /** @var \SplObjectStorage<ConnectionInterface, SubscriptionsConnection> connections */
-        $this->connections = new \SplObjectStorage();
+        /** @var SplObjectStorage<ConnectionInterface, SubscriptionsConnection> connections */
+        $this->connections = new SplObjectStorage();
     }
 
     /**
@@ -46,18 +47,18 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
 
     /**
      * @override
-     * @param ConnectionInterface $conn
-     * @param string $message
+     * @param ConnectionInterface $from
+     * @param string $msg
      * @return void
      * @throws Exception
      */
-    public function onMessage(ConnectionInterface $conn, $message): void
+    public function onMessage(ConnectionInterface $from, $msg): void
     {
-        /** @var SubscriptionsConnection $conn */
-        $conn = $this->connections->offsetGet($conn);
-        /** @var array<string, mixed> $message */
-        $message = Json\decode(strval($message));
-        $this->manager->handle($conn, $message);
+        /** @var SubscriptionsConnection $from */
+        $from = $this->connections->offsetGet($from);
+        /** @var array<string, mixed> $msg */
+        $msg = Json\decode(strval($msg));
+        $this->manager->handle($from, $msg);
     }
 
     /**
@@ -73,10 +74,10 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
     /**
      * @override
      * @param ConnectionInterface $conn
-     * @param Exception $exception
+     * @param Exception $e
      * @return void
      */
-    public function onError(ConnectionInterface $conn, Exception $exception): void
+    public function onError(ConnectionInterface $conn, Exception $e): void
     {
     }
 

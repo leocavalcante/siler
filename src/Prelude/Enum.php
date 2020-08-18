@@ -2,6 +2,10 @@
 
 namespace Siler\Prelude;
 
+use ReflectionClass;
+use ReflectionException;
+use UnexpectedValueException;
+
 /**
  * Abstract class for enums.
  */
@@ -13,23 +17,24 @@ abstract class Enum
     /**
      * @param mixed $value
      * @return static
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
-    public static function of($value): self
+    public static function of($value)
     {
+        /** @psalm-suppress UnsafeInstantiation */
         return new static($value);
     }
 
     /**
      * @return array
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected static function consts(): array
     {
         $class_name = static::class;
 
         if (!array_key_exists($class_name, static::$constsMemo)) {
-            $reflection = new \ReflectionClass($class_name);
+            $reflection = new ReflectionClass($class_name);
             static::$constsMemo[$class_name] = $reflection->getConstants();
         }
 
@@ -39,7 +44,7 @@ abstract class Enum
     /**
      * @param mixed $value
      * @return bool
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     protected static function valid($value): bool
     {
@@ -51,13 +56,13 @@ abstract class Enum
 
     /**
      * @param mixed $value
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function __construct($value)
     {
         if (!static::valid($value)) {
             $class_name = static::class;
-            throw new \UnexpectedValueException("Invalid value ($value) for enum ($class_name)");
+            throw new UnexpectedValueException("Invalid value ($value) for enum ($class_name)");
         }
 
         $this->value = $value;

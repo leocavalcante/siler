@@ -59,7 +59,21 @@ function recur_iter_dir(string $dirname, string $regex = '/.*/', $mode = RegexIt
  */
 function concat_files(array $files, string $separator = "\n"): string
 {
-    $files = array_filter($files, 'is_file');
+    $files = array_filter(
+        $files,
+        /**
+         * @param string|SplFileInfo $file
+         * @return bool
+         */
+        static function ($file): bool {
+            if ($file instanceof SplFileInfo) {
+                $file->isFile();
+            }
+
+            return is_file((string)$file);
+        }
+    );
+
     $files = array_map(
     /**
      * @param string|SplFileInfo $file
