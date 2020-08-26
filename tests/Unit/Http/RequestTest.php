@@ -264,6 +264,12 @@ class RequestTest extends TestCase
         $this->assertFalse(Request\is_multipart());
     }
 
+    public function testUserAgent()
+    {
+        $_SERVER['HTTP_USER_AGENT'] = 'test';
+        $this->assertSame('test', Request\user_agent());
+    }
+
     protected function setUp(): void
     {
         $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = ['foo' => 'bar'];

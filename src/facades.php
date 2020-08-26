@@ -173,6 +173,7 @@ const accepted_locales = '\Siler\Http\Request\accepted_locales';
 const recommended_locale = '\Siler\Http\Request\recommended_locale';
 const bearer = '\Siler\Http\Request\bearer';
 const authorization_header = '\Siler\Http\Request\authorization_header';
+const user_agent = '\Siler\Http\Request\user_agent';
 
 
 namespace Siler\Http\Response;

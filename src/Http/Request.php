@@ -454,3 +454,13 @@ function authorization_header($request = null): ?string
 
     return header('Authorization');
 }
+
+/**
+ * Returns the HTTP Request User-Agent.
+ *
+ * @return string|null
+ */
+function user_agent(): ?string
+{
+    return header('user-agent');
+}
