@@ -125,11 +125,17 @@ function content_type(?string $default = null): ?string
  */
 function headers(): array
 {
+    if (Container\has(SWOOLE_HTTP_REQUEST)) {
+        /** @var array<string, string> $headers */
+        $headers = \Siler\Swoole\request()->header;
+        return $headers;
+    }
+
     /** @var array<string> $server_keys */
     $server_keys = array_keys($_SERVER);
     $http_headers = array_reduce(
         $server_keys,
-        function (array $headers, string $key): array {
+        static function (array $headers, string $key): array {
             if ($key === 'CONTENT_TYPE') {
                 $headers[] = $key;
             }
