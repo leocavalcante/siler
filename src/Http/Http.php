@@ -58,7 +58,7 @@ function flash(?string $key = null, ?string $default = null)
 {
     $value = session($key, $default);
 
-    if (!is_null($key)) {
+    if ($key !== null) {
         unset($_SESSION[$key]);
     }
 
@@ -84,7 +84,7 @@ function redirect(string $url): void
  */
 function url(?string $path = null): string
 {
-    if (is_null($path)) {
+    if ($path === null) {
         $path = '/';
     }
 

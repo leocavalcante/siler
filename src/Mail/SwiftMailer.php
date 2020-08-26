@@ -75,11 +75,11 @@ function smtp(string $host, int $port, ?string $username = null, ?string $passwo
 {
     $transport = new Swift_SmtpTransport($host, $port);
 
-    if (!is_null($username)) {
+    if ($username !== null) {
         $transport->setUsername($username);
     }
 
-    if (!is_null($password)) {
+    if ($password !== null) {
         $transport->setPassword($password);
     }
 

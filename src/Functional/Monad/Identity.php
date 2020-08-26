@@ -23,13 +23,14 @@ class Identity
     }
 
     /**
-     * @param callable(T):(T|null)|null $function
+     * @param callable|null $function
      * @return self|mixed
+     * @psalm-param callable(T):(T|null)|null $function
      * @psalm-return self|T
      */
     public function __invoke(callable $function = null)
     {
-        if (is_null($function)) {
+        if ($function === null) {
             return $this->value;
         }
 

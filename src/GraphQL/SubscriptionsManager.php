@@ -233,7 +233,7 @@ class SubscriptionsManager
         /** @var array<array>|null $subscriptions */
         $subscriptions = array_get($this->subscriptions, $subs_name);
 
-        if (is_null($subscriptions)) {
+        if ($subscriptions === null) {
             return;
         }
 
@@ -296,7 +296,7 @@ class SubscriptionsManager
         /** @var array|null $subscription */
         $subscription = array_get($conn_subs, (string)$data['id']);
 
-        if (!is_null($subscription)) {
+        if ($subscription !== null) {
             /** @var string subscription_name */
             $subscription_name = $subscription['name'];
             /** @var int|string $subscription_index */

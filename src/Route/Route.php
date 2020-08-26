@@ -220,7 +220,7 @@ function resource(string $base_path, string $resources_path, ?string $identity_p
     $base_path = '/' . trim($base_path, '/');
     $resources_path = rtrim($resources_path, '/');
 
-    if (is_null($identity_param)) {
+    if ($identity_param === null) {
         $identity_param = 'id';
     }
 
@@ -261,7 +261,7 @@ function resource(string $base_path, string $resources_path, ?string $identity_p
         /** @var mixed $result */
         $result = $route();
 
-        if (!is_null($result)) {
+        if ($result !== null) {
             return $result;
         }
     }

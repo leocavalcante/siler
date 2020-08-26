@@ -302,7 +302,7 @@ function method(): string
  */
 function method_is($method, ?string $request_method = null): bool
 {
-    if (is_null($request_method)) {
+    if ($request_method === null) {
         $request_method = method();
     }
 
@@ -411,7 +411,7 @@ function bearer($request = null): ?string
 {
     $header = authorization_header($request);
 
-    if (is_null($header)) {
+    if ($header === null) {
         return null;
     }
 

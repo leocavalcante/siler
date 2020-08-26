@@ -539,7 +539,7 @@ function non_null(array $list): array
 {
     return array_values(
         array_filter($list, function ($item) {
-            return !is_null($item);
+            return $item !== null;
         })
     );
 }
@@ -621,7 +621,7 @@ function is_empty($var): Closure
 function isnull($var): Closure
 {
     return static function () use ($var): bool {
-        return is_null($var);
+        return $var === null;
     };
 }
 
