@@ -101,5 +101,11 @@
             "@composer analyze",
             "@composer test"
         ]
+    },
+    "repositories": {
+        "phpinsights": {
+            "type": "vcs",
+            "url": "https://github.com/jibbarth/phpinsights"
+        }
     }
 }
