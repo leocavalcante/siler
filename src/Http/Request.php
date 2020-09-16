@@ -339,7 +339,7 @@ function accepted_locales(): array
             $lang_parse
         );
 
-        if (is_countable($lang_parse[1]) && count($lang_parse[1]) > 0) {
+        if (count($lang_parse) > 1 && count($lang_parse[1]) > 0) {
             // create a list like "en" => 0.8
             /** @var array<mixed, array-key> $lang_parse_1 */
             $lang_parse_1 = $lang_parse[1];
