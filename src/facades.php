@@ -6,6 +6,13 @@
 
 declare(strict_types=1);
 
+namespace Siler\Config;
+const config = '\Siler\Config\config';
+const load = '\Siler\Config\load';
+const has = '\Siler\Config\has';
+const all = '\Siler\Config\all';
+
+
 namespace Siler\Container;
 const get = '\Siler\Container\get';
 const set = '\Siler\Container\set';
