@@ -30,6 +30,7 @@
         "gabordemooij/redbean": "^5.5",
         "google/protobuf": "^3.12",
         "grpc/grpc": "^1.30",
+        "hassankhan/config": "^2.1",
         "laminas/laminas-diactoros": "^2.2",
         "laminas/laminas-httphandlerrunner": "^1.1",
         "laminas/laminas-stratigility": "^3.2",
@@ -50,6 +51,7 @@
             "Siler\\": "src/"
         },
         "files": [
+            "src/Config/Config.php",
             "src/Container/Container.php",
             "src/Diactoros/Diactoros.php",
             "src/Dotenv/Dotenv.php",
@@ -101,11 +103,5 @@
             "@composer analyze",
             "@composer test"
         ]
-    },
-    "repositories": {
-        "phpinsights": {
-            "type": "vcs",
-            "url": "https://github.com/jibbarth/phpinsights"
-        }
     }
 }
