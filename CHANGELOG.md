@@ -1,3 +1,9 @@
+# 1.7.5
+- Config module
+
+# 1.7.4
+- Fix route with URL encoded query strings reported at #354
+
 # 1.7.3
 - **GraphQL uploads & custom directives!**
 - **GraphQL annotations!**
