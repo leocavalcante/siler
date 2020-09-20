@@ -48,4 +48,12 @@ final class ConfigTest extends TestCase
             ]
         ], all());
     }
+
+    public function testNoConfig(): void
+    {
+        Container\set(CONFIG, null);
+        self::assertNull(config('test.config'));
+        self::assertFalse(has('test.config'));
+        self::assertNull(all());
+    }
 }
