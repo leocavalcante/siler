@@ -278,7 +278,7 @@ final class Deannotator
         }
 
         if (isset($annotation->listOf)) {
-            $type = Definition\Type::nonNull(Definition\Type::listOf($type));
+            $type = $annotation->nullableList ? Definition\Type::listOf($type) : Definition\Type::nonNull(Definition\Type::listOf($type));
         }
 
         return $type;

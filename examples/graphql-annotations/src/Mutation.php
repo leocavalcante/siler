@@ -21,4 +21,19 @@ class Mutation
         $input = TupleInput::fromArray(array_get_arr($args, 'input'));
         return $input->x + $input->y;
     }
+
+    /**
+     * @Field(description="Sums of tuples", listOf="int")
+     * @Args({
+     *     @Field(name="inputs", listOf=TupleInput::class, nullableList=true)
+     * })
+     * @return array
+     */
+    public static function sums($_, array $args): array
+    {
+        return array_map(static function (array $input) {
+            $input = TupleInput::fromArray($input);
+            return $input->x + $input->y;
+        }, array_get_arr($args, 'inputs'));
+    }
 }

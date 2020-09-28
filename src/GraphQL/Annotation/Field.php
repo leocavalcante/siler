@@ -36,7 +36,11 @@ final class Field
      * @psalm-var boolean|null
      */
     public $nullable = false;
-
+    /**
+     * @var boolean
+     * @psalm-var boolean|null
+     */
+    public $nullableList = false;
     /**
      * @var callable|null
      */
@@ -69,6 +73,12 @@ final class Field
     public function nullable(bool $nullable): self
     {
         $this->nullable = $nullable;
+        return $this;
+    }
+
+    public function nullableList(bool $nullableList): self
+    {
+        $this->nullableList = $nullableList;
         return $this;
     }
 
