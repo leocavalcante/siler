@@ -1,3 +1,6 @@
+# 1.7.6
+- `nullableList` for GraphQL annotations
+
 # 1.7.5
 - Config module
 
