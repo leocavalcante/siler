@@ -1,3 +1,6 @@
+# 1.7.7
+- Allow Config to receive custom Parsers
+
 # 1.7.6
 - `nullableList` for GraphQL annotations
 
