@@ -3,6 +3,7 @@
 namespace Siler\Config;
 
 use Noodlehaus\Config;
+use Noodlehaus\Parser\ParserInterface;
 use Siler\Container;
 
 const CONFIG = 'siler_config';
@@ -32,9 +33,9 @@ function config(string $key, $default = null)
  * @param string|array $values Filenames or string with configuration
  * @return Config
  */
-function load($values): Config
+function load($values, ParserInterface $parser = null, $string = false): Config
 {
-    $config = new Config($values);
+    $config = new Config($values, $parser, $string);
     Container\set(CONFIG, $config);
     return $config;
 }
