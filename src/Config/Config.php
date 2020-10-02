@@ -31,9 +31,11 @@ function config(string $key, $default = null)
  * Load configuration values.
  *
  * @param string|array $values Filenames or string with configuration
+ * @param ParserInterface|null $parser
+ * @param bool $string
  * @return Config
  */
-function load($values, ParserInterface $parser = null, $string = false): Config
+function load($values, ParserInterface $parser = null, bool $string = false): Config
 {
     $config = new Config($values, $parser, $string);
     Container\set(CONFIG, $config);
