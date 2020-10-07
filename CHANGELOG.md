@@ -1,3 +1,6 @@
+# 1.7.8
+- GraphQL Annotations for Subscriptions
+
 # 1.7.7
 - Allow Config to receive custom Parsers
 
