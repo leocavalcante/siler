@@ -2,10 +2,13 @@
 
 namespace Siler\Example\GraphQL\Annotation;
 
+use GraphQL\GraphQL;
+use Siler\GraphQL\Annotation as GQL;
 use Siler\GraphQL\Annotation\Args;
 use Siler\GraphQL\Annotation\Field;
 use Siler\GraphQL\Annotation\ObjectType;
 use function Siler\array_get_arr;
+use function Siler\GraphQL\publish;
 
 /** @ObjectType */
 class Mutation
@@ -35,5 +38,15 @@ class Mutation
             $input = TupleInput::fromArray($input);
             return $input->x + $input->y;
         }, array_get_arr($args, 'inputs'));
+    }
+
+    /**
+     * @Field()
+     * @Args({@Field(name="message", type="string")})
+     */
+    public static function ekko($_, array $args): string
+    {
+        publish('ekko', $args['message']);
+        return $args['message'];
     }
 }
