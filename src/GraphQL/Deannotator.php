@@ -107,6 +107,8 @@ final class Deannotator
                         $config->setQuery($deannotated);
                     } elseif ($deannotated->name === 'Mutation') {
                         $config->setMutation($deannotated);
+                    } elseif ($deannotated->name === 'Subscription') {
+                        $config->setSubscription($deannotated);
                     }
                 }
 
