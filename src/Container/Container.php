@@ -12,12 +12,12 @@ use function Siler\array_get;
  *
  * @param string $key The key to be searched on the container
  * @param mixed $default Default value when the key does not exists on the container
- * @var mixed $value
  * @return mixed|null
  */
 function get(string $key, $default = null)
 {
     $container = Container::getInstance();
+    /** @var mixed $value */
     $value = array_get($container->values, $key, $default);
 
     if (is_callable($value)) {
@@ -86,7 +86,6 @@ function inject(string $serviceName, $service): void
  * Useful for dependency injection/IoC.
  *
  * @param string $serviceName
- * @var mixed $service
  * @return mixed
  */
 function retrieve(string $serviceName)
@@ -97,6 +96,7 @@ function retrieve(string $serviceName)
         throw new UnderflowException("$serviceName not initialized");
     }
 
+    /** @var mixed $service */
     $service = $container->values[$serviceName];
 
     if (is_callable($service)) {
