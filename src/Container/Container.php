@@ -12,6 +12,7 @@ use function Siler\array_get;
  *
  * @param string $key The key to be searched on the container
  * @param mixed $default Default value when the key does not exists on the container
+ * @var mixed $value
  * @return mixed|null
  */
 function get(string $key, $default = null)
@@ -85,6 +86,7 @@ function inject(string $serviceName, $service): void
  * Useful for dependency injection/IoC.
  *
  * @param string $serviceName
+ * @var mixed $service
  * @return mixed
  */
 function retrieve(string $serviceName)
