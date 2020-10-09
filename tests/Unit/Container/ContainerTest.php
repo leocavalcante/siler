@@ -15,12 +15,17 @@ class ContainerTest extends TestCase
     public function testSet()
     {
         Container\set('test', 'test');
+        Container\set('lazy', static function () {
+            return 'lazy';
+        });
         $this->assertContains('test', Container\Container::getInstance()->values);
+        $this->assertContains('lazy', Container\Container::getInstance()->values);
     }
 
     public function testGet()
     {
         $this->assertSame('test', Container\get('test'));
+        $this->assertSame('lazy', Container\get('lazy'));
     }
 
     public function testHas()
@@ -63,5 +68,6 @@ class ContainerTest extends TestCase
         $service = new stdClass();
         Container\Container::getInstance()->values['test_retrieve'] = $service;
         $this->assertSame($service, Container\retrieve('test_retrieve'));
+        $this->assertSame('lazy', Container\retrieve('lazy'));
     }
 }

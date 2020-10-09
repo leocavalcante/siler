@@ -4,6 +4,7 @@ namespace Siler\Container;
 
 use OverflowException;
 use UnderflowException;
+use function Siler\Functional\call;
 use function Siler\array_get;
 
 /**
@@ -16,7 +17,14 @@ use function Siler\array_get;
 function get(string $key, $default = null)
 {
     $container = Container::getInstance();
-    return array_get($container->values, $key, $default);
+    /** @var mixed $value */
+    $value = array_get($container->values, $key, $default);
+
+    if (is_callable($value)) {
+        return call($value);
+    }
+
+    return $value;
 }
 
 /**
@@ -88,7 +96,14 @@ function retrieve(string $serviceName)
         throw new UnderflowException("$serviceName not initialized");
     }
 
-    return $container->values[$serviceName];
+    /** @var mixed $service */
+    $service = $container->values[$serviceName];
+
+    if (is_callable($service)) {
+        return call($service);
+    }
+
+    return $service;
 }
 
 /**
