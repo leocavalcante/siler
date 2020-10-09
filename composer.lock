@@ -1116,16 +1116,16 @@
         },
         {
             "name": "google/protobuf",
-            "version": "v3.13.0",
+            "version": "v3.13.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "fddc6c2439b190284f207143f6d37bf5b651cea6"
+                "reference": "b760544e2ad1225415643ebe1b234c2797c3dad9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/fddc6c2439b190284f207143f6d37bf5b651cea6",
-                "reference": "fddc6c2439b190284f207143f6d37bf5b651cea6",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/b760544e2ad1225415643ebe1b234c2797c3dad9",
+                "reference": "b760544e2ad1225415643ebe1b234c2797c3dad9",
                 "shasum": ""
             },
             "require": {
@@ -1153,7 +1153,7 @@
             "keywords": [
                 "proto"
             ],
-            "time": "2020-08-15T00:44:58+00:00"
+            "time": "2020-10-08T18:25:27+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -4741,12 +4741,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "04c3a31fe8ea94b42c9e2d1acc93d19782133b00"
+                "reference": "ae789a8a2ad189ce7e8216942cdb9b77319f5eb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/04c3a31fe8ea94b42c9e2d1acc93d19782133b00",
-                "reference": "04c3a31fe8ea94b42c9e2d1acc93d19782133b00",
+                "url": "https://api.github.com/repos/symfony/console/zipball/ae789a8a2ad189ce7e8216942cdb9b77319f5eb8",
+                "reference": "ae789a8a2ad189ce7e8216942cdb9b77319f5eb8",
                 "shasum": ""
             },
             "require": {
@@ -4826,7 +4826,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-18T14:27:32+00:00"
+            "time": "2020-10-07T15:23:00+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
