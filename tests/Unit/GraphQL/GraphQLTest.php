@@ -108,9 +108,9 @@ class GraphQLTest extends TestCase
         $this->assertSame(0, GraphQL\debugging());
     }
 
-    public function testAddValidationRules()
+    public function testValidationRules()
     {
-        GraphQL\addValidationRules(
+        GraphQL\validation_rules(
             [
                 new QueryComplexity(10)
             ]
