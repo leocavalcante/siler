@@ -6,6 +6,8 @@ use GraphQL\Error\DebugFlag;
 use GraphQL\Error\Error;
 use GraphQL\Executor\Promise\Adapter\SyncPromiseAdapter;
 use GraphQL\Type\Schema;
+use GraphQL\Validator\DocumentValidator;
+use GraphQL\Validator\Rules\QueryComplexity;
 use PHPUnit\Framework\TestCase;
 use Siler\Container;
 use Siler\GraphQL;
@@ -104,5 +106,16 @@ class GraphQLTest extends TestCase
         $this->assertSame(1, GraphQL\debugging());
         GraphQL\debug(0);
         $this->assertSame(0, GraphQL\debugging());
+    }
+
+    public function testValidationRules()
+    {
+        GraphQL\validation_rules(
+            [
+                new QueryComplexity(10)
+            ]
+        );
+
+        $this->assertArrayHasKey(QueryComplexity::class, array_keys(DocumentValidator::allRules()));
     }
 }

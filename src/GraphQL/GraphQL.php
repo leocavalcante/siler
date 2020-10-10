@@ -19,6 +19,8 @@ use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
+use GraphQL\Validator\DocumentValidator;
+use GraphQL\Validator\Rules\ValidationRule;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use Ratchet\Server\IoServer;
@@ -480,4 +482,16 @@ function annotated(array $class_names, array $with_types = [], array $with_direc
 
     $deannotator = new Deannotator($with_types, $with_directives);
     return $deannotator->deannotate($class_names);
+}
+
+/**
+ * Adds rule to list of global validation rules
+ *
+ * @param array<ValidationRule> $rules
+ */
+function validation_rules(array $rules): void
+{
+    foreach ($rules as $rule) {
+        DocumentValidator::addRule($rule);
+    }
 }
