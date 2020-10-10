@@ -487,11 +487,11 @@ function annotated(array $class_names, array $with_types = [], array $with_direc
 /**
  * Adds rule to list of global validation rules
  *
- * @param array<ValidationRule> $validationRules
+ * @param array<ValidationRule> $rules
  */
-function addValidationRules(array $validationRules): void
+function validation_rules(array $rules): void
 {
-    foreach ($validationRules as $validationRule) {
-        DocumentValidator::addRule($validationRule);
+    foreach ($rules as $rule) {
+        DocumentValidator::addRule($rule);
     }
 }
