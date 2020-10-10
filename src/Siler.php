@@ -196,12 +196,7 @@ function require_fn(string $filename): Closure
             }
 
             /** @var mixed $value */
-            $value = Container\get($filename);
-
-            if (is_callable($value)) {
-                return call_user_func($value, $params);
-            }
-
+            $value = Container\get($filename, null, [$params]);
             return $value;
         };
 }

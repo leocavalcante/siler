@@ -1,7 +1,5 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
-
-return function (array $params): string {
+return static function (array $params): string {
     return $params['foo'];
 };

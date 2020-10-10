@@ -128,7 +128,10 @@ function response(): Response
  */
 function emit(string $content, int $status = 200, array $headers = []): void
 {
-    if (Container\get(SWOOLE_HTTP_REQUEST_ENDED) === true) {
+    /** @var bool|null $request_ended */
+    $request_ended = Container\get(SWOOLE_HTTP_REQUEST_ENDED);
+
+    if ($request_ended) {
         return;
     }
 

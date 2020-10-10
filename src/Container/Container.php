@@ -4,24 +4,30 @@ namespace Siler\Container;
 
 use OverflowException;
 use UnderflowException;
-use function Siler\Functional\call;
 use function Siler\array_get;
+use function Siler\Functional\call;
 
 /**
  * Get a value from the container.
  *
+ * @template T
  * @param string $key The key to be searched on the container
  * @param mixed $default Default value when the key does not exists on the container
- * @return mixed|null
+ * @param array $args If the given value is callable it will be automatically called with this arguments
+ * @return mixed
+ * @psalm-param T $default Default value when the key does not exists on the container
+ * @psalm-return T
  */
-function get(string $key, $default = null)
+function get(string $key, $default = null, array $args = [])
 {
     $container = Container::getInstance();
-    /** @var mixed $value */
+    /** @psalm-var T|callable(mixed...):T $value */
     $value = array_get($container->values, $key, $default);
 
     if (is_callable($value)) {
-        return call($value);
+        /** @var callable(mixed...):T $callable_value */
+        $callable_value = $value;
+        $value = call($callable_value, ...$args);
     }
 
     return $value;
@@ -85,8 +91,10 @@ function inject(string $serviceName, $service): void
  * Sugar for Container\get that throws an UnderflowException when the key isn't initialized.
  * Useful for dependency injection/IoC.
  *
+ * @template T
  * @param string $serviceName
  * @return mixed
+ * @psalm-return T
  */
 function retrieve(string $serviceName)
 {
@@ -96,11 +104,13 @@ function retrieve(string $serviceName)
         throw new UnderflowException("$serviceName not initialized");
     }
 
-    /** @var mixed $service */
+    /** @psalm-var T|callable(mixed...):T $service */
     $service = $container->values[$serviceName];
 
     if (is_callable($service)) {
-        return call($service);
+        /** @var callable(mixed...):T $callable_service */
+        $callable_service = $service;
+        $service = call($callable_service);
     }
 
     return $service;

@@ -9,17 +9,19 @@ use PHPUnit\Framework\TestCase;
 use Siler\Container;
 use stdClass;
 use UnderflowException;
+use function Siler\Functional\always;
 
 class ContainerTest extends TestCase
 {
     public function testSet()
     {
+        $lazy = always('lazy');
+
         Container\set('test', 'test');
-        Container\set('lazy', static function () {
-            return 'lazy';
-        });
+        Container\set('lazy', $lazy);
+
         $this->assertContains('test', Container\Container::getInstance()->values);
-        $this->assertContains('lazy', Container\Container::getInstance()->values);
+        $this->assertContains($lazy, Container\Container::getInstance()->values);
     }
 
     public function testGet()

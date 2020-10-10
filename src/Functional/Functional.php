@@ -674,8 +674,8 @@ function lazy(callable $callable, ...$args): Closure
  * A call_user_func alias.
  *
  * @template T
- * @param callable(...mixed): T $callable
- * @param array ...$args
+ * @param callable(mixed...): T $callable
+ * @param array $args
  * @return mixed
  * @psalm-return T
  */

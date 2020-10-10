@@ -110,12 +110,13 @@ class GraphQLTest extends TestCase
 
     public function testValidationRules()
     {
-        GraphQL\validation_rules(
-            [
-                new QueryComplexity(10)
-            ]
-        );
+        $rule = new QueryComplexity(10);
 
-        $this->assertArrayHasKey(QueryComplexity::class, array_keys(DocumentValidator::allRules()));
+        GraphQL\validation_rules([$rule]);
+
+        $all = DocumentValidator::allRules();
+
+        $this->assertArrayHasKey(QueryComplexity::class, $all);
+        $this->assertContains($rule, $all);
     }
 }

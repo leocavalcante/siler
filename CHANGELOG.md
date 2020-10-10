@@ -1,3 +1,7 @@
+# 1.7.9
+- Container with lazy values/factories (thanks @gskierk)
+- GraphQL Validation Rules (thanks @gskierk)
+
 # 1.7.8
 - GraphQL Annotations for Subscriptions
 
