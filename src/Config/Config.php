@@ -2,62 +2,93 @@
 
 namespace Siler\Config;
 
-use Noodlehaus\Config;
-use Noodlehaus\Parser\ParserInterface;
+use Laminas\Config\Config;
+use Laminas\Config\Factory;
+use Laminas\Config\Processor\ProcessorInterface;
+use Laminas\Config\Processor\Queue;
+use Laminas\Config\Reader\ReaderInterface;
 use Siler\Container;
 
 const CONFIG = 'siler_config';
+const CONFIG_PROCESSORS = 'siler_config_processors';
 
 /**
- * Gets or sets a configuration.
+ * Registers custom readers.
  *
- * @param string $key
- * @param mixed|null $default
- * @return mixed|null
+ * @param array<string, ReaderInterface> $readers
  */
-function config(string $key, $default = null)
+function readers(array $readers): void
 {
-    /** @var Config|null $config */
-    $config = Container\get(CONFIG);
-
-    if ($config === null) {
-        return null;
+    foreach ($readers as $extension => $reader) {
+        Factory::registerReader($extension, $reader);
     }
-
-    return $config->get($key, $default);
 }
 
 /**
- * Load configuration values.
+ * Registers configuration processors.
  *
- * @param string|array $values Filenames or string with configuration
- * @param ParserInterface|null $parser
- * @param bool $string
+ * @param array<ProcessorInterface> $processors
+ */
+function processors(array $processors): void
+{
+    Container\set(CONFIG_PROCESSORS, $processors);
+}
+
+/**
+ * Gets a configuration.
+ *
+ * @param string $path
+ * @param mixed $default
+ * @return mixed
+ */
+function config(string $path, $default = null)
+{
+    $keys = explode('.', $path);
+
+    $pointer = all();
+    foreach ($keys as $key) {
+        if (empty($pointer)) {
+            return $default;
+        }
+        $pointer = $pointer[$key] ?? null;
+    }
+
+    return $pointer ?? $default;
+}
+
+/**
+ * Initializes configuration object.
+ *
+ * @param string $directory
  * @return Config
  */
-function load($values, ParserInterface $parser = null, bool $string = false): Config
+function load(string $directory): Config
 {
-    $config = new Config($values, $parser, $string);
+    $filenames = glob($directory . '/*.*', GLOB_BRACE);
+    $data = Factory::fromFiles($filenames);
+    $config = new Config($data, true);
+
+    $processors = Container\get(CONFIG_PROCESSORS, []);
+    $queue = new Queue();
+    foreach ($processors as $processor) {
+        $queue->insert($processor);
+    }
+    $queue->process($config);
+
     Container\set(CONFIG, $config);
+
     return $config;
 }
 
 /**
  * Checks if the key exists on the config.
  *
- * @param string $key
+ * @param string $path
  * @return bool
  */
-function has(string $key): bool
+function has(string $path): bool
 {
-    /** @var Config|null $config */
-    $config = Container\get(CONFIG);
-
-    if ($config === null) {
-        return false;
-    }
-
-    return $config->has($key);
+    return config($path) !== null;
 }
 
 /**
@@ -69,10 +100,9 @@ function all(): ?array
 {
     /** @var Config|null $config */
     $config = Container\get(CONFIG);
-
     if ($config === null) {
         return null;
     }
 
-    return $config->all();
+    return $config->toArray();
 }
