@@ -45,6 +45,7 @@ function config(string $path, $default = null)
 {
     $keys = explode('.', $path);
 
+    /** @var array|null */
     $pointer = all();
     foreach ($keys as $key) {
         if (empty($pointer)) {
@@ -65,9 +66,11 @@ function config(string $path, $default = null)
 function load(string $directory): Config
 {
     $filenames = glob($directory . '/*.*', GLOB_BRACE);
+    /** @var array */
     $data = Factory::fromFiles($filenames);
     $config = new Config($data, true);
 
+    /** @var array<ProcessorInterface> */
     $processors = Container\get(CONFIG_PROCESSORS, []);
     $queue = new Queue();
     foreach ($processors as $processor) {
