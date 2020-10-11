@@ -51,6 +51,7 @@ function config(string $path, $default = null)
         if (empty($pointer)) {
             return $default;
         }
+        /** @var mixed */
         $pointer = $pointer[$key] ?? null;
     }
 
