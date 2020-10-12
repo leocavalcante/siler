@@ -7,6 +7,8 @@ use Laminas\Config\Factory;
 use Laminas\Config\Processor\ProcessorInterface;
 use Laminas\Config\Processor\Queue;
 use Laminas\Config\Reader\ReaderInterface;
+use Laminas\ConfigAggregator\ConfigAggregator;
+use Laminas\ConfigAggregator\LaminasConfigProvider;
 use Siler\Container;
 
 const CONFIG = 'siler_config';
@@ -66,9 +68,11 @@ function config(string $path, $default = null)
  */
 function load(string $directory): Config
 {
-    $filenames = glob($directory . '/*.*', GLOB_BRACE);
+    $aggregator = new ConfigAggregator([
+        new LaminasConfigProvider($directory . '/*.*')
+    ]);
     /** @var array */
-    $data = Factory::fromFiles($filenames);
+    $data = $aggregator->getMergedConfig();
     $config = new Config($data, true);
 
     /** @var array<ProcessorInterface> */
@@ -78,7 +82,6 @@ function load(string $directory): Config
         $queue->insert($processor);
     }
     $queue->process($config);
-
     Container\set(CONFIG, $config);
 
     return $config;
