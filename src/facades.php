@@ -7,6 +7,8 @@
 declare(strict_types=1);
 
 namespace Siler\Config;
+const readers = '\Siler\Config\readers';
+const processors = '\Siler\Config\processors';
 const config = '\Siler\Config\config';
 const load = '\Siler\Config\load';
 const has = '\Siler\Config\has';

@@ -2,9 +2,11 @@
 
 namespace Siler\Test\Unit\Config;
 
+use Laminas\Config\Processor\Token;
+use Laminas\Config\Reader\Json;
 use PHPUnit\Framework\TestCase;
 use Siler\Container;
-use function Siler\Config\{all, has, load, config};
+use function Siler\Config\{all, config, has, load, processors, readers};
 use const Siler\Config\CONFIG;
 
 final class ConfigTest extends TestCase
@@ -13,6 +15,14 @@ final class ConfigTest extends TestCase
 
     public function setUp(): void
     {
+        $token = new Token(['TOKEN' => 'bar']);
+        $processors = [$token];
+
+        $readers = ['ext' => new Json()];
+
+        processors($processors);
+        readers($readers);
+
         $this->config = load(__DIR__ . '/../../fixtures/config');
     }
 
@@ -43,8 +53,10 @@ final class ConfigTest extends TestCase
     {
         self::assertSame([
             'test' => [
+                'json' => 'custom',
                 'another_config' => 'another_value',
-                'config' => 'value',
+                'token_processing' => 'bar',
+                'config' => 'value'
             ]
         ], all());
     }
