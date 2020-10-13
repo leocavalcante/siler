@@ -22,7 +22,7 @@ const DEFAULT_STRATIGILITY_PIPELINE = 'default_stratigility_pipeline';
  */
 function process(ServerRequestInterface $request, string $name = DEFAULT_STRATIGILITY_PIPELINE): Closure
 {
-    /** @var MiddlewarePipe|null $pipeline */
+    /** @var mixed $pipeline */
     $pipeline = Container\get($name);
 
     if ($pipeline === null || !($pipeline instanceof MiddlewarePipe)) {
@@ -78,7 +78,7 @@ function pipe($middleware, string $name = DEFAULT_STRATIGILITY_PIPELINE): Middle
  */
 function handle(ServerRequestInterface $request, string $name = DEFAULT_STRATIGILITY_PIPELINE): ResponseInterface
 {
-    /** @var MiddlewarePipe|null $pipeline */
+    /** @var mixed $pipeline */
     $pipeline = Container\get($name);
 
     if ($pipeline === null || !($pipeline instanceof MiddlewarePipe)) {
