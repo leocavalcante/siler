@@ -7,6 +7,7 @@ use Laminas\Config\Factory;
 use Laminas\Config\Processor\ProcessorInterface;
 use Laminas\Config\Processor\Queue;
 use Laminas\Config\Reader\ReaderInterface;
+use Laminas\Config\Reader\Yaml;
 use Laminas\ConfigAggregator\ConfigAggregator;
 use Laminas\ConfigAggregator\LaminasConfigProvider;
 use Siler\Container;
@@ -112,4 +113,22 @@ function all(): ?array
     }
 
     return $config->toArray();
+}
+
+/**
+ * Sets callback for decoding Yaml.
+ *
+ * @param string|callable $yamlDecoder
+ */
+function yaml($yamlDecoder): void
+{
+    $yaml = new Yaml();
+    $yaml->setYamlDecoder($yamlDecoder);
+
+    readers(
+        [
+            'yaml' => $yaml,
+            'yml' => $yaml
+        ]
+    );
 }
