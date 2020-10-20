@@ -14,11 +14,11 @@ use function Siler\Functional\call;
  * @param string $key The key to be searched on the container
  * @param mixed $default Default value when the key does not exists on the container
  * @param array $args If the given value is callable it will be automatically called with this arguments
- * @return mixed
+ * @param bool $reusable Whether value should be called every time or just once
  * @psalm-param T $default Default value when the key does not exists on the container
  * @psalm-return T
  */
-function get(string $key, $default = null, array $args = [])
+function get(string $key, $default = null, array $args = [], bool $reusable = true)
 {
     $container = Container::getInstance();
     /** @psalm-var T|callable(mixed...):T $value */
@@ -28,6 +28,9 @@ function get(string $key, $default = null, array $args = [])
         /** @var callable(mixed...):T $callable_value */
         $callable_value = $value;
         $value = call($callable_value, ...$args);
+        if ($reusable) {
+            set($key, $value);
+        }
     }
 
     return $value;
@@ -93,10 +96,11 @@ function inject(string $serviceName, $service): void
  *
  * @template T
  * @param string $serviceName
+ * @param bool $reusable
  * @return mixed
  * @psalm-return T
  */
-function retrieve(string $serviceName)
+function retrieve(string $serviceName, bool $reusable = true)
 {
     $container = Container::getInstance();
 
@@ -111,6 +115,9 @@ function retrieve(string $serviceName)
         /** @var callable(mixed...):T $callable_service */
         $callable_service = $service;
         $service = call($callable_service);
+        if ($reusable) {
+            set($serviceName, $service);
+        }
     }
 
     return $service;
