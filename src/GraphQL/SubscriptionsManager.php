@@ -91,14 +91,13 @@ class SubscriptionsManager
      */
     public function handleConnectionInit(SubscriptionsConnection $conn, ?array $message = null): void
     {
+        $response = [
+            'type' => GQL_CONNECTION_ACK,
+            'payload' => []
+        ];
+
         try {
             $this->connStorage[$conn->key()] = [];
-
-            $response = [
-                'type' => GQL_CONNECTION_ACK,
-                'payload' => []
-            ];
-
             /** @var array|mixed $context */
             $context = $this->callListener(ON_CONNECT, [array_get($message, 'payload', []), $this->context]);
 
@@ -116,7 +115,6 @@ class SubscriptionsManager
             $conn->send(Json\encode($response));
         }
     }
-
 
     /**
      * @param SubscriptionsConnection $conn
