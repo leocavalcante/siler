@@ -7,7 +7,6 @@ namespace Siler\Test\Unit;
 use OverflowException;
 use PHPUnit\Framework\TestCase;
 use Siler\Container;
-use Siler\Test\fixtures\Reusable;
 use stdClass;
 use UnderflowException;
 use function Siler\Functional\always;
@@ -83,7 +82,7 @@ class ContainerTest extends TestCase
         };
 
         $this->assertSame(0, Container\get('reusable'));
-        $this->assertSame(0, Container\get('reusable'));
+        $this->assertSame(0, Container\retrieve('reusable'));
         $this->assertSame(0, Container\get('reusable'));
 
         $this->assertSame(1, $calls);
