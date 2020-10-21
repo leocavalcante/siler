@@ -73,7 +73,7 @@ class ContainerTest extends TestCase
         $this->assertSame('lazy', Container\retrieve('lazy'));
     }
 
-    public function testReusable()
+    public function testReusableGet()
     {
         $calls = 0;
 
@@ -82,8 +82,23 @@ class ContainerTest extends TestCase
         };
 
         $this->assertSame(0, Container\get('reusable'));
-        $this->assertSame(0, Container\retrieve('reusable'));
         $this->assertSame(0, Container\get('reusable'));
+        $this->assertSame(0, Container\get('reusable'));
+
+        $this->assertSame(1, $calls);
+    }
+
+    public function testReusableRetrieve()
+    {
+        $calls = 0;
+
+        Container\Container::getInstance()->values['reusable'] = static function () use (&$calls): int {
+            return $calls++;
+        };
+
+        $this->assertSame(0, Container\retrieve('reusable'));
+        $this->assertSame(0, Container\retrieve('reusable'));
+        $this->assertSame(0, Container\retrieve('reusable'));
 
         $this->assertSame(1, $calls);
     }
