@@ -501,15 +501,13 @@ function graphql_handler(Schema $schema, $root_value = null, $context = null): C
         $debug = debugging();
 
         try {
-            $result = execute($schema, graphql_request()->toArray(), $root_value, $context);
+            json(execute($schema, graphql_request()->toArray(), $root_value, $context));
         } catch (Throwable $exception) {
             if ($debug > 0) {
                 Log\debug('GraphQL Internal Error', ['exception' => $exception]);
             }
 
-            $result = FormattedError::createFromException($exception, $debug);
-        } finally {
-            json($result);
+            json(FormattedError::createFromException($exception, $debug));
         }
     };
 }
