@@ -9,6 +9,7 @@ use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use Siler\Monolog as Log;
+use function Siler\Functional\always;
 
 class MonologTest extends TestCase
 {
@@ -55,5 +56,21 @@ class MonologTest extends TestCase
             $this->assertSame(strtolower($levelName), $record['context']['context']);
             $this->assertSame('test', $record['channel']);
         }
+    }
+
+    public function testLogIf()
+    {
+        $handler = new TestHandler();
+        $channel = 'log_if';
+
+        Log\handler($handler, $channel);
+        Log\debug('foo', [], $channel);
+        Log\debug_if(always(false));
+        Log\debug('bar', [], $channel);
+
+        $records = $handler->getRecords();
+
+        $this->assertCount(1, $records);
+        $this->assertSame('foo', $records[0]['message']);
     }
 }

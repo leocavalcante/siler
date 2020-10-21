@@ -74,6 +74,7 @@
             "src/Prelude/IO.php",
             "src/Prelude/Klass.php",
             "src/Prelude/Obj.php",
+            "src/Prelude/Prelude.php",
             "src/Prelude/Str.php",
             "src/Prelude/Tuple.php",
             "src/Ratchet/Ratchet.php",
