@@ -246,6 +246,10 @@ namespace Siler\Obj;
 const patch = '\Siler\Obj\patch';
 
 
+namespace Siler\Prelude;
+const collect = '\Siler\Prelude\collect';
+
+
 namespace Siler\Str;
 const slugify = '\Siler\Str\slugify';
 const lines = '\Siler\Str\lines';
