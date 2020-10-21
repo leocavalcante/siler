@@ -35,12 +35,18 @@ class FileTest extends TestCase
         $this->assertContains(join_dir($basedir, 'fixtures', 'php_input.txt'), $dir);
     }
 
-    public function testConcatFiles()
+    public function testConcatFilesWithRecur()
     {
         $basedir = dirname(__DIR__, 2);
         $result = concat_files(recur_iter_dir(join_dir($basedir, 'fixtures', 'concat')), '');
 
         // Note: file order is arbitrary
         $this->assertTrue($result === 'foobar' || $result === 'barfoo');
+    }
+
+    public function testConcatFiles()
+    {
+        $result = concat_files([__DIR__ . '/../../fixtures/concat/foo.txt', __DIR__ . '/../../fixtures/concat/bar.txt']);
+        $this->assertSame("foo\nbar", $result);
     }
 }
