@@ -2,11 +2,13 @@
 
 namespace Siler\Test\Unit\Config;
 
+use Laminas\Config\Factory;
 use Laminas\Config\Processor\Token;
 use Laminas\Config\Reader\Json;
 use PHPUnit\Framework\TestCase;
 use Siler\Container;
-use function Siler\Config\{all, config, has, load, processors, readers};
+use function Siler\Config\{all, config, has, load, processors, readers, yaml};
+use function Siler\Functional\always;
 use const Siler\Config\CONFIG;
 
 final class ConfigTest extends TestCase
@@ -67,5 +69,12 @@ final class ConfigTest extends TestCase
         self::assertNull(config('test.config'));
         self::assertFalse(has('test.config'));
         self::assertNull(all());
+    }
+
+    public function testYaml(): void
+    {
+        yaml(always(['yaml', 'reader', 'test']));
+        load(__DIR__ . '/../../fixtures/config/yaml');
+        self::assertSame(['yaml', 'reader', 'test'], all());
     }
 }

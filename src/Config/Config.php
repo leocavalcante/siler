@@ -65,12 +65,13 @@ function config(string $path, $default = null)
  * Initializes configuration object.
  *
  * @param string $directory
+ * @param string $blob
  * @return Config
  */
-function load(string $directory): Config
+function load(string $directory, string $blob = '/*.*'): Config
 {
     $aggregator = new ConfigAggregator([
-        new LaminasConfigProvider($directory . '/*.*')
+        new LaminasConfigProvider($directory . $blob)
     ]);
     /** @var array */
     $data = $aggregator->getMergedConfig();
