@@ -35,7 +35,7 @@ final class Deannotator
     private $types;
     /** @var Definition\Directive[] */
     private $directives;
-    /** @var array<string> */
+    /** @var array<class-string> */
     private $annotations;
 
     /**
@@ -52,7 +52,6 @@ final class Deannotator
      * Creates a new reader based on a cache and current debugging.
      *
      * @return Reader
-     * @throws AnnotationException
      */
     private function reader(): Reader
     {
