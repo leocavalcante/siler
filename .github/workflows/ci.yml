@@ -6,7 +6,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    strategy:      
+    strategy:
       matrix:
         php-versions: ['7.3', '7.4']
 
@@ -19,9 +19,9 @@ jobs:
     - name: Install
       run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: Build
-      run: composer build
-    
+    - name: Test
+      run: composer ci
+
     - uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}

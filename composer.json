@@ -98,6 +98,11 @@
         "lint": "phpcs",
         "analyze": "psalm --shepherd",
         "test": "phpunit",
+        "ci": [
+            "@composer lint",
+            "@composer analyze",
+            "@composer test"
+        ],
         "build": [
             "@composer generate-facades",
             "@composer fix",
