@@ -296,7 +296,14 @@ function resolvers(array $resolvers): void
                 }
 
                 if (is_object($resolver)) {
-                    if (isset($resolver->{$field_name})) {
+                    $getter = sprintf('get%s', ucwords($field_name));
+                    if (method_exists($resolver, $getter)) {
+                        $reflectionGetter = new \ReflectionMethod($resolver, $getter);
+                        if ($reflectionGetter->isPublic()) {
+                            $value = $resolver->{$getter}($source, $args, $context, $info);
+                        }
+                    }
+                    if ($value === null && isset($resolver->{$field_name})) {
                         /** @var callable|mixed $value */
                         $value = $resolver->{$field_name};
                     }
