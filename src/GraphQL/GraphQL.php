@@ -300,6 +300,7 @@ function resolvers(array $resolvers): void
                     if (method_exists($resolver, $getter)) {
                         $reflectionGetter = new \ReflectionMethod($resolver, $getter);
                         if ($reflectionGetter->isPublic()) {
+                            /** @var mixed $value */
                             $value = $resolver->{$getter}($source, $args, $context, $info);
                         }
                     }
