@@ -270,11 +270,6 @@ namespace Siler\Ratchet;
 const graphql_subscriptions = '\Siler\Ratchet\graphql_subscriptions';
 
 
-namespace Siler\Result;
-const ok = '\Siler\Result\ok';
-const err = '\Siler\Result\err';
-
-
 namespace Siler\Route;
 const get = '\Siler\Route\get';
 const post = '\Siler\Route\post';
