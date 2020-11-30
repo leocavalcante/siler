@@ -6031,16 +6031,16 @@
         },
         {
             "name": "textalk/websocket",
-            "version": "1.4.1",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Textalk/websocket-php.git",
-                "reference": "7f2baaf501054ab2387b3860ad30f730a49f2a88"
+                "reference": "7c340e85f07e6da93e96aba9de311e35cae64da8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Textalk/websocket-php/zipball/7f2baaf501054ab2387b3860ad30f730a49f2a88",
-                "reference": "7f2baaf501054ab2387b3860ad30f730a49f2a88",
+                "url": "https://api.github.com/repos/Textalk/websocket-php/zipball/7c340e85f07e6da93e96aba9de311e35cae64da8",
+                "reference": "7c340e85f07e6da93e96aba9de311e35cae64da8",
                 "shasum": ""
             },
             "require": {
@@ -6072,7 +6072,7 @@
                 }
             ],
             "description": "WebSocket client and server",
-            "time": "2020-10-30T12:57:55+00:00"
+            "time": "2020-11-24T07:46:19+00:00"
         },
         {
             "name": "theseer/tokenizer",
