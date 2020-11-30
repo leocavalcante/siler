@@ -4834,12 +4834,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/swoole/ide-helper.git",
-                "reference": "0ac993cd2b52bae2bd5d42198be9b62085378ac5"
+                "reference": "ab2eb4c142681e8df0183dd583579fc4c613cd36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/0ac993cd2b52bae2bd5d42198be9b62085378ac5",
-                "reference": "0ac993cd2b52bae2bd5d42198be9b62085378ac5",
+                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/ab2eb4c142681e8df0183dd583579fc4c613cd36",
+                "reference": "ab2eb4c142681e8df0183dd583579fc4c613cd36",
                 "shasum": ""
             },
             "require-dev": {
@@ -4860,7 +4860,7 @@
                 }
             ],
             "description": "IDE help files for Swoole.",
-            "time": "2020-11-20T18:59:51+00:00"
+            "time": "2020-11-26T06:12:18+00:00"
         },
         {
             "name": "symfony/console",
@@ -5951,16 +5951,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v5.1.8",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "a97573e960303db71be0dd8fda9be3bca5e0feea"
+                "reference": "40e975edadd4e32cd16f3753b3bad65d9ac48242"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/a97573e960303db71be0dd8fda9be3bca5e0feea",
-                "reference": "a97573e960303db71be0dd8fda9be3bca5e0feea",
+                "url": "https://api.github.com/repos/symfony/string/zipball/40e975edadd4e32cd16f3753b3bad65d9ac48242",
+                "reference": "40e975edadd4e32cd16f3753b3bad65d9ac48242",
                 "shasum": ""
             },
             "require": {
@@ -6027,7 +6027,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-24T12:01:57+00:00"
+            "time": "2020-10-24T12:08:07+00:00"
         },
         {
             "name": "textalk/websocket",
