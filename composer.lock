@@ -1120,16 +1120,16 @@
         },
         {
             "name": "gabordemooij/redbean",
-            "version": "v5.6",
+            "version": "v5.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gabordemooij/redbean.git",
-                "reference": "6b589df8bcf63b9b8525c50a5c1575e20a14de1b"
+                "reference": "fac13cd25445129a64be2bbb4457a7d8a4fb9ef0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/6b589df8bcf63b9b8525c50a5c1575e20a14de1b",
-                "reference": "6b589df8bcf63b9b8525c50a5c1575e20a14de1b",
+                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/fac13cd25445129a64be2bbb4457a7d8a4fb9ef0",
+                "reference": "fac13cd25445129a64be2bbb4457a7d8a4fb9ef0",
                 "shasum": ""
             },
             "require": {
@@ -1157,7 +1157,7 @@
             "keywords": [
                 "orm"
             ],
-            "time": "2020-10-03T14:18:27+00:00"
+            "time": "2020-11-27T08:36:10+00:00"
         },
         {
             "name": "google/protobuf",
