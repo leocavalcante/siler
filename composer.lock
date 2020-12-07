@@ -6527,16 +6527,16 @@
         },
         {
             "name": "webonyx/graphql-php",
-            "version": "v14.3.0",
+            "version": "v14.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webonyx/graphql-php.git",
-                "reference": "4f3430990824ff410fe548102cb85f0c46442704"
+                "reference": "aab3d49181467db064b41429cde117a7589625fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webonyx/graphql-php/zipball/4f3430990824ff410fe548102cb85f0c46442704",
-                "reference": "4f3430990824ff410fe548102cb85f0c46442704",
+                "url": "https://api.github.com/repos/webonyx/graphql-php/zipball/aab3d49181467db064b41429cde117a7589625fc",
+                "reference": "aab3d49181467db064b41429cde117a7589625fc",
                 "shasum": ""
             },
             "require": {
@@ -6585,7 +6585,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2020-08-23T11:52:38+00:00"
+            "time": "2020-12-03T16:05:21+00:00"
         }
     ],
     "aliases": [],
