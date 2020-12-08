@@ -258,11 +258,9 @@ function resolvers(array $resolvers): void
         /**
          * @template Source
          * @template Context
-         * @param mixed $source
-         * @psalm-param Source $source
-         * @param array $args
-         * @param mixed $context
-         * @psalm-param Context $context
+         * @param Source $source
+         * @param array<string, mixed> $args
+         * @param Context $context
          * @param ResolveInfo $info
          * @return mixed|null
          */
@@ -327,11 +325,9 @@ function resolvers(array $resolvers): void
     /**
      * @template Source
      * @template Context
-     * @param mixed $source
-     * @psalm-param Source $source
-     * @param array $args
-     * @param mixed $context
-     * @psalm-param Context $context
+     * @param Source $source
+     * @param array<string, mixed> $args
+     * @param Context $context
      * @param ResolveInfo $info
      * @return mixed|null
      */

@@ -8,10 +8,11 @@ use GraphQL\Language\AST\StringValueNode;
 use Monolog\Test\TestCase;
 use Siler\GraphQL\DateScalar;
 use Siler\GraphQL\DateTimeScalar;
+use ValueError;
 
 class DateTimeScalarTest extends TestCase
 {
-    public function testDateSerialize()
+    public function testDateSerialize(): void
     {
         $expected = '2020-07-18';
         $ds = new DateScalar();
@@ -23,7 +24,7 @@ class DateTimeScalarTest extends TestCase
         $ds->serialize($expected);
     }
 
-    public function testDateParse()
+    public function testDateParse(): void
     {
         $value = '2020-07-18';
         $literal = new StringValueNode(['value' => $value]);
@@ -34,7 +35,7 @@ class DateTimeScalarTest extends TestCase
         $actual = $ds->parseLiteral($literal);
         $this->assertEquals($expected, $actual);
 
-        $this->expectException(Error::class);
+        $this->expectException(ValueError::class);
         $ds->parseLiteral($value);
 
         $actual = $ds->parseValue($value);
@@ -67,7 +68,7 @@ class DateTimeScalarTest extends TestCase
         $actual = $dts->parseLiteral($literal);
         $this->assertEquals($expected, $actual);
 
-        $this->expectException(Error::class);
+        $this->expectException(ValueError::class);
         $dts->parseLiteral($value);
 
         $actual = $dts->parseValue($value);

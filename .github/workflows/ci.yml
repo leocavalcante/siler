@@ -4,11 +4,10 @@ on: [push, pull_request]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['7.3', '7.4']
+        php-versions: ['7.3', '7.4', '8.0']
 
     steps:
     - uses: actions/checkout@v1
@@ -16,8 +15,17 @@ jobs:
     - name: Validate
       run: composer validate
 
+    - name: Cache
+      id: composer-cache
+      uses: actions/cache@v2
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
     - name: Install
-      run: composer install --prefer-dist --no-progress
+      run: composer install --prefer-dist --no-progress --no-suggest
 
     - name: Test
       run: composer ci
