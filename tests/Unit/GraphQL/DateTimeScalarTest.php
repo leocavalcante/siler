@@ -11,7 +11,7 @@ use Siler\GraphQL\DateTimeScalar;
 
 class DateTimeScalarTest extends TestCase
 {
-    public function testDateSerialize()
+    public function testDateSerialize(): void
     {
         $expected = '2020-07-18';
         $ds = new DateScalar();
@@ -23,7 +23,7 @@ class DateTimeScalarTest extends TestCase
         $ds->serialize($expected);
     }
 
-    public function testDateParse()
+    public function testDateParse(): void
     {
         $value = '2020-07-18';
         $literal = new StringValueNode(['value' => $value]);
@@ -44,7 +44,7 @@ class DateTimeScalarTest extends TestCase
         $ds->parseValue('2020-07-18');
     }
 
-    public function testDateTimeSerialize()
+    public function testDateTimeSerialize(): void
     {
         $expected = '2020-07-18 13:40:00';
         $dts = new DateTimeScalar();
@@ -56,7 +56,7 @@ class DateTimeScalarTest extends TestCase
         $dts->serialize($expected);
     }
 
-    public function testDateTimeParse()
+    public function testDateTimeParse(): void
     {
         $value = '2020-07-18 13:40:00';
         $literal = new StringValueNode(['value' => $value]);

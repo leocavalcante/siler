@@ -40,22 +40,25 @@ function processors(array $processors): void
 /**
  * Gets a configuration.
  *
+ * @template T
  * @param string $path
- * @param mixed $default
- * @return mixed
+ * @param T|null $default
+ * @return T|null
  */
 function config(string $path, $default = null)
 {
     $keys = explode('.', $path);
-
-    /** @var array|null */
     $pointer = all();
+
     foreach ($keys as $key) {
         if (empty($pointer)) {
             return $default;
         }
-        /** @var mixed */
-        $pointer = $pointer[$key] ?? null;
+
+        if (is_array($pointer)) {
+            /** @var T|array|null $pointer */
+            $pointer = $pointer[$key] ?? null;
+        }
     }
 
     return $pointer ?? $default;
