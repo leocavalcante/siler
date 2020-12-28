@@ -169,25 +169,26 @@
         },
         {
             "name": "brick/varexporter",
-            "version": "0.3.2",
+            "version": "0.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/varexporter.git",
-                "reference": "411110b797c6b1ecf947a0eec17ffaa59284f5a0"
+                "reference": "736378d357a189a692390bbc9e0eed835b079805"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/varexporter/zipball/411110b797c6b1ecf947a0eec17ffaa59284f5a0",
-                "reference": "411110b797c6b1ecf947a0eec17ffaa59284f5a0",
+                "url": "https://api.github.com/repos/brick/varexporter/zipball/736378d357a189a692390bbc9e0eed835b079805",
+                "reference": "736378d357a189a692390bbc9e0eed835b079805",
                 "shasum": ""
             },
             "require": {
                 "nikic/php-parser": "^4.0",
-                "php": ">=7.2"
+                "php": "^7.2 || ^8.0"
             },
             "require-dev": {
-                "php-coveralls/php-coveralls": "^2.0",
-                "phpunit/phpunit": "^7.0"
+                "php-coveralls/php-coveralls": "^2.2",
+                "phpunit/phpunit": "^8.5 || ^9.0",
+                "vimeo/psalm": "^4.3"
             },
             "type": "library",
             "autoload": {
@@ -205,9 +206,9 @@
             ],
             "support": {
                 "issues": "https://github.com/brick/varexporter/issues",
-                "source": "https://github.com/brick/varexporter/tree/master"
+                "source": "https://github.com/brick/varexporter/tree/0.3.3"
             },
-            "time": "2020-03-13T16:56:53+00:00"
+            "time": "2020-12-24T15:04:41+00:00"
         },
         {
             "name": "cboden/ratchet",
