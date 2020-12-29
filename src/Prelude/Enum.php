@@ -19,7 +19,7 @@ abstract class Enum
      * @return static
      * @throws ReflectionException
      */
-    public static function of($value)
+    public static function of($value): self
     {
         /** @psalm-suppress UnsafeInstantiation */
         return new static($value);
@@ -33,7 +33,7 @@ abstract class Enum
     {
         $class_name = static::class;
 
-        if (!array_key_exists($class_name, static::$constsMemo)) {
+        if (!\array_key_exists($class_name, self::$constsMemo)) {
             $reflection = new ReflectionClass($class_name);
             static::$constsMemo[$class_name] = $reflection->getConstants();
         }
