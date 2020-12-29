@@ -35,10 +35,10 @@ abstract class Enum
 
         if (!\array_key_exists($class_name, self::$constsMemo)) {
             $reflection = new ReflectionClass($class_name);
-            static::$constsMemo[$class_name] = $reflection->getConstants();
+            self::$constsMemo[$class_name] = $reflection->getConstants();
         }
 
-        return static::$constsMemo[$class_name];
+        return self::$constsMemo[$class_name];
     }
 
     /**
@@ -48,7 +48,7 @@ abstract class Enum
      */
     protected static function valid($value): bool
     {
-        return in_array($value, array_values(static::consts()), true);
+        return \in_array($value, array_values(static::consts()), true);
     }
 
     /** @var mixed */
@@ -90,6 +90,6 @@ abstract class Enum
      */
     public function __toString(): string
     {
-        return (string)$this->value;
+        return (string) $this->value;
     }
 }
