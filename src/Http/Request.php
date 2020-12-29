@@ -11,6 +11,9 @@ namespace Siler\Http\Request;
 use Psr\Http\Message\ServerRequestInterface;
 use Siler\Container;
 use Swoole\Http\Request;
+use function function_exists;
+use function in_array;
+use function is_array;
 use function locale_get_default;
 use function Siler\array_get;
 use function Siler\array_get_str;
@@ -144,7 +147,7 @@ function headers(): array
                 $headers[] = $key;
             }
 
-            if (substr($key, 0, 5) === 'HTTP_') {
+            if (strncmp($key, 'HTTP_', 5) === 0) {
                 $headers[] = $key;
             }
 
@@ -153,15 +156,15 @@ function headers(): array
         []
     );
 
-    $values = array_map(function (string $header): string {
+    $values = array_map(static function (string $header): string {
         return (string)$_SERVER[$header];
     }, $http_headers);
 
-    $headers = array_map(function (string $header) {
-        if (substr($header, 0, 5) == 'HTTP_') {
+    $headers = array_map(static function (string $header) {
+        if (strncmp($header, 'HTTP_', 5) === 0) {
             $header = substr($header, 5);
 
-            if (false === $header) {
+            if ($header === false) {
                 $header = 'HTTP_';
             }
         }
@@ -215,7 +218,7 @@ function get(?string $key = null, $default = null)
  *
  * @param string|null $key
  * @param string|null $default The default value to be returned when the key don't exists
- * @return string|array<string, string>|null
+ * @return string|array<string, string|null>|null
  */
 function post(?string $key = null, ?string $default = null)
 {
@@ -235,7 +238,7 @@ function post(?string $key = null, ?string $default = null)
  * @param string|null $key
  * @param string|null $default The default value to be returned when the key don't exists
  *
- * @return string|null|array<string, string>
+ * @return string|null|array<string, string|null>
  */
 function input(?string $key = null, ?string $default = null)
 {
@@ -250,7 +253,7 @@ function input(?string $key = null, ?string $default = null)
  * @param array|null $default The default value to be returned when the key don't exists
  * @return array<string, array>|array|null
  */
-function file($key = null, ?array $default = null)
+function file($key = null, ?array $default = null): ?array
 {
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
         /** @var array[] $files */
@@ -283,7 +286,7 @@ function method(): string
     $method = array_get($_POST, '_method');
 
     if ($method !== null) {
-        return strval($method);
+        return $method;
     }
 
     /**
@@ -292,11 +295,7 @@ function method(): string
      */
     $method = array_get($_SERVER, 'REQUEST_METHOD');
 
-    if ($method !== null) {
-        return strval($method);
-    }
-
-    return 'GET';
+    return $method ?? 'GET';
 }
 
 /**
@@ -315,15 +314,15 @@ function method_is($method, ?string $request_method = null): bool
     if (is_array($method)) {
         $method = array_map('strtolower', $method);
 
-        return in_array(strtolower($request_method), $method);
+        return in_array(strtolower($request_method), $method, true);
     }
 
-    return strtolower($method) == strtolower($request_method);
+    return strtolower($method) === strtolower($request_method);
 }
 
 /**
  * Returns the list of accepted languages,
- * sorted by priority, taken from the HTTP_ACCEPT_LANGUAGE superglobal.
+ * sorted by priority, taken from the HTTP_ACCEPT_LANGUAGE super global.
  *
  * @return array Languages by [language => priority], or empty if none could be found.
  */
@@ -334,8 +333,8 @@ function accepted_locales(): array
     if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         // break up string into pieces (languages and q factors)
         preg_match_all(
-            '/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i',
-            (string)$_SERVER['HTTP_ACCEPT_LANGUAGE'],
+            '/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.\d+))?/i',
+            (string) $_SERVER['HTTP_ACCEPT_LANGUAGE'],
             $lang_parse
         );
 
@@ -421,13 +420,13 @@ function bearer($request = null): ?string
         return null;
     }
 
-    if (!preg_match('/^Bearer/', $header)) {
+    if (strncmp($header, 'Bearer', 6) !== 0) {
         return null;
     }
 
     $bearer = substr($header, 7);
 
-    if (false === $bearer) {
+    if ($bearer === false) {
         return null;
     }
 

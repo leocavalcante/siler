@@ -3,7 +3,6 @@
 namespace Siler\Env;
 
 use UnexpectedValueException;
-use function Siler\Functional\bool;
 
 /**
  * Gets a variable from the environment.
@@ -39,7 +38,7 @@ function env_var(string $key, ?string $default = null): string
  */
 function env_int(string $key, ?int $default = null): int
 {
-    return intval(env_var($key, $default === null ? $default : strval($default)));
+    return (int) env_var($key, $default === null ? $default : (string) $default);
 }
 
 /**
@@ -52,13 +51,13 @@ function env_int(string $key, ?int $default = null): int
  */
 function env_bool(string $key, ?bool $default = null): bool
 {
-    $value = env_var($key, $default === null ? $default : strval($default));
+    $value = env_var($key, $default === null ? $default : (string) $default);
 
-    if (in_array($value, ['false', '0', '{}', '[]', 'null', 'undefined'])) {
+    if (\in_array($value, ['false', '0', '{}', '[]', 'null', 'undefined'])) {
         return false;
     }
 
-    return boolval($value);
+    return (bool) $value;
 }
 
 /**
@@ -69,5 +68,5 @@ function env_bool(string $key, ?bool $default = null): bool
  */
 function env_has(string $key): bool
 {
-    return array_key_exists($key, $_ENV);
+    return \array_key_exists($key, $_ENV);
 }

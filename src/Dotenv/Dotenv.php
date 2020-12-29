@@ -26,7 +26,7 @@ function init(string $path): array
  *
  * @param string|null $key
  * @param string|null $default A default when the key do not exists
- * @return string|null|array<string, string>
+ * @return string|null|array<string, string|null>
  */
 function env(?string $key = null, ?string $default = null)
 {
@@ -50,7 +50,7 @@ function int_val(string $key, ?int $default = null): ?int
     }
 
     if (is_numeric($val)) {
-        return intval($val);
+        return (int) $val;
     }
 
     return $default;
@@ -83,7 +83,7 @@ function bool_val(string $key, ?bool $default = null): ?bool
         return false;
     }
 
-    return boolval($val);
+    return (bool) $val;
 }
 
 /**
@@ -94,7 +94,7 @@ function bool_val(string $key, ?bool $default = null): ?bool
  */
 function requires(string $key): bool
 {
-    if (array_key_exists($key, $_ENV)) {
+    if (\array_key_exists($key, $_ENV)) {
         return true;
     }
 

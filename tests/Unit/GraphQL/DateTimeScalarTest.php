@@ -4,8 +4,9 @@ namespace Siler\Test\Unit\GraphQL;
 
 use DateTime;
 use GraphQL\Error\Error;
+use GraphQL\Language\AST\IntValueNode;
 use GraphQL\Language\AST\StringValueNode;
-use Monolog\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 use Siler\GraphQL\DateScalar;
 use Siler\GraphQL\DateTimeScalar;
 
@@ -17,7 +18,7 @@ class DateTimeScalarTest extends TestCase
         $ds = new DateScalar();
 
         $actual = $ds->serialize(DateTime::createFromFormat(DateScalar::FORMAT, $expected));
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
 
         $this->expectException(Error::class);
         $ds->serialize($expected);
@@ -32,13 +33,13 @@ class DateTimeScalarTest extends TestCase
         $ds = new DateScalar();
 
         $actual = $ds->parseLiteral($literal);
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
 
         $this->expectException(Error::class);
-        $ds->parseLiteral($value);
+        $ds->parseLiteral(new IntValueNode(['value' => 0]));
 
         $actual = $ds->parseValue($value);
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
 
         $this->expectException(Error::class);
         $ds->parseValue('2020-07-18');
@@ -50,7 +51,7 @@ class DateTimeScalarTest extends TestCase
         $dts = new DateTimeScalar();
 
         $actual = $dts->serialize(DateTime::createFromFormat(DateTimeScalar::FORMAT, $expected));
-        $this->assertSame($expected, $actual);
+        self::assertSame($expected, $actual);
 
         $this->expectException(Error::class);
         $dts->serialize($expected);
@@ -65,13 +66,13 @@ class DateTimeScalarTest extends TestCase
         $dts = new DateTimeScalar();
 
         $actual = $dts->parseLiteral($literal);
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
 
         $this->expectException(Error::class);
-        $dts->parseLiteral($value);
+        $dts->parseLiteral(new IntValueNode(['value' => 0]));
 
         $actual = $dts->parseValue($value);
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
 
         $this->expectException(Error::class);
         $dts->parseValue('2020-07-18');

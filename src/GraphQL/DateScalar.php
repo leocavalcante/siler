@@ -1,6 +1,5 @@
 <?php declare(strict_types=1);
 
-
 namespace Siler\GraphQL;
 
 use DateTime;
@@ -25,7 +24,7 @@ class DateScalar extends ScalarType
     public function serialize($value): string
     {
         if ($value instanceof DateTime) {
-            return $value->format((string)static::FORMAT);
+            return $value->format((string) static::FORMAT);
         }
 
         throw new Error('Don\'t know how to serialize non-DateTime');
@@ -37,13 +36,13 @@ class DateScalar extends ScalarType
      * @return mixed
      * @throws Error
      */
-    public function parseLiteral($valueNode, ?array $variables = null)
+    public function parseLiteral(Node $valueNode, ?array $variables = null)
     {
         if ($valueNode instanceof StringValueNode) {
             return $this->parseValue($valueNode->value);
         }
 
-        throw new Error(sprintf('Unable to parse non string literal as %', $this->name));
+        throw new Error(sprintf('Unable to parse non string literal as %s', $this->name));
     }
 
     /**
@@ -55,8 +54,8 @@ class DateScalar extends ScalarType
     {
         $date_time = false;
 
-        if (is_string($value)) {
-            $date_time = DateTime::createFromFormat((string)static::FORMAT, $value);
+        if (\is_string($value)) {
+            $date_time = DateTime::createFromFormat((string) static::FORMAT, $value);
         }
 
         if ($date_time === false) {

@@ -95,7 +95,7 @@
         "generate-facades": "php bin/generate-facades.php",
         "fix": "phpcbf",
         "lint": "phpcs",
-        "analyze": "psalm --shepherd",
+        "analyze": "psalm --shepherd --no-cache",
         "test": "phpunit",
         "ci": [
             "@composer lint",

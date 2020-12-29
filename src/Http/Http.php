@@ -13,7 +13,7 @@ use function Siler\array_get_str;
  *
  * @param string|null $key
  * @param string|null $default The default value to be returned when the key don't exists
- * @return string|null|array<string, string>
+ * @return array<string, string|null>|null|string
  */
 function cookie(?string $key = null, ?string $default = null)
 {
@@ -26,7 +26,7 @@ function cookie(?string $key = null, ?string $default = null)
  *
  * @param string|null $key
  * @param string|null $default The default value to be returned when the key don't exists
- * @return string|null|array<string, string>
+ * @return string|null|array<string, string|null>
  */
 function session(?string $key = null, ?string $default = null)
 {
@@ -94,7 +94,7 @@ function url(?string $path = null): string
      */
     $script_name = array_get($_SERVER, 'SCRIPT_NAME', '');
 
-    return rtrim(str_replace('\\', '/', dirname($script_name)), '/') . '/' . ltrim($path, '/');
+    return rtrim(str_replace('\\', '/', \dirname($script_name)), '/') . '/' . ltrim($path, '/');
 }
 
 /**
@@ -110,19 +110,19 @@ function path(): string
     $request_uri = array_get_str($_SERVER, 'REQUEST_URI', '');
 
     // NOTE: When using built-in server with a router script, SCRIPT_NAME will be same as the REQUEST_URI
-    if (php_sapi_name() === 'cli-server') {
+    if (PHP_SAPI === 'cli-server') {
         $script_name = '';
     }
 
     $request_uri = str_replace('?' . $query_string, '', $request_uri);
     $request_uri = rawurldecode($request_uri);
-    $script_path = str_replace('\\', '/', dirname($script_name));
+    $script_path = str_replace('\\', '/', \dirname($script_name));
 
-    if (!strlen(str_replace('/', '', $script_path))) {
+    if (str_replace('/', '', $script_path) === '') {
         return '/' . ltrim($request_uri, '/');
-    } else {
-        return '/' . ltrim(preg_replace("#^$script_path#", '', $request_uri, 1), '/');
     }
+
+    return '/' . ltrim(preg_replace("#^$script_path#", '', $request_uri, 1), '/');
 }
 
 /**
