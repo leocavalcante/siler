@@ -11,9 +11,9 @@ jobs:
 
     steps:
     - name: Checkout
-    - uses: actions/checkout@v1
+      uses: actions/checkout@v1
 
-    - name: Setup PHP
+    - name: Setup
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
@@ -35,6 +35,7 @@ jobs:
     - name: Test
       run: composer ci
 
-    - uses: codecov/codecov-action@v1
+    - name: Coverage
+      uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
