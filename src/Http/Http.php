@@ -133,13 +133,12 @@ function path(): string
  */
 function uri(?string $protocol = null): string
 {
-    /**
-     * @var array<string, string> $_SERVER
-     * @var string $https
-     */
-    $https = array_get($_SERVER, 'HTTPS', '');
-
     if ($protocol === null) {
+        /**
+         * @var array<string, string> $_SERVER
+         * @var string $https
+         */
+        $https = array_get($_SERVER, 'HTTPS', '');
         $protocol = empty($https) ? 'http' : 'https';
     }
 
