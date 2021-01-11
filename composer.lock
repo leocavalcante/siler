@@ -9,16 +9,16 @@
     "packages-dev": [
         {
             "name": "amphp/amp",
-            "version": "v2.5.1",
+            "version": "v2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/amp.git",
-                "reference": "ecdc3c476b3ccff02f8e5d5bcc04f7ccfd18751c"
+                "reference": "efca2b32a7580087adb8aabbff6be1dc1bb924a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/amp/zipball/ecdc3c476b3ccff02f8e5d5bcc04f7ccfd18751c",
-                "reference": "ecdc3c476b3ccff02f8e5d5bcc04f7ccfd18751c",
+                "url": "https://api.github.com/repos/amphp/amp/zipball/efca2b32a7580087adb8aabbff6be1dc1bb924a9",
+                "reference": "efca2b32a7580087adb8aabbff6be1dc1bb924a9",
                 "shasum": ""
             },
             "require": {
@@ -86,7 +86,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/amphp",
                 "issues": "https://github.com/amphp/amp/issues",
-                "source": "https://github.com/amphp/amp/tree/v2.5.1"
+                "source": "https://github.com/amphp/amp/tree/v2.5.2"
             },
             "funding": [
                 {
@@ -94,7 +94,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-11-03T16:23:45+00:00"
+            "time": "2021-01-10T17:06:37+00:00"
         },
         {
             "name": "amphp/byte-stream",
@@ -5207,16 +5207,16 @@
         },
         {
             "name": "swoole/ide-helper",
-            "version": "4.5.10",
+            "version": "4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swoole/ide-helper.git",
-                "reference": "11d77b630ec63e426326439bea0c4b0460fb3a00"
+                "reference": "9bc93b2c49770dbad44f2876ef5b6ed12e5c5fc3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/11d77b630ec63e426326439bea0c4b0460fb3a00",
-                "reference": "11d77b630ec63e426326439bea0c4b0460fb3a00",
+                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/9bc93b2c49770dbad44f2876ef5b6ed12e5c5fc3",
+                "reference": "9bc93b2c49770dbad44f2876ef5b6ed12e5c5fc3",
                 "shasum": ""
             },
             "require-dev": {
@@ -5239,9 +5239,9 @@
             "description": "IDE help files for Swoole.",
             "support": {
                 "issues": "https://github.com/swoole/ide-helper/issues",
-                "source": "https://github.com/swoole/ide-helper/tree/4.5.10"
+                "source": "https://github.com/swoole/ide-helper/tree/4.6.0"
             },
-            "time": "2020-12-27T05:03:52+00:00"
+            "time": "2021-01-06T05:44:37+00:00"
         },
         {
             "name": "symfony/console",
