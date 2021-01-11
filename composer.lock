@@ -5207,16 +5207,16 @@
         },
         {
             "name": "swoole/ide-helper",
-            "version": "4.5.10",
+            "version": "4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swoole/ide-helper.git",
-                "reference": "11d77b630ec63e426326439bea0c4b0460fb3a00"
+                "reference": "9bc93b2c49770dbad44f2876ef5b6ed12e5c5fc3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/11d77b630ec63e426326439bea0c4b0460fb3a00",
-                "reference": "11d77b630ec63e426326439bea0c4b0460fb3a00",
+                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/9bc93b2c49770dbad44f2876ef5b6ed12e5c5fc3",
+                "reference": "9bc93b2c49770dbad44f2876ef5b6ed12e5c5fc3",
                 "shasum": ""
             },
             "require-dev": {
@@ -5239,9 +5239,9 @@
             "description": "IDE help files for Swoole.",
             "support": {
                 "issues": "https://github.com/swoole/ide-helper/issues",
-                "source": "https://github.com/swoole/ide-helper/tree/4.5.10"
+                "source": "https://github.com/swoole/ide-helper/tree/4.6.0"
             },
-            "time": "2020-12-27T05:03:52+00:00"
+            "time": "2021-01-06T05:44:37+00:00"
         },
         {
             "name": "symfony/console",
