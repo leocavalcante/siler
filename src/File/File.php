@@ -13,12 +13,11 @@ use function Siler\Functional\concat;
  *
  * @param string $dirname
  * @param string $regex
- * @param int(0)|int(1)|int(2)|int(3)|int(4) $mode
- *
+ * @param RegexIterator::MATCH|RegexIterator::GET_MATCH|RegexIterator::ALL_MATCHES|RegexIterator::SPLIT|RegexIterator::REPLACE $mode
  * @psalm-return list<SplFileInfo>
  * @return SplFileInfo[]
  */
-function recursively_iterated_directory(string $dirname, string $regex = '/.*/', $mode = RegexIterator::MATCH): array
+function recursively_iterated_directory(string $dirname, string $regex = '/.*/', int $mode = RegexIterator::MATCH): array
 {
     $dir_iterator = new RecursiveDirectoryIterator($dirname);
     $iterator = new RecursiveIteratorIterator($dir_iterator);
@@ -39,12 +38,11 @@ function recursively_iterated_directory(string $dirname, string $regex = '/.*/',
  *
  * @param string $dirname
  * @param string $regex
- * @param int $mode
- *
+ * @param RegexIterator::MATCH|RegexIterator::GET_MATCH|RegexIterator::ALL_MATCHES|RegexIterator::SPLIT|RegexIterator::REPLACE $mode
  * @psalm-return list<SplFileInfo>
  * @return SplFileInfo[]
  */
-function recur_iter_dir(string $dirname, string $regex = '/.*/', $mode = RegexIterator::MATCH): array
+function recur_iter_dir(string $dirname, string $regex = '/.*/', int $mode = RegexIterator::MATCH): array
 {
     return recursively_iterated_directory($dirname, $regex, $mode);
 }
@@ -101,5 +99,5 @@ function concat_files(array $files, string $separator = "\n"): string
  */
 function join_dir(...$segments): string
 {
-    return join(DIRECTORY_SEPARATOR, $segments);
+    return implode(DIRECTORY_SEPARATOR, $segments);
 }
