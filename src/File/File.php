@@ -13,7 +13,7 @@ use function Siler\Functional\concat;
  *
  * @param string $dirname
  * @param string $regex
- * @param int $mode
+ * @param int(0)|int(1)|int(2)|int(3)|int(4) $mode
  *
  * @psalm-return list<SplFileInfo>
  * @return SplFileInfo[]
