@@ -1300,7 +1300,7 @@ interface Hello {
         self::assertEquals('Hello', $defaultConfig['name']);
         self::assertInstanceOf(Closure::class, $defaultConfig['fields']);
         self::assertArrayHasKey('description', $defaultConfig);
-        self::assertCount(4, $defaultConfig);
+        self::assertCount(5, $defaultConfig);
         self::assertEquals(array_keys($allNodesMap), ['Query', 'Color', 'Hello']);
         self::assertEquals('My description of Hello', $schema->getType('Hello')->description);
     }
