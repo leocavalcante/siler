@@ -99,6 +99,21 @@ class HttpTest extends TestCase
         $this->assertSame('/bar/baz', Http\path());
     }
 
+    public function testEmptyRequestUri()
+    {
+        $_SERVER['REQUEST_URI'] = '';
+        $this->assertSame('/', Http\path());
+
+        $_SERVER['REQUEST_URI'] = '/';
+        $this->assertSame('/', Http\path());
+
+        $_SERVER['REQUEST_URI'] = '?foo=bar';
+        $this->assertSame('/', Http\path());
+
+        $_SERVER['REQUEST_URI'] = '/?foo=bar';
+        $this->assertSame('/', Http\path());
+    }
+
     protected function setUp(): void
     {
         $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = ['foo' => 'bar'];

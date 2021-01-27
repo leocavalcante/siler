@@ -114,7 +114,7 @@ function path(): string
     }
 
     $query_string = strpos($request_uri, '?');
-    $request_uri = $query_string ? substr($request_uri, 0, $query_string) : $request_uri;
+    $request_uri = $query_string === false ? $request_uri : substr($request_uri, 0, $query_string);
     $request_uri = rawurldecode($request_uri);
     $script_path = str_replace('\\', '/', \dirname($script_name));
 
