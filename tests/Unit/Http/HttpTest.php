@@ -93,12 +93,18 @@ class HttpTest extends TestCase
         }
     }
 
+    public function testFuzzyQueryString()
+    {
+        $_SERVER['QUERY_STRING'] = 'baz=qux&foo=bar';
+        $this->assertSame('/bar/baz', Http\path());
+    }
+
     protected function setUp(): void
     {
         $_GET = $_POST = $_REQUEST = $_COOKIE = $_SESSION = ['foo' => 'bar'];
 
         $_SERVER['HTTP_HOST'] = 'test:8000';
         $_SERVER['SCRIPT_NAME'] = '/foo/test.php';
-        $_SERVER['REQUEST_URI'] = '/bar/baz';
+        $_SERVER['REQUEST_URI'] = '/bar/baz?foo=bar';
     }
 }

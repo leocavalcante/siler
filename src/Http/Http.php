@@ -106,7 +106,6 @@ function path(): string
 {
     /** @psalm-var array<string, string> $_SERVER */
     $script_name = array_get_str($_SERVER, 'SCRIPT_NAME', '');
-    $query_string = array_get_str($_SERVER, 'QUERY_STRING', '');
     $request_uri = array_get_str($_SERVER, 'REQUEST_URI', '');
 
     // NOTE: When using built-in server with a router script, SCRIPT_NAME will be same as the REQUEST_URI
@@ -114,7 +113,8 @@ function path(): string
         $script_name = '';
     }
 
-    $request_uri = str_replace('?' . $query_string, '', $request_uri);
+    $query_string = strpos($request_uri, '?');
+    $request_uri = $query_string ? substr($request_uri, 0, $query_string) : $request_uri;
     $request_uri = rawurldecode($request_uri);
     $script_path = str_replace('\\', '/', \dirname($script_name));
 
