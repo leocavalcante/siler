@@ -169,16 +169,16 @@
         },
         {
             "name": "brick/varexporter",
-            "version": "0.3.4",
+            "version": "0.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/varexporter.git",
-                "reference": "17e03b4afaaf1a97736f2c5a2b4254219790ef47"
+                "reference": "05241f28dfcba2b51b11e2d750e296316ebbe518"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/varexporter/zipball/17e03b4afaaf1a97736f2c5a2b4254219790ef47",
-                "reference": "17e03b4afaaf1a97736f2c5a2b4254219790ef47",
+                "url": "https://api.github.com/repos/brick/varexporter/zipball/05241f28dfcba2b51b11e2d750e296316ebbe518",
+                "reference": "05241f28dfcba2b51b11e2d750e296316ebbe518",
                 "shasum": ""
             },
             "require": {
@@ -206,9 +206,9 @@
             ],
             "support": {
                 "issues": "https://github.com/brick/varexporter/issues",
-                "source": "https://github.com/brick/varexporter/tree/0.3.4"
+                "source": "https://github.com/brick/varexporter/tree/0.3.5"
             },
-            "time": "2021-02-07T22:52:42+00:00"
+            "time": "2021-02-10T13:53:07+00:00"
         },
         {
             "name": "cboden/ratchet",
