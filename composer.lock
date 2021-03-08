@@ -1349,16 +1349,16 @@
         },
         {
             "name": "grpc/grpc",
-            "version": "1.35.0",
+            "version": "1.36.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/grpc/grpc-php.git",
-                "reference": "cf75367acfcf154331f97d1525f9f46383b7891d"
+                "reference": "6145dd917d340b579f0b663940b17cc93172b79a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/cf75367acfcf154331f97d1525f9f46383b7891d",
-                "reference": "cf75367acfcf154331f97d1525f9f46383b7891d",
+                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/6145dd917d340b579f0b663940b17cc93172b79a",
+                "reference": "6145dd917d340b579f0b663940b17cc93172b79a",
                 "shasum": ""
             },
             "require": {
@@ -1387,9 +1387,9 @@
                 "rpc"
             ],
             "support": {
-                "source": "https://github.com/grpc/grpc-php/tree/v1.35.0"
+                "source": "https://github.com/grpc/grpc-php/tree/v1.36.0"
             },
-            "time": "2021-01-20T20:15:34+00:00"
+            "time": "2021-03-01T21:52:11+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
