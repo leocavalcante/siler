@@ -1238,16 +1238,16 @@
         },
         {
             "name": "google/protobuf",
-            "version": "v3.15.3",
+            "version": "v3.15.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "f22e60e5deb972ded0115c620a99b3f1ac2f4824"
+                "reference": "c4a8128a7df155fce4faba3087b27dcdfe3ece2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/f22e60e5deb972ded0115c620a99b3f1ac2f4824",
-                "reference": "f22e60e5deb972ded0115c620a99b3f1ac2f4824",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/c4a8128a7df155fce4faba3087b27dcdfe3ece2e",
+                "reference": "c4a8128a7df155fce4faba3087b27dcdfe3ece2e",
                 "shasum": ""
             },
             "require": {
@@ -1277,9 +1277,9 @@
             ],
             "support": {
                 "issues": "https://github.com/protocolbuffers/protobuf-php/issues",
-                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.15.3"
+                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.15.5"
             },
-            "time": "2021-02-25T23:39:41+00:00"
+            "time": "2021-03-05T01:43:13+00:00"
         },
         {
             "name": "graham-campbell/result-type",
