@@ -1540,16 +1540,16 @@
         },
         {
             "name": "laminas/laminas-config-aggregator",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-config-aggregator.git",
-                "reference": "1f26cc56ecf26009f1219f13ac5ecbf75394099f"
+                "reference": "c5908c265ada01c8952baf84f102a073de30947f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-config-aggregator/zipball/1f26cc56ecf26009f1219f13ac5ecbf75394099f",
-                "reference": "1f26cc56ecf26009f1219f13ac5ecbf75394099f",
+                "url": "https://api.github.com/repos/laminas/laminas-config-aggregator/zipball/c5908c265ada01c8952baf84f102a073de30947f",
+                "reference": "c5908c265ada01c8952baf84f102a073de30947f",
                 "shasum": ""
             },
             "require": {
@@ -1567,7 +1567,9 @@
                 "laminas/laminas-config": "^2.6 || ^3.0",
                 "laminas/laminas-servicemanager": "^2.7.7 || ^3.1.1",
                 "malukenho/docheader": "^0.1.5",
-                "phpunit/phpunit": "^9.3"
+                "phpunit/phpunit": "^9.3",
+                "psalm/plugin-phpunit": "^0.15.1",
+                "vimeo/psalm": "^4.6"
             },
             "suggest": {
                 "laminas/laminas-config": "Allows loading configuration from XML, INI, YAML, and JSON files",
@@ -1604,7 +1606,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-11-18T00:30:16+00:00"
+            "time": "2021-03-16T14:31:55+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
