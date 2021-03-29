@@ -45,7 +45,7 @@
         "twig/twig": "^3.0",
         "vimeo/psalm": "^3.12 || ^4.0",
         "vlucas/phpdotenv": "^5.0",
-        "webonyx/graphql-php": "^14.0"
+        "webonyx/graphql-php": "^14.6"
     },
     "autoload": {
         "psr-4": {
