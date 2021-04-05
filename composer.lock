@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "68d603cf404575ca8c256bbad19756b8",
+    "content-hash": "2e404104dc6f7154940a2a06507390b6",
     "packages": [],
     "packages-dev": [
         {
@@ -1200,16 +1200,16 @@
         },
         {
             "name": "gabordemooij/redbean",
-            "version": "v5.6.2",
+            "version": "v5.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gabordemooij/redbean.git",
-                "reference": "fac13cd25445129a64be2bbb4457a7d8a4fb9ef0"
+                "reference": "e31aad3b38d5c34a809381f9a5283645ce4abb29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/fac13cd25445129a64be2bbb4457a7d8a4fb9ef0",
-                "reference": "fac13cd25445129a64be2bbb4457a7d8a4fb9ef0",
+                "url": "https://api.github.com/repos/gabordemooij/redbean/zipball/e31aad3b38d5c34a809381f9a5283645ce4abb29",
+                "reference": "e31aad3b38d5c34a809381f9a5283645ce4abb29",
                 "shasum": ""
             },
             "require": {
@@ -1239,9 +1239,9 @@
             ],
             "support": {
                 "issues": "https://github.com/gabordemooij/redbean/issues",
-                "source": "https://github.com/gabordemooij/redbean/tree/v5.6.2"
+                "source": "https://github.com/gabordemooij/redbean/tree/v5.7"
             },
-            "time": "2020-11-27T08:36:10+00:00"
+            "time": "2021-03-28T11:01:15+00:00"
         },
         {
             "name": "google/protobuf",
