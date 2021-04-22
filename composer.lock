@@ -5204,16 +5204,16 @@
         },
         {
             "name": "swoole/ide-helper",
-            "version": "4.6.5",
+            "version": "4.6.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swoole/ide-helper.git",
-                "reference": "11bc5af94512ed3bfaa31a97302f78d4074dae22"
+                "reference": "d29d71267f8ed4e4993dc057ca53ffdb5d2703b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/11bc5af94512ed3bfaa31a97302f78d4074dae22",
-                "reference": "11bc5af94512ed3bfaa31a97302f78d4074dae22",
+                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/d29d71267f8ed4e4993dc057ca53ffdb5d2703b7",
+                "reference": "d29d71267f8ed4e4993dc057ca53ffdb5d2703b7",
                 "shasum": ""
             },
             "require-dev": {
@@ -5236,9 +5236,23 @@
             "description": "IDE help files for Swoole.",
             "support": {
                 "issues": "https://github.com/swoole/ide-helper/issues",
-                "source": "https://github.com/swoole/ide-helper/tree/4.6.5"
+                "source": "https://github.com/swoole/ide-helper/tree/4.6.6"
             },
-            "time": "2021-04-09T15:40:39+00:00"
+            "funding": [
+                {
+                    "url": "https://gitee.com/swoole/swoole?donate=true",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/swoole",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/swoole-src",
+                    "type": "open_collective"
+                }
+            ],
+            "time": "2021-04-22T16:38:11+00:00"
         },
         {
             "name": "symfony/console",
