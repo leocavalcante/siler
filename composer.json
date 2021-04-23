@@ -26,7 +26,7 @@
         "cboden/ratchet": "^0.4.1",
         "cocur/slugify": "^4.0",
         "doctrine/annotations": "^1.10",
-        "doctrine/cache": "^1.10",
+        "doctrine/cache": "^1.11",
         "gabordemooij/redbean": "^5.7",
         "google/protobuf": "^3.15",
         "grpc/grpc": "^1.30",
