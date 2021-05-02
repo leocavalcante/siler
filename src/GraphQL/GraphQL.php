@@ -107,7 +107,6 @@ function init(Schema $schema, $rootValue = null, $context = null, string $input 
  */
 function input(string $input = 'php://input'): array
 {
-    /** @var string|null $content_type */
     $content_type = Request\header('Content-Type');
 
     if ($content_type !== null && preg_match('#application/json(;charset=utf-8)?#', $content_type)) {
@@ -249,6 +248,8 @@ function schema(string $typeDefs, array $resolvers = [], ?callable $typeConfigDe
 /**
  * Sets a Siler's default field resolver based on the given $resolvers array.
  *
+ * @template Source
+ * @template Context
  * @param array<string, array<string, mixed>> $resolvers
  * @return void
  */
@@ -256,13 +257,12 @@ function resolvers(array $resolvers): void
 {
     $resolver =
         /**
-         * @template Source
-         * @template Context
          * @param Source $source
          * @param array<string, mixed> $args
          * @param Context $context
          * @param ResolveInfo $info
          * @return mixed|null
+         * @throws ReflectionException
          */
         static function ($source, array $args, $context, ResolveInfo $info) use ($resolvers) {
             /** @var string|null $field_name */
@@ -286,14 +286,14 @@ function resolvers(array $resolvers): void
                 $resolver = $resolvers[$parent_type_name];
                 $value = null;
 
-                if (is_array($resolver)) {
-                    if (array_key_exists($field_name, $resolver)) {
+                if (\is_array($resolver)) {
+                    if (\array_key_exists($field_name, $resolver)) {
                         /** @var callable|mixed $value */
                         $value = $resolver[$field_name];
                     }
                 }
 
-                if (is_object($resolver)) {
+                if (\is_object($resolver)) {
                     $getter = sprintf('get%s', ucwords($field_name));
                     if (method_exists($resolver, $getter)) {
                         $reflectionGetter = new \ReflectionMethod($resolver, $getter);
@@ -308,7 +308,7 @@ function resolvers(array $resolvers): void
                     }
                 }
 
-                if (is_callable($value)) {
+                if (\is_callable($value)) {
                     return $value($source, $args, $context, $info);
                 }
 
@@ -323,8 +323,6 @@ function resolvers(array $resolvers): void
 
     Executor::setDefaultFieldResolver(
     /**
-     * @template Source
-     * @template Context
      * @param Source $source
      * @param array<string, mixed> $args
      * @param Context $context
@@ -333,16 +331,14 @@ function resolvers(array $resolvers): void
      */
         static function ($source, array $args, $context, ResolveInfo $info) use ($resolver) {
             $field_node = $info->fieldNodes[0];
-            /** @var NodeList $directive_defs */
             $directive_defs = $field_node->directives;
             /** @var array<string, callable(callable):callable> $directives */
             $directives = Container\get(DIRECTIVES, []);
 
-            /** @var DirectiveNode $directive */
             foreach ($directive_defs as $directive) {
                 $directive_name = $directive->name->value;
 
-                if (array_key_exists($directive_name, $directives)) {
+                if (\array_key_exists($directive_name, $directives)) {
                     $resolver = $directives[$directive_name]($resolver);
                 }
             }

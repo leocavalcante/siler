@@ -77,12 +77,12 @@ function fetch(string $url, array $opts = []): array
     $headers = [];
     $ch = curl_init();
 
-    if (array_key_exists('json', $opts) && array_key_exists('body', $opts)) {
+    if (\array_key_exists('json', $opts) && \array_key_exists('body', $opts)) {
         $headers[] = 'Content-Type: application/json';
         $opts['body'] = encode($opts['body']);
     }
 
-    if (array_key_exists('headers', $opts)) {
+    if (\array_key_exists('headers', $opts)) {
         foreach ($opts['headers'] as $h_name => $h_value) {
             $headers[] = "$h_name: $h_value";
         }
@@ -90,11 +90,10 @@ function fetch(string $url, array $opts = []): array
 
     $url = array_get_str($opts, 'url', $url);
 
-    if (array_key_exists('query', $opts)) {
+    if (\array_key_exists('query', $opts)) {
         $url .= (str_contains($url, '?') ? '&' : '?') . http_build_query($opts['query']);
     }
 
-    /** @psalm-var array<string, string> $response_headers */
     $response_headers = [];
 
     curl_setopt_array($ch, [
@@ -108,30 +107,30 @@ function fetch(string $url, array $opts = []): array
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_HEADERFUNCTION =>
         /**
-         * @param mixed $ch
+         * @param resource $_ch
          * @param string $header
          * @return int
          */
-            static function ($ch, string $header) use (&$response_headers): int {
-                $len = strlen($header);
-                $header = explode(':', $header, 2);
+            static function ($_ch, string $header) use (&$response_headers): int {
+                $len = \strlen($header);
+                /** @var string[] $header_parts */
+                $header_parts = explode(':', $header, 2);
 
-                if (count($header) < 2) {
+                if (count($header_parts) < 2) {
                     return $len;
                 }
 
                 /** @psalm-var array<string, string> $response_headers */
-                $response_headers[strtolower(trim($header[0]))] = trim($header[1]);
+                $response_headers[strtolower(trim($header_parts[0]))] = trim($header_parts[1]);
 
                 return $len;
             },
     ]);
-
-    /** @var array<string, string> $response_headers */
-    $response_headers = $response_headers;
+    /**
+     * @psalm-var array<string, string> $response_headers
+     */
     $response = curl_exec($ch);
-    $status = intval(curl_getinfo($ch, CURLINFO_RESPONSE_CODE));
-    $data = null;
+    $status = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
 
     if ($response === false) {
         $error = curl_error($ch);
@@ -145,15 +144,13 @@ function fetch(string $url, array $opts = []): array
 
     curl_close($ch);
 
-    if (array_get_bool($opts, 'parse', true) && array_key_exists('content-type', $response_headers)) {
-        if (starts_with($response_headers['content-type'], 'application/json') && is_string($response)) {
-            /** @psalm-var Json $response */
-            $response = json_decode($response, true);
+    if (\array_key_exists('content-type', $response_headers) && \is_string($response) && array_get_bool($opts, 'parse', true) && starts_with($response_headers['content-type'], 'application/json')) {
+        /** @psalm-var Json $response */
+        $response = json_decode($response, true);
 
-            if (json_last_error()) {
-                $error = json_last_error_msg();
-                $response = null;
-            }
+        if (json_last_error()) {
+            $error = json_last_error_msg();
+            $response = null;
         }
     }
 

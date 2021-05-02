@@ -55,7 +55,7 @@ function config(string $path, $default = null)
             return $default;
         }
 
-        if (is_array($pointer)) {
+        if (\is_array($pointer)) {
             /** @var T|array|null $pointer */
             $pointer = $pointer[$key] ?? null;
         }
@@ -76,7 +76,7 @@ function load(string $directory, string $blob = '/*.*'): Config
     $aggregator = new ConfigAggregator([
         new LaminasConfigProvider($directory . $blob)
     ]);
-    /** @var array */
+
     $data = $aggregator->getMergedConfig();
     $config = new Config($data, true);
 

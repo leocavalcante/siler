@@ -327,20 +327,19 @@ function files(string $basePath, string $prefix = '', $request = null)
 
     sort($files);
 
-    $cut = strlen($realpath);
+    $cut = \strlen($realpath);
     $prefix = rtrim($prefix, '/');
 
     foreach ($files as $filename) {
-        $cut_filename = substr((string)$filename, $cut);
+        $cut_filename = substr((string) $filename, $cut);
 
-        if (false === $cut_filename) {
+        if ($cut_filename === false) {
             continue;
         }
 
-        /** @var string $method */
-        list($method, $path) = routify($cut_filename);
+        [$method, $path] = routify($cut_filename);
 
-        if ('/' === $path) {
+        if ($path === '/') {
             if ($prefix) {
                 $path = $prefix;
             }
@@ -348,8 +347,8 @@ function files(string $basePath, string $prefix = '', $request = null)
             $path = $prefix . $path;
         }
 
-        /** @var mixed|null $result */
-        $result = route($method, $path, (string)$filename, $request);
+        /** @var mixed $result */
+        $result = route($method, $path, (string) $filename, $request);
 
         if ($result !== null) {
             return $result;
@@ -380,10 +379,10 @@ function class_name(string $basePath, $className, $request = null): void
     foreach ($methods as $method) {
         $specs = preg_split('/(?=[A-Z])/', $method->name);
 
-        $path_segments = array_map('strtolower', array_slice($specs, 1));
+        $path_segments = array_map('strtolower', \array_slice($specs, 1));
 
-        $path_segments = array_filter($path_segments, function (string $segment): bool {
-            return $segment != 'index';
+        $path_segments = array_filter($path_segments, static function (string $segment): bool {
+            return $segment !== 'index';
         });
 
         $path_params = array_map(function (ReflectionParameter $param) {
@@ -403,7 +402,7 @@ function class_name(string $basePath, $className, $request = null): void
 
         route(
             $specs[0],
-            join('/', $path_segments),
+            implode('/', $path_segments),
             function (array $params) use ($method, $object) {
                 foreach (array_keys($params) as $key) {
                     if (!is_int($key)) {
@@ -411,7 +410,7 @@ function class_name(string $basePath, $className, $request = null): void
                     }
                 }
 
-                $args = array_slice($params, 1);
+                $args = \array_slice($params, 1);
                 $method->invokeArgs($object, $args);
             },
             $request
@@ -446,7 +445,7 @@ function cancel(): void
  */
 function canceled(): bool
 {
-    return boolval(Container\get(CANCEL, false));
+    return (bool) Container\get(CANCEL, false);
 }
 
 /**
@@ -468,7 +467,6 @@ function resume(): void
  */
 function matching(array $routes)
 {
-    /** @var mixed|null $route */
     foreach ($routes as $route) {
         if ($route !== null) {
             return $route;
@@ -485,7 +483,7 @@ function matching(array $routes)
  */
 function did_match(): bool
 {
-    return boolval(Container\get(DID_MATCH, false));
+    return (bool) Container\get(DID_MATCH, false);
 }
 
 /**
