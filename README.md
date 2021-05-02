@@ -10,7 +10,6 @@
 [![Latest Stable Version](https://poser.pugx.org/leocavalcante/siler/v/stable)](https://packagist.org/packages/leocavalcante/siler)
 [![Total Downloads](https://poser.pugx.org/leocavalcante/siler/downloads)](https://packagist.org/packages/leocavalcante/siler)
 [![License](https://poser.pugx.org/leocavalcante/siler/license)](https://packagist.org/packages/leocavalcante/siler)
-[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=leocavalcante/siler)](https://dependabot.com)
 
 Siler is a set of general purpose high-level abstractions aiming an API for declarative programming in PHP.
 
