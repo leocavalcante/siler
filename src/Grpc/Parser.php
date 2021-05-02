@@ -10,7 +10,6 @@ use Google\Protobuf\Internal\Message;
  */
 class Parser
 {
-
     /**
      * @param Message $message
      * @return string
@@ -26,7 +25,7 @@ class Parser
      */
     public static function pack(string $data): string
     {
-        return $data = pack('CN', 0, strlen($data)) . $data;
+        return pack('CN', 0, \strlen($data)) . $data;
     }
 
     /**
@@ -60,6 +59,6 @@ class Parser
         // 1 + 4 + data
         // $len = unpack('N', substr($data, 1, 4))[1];
         // assert(strlen($data) - 5 === $len);
-        return $data = substr($data, 5);
+        return substr($data, 5);
     }
 }

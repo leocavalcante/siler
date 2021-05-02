@@ -93,7 +93,6 @@ final class Deannotator
         $config = new SchemaConfig();
 
         foreach ($classNames as $class_name) {
-            /** @var Definition\Type|Definition\Directive|null $deannotated */
             $deannotated = $this->deannotateClass($class_name);
 
             if ($deannotated instanceof Definition\Directive) {
@@ -203,7 +202,6 @@ final class Deannotator
         $fields = array_reduce(
             $reflection->getMethods(ReflectionMethod::IS_PUBLIC),
             function (array $fields, ReflectionMethod $method): array {
-                /** @var Annotation\Field|null $annotation */
                 $annotation = $this->reader->getMethodAnnotation($method, Annotation\Field::class);
 
                 if ($annotation === null) {
@@ -344,7 +342,6 @@ final class Deannotator
     {
         $args = [];
 
-        /** @var Annotation\Args|null $annotation */
         $annotation = $this->reader->getMethodAnnotation($method, Annotation\Args::class);
 
         if ($annotation === null) {
@@ -380,7 +377,6 @@ final class Deannotator
         }
 
         foreach ($props as $prop) {
-            /** @var Annotation\Field|null $annotation */
             $annotation = $this->reader->getPropertyAnnotation($prop, Annotation\Field::class);
 
             if ($annotation === null) {
@@ -448,11 +444,10 @@ final class Deannotator
         return new Definition\InterfaceType([
             'name' => $annotation->name ?? $reflection->getShortName(),
             'description' => $annotation->description,
-            'fields' => function () use ($reflection, $annotation) {
+            'fields' => function () use ($reflection) {
                 return array_reduce(
                     $reflection->getMethods(ReflectionMethod::IS_PUBLIC),
-                    function (array $fields, ReflectionMethod $method) use ($annotation): array {
-                        /** @var Annotation\Field|null $annotation */
+                    function (array $fields, ReflectionMethod $method): array {
                         $annotation = $this->reader->getMethodAnnotation($method, Annotation\Field::class);
 
                         if ($annotation === null) {
@@ -487,6 +482,7 @@ final class Deannotator
      * @param ReflectionClass $reflection
      * @param Annotation\UnionType $annotation
      * @return Definition\UnionType
+     * @throws ReflectionException
      */
     private function unionType(ReflectionClass $reflection, Annotation\UnionType $annotation): Definition\UnionType
     {

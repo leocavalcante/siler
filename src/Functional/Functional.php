@@ -443,12 +443,12 @@ function flatten(array $list): array
     array_walk_recursive(
         $list,
         /**
-         * @param mixed $value
-         * @psalm-param T $value
+         * @param mixed $_value
+         * @psalm-param T $_value
          */
-        static function ($value) use (&$flat): void {
+        static function ($_value) use (&$flat): void {
             /** @psalm-var list<T> $flat */
-            $flat[] = $value;
+            $flat[] = $_value;
         }
     );
 
@@ -1013,7 +1013,6 @@ function sum(int $a, int $b): int
  */
 function fold(array $list, $initial, callable $callback)
 {
-    /** @psalm-var T $value */
     $value = $initial;
 
     foreach ($list as $item) {

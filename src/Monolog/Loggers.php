@@ -48,7 +48,6 @@ final class Loggers
             return true;
         }
 
-        /** @var bool|callable():bool $pred */
         $pred = self::$predicates[$level];
 
         if (is_callable($pred)) {

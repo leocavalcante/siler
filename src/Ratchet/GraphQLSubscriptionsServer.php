@@ -54,7 +54,6 @@ class GraphQLSubscriptionsServer implements MessageComponentInterface, WsServerI
      */
     public function onMessage(ConnectionInterface $from, $msg): void
     {
-        /** @var SubscriptionsConnection $from */
         $from = $this->connections->offsetGet($from);
         /** @var array<string, mixed> $msg */
         $msg = Json\decode(strval($msg));
