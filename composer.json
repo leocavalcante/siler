@@ -28,7 +28,7 @@
         "doctrine/annotations": "^1.10",
         "doctrine/cache": "^2.0",
         "gabordemooij/redbean": "^5.7",
-        "google/protobuf": "^3.15",
+        "google/protobuf": "^3.16",
         "grpc/grpc": "^1.30",
         "laminas/laminas-config": "^3.4",
         "laminas/laminas-config-aggregator": "^1.3",
