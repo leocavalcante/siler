@@ -24,6 +24,6 @@
   "homepage": "https://github.com/leocavalcante/siler#readme",
   "dependencies": {
     "google-protobuf": "^3.11.2",
-    "grpc": "^1.24.2"
+    "grpc": "^1.24.9"
   }
 }
