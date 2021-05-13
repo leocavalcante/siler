@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "32af407d9de3c6a526fc8d0478c40cab",
+    "content-hash": "254f5667d13a994b91d2aac2a99f3370",
     "packages": [],
     "packages-dev": [
         {
@@ -1244,16 +1244,16 @@
         },
         {
             "name": "google/protobuf",
-            "version": "v3.16.0",
+            "version": "v3.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/protocolbuffers/protobuf-php.git",
-                "reference": "29d9722e5c3b4d21b49acd820ac486e2b92096df"
+                "reference": "a3aa9415fb6f331322728793f345c1eafc320970"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/29d9722e5c3b4d21b49acd820ac486e2b92096df",
-                "reference": "29d9722e5c3b4d21b49acd820ac486e2b92096df",
+                "url": "https://api.github.com/repos/protocolbuffers/protobuf-php/zipball/a3aa9415fb6f331322728793f345c1eafc320970",
+                "reference": "a3aa9415fb6f331322728793f345c1eafc320970",
                 "shasum": ""
             },
             "require": {
@@ -1283,9 +1283,9 @@
             ],
             "support": {
                 "issues": "https://github.com/protocolbuffers/protobuf-php/issues",
-                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.16.0"
+                "source": "https://github.com/protocolbuffers/protobuf-php/tree/v3.17.0"
             },
-            "time": "2021-05-07T01:06:10+00:00"
+            "time": "2021-05-13T02:14:44+00:00"
         },
         {
             "name": "graham-campbell/result-type",
