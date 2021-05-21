@@ -679,16 +679,16 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "0fc7b7b12992e3be1d7fcdcd281e53b671306f93"
+                "reference": "14e0af5ba34a53c96c042c21aac1b0582d8f216b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/0fc7b7b12992e3be1d7fcdcd281e53b671306f93",
-                "reference": "0fc7b7b12992e3be1d7fcdcd281e53b671306f93",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/14e0af5ba34a53c96c042c21aac1b0582d8f216b",
+                "reference": "14e0af5ba34a53c96c042c21aac1b0582d8f216b",
                 "shasum": ""
             },
             "require": {
@@ -758,7 +758,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/cache/issues",
-                "source": "https://github.com/doctrine/cache/tree/2.0.1"
+                "source": "https://github.com/doctrine/cache/tree/2.0.2"
             },
             "funding": [
                 {
@@ -774,7 +774,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-19T06:49:24+00:00"
+            "time": "2021-05-20T15:07:13+00:00"
         },
         {
             "name": "doctrine/instantiator",
