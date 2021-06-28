@@ -43,7 +43,7 @@
         "swoole/ide-helper": "^4.6",
         "textalk/websocket": "^1.5",
         "twig/twig": "^3.3",
-        "vimeo/psalm": "^4.7.2",
+        "vimeo/psalm": "^4.8.1",
         "vlucas/phpdotenv": "^5.0",
         "webonyx/graphql-php": "^14.9"
     },
