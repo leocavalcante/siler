@@ -3743,16 +3743,16 @@
         },
         {
             "name": "react/dns",
-            "version": "v1.6.0",
+            "version": "v1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/dns.git",
-                "reference": "bf76d1c312c0c280c4ce53119cd7d08db23ffb4c"
+                "reference": "a45784faebf8fbd59058fad2d8497f71a787d20c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/dns/zipball/bf76d1c312c0c280c4ce53119cd7d08db23ffb4c",
-                "reference": "bf76d1c312c0c280c4ce53119cd7d08db23ffb4c",
+                "url": "https://api.github.com/repos/reactphp/dns/zipball/a45784faebf8fbd59058fad2d8497f71a787d20c",
+                "reference": "a45784faebf8fbd59058fad2d8497f71a787d20c",
                 "shasum": ""
             },
             "require": {
@@ -3807,7 +3807,7 @@
             ],
             "support": {
                 "issues": "https://github.com/reactphp/dns/issues",
-                "source": "https://github.com/reactphp/dns/tree/v1.6.0"
+                "source": "https://github.com/reactphp/dns/tree/v1.7.0"
             },
             "funding": [
                 {
@@ -3819,7 +3819,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-06-21T11:56:09+00:00"
+            "time": "2021-06-25T10:54:13+00:00"
         },
         {
             "name": "react/event-loop",
