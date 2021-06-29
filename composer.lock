@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "20513c5d41e9cdf8473c0becc6c0aab6",
+    "content-hash": "0ff6ef698cc44ee7f3834dc7d9398363",
     "packages": [],
     "packages-dev": [
         {
@@ -1910,16 +1910,16 @@
         },
         {
             "name": "laminas/laminas-stratigility",
-            "version": "3.3.0",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-stratigility.git",
-                "reference": "d6336b873fe8f766f84b82164f2a25e4decd6a9a"
+                "reference": "5553756e056825b24ae6ac8621404b7b1d47b516"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-stratigility/zipball/d6336b873fe8f766f84b82164f2a25e4decd6a9a",
-                "reference": "d6336b873fe8f766f84b82164f2a25e4decd6a9a",
+                "url": "https://api.github.com/repos/laminas/laminas-stratigility/zipball/5553756e056825b24ae6ac8621404b7b1d47b516",
+                "reference": "5553756e056825b24ae6ac8621404b7b1d47b516",
                 "shasum": ""
             },
             "require": {
@@ -1937,12 +1937,14 @@
                 "zendframework/zend-stratigility": "^3.2.0"
             },
             "require-dev": {
-                "laminas/laminas-coding-standard": "~1.0.0",
+                "laminas/laminas-coding-standard": "~2.3.0",
                 "laminas/laminas-diactoros": "^1.7.1",
                 "malukenho/docheader": "^0.1.6",
                 "phpspec/prophecy": "^1.12",
                 "phpspec/prophecy-phpunit": "^2.0",
-                "phpunit/phpunit": "^9.3"
+                "phpunit/phpunit": "^9.3",
+                "psalm/plugin-phpunit": "^0.16.0",
+                "vimeo/psalm": "^4.7"
             },
             "suggest": {
                 "psr/http-message-implementation": "Please install a psr/http-message-implementation to consume Stratigility; e.g., laminas/laminas-diactoros"
@@ -1990,7 +1992,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2020-10-20T10:38:04+00:00"
+            "time": "2021-06-28T22:16:13+00:00"
         },
         {
             "name": "laminas/laminas-zendframework-bridge",
