@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "45e034537807a25d67d880954d5ad15f",
+    "content-hash": "5ee51b15743d06f02924397d6fd1e008",
     "packages": [],
     "packages-dev": [
         {
@@ -1355,16 +1355,16 @@
         },
         {
             "name": "grpc/grpc",
-            "version": "1.38.0",
+            "version": "1.39.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/grpc/grpc-php.git",
-                "reference": "e1687963fb0b087d0c70e75d3bfff9062eaeb215"
+                "reference": "101485614283d1ecb6b2ad1d5b95dc82495931db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/e1687963fb0b087d0c70e75d3bfff9062eaeb215",
-                "reference": "e1687963fb0b087d0c70e75d3bfff9062eaeb215",
+                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/101485614283d1ecb6b2ad1d5b95dc82495931db",
+                "reference": "101485614283d1ecb6b2ad1d5b95dc82495931db",
                 "shasum": ""
             },
             "require": {
@@ -1393,9 +1393,9 @@
                 "rpc"
             ],
             "support": {
-                "source": "https://github.com/grpc/grpc-php/tree/v1.38.0"
+                "source": "https://github.com/grpc/grpc-php/tree/v1.39.0"
             },
-            "time": "2021-05-24T20:45:41+00:00"
+            "time": "2021-07-23T23:04:53+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
