@@ -284,7 +284,7 @@ function broadcast(string $message): void
  *
  * @return void
  */
-function cors(string $origin = '*', string $headers = 'Content-Type, Authorization', string $methods = 'GET, POST, PUT, DELETE'): void
+function cors(string $origin = '*', string $headers = 'Content-Type, Authorization', string $methods = 'GET, POST, PUT, DELETE', string $credentials = 'true'): void
 {
     /** @var Response $response */
     $response = Container\get(SWOOLE_HTTP_RESPONSE);
@@ -292,6 +292,7 @@ function cors(string $origin = '*', string $headers = 'Content-Type, Authorizati
     $response->header('Access-Control-Allow-Origin', $origin);
     $response->header('Access-Control-Allow-Headers', $headers);
     $response->header('Access-Control-Allow-Methods', $methods);
+    $response->header('Access-Control-Allow-Credentials', $credentials);
 
     /** @var Request $request */
     $request = Container\get(SWOOLE_HTTP_REQUEST);
