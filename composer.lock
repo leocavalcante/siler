@@ -1781,16 +1781,16 @@
         },
         {
             "name": "laminas/laminas-httphandlerrunner",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-httphandlerrunner.git",
-                "reference": "38e79730ac3e510a1c908691fb0d9001bb730101"
+                "reference": "477b8fc161bc59dca2dab90bb01b5bf57f90eea6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-httphandlerrunner/zipball/38e79730ac3e510a1c908691fb0d9001bb730101",
-                "reference": "38e79730ac3e510a1c908691fb0d9001bb730101",
+                "url": "https://api.github.com/repos/laminas/laminas-httphandlerrunner/zipball/477b8fc161bc59dca2dab90bb01b5bf57f90eea6",
+                "reference": "477b8fc161bc59dca2dab90bb01b5bf57f90eea6",
                 "shasum": ""
             },
             "require": {
@@ -1844,7 +1844,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-07-12T15:22:11+00:00"
+            "time": "2021-08-05T14:45:43+00:00"
         },
         {
             "name": "laminas/laminas-stdlib",
