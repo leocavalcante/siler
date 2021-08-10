@@ -125,12 +125,11 @@ class ResponseTest extends TestCase
 
         if (function_exists('xdebug_get_headers')) {
             $headers = xdebug_get_headers();
-            $credentials = 'true';
 
             $this->assertContains('Access-Control-Allow-Origin: *', $headers);
             $this->assertContains('Access-Control-Allow-Headers: Content-Type', $headers);
             $this->assertContains('Access-Control-Allow-Methods: GET, POST, PUT, DELETE', $headers);
-            $this->assertContains('Access-Control-Allow-Credentials', $credentials);
+            $this->assertContains('Access-Control-Allow-Credentials', $headers);
         } else {
             $this->assertTrue(true);
         }
