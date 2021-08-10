@@ -125,6 +125,7 @@ class ResponseTest extends TestCase
 
         if (function_exists('xdebug_get_headers')) {
             $headers = xdebug_get_headers();
+            $credentials = 'true';
 
             $this->assertContains('Access-Control-Allow-Origin: *', $headers);
             $this->assertContains('Access-Control-Allow-Headers: Content-Type', $headers);
