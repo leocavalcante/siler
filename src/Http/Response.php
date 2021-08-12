@@ -143,7 +143,7 @@ function no_content(): void
  *
  * @return void
  */
-function cors(string $origin = '*', string $headers = 'Content-Type', string $methods = 'GET, POST, PUT, DELETE'): void
+function cors(string $origin = '*', string $headers = 'Content-Type', string $methods = 'GET, POST, PUT, DELETE', string $credentials = 'true'): void
 {
     if (Container\has(SWOOLE_HTTP_REQUEST)) {
         \Siler\Swoole\cors();
@@ -153,6 +153,7 @@ function cors(string $origin = '*', string $headers = 'Content-Type', string $me
     header('Access-Control-Allow-Origin', $origin);
     header('Access-Control-Allow-Headers', $headers);
     header('Access-Control-Allow-Methods', $methods);
+    header('Access-Control-Allow-Credentials', $credentials);
 
     if (Request\method_is('options')) {
         no_content();
