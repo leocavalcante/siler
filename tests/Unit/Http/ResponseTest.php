@@ -129,7 +129,7 @@ class ResponseTest extends TestCase
             $this->assertContains('Access-Control-Allow-Origin: *', $headers);
             $this->assertContains('Access-Control-Allow-Headers: Content-Type', $headers);
             $this->assertContains('Access-Control-Allow-Methods: GET, POST, PUT, DELETE', $headers);
-            $this->assertContains('Access-Control-Allow-Credentials', $headers);
+            $this->assertContains('Access-Control-Allow-Credentials: true', $headers);
         } else {
             $this->assertTrue(true);
         }
