@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "48f30d5eaf8d405a06bc351e77be0255",
+    "content-hash": "6f18a302191fb3a1e35ceff653fb91b8",
     "packages": [],
     "packages-dev": [
         {
@@ -5285,16 +5285,16 @@
         },
         {
             "name": "swoole/ide-helper",
-            "version": "4.6.7",
+            "version": "4.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swoole/ide-helper.git",
-                "reference": "0d1409b8274117addfe64d3ea412812a69807411"
+                "reference": "918a98b5b264425fdb59461d9bbd7f9b504ead71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/0d1409b8274117addfe64d3ea412812a69807411",
-                "reference": "0d1409b8274117addfe64d3ea412812a69807411",
+                "url": "https://api.github.com/repos/swoole/ide-helper/zipball/918a98b5b264425fdb59461d9bbd7f9b504ead71",
+                "reference": "918a98b5b264425fdb59461d9bbd7f9b504ead71",
                 "shasum": ""
             },
             "require-dev": {
@@ -5317,7 +5317,7 @@
             "description": "IDE help files for Swoole.",
             "support": {
                 "issues": "https://github.com/swoole/ide-helper/issues",
-                "source": "https://github.com/swoole/ide-helper/tree/4.6.7"
+                "source": "https://github.com/swoole/ide-helper/tree/4.7.1"
             },
             "funding": [
                 {
@@ -5327,13 +5327,9 @@
                 {
                     "url": "https://github.com/swoole",
                     "type": "github"
-                },
-                {
-                    "url": "https://opencollective.com/swoole-src",
-                    "type": "open_collective"
                 }
             ],
-            "time": "2021-05-14T16:05:16+00:00"
+            "time": "2021-08-19T17:25:57+00:00"
         },
         {
             "name": "symfony/console",
