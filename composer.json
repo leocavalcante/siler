@@ -31,7 +31,7 @@
         "google/protobuf": "^3.17",
         "grpc/grpc": "^1.39",
         "laminas/laminas-config": "^3.6",
-        "laminas/laminas-config-aggregator": "^1.3",
+        "laminas/laminas-config-aggregator": "^1.6",
         "laminas/laminas-diactoros": "^2.6",
         "laminas/laminas-httphandlerrunner": "^2.0",
         "laminas/laminas-stratigility": "^3.5",
