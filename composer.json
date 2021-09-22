@@ -32,7 +32,7 @@
         "grpc/grpc": "^1.39",
         "laminas/laminas-config": "^3.6",
         "laminas/laminas-config-aggregator": "^1.6",
-        "laminas/laminas-diactoros": "^2.6",
+        "laminas/laminas-diactoros": "^2.8",
         "laminas/laminas-httphandlerrunner": "^2.0",
         "laminas/laminas-stratigility": "^3.5",
         "monolog/monolog": "^2.1",
