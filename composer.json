@@ -39,7 +39,7 @@
         "phpunit/phpunit": "^9.5",
         "psr/event-dispatcher": "^1.0",
         "squizlabs/php_codesniffer": "^3.6",
-        "swiftmailer/swiftmailer": "^6.2",
+        "swiftmailer/swiftmailer": "^6.3",
         "swoole/ide-helper": "^4.6",
         "textalk/websocket": "^1.5",
         "twig/twig": "^3.3",
