@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5a732e9cb05493e81f6662511d4b4e27",
+    "content-hash": "05cdf83e8583ee09733f0f0ed2b2e761",
     "packages": [],
     "packages-dev": [
         {
@@ -1572,16 +1572,16 @@
         },
         {
             "name": "laminas/laminas-config-aggregator",
-            "version": "1.6.0",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-config-aggregator.git",
-                "reference": "6fe9af672387caa37ec620a5c6152c010b6e257e"
+                "reference": "8f1b66dd825dff95026844bdcf4ea0f5b604e907"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-config-aggregator/zipball/6fe9af672387caa37ec620a5c6152c010b6e257e",
-                "reference": "6fe9af672387caa37ec620a5c6152c010b6e257e",
+                "url": "https://api.github.com/repos/laminas/laminas-config-aggregator/zipball/8f1b66dd825dff95026844bdcf4ea0f5b604e907",
+                "reference": "8f1b66dd825dff95026844bdcf4ea0f5b604e907",
                 "shasum": ""
             },
             "require": {
@@ -1595,7 +1595,7 @@
                 "zendframework/zend-config-aggregator": "*"
             },
             "require-dev": {
-                "laminas/laminas-coding-standard": "~1.0.0",
+                "laminas/laminas-coding-standard": "~2.3.0",
                 "laminas/laminas-config": "^2.6 || ^3.0",
                 "laminas/laminas-servicemanager": "^2.7.7 || ^3.1.1",
                 "malukenho/docheader": "^0.1.5",
@@ -1638,7 +1638,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-09-15T08:26:23+00:00"
+            "time": "2021-10-26T10:59:53+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
