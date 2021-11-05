@@ -123,7 +123,7 @@ final class Query
     /**
      * @\Siler\GraphQL\Annotation\Field()
      */
-    static public function hello($root, $args, $context, $info): string
+    public static function hello($root, $args, $context, $info): string
     {
         return 'Hello, World!';
     }
