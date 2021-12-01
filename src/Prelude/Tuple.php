@@ -49,6 +49,7 @@ final class Tuple implements ArrayAccess, Countable
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->values[$offset]);
@@ -63,6 +64,7 @@ final class Tuple implements ArrayAccess, Countable
      * @throws OutOfBoundsException
      *
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if (isset($this->values[$offset])) {
@@ -80,6 +82,7 @@ final class Tuple implements ArrayAccess, Countable
      *
      * @throws RuntimeException
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         throw new RuntimeException('Tuples are immutable!');
@@ -92,6 +95,7 @@ final class Tuple implements ArrayAccess, Countable
      *
      * @throws RuntimeException
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         throw new RuntimeException('Tuples are immutable!');
@@ -100,6 +104,7 @@ final class Tuple implements ArrayAccess, Countable
     /**
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         return count($this->values);
