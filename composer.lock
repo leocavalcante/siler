@@ -3642,24 +3642,24 @@
         },
         {
             "name": "ratchet/rfc6455",
-            "version": "v0.3",
+            "version": "v0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ratchetphp/RFC6455.git",
-                "reference": "c8651c7938651c2d55f5d8c2422ac5e57a183341"
+                "reference": "7c964514e93456a52a99a20fcfa0de242a43ccdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ratchetphp/RFC6455/zipball/c8651c7938651c2d55f5d8c2422ac5e57a183341",
-                "reference": "c8651c7938651c2d55f5d8c2422ac5e57a183341",
+                "url": "https://api.github.com/repos/ratchetphp/RFC6455/zipball/7c964514e93456a52a99a20fcfa0de242a43ccdb",
+                "reference": "7c964514e93456a52a99a20fcfa0de242a43ccdb",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/psr7": "^1.0",
+                "guzzlehttp/psr7": "^2 || ^1.7",
                 "php": ">=5.4.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "5.7.*",
+                "phpunit/phpunit": "^5.7",
                 "react/socket": "^1.3"
             },
             "type": "library",
@@ -3693,9 +3693,9 @@
             "support": {
                 "chat": "https://gitter.im/reactphp/reactphp",
                 "issues": "https://github.com/ratchetphp/RFC6455/issues",
-                "source": "https://github.com/ratchetphp/RFC6455/tree/v0.3"
+                "source": "https://github.com/ratchetphp/RFC6455/tree/v0.3.1"
             },
-            "time": "2020-05-15T18:31:24+00:00"
+            "time": "2021-12-09T23:20:49+00:00"
         },
         {
             "name": "react/cache",
