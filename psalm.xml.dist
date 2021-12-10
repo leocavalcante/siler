@@ -15,15 +15,15 @@
     </projectFiles>
 
     <stubs>
-        <file name="vendor/swoole/ide-helper/output/swoole/constants.php"/>
-        <file name="vendor/swoole/ide-helper/output/swoole/namespace/Table.php"/>
-        <file name="vendor/swoole/ide-helper/output/swoole/namespace/Server.php"/>
-        <file name="vendor/swoole/ide-helper/output/swoole/namespace/Server/Port.php"/>
-        <file name="vendor/swoole/ide-helper/output/swoole/namespace/Http/Server.php"/>
-        <file name="vendor/swoole/ide-helper/output/swoole/namespace/Http/Request.php"/>
-        <file name="vendor/swoole/ide-helper/output/swoole/namespace/Http/Response.php"/>
-        <file name="vendor/swoole/ide-helper/output/swoole/namespace/Http2/Response.php"/>
-        <file name="vendor/swoole/ide-helper/output/swoole/namespace/WebSocket/Server.php"/>
-        <file name="vendor/swoole/ide-helper/output/swoole/namespace/WebSocket/Frame.php"/>
+        <file name="vendor/swoole/ide-helper/src/swoole/constants.php"/>
+        <file name="vendor/swoole/ide-helper/src/swoole/Swoole/Table.php"/>
+        <file name="vendor/swoole/ide-helper/src/swoole/Swoole/Server.php"/>
+        <file name="vendor/swoole/ide-helper/src/swoole/Swoole/Server/Port.php"/>
+        <file name="vendor/swoole/ide-helper/src/swoole/Swoole/Http/Server.php"/>
+        <file name="vendor/swoole/ide-helper/src/swoole/Swoole/Http/Request.php"/>
+        <file name="vendor/swoole/ide-helper/src/swoole/Swoole/Http/Response.php"/>
+        <file name="vendor/swoole/ide-helper/src/swoole/Swoole/Http2/Response.php"/>
+        <file name="vendor/swoole/ide-helper/src/swoole/Swoole/WebSocket/Server.php"/>
+        <file name="vendor/swoole/ide-helper/src/swoole/Swoole/WebSocket/Frame.php"/>
     </stubs>
 </psalm>

@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['7.4', '8.0']
+        php-versions: ['8.0', '8.1']
 
     steps:
     - name: Checkout
@@ -21,7 +21,7 @@ jobs:
 
     - name: Validate
       run: composer validate
-      
+
     - name: Cache dir
       id: composer-cache
       run: echo "::set-output name=dir::$(composer config cache-files-dir)"
