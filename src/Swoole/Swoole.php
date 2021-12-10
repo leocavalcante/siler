@@ -402,7 +402,7 @@ function graphql_subscriptions(SubscriptionsManager $manager, int $port = 3000, 
     $server->set(['websocket_subprotocol' => WEBSOCKET_SUB_PROTOCOL]);
 
     $server->on('workerStart', function (WebsocketServer $unusedServer, int $workerId) use ($workers) {
-        $workers[$workerId] = ['id' => $workerId];
+        $workers->set((string)$workerId, ['id' => $workerId]);
     });
 
     $server->on('pipeMessage', function (WebsocketServer $unusedServer, int $unusedFromWorkerId, string $message) use ($handle) {
