@@ -23,7 +23,7 @@
     },
     "minimum-stability": "stable",
     "require-dev": {
-        "cboden/ratchet": "^0.4.1",
+        "cboden/ratchet": "^0.4.4",
         "cocur/slugify": "^4.0",
         "doctrine/annotations": "^1.10",
         "doctrine/cache": "^2.1",
