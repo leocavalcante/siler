@@ -7144,28 +7144,28 @@
         },
         {
             "name": "webonyx/graphql-php",
-            "version": "v14.11.3",
+            "version": "v14.11.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webonyx/graphql-php.git",
-                "reference": "a7192e7a2b0487dc5e185feb4f4df1fc24d35d86"
+                "reference": "d8d6307399df7246f09a1e9cc05e1574214ca67c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webonyx/graphql-php/zipball/a7192e7a2b0487dc5e185feb4f4df1fc24d35d86",
-                "reference": "a7192e7a2b0487dc5e185feb4f4df1fc24d35d86",
+                "url": "https://api.github.com/repos/webonyx/graphql-php/zipball/d8d6307399df7246f09a1e9cc05e1574214ca67c",
+                "reference": "d8d6307399df7246f09a1e9cc05e1574214ca67c",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-mbstring": "*",
-                "php": "^7.1 || ^8.0"
+                "php": "^7.1 || ^8"
             },
             "require-dev": {
                 "amphp/amp": "^2.3",
                 "doctrine/coding-standard": "^6.0",
                 "nyholm/psr7": "^1.2",
-                "phpbench/phpbench": "^0.16.10",
+                "phpbench/phpbench": "^1.2",
                 "phpstan/extension-installer": "^1.0",
                 "phpstan/phpstan": "0.12.82",
                 "phpstan/phpstan-phpunit": "0.12.18",
@@ -7198,7 +7198,7 @@
             ],
             "support": {
                 "issues": "https://github.com/webonyx/graphql-php/issues",
-                "source": "https://github.com/webonyx/graphql-php/tree/v14.11.3"
+                "source": "https://github.com/webonyx/graphql-php/tree/v14.11.4"
             },
             "funding": [
                 {
@@ -7206,7 +7206,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2021-11-19T09:42:02+00:00"
+            "time": "2022-01-20T15:10:45+00:00"
         }
     ],
     "aliases": [],
