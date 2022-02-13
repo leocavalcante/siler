@@ -1,3 +1,10 @@
+> ⚠️ I'm afraid that I'm not being able to keep Siler up-to-date as it deserves, so it's repository has been archived.
+
+**As an alternative for Siler, something lightweight and simple that works as a library with Swoole out-of-the-box, I highly recommend Nano!
+Check it out: https://nano.hyperf.wiki/#/en/**
+
+---
+
 <p align="center">
     <br><br>
     <img src="siler.png" height="100"/>
