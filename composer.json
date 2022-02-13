@@ -25,7 +25,7 @@
     "require-dev": {
         "cboden/ratchet": "^0.4.4",
         "cocur/slugify": "^4.1",
-        "doctrine/annotations": "^1.10",
+        "doctrine/annotations": "^1.13",
         "doctrine/cache": "^2.1",
         "gabordemooij/redbean": "^5.7",
         "google/protobuf": "^3.19",
