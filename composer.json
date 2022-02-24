@@ -35,7 +35,7 @@
         "laminas/laminas-diactoros": "^2.8",
         "laminas/laminas-httphandlerrunner": "^2.1",
         "laminas/laminas-stratigility": "^3.5",
-        "monolog/monolog": "^2.1",
+        "monolog/monolog": "^2.3",
         "phpunit/phpunit": "^9.5",
         "psr/event-dispatcher": "^1.0",
         "squizlabs/php_codesniffer": "^3.6",
